@@ -1,0 +1,16 @@
+import "ContentInfo\ContentInfo.idl";
+
+namespace QGL_Projection
+{
+   [default_interface]
+   runtimeclass ContentProjectEntry : Windows.UI.Xaml.Data.INotifyPropertyChanged, Windows.Foundation.IStringable
+   {
+      ContentProjectEntry(String filePath,
+                          QGL_Projection.ContentInfo info);
+
+      QGL_Projection.ContentInfo ContentInfo;
+      String FilePath{ get; };
+
+      Windows.Foundation.IAsyncAction ChangeFile(Windows.Storage.StorageFile newFile);
+   }
+}

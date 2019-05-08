@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Windows.CppWinRT.1.0.190128.4\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.1.0.190128.4\build\native\Microsoft.Windows.CppWinRT.props')" />
+  <PropertyGroup Label="Globals">
+    <CppWinRTEnabled>true</CppWinRTEnabled>
+    <MinimalCoreWin>true</MinimalCoreWin>
+    <ProjectGuid>{247e9037-20ab-4b03-8f3b-4cb26e12cbaa}</ProjectGuid>
+    <ProjectName>QGL_Projection</ProjectName>
+    <RootNamespace>QGL_Projection</RootNamespace>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <AppContainerApplication>true</AppContainerApplication>
+    <ApplicationType>Windows Store</ApplicationType>
+    <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
+    <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>10.0.17134.0</WindowsTargetPlatformMinVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|ARM">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM">
+      <Configuration>Release</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <GenerateManifest>false</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <IncludePath>$(ProjectDir)ContentProject;$(ProjectDir)ContentInfo;$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <IncludePath>$(ProjectDir)ContentProject;$(ProjectDir)ContentInfo;$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(ProjectDir)ContentProject;$(ProjectDir)ContentInfo;$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(ProjectDir)ContentProject;$(ProjectDir)ContentInfo;$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(ProjectDir)ContentProject;$(ProjectDir)ContentInfo;$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(ProjectDir)ContentProject;$(ProjectDir)ContentInfo;$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
+      <WarningLevel>Level4</WarningLevel>
+      <AdditionalOptions>%(AdditionalOptions) /bigobj</AdditionalOptions>
+      <DisableSpecificWarnings>28204</DisableSpecificWarnings>
+      <PreprocessorDefinitions>_WINRT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateWindowsMetadata>true</GenerateWindowsMetadata>
+      <ModuleDefinitionFile>QGL_Projection.def</ModuleDefinitionFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+    <ClCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">QGL_Model.lib;QGL_Content.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <Link>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">QGL_Model.lib;QGL_Content.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <Link>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">QGL_Model.lib;QGL_Content.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+    <ClCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">QGL_Model.lib;QGL_Content.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <Link>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">QGL_Model.lib;QGL_Content.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <Link>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">QGL_Model.lib;QGL_Content.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="CompilerVersion.h" />
+    <ClInclude Include="ContentInfo\ContentInfo.h" />
+    <ClInclude Include="ContentInfo\ContentLoader.h" />
+    <ClInclude Include="ContentInfo\ResourceType.h" />
+    <ClInclude Include="ContentProject\ContentProject.h" />
+    <ClInclude Include="ContentProject\ContentProjectEntry.h" />
+    <ClInclude Include="pch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CompilerVersion.cpp" />
+    <ClCompile Include="ContentInfo\ContentInfo.cpp" />
+    <ClCompile Include="ContentInfo\ContentLoader.cpp" />
+    <ClCompile Include="ContentInfo\ResourceType.cpp" />
+    <ClCompile Include="ContentProject\ContentProject.cpp" />
+    <ClCompile Include="ContentProject\ContentProjectEntry.cpp" />
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="CompilerVersion.idl" />
+    <Midl Include="ContentInfo\ContentInfo.idl" />
+    <Midl Include="ContentInfo\ContentLoader.idl" />
+    <Midl Include="ContentInfo\ResourceType.idl" />
+    <Midl Include="ContentProject\ContentProject.idl" />
+    <Midl Include="ContentProject\ContentProjectEntry.idl" />
+    <Midl Include="IContentExtension.idl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="QGL_Projection.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\QGL_Content\QGL_Content.vcxproj">
+      <Project>{10667518-d86f-4faf-9a5c-78bf6966822d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\QGL_Model\QGL_Model.vcxproj">
+      <Project>{d5f8ec52-9052-4a1e-81ca-ea32c414ec11}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\Microsoft.Windows.CppWinRT.1.0.190128.4\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.1.0.190128.4\build\native\Microsoft.Windows.CppWinRT.targets')" />
+  </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.1.0.190128.4\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.1.0.190128.4\build\native\Microsoft.Windows.CppWinRT.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.1.0.190128.4\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.1.0.190128.4\build\native\Microsoft.Windows.CppWinRT.targets'))" />
+  </Target>
+</Project>

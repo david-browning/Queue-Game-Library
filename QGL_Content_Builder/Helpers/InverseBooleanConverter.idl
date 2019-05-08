@@ -1,0 +1,7 @@
+namespace QGL_Content_Builder.Helpers
+{
+   runtimeclass InverseBoolConverter : Windows.UI.Xaml.Data.IValueConverter
+   {
+      InverseBoolConverter();
+   }
+}

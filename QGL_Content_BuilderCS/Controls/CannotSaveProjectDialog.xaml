@@ -1,0 +1,19 @@
+﻿<ContentDialog 
+    x:Class="QGL_Content_Builder.Controls.CannotSaveProjectDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:QGL_Content_Builder.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Cannot Save"
+    CloseButtonText="Ok">
+   <Grid>
+      <TextBlock TextWrapping="WrapWholeWords">
+         <Run>
+            There was a problem saving the project. 
+            Any changes were not saved.
+         </Run>
+      </TextBlock>
+   </Grid>
+</ContentDialog>

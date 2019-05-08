@@ -1,0 +1,27 @@
+import "CompilerVersion.idl";
+import "ContentInfo\ContentLoader.idl";
+import "ContentInfo\ResourceType.idl";
+
+namespace QGL_Projection
+{
+   [default_interface]
+   runtimeclass ContentInfo : Windows.UI.Xaml.Data.INotifyPropertyChanged
+   {
+      ContentInfo();
+      Boolean ContentVisible;
+      Boolean ContentObeyPhysics;
+      String ContentName;
+      QGL_Projection.ResourceType ResourceType;
+      QGL_Projection.ContentLoader ContentLoader;
+
+      QGL_Projection.CompilerVersion CompilerVersion;
+
+      GUID Guid();
+      void Guid(GUID g);
+
+      static void WriteContentInfoToBuffer(ContentInfo info, Windows.Storage.Streams.DataWriter r);
+
+      static ContentInfo ReadContentInfoFromBuffer(Windows.Storage.Streams.DataReader r,
+                                                   Windows.Foundation.Collections.IVector<QGL_Projection.ResourceType> supportedResourceTypes);
+   }
+}

@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resources">
+      <UniqueIdentifier>accd3aa8-1ba0-4223-9bbe-0c431709210b</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{926ab91d-31b4-48c3-b9a4-e681349f27f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{04a64ad4-5945-489b-9f14-27e42bc39884}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{9bae26a2-7fc3-4d19-b085-13077c8f4c7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="win_rt">
+      <UniqueIdentifier>{f97415cd-74b8-45d7-8d5e-396baac721b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{b589e34b-fd53-4573-a05a-1f693aec252c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Timing">
+      <UniqueIdentifier>{1a79a779-d2d7-4629-8d47-7f97be484b93}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="QGLModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\annotations.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_model_include.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_version.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_icomponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_time_state.h">
+      <Filter>Header Files\Timing</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_timer.h">
+      <Filter>Header Files\Timing</Filter>
+    </ClInclude>
+    <ClInclude Include="QGL_ModelRT.h">
+      <Filter>win_rt</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_iobserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_subject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="QGL_Model.def">
+      <Filter>win_rt</Filter>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Generated Files\module.g.cpp">
+      <Filter>win_rt</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QGL_ModelRT.cpp">
+      <Filter>win_rt</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="QGL_ModelRT.idl">
+      <Filter>win_rt</Filter>
+    </Midl>
+  </ItemGroup>
+</Project>

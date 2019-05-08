@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="MainPage.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="App.idl" />
+    <Midl Include="MainPage.idl" />
+    <Midl Include="Helpers\InverseBooleanConverter.idl" />
+    <Midl Include="Extensions\ExtensionProvider.idl" />
+    <Midl Include="Extensions\UnknownContentExtension.idl" />
+    <Midl Include="PageModels\HomePageVM.idl" />
+    <Midl Include="PageModels\RecentProjectVM.idl" />
+    <Midl Include="Pages\CompilerExtensionsPage.idl" />
+    <Midl Include="Pages\EditorPage.idl" />
+    <Midl Include="Pages\HomePage.idl" />
+    <Midl Include="Pages\SettingsPage.idl" />
+    <Midl Include="CannotSaveProjectDialog.idl" />
+    <Midl Include="CannotOpenProjectDialog.idl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="App.cpp" />
+    <ClCompile Include="MainPage.cpp" />
+    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+    <ClCompile Include="Extensions\Extensions.ExtensionProvider.cpp" />
+    <ClCompile Include="Extensions\Extensions.UnknownContentExtension.cpp" />
+    <ClCompile Include="Pages\CompilerExtensionsPage.cpp" />
+    <ClCompile Include="Pages\EditorPage.cpp" />
+    <ClCompile Include="Pages\HomePage.cpp" />
+    <ClCompile Include="Pages\SettingsPage.cpp" />
+    <ClCompile Include="PageModels\PageModels.HomePageVM.cpp" />
+    <ClCompile Include="PageModels\PageModels.RecentProjectVM.cpp" />
+    <ClCompile Include="Helpers\Helpers.InverseBoolConverter.cpp" />
+    <ClCompile Include="CannotSaveProjectDialog.cpp" />
+    <ClCompile Include="CannotOpenProjectDialog.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="App.h" />
+    <ClInclude Include="MainPage.h" />
+    <ClInclude Include="Helpers\FileHelpers.h" />
+    <ClInclude Include="Helpers\AppDataHelpers.h" />
+    <ClInclude Include="Extensions\Extensions.ExtensionProvider.h" />
+    <ClInclude Include="Extensions\Extensions.UnknownContentExtension.h" />
+    <ClInclude Include="Pages\CompilerExtensionsPage.h" />
+    <ClInclude Include="Pages\EditorPage.h" />
+    <ClInclude Include="Pages\HomePage.h" />
+    <ClInclude Include="Pages\SettingsPage.h" />
+    <ClInclude Include="PageModels\PageModels.HomePageVM.h" />
+    <ClInclude Include="PageModels\PageModels.RecentProjectVM.h" />
+    <ClInclude Include="Helpers\Helpers.InverseBoolConverter.h" />
+    <ClInclude Include="CannotSaveProjectDialog.h" />
+    <ClInclude Include="CannotOpenProjectDialog.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Wide310x150Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\StoreLogo.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square150x150Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SplashScreen.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\LockScreenLogo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="QGL_Content_Builder_TemporaryKey.pfx" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{e48dc53e-40b1-40cb-970a-f89935452892}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

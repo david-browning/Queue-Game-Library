@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>2bd03efd-fb01-4f30-ac2a-54df4e496db6</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>87ed0ef8-0eea-4877-ac40-037e3cc5a0ab</UniqueIdentifier>
+      <Extensions>bmp;fbx;gif;jpg;jpeg;tga;tiff;tif;png</Extensions>
+    </Filter>
+    <Filter Include="Tests">
+      <UniqueIdentifier>{d08c9622-73bf-4877-ac3c-358f9580e185}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Timer">
+      <UniqueIdentifier>{1b4710de-1f78-4b48-a9ad-6343feaca0bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Observer Observable">
+      <UniqueIdentifier>{c4beb6a1-b815-4b25-b929-194e384eeb6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Version">
+      <UniqueIdentifier>{483da27e-5541-41ac-b239-921e225b353a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Components">
+      <UniqueIdentifier>{0a3b12d5-2644-4807-95ec-95b1458fea0c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="UnitTestApp.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="UnitTestApp.xaml.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="UnitTest.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="UnitTestApp.xaml.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="UnitTestApp.rd.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\LockScreenLogo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SplashScreen.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square150x150Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\StoreLogo.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Wide310x150Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="QGL_Model_Unit_Tests_TemporaryKey.pfx" />
+  </ItemGroup>
+</Project>

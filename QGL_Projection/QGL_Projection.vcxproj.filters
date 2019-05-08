@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resources">
+      <UniqueIdentifier>accd3aa8-1ba0-4223-9bbe-0c431709210b</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{926ab91d-31b4-48c3-b9a4-e681349f27f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content Info">
+      <UniqueIdentifier>{422a2ac0-e3a1-49f8-8f7c-5ebac482f76d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content Project">
+      <UniqueIdentifier>{b36e55bd-0f8f-41ed-9029-4915564f8b40}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+    <ClCompile Include="CompilerVersion.cpp" />
+    <ClCompile Include="ContentInfo\ContentInfo.cpp">
+      <Filter>Content Info</Filter>
+    </ClCompile>
+    <ClCompile Include="ContentInfo\ContentLoader.cpp">
+      <Filter>Content Info</Filter>
+    </ClCompile>
+    <ClCompile Include="ContentInfo\ResourceType.cpp">
+      <Filter>Content Info</Filter>
+    </ClCompile>
+    <ClCompile Include="ContentProject\ContentProject.cpp">
+      <Filter>Content Project</Filter>
+    </ClCompile>
+    <ClCompile Include="ContentProject\ContentProjectEntry.cpp">
+      <Filter>Content Project</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="CompilerVersion.h" />
+    <ClInclude Include="ContentInfo\ContentInfo.h">
+      <Filter>Content Info</Filter>
+    </ClInclude>
+    <ClInclude Include="ContentInfo\ContentLoader.h">
+      <Filter>Content Info</Filter>
+    </ClInclude>
+    <ClInclude Include="ContentInfo\ResourceType.h">
+      <Filter>Content Info</Filter>
+    </ClInclude>
+    <ClInclude Include="ContentProject\ContentProject.h">
+      <Filter>Content Project</Filter>
+    </ClInclude>
+    <ClInclude Include="ContentProject\ContentProjectEntry.h">
+      <Filter>Content Project</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="CompilerVersion.idl" />
+    <Midl Include="ContentInfo\ContentInfo.idl">
+      <Filter>Content Info</Filter>
+    </Midl>
+    <Midl Include="ContentInfo\ContentLoader.idl">
+      <Filter>Content Info</Filter>
+    </Midl>
+    <Midl Include="ContentInfo\ResourceType.idl">
+      <Filter>Content Info</Filter>
+    </Midl>
+    <Midl Include="ContentProject\ContentProject.idl">
+      <Filter>Content Project</Filter>
+    </Midl>
+    <Midl Include="ContentProject\ContentProjectEntry.idl">
+      <Filter>Content Project</Filter>
+    </Midl>
+    <Midl Include="IContentExtension.idl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="QGL_Projection.def" />
+    <None Include="packages.config" />
+  </ItemGroup>
+</Project>

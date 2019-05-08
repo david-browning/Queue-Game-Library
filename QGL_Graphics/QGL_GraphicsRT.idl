@@ -1,0 +1,8 @@
+namespace QGL_Graphics
+{
+   [default_interface]
+   runtimeclass QGL_GraphicsRT
+   { 
+      QGL_GraphicsRT();
+   }
+}

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Windows.CppWinRT.1.0.190109.2\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.1.0.190109.2\build\native\Microsoft.Windows.CppWinRT.props')" />
+  <PropertyGroup Label="Globals">
+    <CppWinRTEnabled>true</CppWinRTEnabled>
+    <MinimalCoreWin>true</MinimalCoreWin>
+    <ProjectGuid>{d5f8ec52-9052-4a1e-81ca-ea32c414ec11}</ProjectGuid>
+    <ProjectName>QGL_Model</ProjectName>
+    <RootNamespace>QGL_Model</RootNamespace>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <AppContainerApplication>true</AppContainerApplication>
+    <ApplicationType>Windows Store</ApplicationType>
+    <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
+    <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformMinVersion>10.0.17763.0</WindowsTargetPlatformMinVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|ARM">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM">
+      <Configuration>Release</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <GenerateManifest>false</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <ExecutablePath>$(ProjectDir)sources\qgl;$(ExecutablePath)</ExecutablePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ExecutablePath>$(ProjectDir)sources\qgl;$(ExecutablePath)</ExecutablePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ExecutablePath>$(ProjectDir)sources\qgl;$(ExecutablePath)</ExecutablePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ExecutablePath>$(ProjectDir)sources\qgl;$(ExecutablePath)</ExecutablePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ExecutablePath>$(ProjectDir)sources\qgl;$(ExecutablePath)</ExecutablePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
+      <WarningLevel>Level4</WarningLevel>
+      <AdditionalOptions>%(AdditionalOptions) /bigobj</AdditionalOptions>
+      <DisableSpecificWarnings>28204</DisableSpecificWarnings>
+      <PreprocessorDefinitions>_WINRT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateWindowsMetadata>true</GenerateWindowsMetadata>
+      <ModuleDefinitionFile>QGL_Model.def</ModuleDefinitionFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+    <ClCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Midl>
+      <MetadataFileName Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">$(IntDir)Unmerged\%(Filename).winmd</MetadataFileName>
+      <GenerateTypeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">true</GenerateTypeLibrary>
+    </Midl>
+    <Midl>
+      <MetadataFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)Unmerged\%(Filename).winmd</MetadataFileName>
+      <GenerateTypeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateTypeLibrary>
+    </Midl>
+    <Midl>
+      <MetadataFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)Unmerged\%(Filename).winmd</MetadataFileName>
+      <GenerateTypeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateTypeLibrary>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+    <ClCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Midl>
+      <MetadataFileName Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">$(IntDir)Unmerged\%(Filename).winmd</MetadataFileName>
+      <GenerateTypeLibrary Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">true</GenerateTypeLibrary>
+    </Midl>
+    <Midl>
+      <MetadataFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)Unmerged\%(Filename).winmd</MetadataFileName>
+      <GenerateTypeLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateTypeLibrary>
+    </Midl>
+    <Midl>
+      <MetadataFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)Unmerged\%(Filename).winmd</MetadataFileName>
+      <GenerateTypeLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateTypeLibrary>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="include\annotations.h" />
+    <ClInclude Include="include\qgl_icomponent.h" />
+    <ClInclude Include="include\qgl_subject.h" />
+    <ClInclude Include="include\qgl_model_include.h" />
+    <ClInclude Include="include\qgl_iobserver.h" />
+    <ClInclude Include="include\qgl_timer.h" />
+    <ClInclude Include="include\qgl_time_state.h" />
+    <ClInclude Include="include\qgl_version.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="QGLModel.h" />
+    <ClInclude Include="QGL_ModelRT.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Generated Files\module.g.cpp" />
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="QGL_ModelRT.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="QGL_Model.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="QGL_ModelRT.idl" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\Microsoft.Windows.CppWinRT.1.0.190109.2\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.1.0.190109.2\build\native\Microsoft.Windows.CppWinRT.targets')" />
+  </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.1.0.190109.2\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.1.0.190109.2\build\native\Microsoft.Windows.CppWinRT.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.1.0.190109.2\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.1.0.190109.2\build\native\Microsoft.Windows.CppWinRT.targets'))" />
+  </Target>
+</Project>

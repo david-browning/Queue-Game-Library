@@ -1,0 +1,21 @@
+﻿<ContentDialog
+    x:Class="QGL_Content_Builder.Controls.CannotOpenProjectDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:QGL_Content_Builder.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Open damaged file?"
+    PrimaryButtonText="Open"
+    SecondaryButtonText="Don't Open"
+    DefaultButton="Secondary">
+   <Grid>
+      <TextBlock TextWrapping="WrapWholeWords">
+         <Run>
+            There was a problem loading the project. The file may be damaged. 
+            Do you want to try to open it?
+         </Run>
+      </TextBlock>
+   </Grid>
+</ContentDialog>

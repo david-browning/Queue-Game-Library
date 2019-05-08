@@ -1,0 +1,8 @@
+namespace QGL_Model
+{
+   [default_interface]
+   runtimeclass QGL_ModelRT
+   {
+      QGL_ModelRT();
+   }
+}

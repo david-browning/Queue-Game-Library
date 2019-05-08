@@ -1,0 +1,18 @@
+import "ContentInfo\ContentLoader.idl";
+
+namespace QGL_Projection
+{
+   [default_interface]
+   runtimeclass ResourceType : Windows.Foundation.IStringable
+   {
+      ResourceType(UInt16 val,
+                   String name,
+                   QGL_Projection.ContentLoader[] loaders);
+
+      UInt16 Value{ get; };
+      String ValueName{ get; };
+
+      Windows.Foundation.Collections.IVector<QGL_Projection.ContentLoader> Loaders{ get; };
+      Windows.Foundation.Collections.IObservableVector<IInspectable> ObservableLoaders{ get; };
+   }
+}
