@@ -4,39 +4,51 @@
 namespace qgl
 {
    /*
-    
+    A component is a tool used to decouple behavior from data. Instead of a
+    monolithic class that responds to input, rendering, and physics, those
+    domains can be removed and encompassed in separate components. 
+    Data classes will likely want to make icomponent a friend class to avoid
+    publicly exposing setters for things like position, velocity, or other 
+    states that should not be public.
+    Overload icomponent::update to implement this.
+    UpdateContextT: Update Context Type. This is context used to update the 
+    object. The context could be the elapsed time since the last frame, the
+    current input state, or a graphics context to render the object.
+    UpdateT: Type of object to update. Usually, this is the object being 
+    updated like a sprite or model.
     */
    template<typename UpdateContextT, typename UpdateT>
    class icomponent
    {
       public:
       
-      /*
-       Update Context Type. This is context used to update the object.
-       The context could be the elapsed time since the last frame, or a graphics
-       context to render the object.
-       */
       using uc_t = UpdateContextT;
       
-      /*
-       Update Type. Usually, this is the object being updated.
-       */
       using u_t = UpdateT;
 
       /*
-       Default constructor
+       Default constructor.
        */
       icomponent() = default;
 
       /*
-       Default copy constructor
+       Default copy constructor.
        */
       icomponent(const icomponent& r) = default;
 
+      /*
+       Default move constructor.
+       */
       icomponent(icomponent&& r) = default;
 
+      /*
+       Default destructor.
+       */
       virtual ~icomponent() noexcept = default;
 
+      /*
+       Updates obj using context.
+       */
       virtual void update(const uc_t& context, u_t& obj) = 0;
    };
 }
