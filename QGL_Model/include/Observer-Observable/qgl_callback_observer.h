@@ -1,5 +1,5 @@
 #pragma once
-#include "include/qgl_iobserver.h"
+#include "include/Observer-Observable/qgl_iobserver.h"
 
 namespace qgl
 {

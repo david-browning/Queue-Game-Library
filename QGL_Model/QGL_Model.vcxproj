@@ -142,11 +142,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\annotations.h" />
-    <ClInclude Include="include\qgl_callback_observer.h" />
+    <ClInclude Include="include\Observer-Observable\qgl_callback_observer.h" />
+    <ClInclude Include="include\Observer-Observable\qgl_iobserver.h" />
+    <ClInclude Include="include\Observer-Observable\qgl_subject.h" />
     <ClInclude Include="include\qgl_icomponent.h" />
-    <ClInclude Include="include\qgl_subject.h" />
     <ClInclude Include="include\qgl_model_include.h" />
-    <ClInclude Include="include\qgl_iobserver.h" />
     <ClInclude Include="include\qgl_timer.h" />
     <ClInclude Include="include\qgl_time_state.h" />
     <ClInclude Include="include\qgl_version.h" />

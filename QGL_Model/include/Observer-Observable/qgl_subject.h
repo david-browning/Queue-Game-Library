@@ -1,6 +1,6 @@
 #pragma once
 #include "include/qgl_model_include.h"
-#include "include/qgl_iobserver.h"
+#include "include/Observer-Observable/qgl_iobserver.h"
 #include <set>
 
 namespace qgl

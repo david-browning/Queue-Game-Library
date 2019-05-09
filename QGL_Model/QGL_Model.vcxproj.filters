@@ -23,6 +23,9 @@
     <Filter Include="Header Files\Timing">
       <UniqueIdentifier>{1a79a779-d2d7-4629-8d47-7f97be484b93}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Observer Observable">
+      <UniqueIdentifier>{da0dbba1-24ee-440d-ab49-303fb19411e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLModel.h">
@@ -52,14 +55,14 @@
     <ClInclude Include="QGL_ModelRT.h">
       <Filter>win_rt</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_iobserver.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\Observer-Observable\qgl_callback_observer.h">
+      <Filter>Header Files\Observer Observable</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_subject.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\Observer-Observable\qgl_iobserver.h">
+      <Filter>Header Files\Observer Observable</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_callback_observer.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\Observer-Observable\qgl_subject.h">
+      <Filter>Header Files\Observer Observable</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
