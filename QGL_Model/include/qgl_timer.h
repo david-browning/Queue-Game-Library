@@ -20,12 +20,13 @@ namespace qgl
         using TimeT = LARGE_INTEGER;
 
         /*
-         How many ticks in a millisecond.
+         How many ticks in a second.
          */
         static constexpr TickT TICKS_PER_SECOND = 10'000'000;
 
         /*
          Standard target framerates for the timer.
+         Count the number of ticks in a given fraction of a second.
          */
         static constexpr TickT TICK_24_HZ = TICKS_PER_SECOND / 24;
         static constexpr TickT TICK_30_HZ = TICKS_PER_SECOND / 30;
@@ -34,7 +35,7 @@ namespace qgl
         static constexpr TickT TICK_144_HZ = TICKS_PER_SECOND / 144;
 
         /*
-         Constructs a timer and queries the timer's frequency
+         Constructs a timer and queries the timer's frequency.
          */
         timer(const TickT& targetHz = TICK_60_HZ,
               const TickT& targetTolerance = TICKS_PER_SECOND / 4000) :
@@ -58,10 +59,19 @@ namespace qgl
             m_lastTime.QuadPart = 0;
         }
 
+        /*
+         Copy constructor.
+         */
         timer(const timer& r) = default;
 
+        /*
+         Move constructor.
+         */
         timer(timer&& r) = default;
 
+        /*
+         Destructor.
+         */
         virtual ~timer() noexcept = default;
 
         /*
@@ -278,7 +288,7 @@ namespace qgl
         UINT m_framesThisSecond;
 
         /*
-         Clamp elapsed ticks so it's no bigger than thick.
+         Clamp elapsed ticks so it's no bigger than this.
          */
         TickT m_maxDelta;
 
