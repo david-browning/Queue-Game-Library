@@ -4,8 +4,6 @@
 
 namespace qgl
 {
-
-
 	/*
 	 Abstract class that observes a subject. Aka subscriber, watcher.
 	 Overwrite update to implement.
@@ -25,15 +23,17 @@ namespace qgl
          iobservable::update(), subscribe, and unsubscribe private.
          This prevents programmers from calling update outside of its intended
          scope.
-         subject gets complete access to this class so it can call the private
-         member functions.
          */
-        friend class subject<MessageT>;
+        template<class msgt>
+        friend class subject;
 
 		/*
 		 Constructor
 		 */
-		iobserver() = default;
+        iobserver()
+        {
+
+        }
 
 		/*
 		 Copy constructor.
@@ -43,7 +43,7 @@ namespace qgl
 		{
 			for (auto& sbj : m_notifier_s)
 			{
-				sbj.get().add(this);
+				sbj->add(this);
 			}
 		}
 
@@ -60,10 +60,10 @@ namespace qgl
 			for (auto& sbj : m.m_notifier_s)
 			{
 				//Remove m from the subject
-				sbj.get().remove(&m);
+				sbj->remove(&m);
 
 				//Add this to the subject
-				sbj.get().add(this);
+				sbj->add(this);
 			}
 		}
 
@@ -75,7 +75,7 @@ namespace qgl
 			//Unsubscribe from all subjects.
 			for (auto& sbj : m_notifier_s)
 			{
-				sbj.get().remove(this);
+				sbj->remove(this);
 			}
 		}
 
@@ -83,15 +83,16 @@ namespace qgl
         /*
          Overwrite this function with the desired logic when the subject
          updates this.
+         msg is not a reference so this function can be called across threads.
          */
-        virtual void update(const MessageT& msg) = 0;
+        virtual void update(MessageT msg) = 0;
 
 		private:
         
 		/*
 		 Adds this to the subject's list of observers.
 		 */
-		void subscribe(subject<MessageT>& sbj_p)
+		void subscribe(subject<MessageT>* const sbj_p)
 		{
 			//This observer now holds a reference to the subject that 
 			//notifies this.
@@ -101,7 +102,7 @@ namespace qgl
 		/*
 		 Remove this from the subject's list of observers.
 		 */
-		void unsubscribe(subject<MessageT>& sbj_p)
+		void unsubscribe(subject<MessageT>* const sbj_p)
 		{
 			//This observer no longer references that subject.
 			m_notifier_s.erase(sbj_p);
@@ -111,6 +112,6 @@ namespace qgl
 		 Keep track of everything that notifies this so when this is destroyed
 		 we can remove it from all the subjects.
 		 */
-		std::set<std::reference_wrapper<subject<MessageT>>> m_notifier_s;
+		std::set<subject<MessageT>*> m_notifier_s;
 	};
 }

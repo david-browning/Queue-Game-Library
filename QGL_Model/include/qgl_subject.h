@@ -7,7 +7,8 @@ namespace qgl
 {
     /*
      A subject sends messages to observers using the notify method.
-     MessageT: Type of message to pass to the observers.
+     MessageT: Type of message to pass to the observers. Recommend keeping
+     MessageT <= 8 bytes because it cannot be passed by reference.
      */
     template<class MessageT>
     class subject
@@ -17,11 +18,15 @@ namespace qgl
         /*
          Creates a subject with no observers.
          */
-        subject() = default;
+        subject()
+        {
+
+        }
 
         /*
          Uses the first and last iterators to create a list of observers for
-         this subject.
+         this subject. Dereferencing the iterator must yield a pointer to an
+         iobserver.
          */
         template<class InputIterator>
         subject(InputIterator first, InputIterator last)
@@ -38,7 +43,7 @@ namespace qgl
          */
         subject(std::initializer_list<iobserver<MessageT>*> observer_ps)
         {
-            for (auto& observer_p : m_observer_ps)
+            for (auto observer_p : observer_ps)
             {
                 add(observer_p);
             }
@@ -50,9 +55,9 @@ namespace qgl
         subject(const subject& c) :
             m_observer_ps(c.m_observer_ps)
         {
-            for (auto* observer : m_observer_ps)
+            for (auto observer : m_observer_ps)
             {
-                observer->subscribe(*this);
+                observer->subscribe(this);
             }
         }
 
@@ -66,10 +71,10 @@ namespace qgl
             //this subject.
 
             //For each observer m had:
-            for (auto& observer_p : m.m_observer_ps)
+            for (auto observer_p : m.m_observer_ps)
             {
                 //The observer no longer subscribes to m.
-                observer_p->unsubscribe(m);
+                observer_p->unsubscribe(&m);
 
                 //It subscribes to this now.
                 add(observer_p);
@@ -83,9 +88,9 @@ namespace qgl
         {
             //When this is destroyed, make sure all the observers are no longer
             //linked to this.
-            for (auto& observer : m_observer_ps)
+            for (auto observer : m_observer_ps)
             {
-                remove(observer);
+                observer->unsubscribe(this);
             }
         }
 
@@ -95,7 +100,7 @@ namespace qgl
             m_observer_ps.insert(observer_p);
 
             //Observer keeps track of it's subjects.
-            observer_p->subscribe(*this);
+            observer_p->subscribe(this);
         }
 
         void remove(iobserver<MessageT>* const observer_p)
@@ -104,18 +109,27 @@ namespace qgl
             m_observer_ps.erase(observer_p);
 
             //Observer is no longer linked to this.
-            observer_p->unsubscribe(*this);
+            observer_p->unsubscribe(this);
         }
 
         /*
          Sends the message to all observers.
+         msg is not a reference so this function can be called across threads.
          */
-        void notify(const MessageT& msg)
+        void notify(MessageT msg)
         {
             for (auto observer : m_observer_ps)
             {
                 observer->update(msg);
             }
+        }
+
+        /*
+         Returns the number of observers.
+         */
+        auto count() const noexcept
+        {
+            return m_observer_ps.size();
         }
 
         private:

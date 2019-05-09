@@ -58,6 +58,9 @@
     <ClInclude Include="include\qgl_subject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\qgl_callback_observer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="QGL_Model.def">

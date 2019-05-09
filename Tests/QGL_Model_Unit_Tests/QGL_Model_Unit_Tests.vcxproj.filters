@@ -11,17 +11,8 @@
     <Filter Include="Tests">
       <UniqueIdentifier>{d08c9622-73bf-4877-ac3c-358f9580e185}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tests\Timer">
-      <UniqueIdentifier>{1b4710de-1f78-4b48-a9ad-6343feaca0bd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tests\Observer Observable">
-      <UniqueIdentifier>{c4beb6a1-b815-4b25-b929-194e384eeb6d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tests\Version">
-      <UniqueIdentifier>{483da27e-5541-41ac-b239-921e225b353a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tests\Components">
-      <UniqueIdentifier>{0a3b12d5-2644-4807-95ec-95b1458fea0c}</UniqueIdentifier>
+    <Filter Include="Tests\Observer-Observable">
+      <UniqueIdentifier>{e17eb08a-7291-4c85-b3f7-7f9a5d8b333a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -30,13 +21,28 @@
   <ItemGroup>
     <ClCompile Include="UnitTestApp.xaml.cpp" />
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="UnitTest.cpp">
-      <Filter>Tests</Filter>
+    <ClCompile Include="Tests\Observer-Observable\callback_observer-tests.cpp">
+      <Filter>Tests\Observer-Observable</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Observer-Observable\subject_constructor_tests.cpp">
+      <Filter>Tests\Observer-Observable</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Observer-Observable\subject_notify_tests.cpp">
+      <Filter>Tests\Observer-Observable</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Observer-Observable\subject_out_of_scope_tests.cpp">
+      <Filter>Tests\Observer-Observable</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Observer-Observable\subject_remove_tests.cpp">
+      <Filter>Tests\Observer-Observable</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="UnitTestApp.xaml.h" />
+    <ClInclude Include="Tests\Observer-Observable\basic_observer.h">
+      <Filter>Tests\Observer-Observable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="UnitTestApp.rd.xml" />
