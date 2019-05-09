@@ -8,3 +8,4 @@
 
 #include "include/qgl_subject.h"
 #include "include/qgl_iobserver.h"
+#include "include/qgl_callback_observer.h"

@@ -218,6 +218,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Tests\basic_state.h" />
     <ClInclude Include="Tests\Observer-Observable\basic_observer.h" />
     <ClInclude Include="UnitTestApp.xaml.h">
       <DependentUpon>UnitTestApp.xaml</DependentUpon>
@@ -245,6 +246,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tests\Observer-Observable\callback_observer-tests.cpp" />
+    <ClCompile Include="Tests\Observer-Observable\observer_out_of_scope_tests.cpp" />
     <ClCompile Include="Tests\Observer-Observable\subject_constructor_tests.cpp" />
     <ClCompile Include="Tests\Observer-Observable\subject_notify_tests.cpp" />
     <ClCompile Include="Tests\Observer-Observable\subject_out_of_scope_tests.cpp" />

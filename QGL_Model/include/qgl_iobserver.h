@@ -75,7 +75,7 @@ namespace qgl
 			//Unsubscribe from all subjects.
 			for (auto& sbj : m_notifier_s)
 			{
-				sbj->remove(this);
+				sbj->destroy(this);
 			}
 		}
 

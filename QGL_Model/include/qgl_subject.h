@@ -133,6 +133,15 @@ namespace qgl
         }
 
         private:
+
+        template<class msgt>
+        friend class iobserver;
+
+        void destroy(iobserver<MessageT>* const observer_p)
+        {
+            m_observer_ps.erase(observer_p);
+        }
+
         std::set<iobserver<MessageT>*> m_observer_ps;
     };
 }
