@@ -75,7 +75,7 @@ bool qgl::graphics::graphic_options::valid(const GRAPHICS_CONFIG_BUFFER& config)
          static_cast<float>(mode.RefreshRate.Denominator);
       if (mode.Height == config.height() &&
           mode.Width == config.width() &&
-          ApproxEq<float>(aproxRefresh, static_cast<float>(config.refresh()), 0.00001f))
+          approx_equal(aproxRefresh, static_cast<float>(config.refresh()), 0.00001f))
       {
          foundMode = true;
          break;
