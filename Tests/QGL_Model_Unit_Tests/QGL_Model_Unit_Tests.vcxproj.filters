@@ -14,6 +14,9 @@
     <Filter Include="Tests\Observer-Observable">
       <UniqueIdentifier>{e17eb08a-7291-4c85-b3f7-7f9a5d8b333a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\Timing">
+      <UniqueIdentifier>{7bb116f0-cf25-4a67-9353-3d9a11c1edc8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="UnitTestApp.xaml" />
@@ -38,6 +41,15 @@
     </ClCompile>
     <ClCompile Include="Tests\Observer-Observable\observer_out_of_scope_tests.cpp">
       <Filter>Tests\Observer-Observable</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Timing\time_state_tests.cpp">
+      <Filter>Tests\Timing</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Timing\time_helper_tests.cpp">
+      <Filter>Tests\Timing</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Timing\timer_tests.cpp">
+      <Filter>Tests\Timing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

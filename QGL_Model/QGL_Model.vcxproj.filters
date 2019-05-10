@@ -46,12 +46,6 @@
     <ClInclude Include="include\qgl_icomponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_time_state.h">
-      <Filter>Header Files\Timing</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_timer.h">
-      <Filter>Header Files\Timing</Filter>
-    </ClInclude>
     <ClInclude Include="QGL_ModelRT.h">
       <Filter>win_rt</Filter>
     </ClInclude>
@@ -63,6 +57,15 @@
     </ClInclude>
     <ClInclude Include="include\Observer-Observable\qgl_subject.h">
       <Filter>Header Files\Observer Observable</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Timing\qgl_time_helpers.h">
+      <Filter>Header Files\Timing</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Timing\qgl_time_state.h">
+      <Filter>Header Files\Timing</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Timing\qgl_timer.h">
+      <Filter>Header Files\Timing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

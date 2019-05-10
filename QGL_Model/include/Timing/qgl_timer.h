@@ -1,5 +1,6 @@
 #pragma once
-#include "qgl_model_include.h"
+#include "include/qgl_model_include.h"
+#include "qgl_time_helpers.h"
 #include "qgl_time_state.h"
 
 namespace qgl
@@ -7,22 +8,13 @@ namespace qgl
    /*
     SecondsT must be a floating-point type like float or double. Using an
     integral type will cause elapsed seconds to be zero due to truncation.
-    TickT must be integral because ticks are whole numbers. 
+    TickT must be integral because ticks are whole numbers.
     */
-    template<
-        typename SecondsT,
-        typename TickT,
-        typename = std::enable_if<std::is_floating_point<SecondsT>::value>,
-        typename = std::enable_if<std::is_integral<TickT>::value>>
-        class timer
+    template<typename TickT>
+    class timer
     {
         public:
         using TimeT = LARGE_INTEGER;
-
-        /*
-         How many ticks in a second.
-         */
-        static constexpr TickT TICKS_PER_SECOND = 10'000'000;
 
         /*
          Standard target framerates for the timer.
@@ -46,8 +38,6 @@ namespace qgl
             m_elapsedTicks(0),
             m_totalTicks(0),
             m_leftoverTicks(0),
-            m_deltaS(0.0f),
-            m_totalS(0.0f),
             m_framesPerSecond(0),
             m_framesThisSecond(0),
             m_targetTolerance(targetTolerance)
@@ -124,23 +114,6 @@ namespace qgl
         }
 
         /*
-         Returns the number of seconds between the last two calls to tick().
-         */
-        inline SecondsT deltaS() const noexcept
-        {
-            return m_deltaS;
-        }
-
-        /*
-         Returns the number of seconds between when tick() was first called to
-         when it was last called.
-         */
-        inline SecondsT seconds() const noexcept
-        {
-            return m_totalS;
-        }
-
-        /*
          Returns the number of ticks between the last two calls to tick().
          */
         inline TickT deltaT() const noexcept
@@ -162,13 +135,11 @@ namespace qgl
             return m_totalTicks;
         }
 
-        time_state<SecondsT, TickT> state() const
+        time_state<TickT> state() const
         {
-            return time_state<SecondsT, TickT>(m_elapsedTicks,
-                                               m_totalTicks,
-                                               m_deltaS,
-                                               m_totalS,
-                                               m_framesPerSecond);
+            return time_state<TickT>(m_elapsedTicks,
+                                     m_totalTicks,
+                                     m_framesPerSecond);
         }
 
         void tick()
@@ -225,26 +196,10 @@ namespace qgl
                 m_framesThisSecond = 0;
                 m_fpsTime %= m_frequency;
             }
-
-
-            //Convert the elapsed ticks to seconds.
-            m_totalS = ticks_to_seconds(m_totalTicks);
-            m_deltaS = ticks_to_seconds(m_elapsedTicks);
         }
 
-        inline static SecondsT ticks_to_seconds(TickT t)
-        {
-            return static_cast<SecondsT>(t) /
-                static_cast<SecondsT>(TICKS_PER_SECOND);
-        }
-
-        inline static TickT seconds_to_ticks(SecondsT s)
-        {
-            return static_cast<TickT>(s *
-                                      static_cast<SecondsT>(TICKS_PER_SECOND));
-        }
-
-        friend void swap(timer& first, timer& second) noexcept
+        friend void swap(timer& first,
+                         timer& second) noexcept
         {
             using std::swap;
             swap(first.m_lastTime, second.m_lastTime);
@@ -255,8 +210,6 @@ namespace qgl
             swap(first.m_elapsedTicks, second.m_elapsedTicks);
             swap(first.m_totalTicks, second.m_totalTicks);
             swap(first.m_leftoverTicks, second.m_leftoverTicks);
-            swap(first.m_deltaS, second.m_deltaS);
-            swap(first.m_totalS, second.m_totalS);
             swap(first.m_fpsTime, second.m_fpsTime);
             swap(first.m_frameCount, second.m_frameCount);
             swap(first.m_framesPerSecond, second.m_framesPerSecond);
@@ -310,17 +263,5 @@ namespace qgl
         TickT m_elapsedTicks;
         TickT m_totalTicks;
         TickT m_leftoverTicks;
-
-        /*
-         Delta, measured in seconds, between the last two times tick() was
-         called.
-         */
-        SecondsT m_deltaS;
-
-        /*
-         Total time, measured in seconds, between the first time tick() was
-         called and the last.
-         */
-        SecondsT m_totalS;
     };
 }

@@ -3,8 +3,9 @@
 #include "include/qgl_version.h"
 #include "include/qgl_icomponent.h"
 
-#include "include/qgl_time_state.h"
-#include "include/qgl_timer.h"
+#include "include/Timing/qgl_time_state.h"
+#include "include/Timing/qgl_timer.h"
+#include "include/Timing/qgl_time_helpers.h"
 
 #include "include/Observer-Observable/qgl_subject.h"
 #include "include/Observer-Observable/qgl_iobserver.h"
