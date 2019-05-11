@@ -13,6 +13,9 @@ namespace qgl::content
    class LIB_EXPORT content_dictionary
    {
       public:
+      using DictionaryEntryIterator = 
+         std::vector<CONTENT_DICTIONARY_ENTRY_BUFFER>::iterator;
+
       /*
        Creates an empty dictionary.
        */
@@ -131,22 +134,7 @@ namespace qgl::content
          using std::swap;
          swap(first.m_entries, second.m_entries);
       }
-
-      /*
-       Overwrites this with r and returns a reference to this.
-       */
-      content_dictionary& operator=(content_dictionary r)  noexcept
-      {
-         swap(*this, r);
-         return *this;
-      }
-
-      private:
-
-      friend void write_dictionary(const winrt::file_handle& hndl,
-                                   size_t dictionaryOffset,
-                                   const content_dictionary& dict);
-
+            
       /*
        Returns a metadata buffer that is used for writing the dictionary
        to a file.
@@ -158,6 +146,17 @@ namespace qgl::content
             sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER),
             0);
       }
+
+      /*
+       Overwrites this with r and returns a reference to this.
+       */
+      content_dictionary& operator=(content_dictionary r)  noexcept
+      {
+         swap(*this, r);
+         return *this;
+      }
+
+      private:
 
       #pragma warning(push)
       #pragma warning(disable: 4251)

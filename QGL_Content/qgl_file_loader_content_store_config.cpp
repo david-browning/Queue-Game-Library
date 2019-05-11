@@ -4,13 +4,14 @@
 #include "include/Content-Importers/qgl_importer_wstring.h"
 
 std::shared_ptr<qgl::content::content_store_config>
-qgl::content::content_store_config_loader::operator()(const content_file & f)
+qgl::content::content_store_config_loader::operator()(
+   const content_file<true>& f)
 {
    auto& headerInfo = f.header().metadata();
    check_loader_and_resource<RESOURCE_TYPES::RESOURCE_TYPE_DESCRIPTION,
       CONTENT_LOADER_IDS::CONTENT_LOADER_ID_STORE_CONFIG>(headerInfo);
 
-   for (size_t i = 0; i < f.count(); i++)
+   for (size_t i = 0; i < f.size(); i++)
    {
       auto& entry = f.at(i);
       auto& info = entry.metadata();

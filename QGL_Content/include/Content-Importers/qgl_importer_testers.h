@@ -1,6 +1,6 @@
 #pragma once
 #include "include/qgl_content_include.h"
-#include "include/qgl_content_file.h"
+#include "include/Content-Files/qgl_content_file.h"
 #include "include/qgl_content_store_config.h"
 #include "include/qgl_content_types.h"
 

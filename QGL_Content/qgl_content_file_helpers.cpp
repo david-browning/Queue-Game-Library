@@ -1,6 +1,6 @@
-#include <pch.h>
+#include "pch.h"
 #include "include/qgl_file_helpers.h"
-#include "include\Content-Files\qgl_content_file_helpers.h"
+#include "include/Content-Files/qgl_content_file_helpers.h"
 
 namespace qgl::content
 {
@@ -111,5 +111,23 @@ namespace qgl::content
    {
       return fileHeader.dictionary_offset() + sizeof(dictMeta) +
          (dictMeta.count() * dictMeta.entry_size());
+   }
+   
+   bool valid_content_file_size(const winrt::file_handle& hndl)
+   {
+      //Get the file size
+      auto sz = file_size(hndl);
+
+      //If the size is less than expected, throw an exception.
+      static constexpr size_t minValidFileSize =
+         sizeof(CONTENT_FILE_HEADER_BUFFER) +
+         sizeof(CONTENT_DICTIONARY_METADATA_BUFFER);
+
+      return sz >= minValidFileSize;
+   }
+   
+   bool valid_content_file(const winrt::file_handle & hndl)
+   {
+      return true;
    }
 }

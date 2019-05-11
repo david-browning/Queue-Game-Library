@@ -6,6 +6,8 @@
 
 namespace qgl::content
 {
+   using content_data_buffer_t = std::vector<uint8_t>;
+   
    /*
     Reads the file header from a content file and returns it.
     The file must be opened with read permissions.
@@ -93,6 +95,27 @@ namespace qgl::content
                                            const content_dictionary& dict);
 
    /*
+    Writes the content data to the content file.
+    */
+   extern LIB_EXPORT void write_dictionary_entry_data(
+      const winrt::file_handle& hndl,
+      CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
+      const void* contentData);
+
+   /*
+    Returns the offset, in bytes, to where content data starts in a file.
+    Content data comes after the file header and dictionary.
+    */
+   extern LIB_EXPORT size_t dictionary_data_offset(
+      const CONTENT_FILE_HEADER_BUFFER& fileHeader,
+      const CONTENT_DICTIONARY_METADATA_BUFFER& dictMeta);
+
+   extern LIB_EXPORT bool valid_content_file_size(
+      const winrt::file_handle& hndl);
+
+   extern LIB_EXPORT bool valid_content_file(const winrt::file_handle& hndl);
+
+    /*
     Writes the dictionary entry data to the file.
     The file must be opened with write permissions.
     */
@@ -106,8 +129,9 @@ namespace qgl::content
    {
       //Check that the iterator types are expected.
       auto firstData = *firstContentData;
-      static_assert(std::is_same<decltype(firstData), const void*>::value,
-                    "Content data iterators must point to const void*.");
+      static_assert(
+         std::is_same<decltype(firstData), content_data_buffer_t>::value,
+         "Content data iterators must point to content_data_buffer_t.");
 
       auto firstEntry = *firstDictEntry;
       static_assert(
@@ -137,20 +161,4 @@ namespace qgl::content
          firstContentData++;
       }
    }
-
-   /*
-    Writes the content data to the content file.
-    */
-   extern LIB_EXPORT void write_dictionary_entry_data(
-      const winrt::file_handle& hndl,
-      CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
-      const void* contentData);
-
-   /*
-    Returns the offset, in bytes, to where content data starts in a file.
-    Content data comes after the file header and dictionary.
-    */
-   extern LIB_EXPORT size_t dictionary_data_offset(
-      const CONTENT_FILE_HEADER_BUFFER& fileHeader,
-      const CONTENT_DICTIONARY_METADATA_BUFFER& dictMeta);
 }

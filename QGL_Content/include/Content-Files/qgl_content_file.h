@@ -3,6 +3,7 @@
 #include "include/qgl_content_dictionary.h"
 #include "include/Content-Buffers/qgl_content_file_header_buffer.h"
 #include "include/Content-Files/qgl_content_file_helpers.h"
+#include "include/qgl_file_helpers.h"
 
 namespace qgl::content
 {
@@ -17,6 +18,8 @@ namespace qgl::content
    class content_file
    {
       public:
+      using DataIterator = std::list<content_data_buffer_t>::iterator;
+
       /*
        Opens a content file.
        File path must be absolute.
@@ -27,7 +30,55 @@ namespace qgl::content
        If the file exists, the constructor checks if the file is valid. If the
        file is not valid, this throws an exception.
        */
-      content_file(const winrt::hstring& filePath);
+      content_file(const winrt::hstring& filePath)
+      {
+         //Create the parameters to open the file.
+         CREATEFILE2_EXTENDED_PARAMETERS openParameters = { 0 };
+         openParameters.dwSize = sizeof(CREATEFILE2_EXTENDED_PARAMETERS);
+         openParameters.dwFileAttributes = FILE_ATTRIBUTE_NORMAL;
+         openParameters.dwFileFlags =
+            FILE_FLAG_OVERLAPPED | FILE_FLAG_SEQUENTIAL_SCAN;
+         openParameters.dwSecurityQosFlags = SECURITY_ANONYMOUS;
+         openParameters.hTemplateFile = nullptr;
+         SECURITY_ATTRIBUTES sa;
+         sa.bInheritHandle = TRUE;
+         sa.nLength = sizeof(sa);
+         sa.lpSecurityDescriptor = nullptr;
+         openParameters.lpSecurityAttributes = &sa;
+
+         //Check if the file exists.
+         const bool existingFile = file_exists(filePath);
+
+         if (WriteMode)
+         {
+            m_handle = open_file_readwrite(filePath, openParameters);
+         }
+         else
+         {
+            if (!existingFile)
+            {
+               throw std::invalid_argument("The file does not exist.");
+            }
+
+            m_handle = open_file_read(filePath, openParameters);
+         }
+
+         if (existingFile)
+         {
+            if (!valid_content_file_size(m_handle))
+            {
+               throw std::invalid_argument(
+                  "The file exists, but it is too small to be valid");
+            }
+
+            read_in();
+            
+            if (!valid_content_file(m_handle))
+            {
+               throw std::invalid_argument("The file has incorrect data.");
+            }
+         }
+      }
 
       /*
        Cannot copy a file.
@@ -40,8 +91,8 @@ namespace qgl::content
       content_file(content_file&& m) = default;
 
       /*
-       The destructor does not flush the file but does close the file handle. 
-       If the file is not flushed and this goes out of scope, any changes to 
+       The destructor does not flush the file but does close the file handle.
+       If the file is not flushed and this goes out of scope, any changes to
        the file will be lost.
        */
       virtual ~content_file() noexcept = default;
@@ -58,7 +109,7 @@ namespace qgl::content
       /*
        Returns a reference to the idx'th item in the dictionary.
        Throws an exception if idx is out of range.
-       This function is only valid if the file was opened with write 
+       This function is only valid if the file was opened with write
        permissions.
        */
       template<typename = std::enable_if<WriteMode == true>>
@@ -106,7 +157,7 @@ namespace qgl::content
 
       /*
        Flushes any changes to the content file to the disk.
-       This function is only valid if the file was opened with write 
+       This function is only valid if the file was opened with write
        permissions.
        */
       template<typename = std::enable_if<WriteMode == true>>
@@ -127,7 +178,23 @@ namespace qgl::content
       }
 
       private:
-      
+
+      void read_in()
+      {
+         //Read the file header.
+         m_header = load_header(m_handle);
+
+         //Read the dictionary.
+         m_dictionary = load_dictionary(m_handle, m_header.dictionary_offset());
+
+         //Read all the entry data in.
+         for (auto& entry : m_dictionary)
+         {
+            auto data = load_content_data(m_handle, entry);
+            m_entryDataToWrite.push_back(data);
+         }
+      }
+
       /*
        File header.
        */
@@ -142,11 +209,14 @@ namespace qgl::content
        An array of pointers to data that is pending writes to the content file.
        This is only populated when the content file is in write mode.
        */
-      std::list<const void*> m_entryDataToWrite;
+      std::list<content_data_buffer_t> m_entryDataToWrite;
 
       /*
        File handle.
        */
       winrt::file_handle m_handle;
    };
+
+   using content_file_write = content_file<true>;
+   using content_file_read = content_file<false>;
 }

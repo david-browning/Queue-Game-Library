@@ -4,7 +4,7 @@
 #include "include/Content-Importers/qgl_importer_wstring.h"
 
 std::shared_ptr<std::wstring> qgl::content::wstring_file_loader::operator()(
-   const content_file & f)
+   const content_file<true>& f)
 {
      //Make sure the wstring file has the correct loader.
    auto& headerInfo = f.header().metadata();
@@ -12,7 +12,7 @@ std::shared_ptr<std::wstring> qgl::content::wstring_file_loader::operator()(
       CONTENT_LOADER_IDS::CONTENT_LOADER_ID_WSTRING>(headerInfo);
 
    //WString files should only have 1 entry: the string's content.
-   const auto dictCount = f.count();
+   const auto dictCount = f.size();
    if (dictCount != 1)
    {
       throw std::runtime_error("The content file should only have 1 entry.");
