@@ -2,7 +2,7 @@
 #include "include/qgl_content_dictionary_buffer.h"
 using namespace qgl::content;
 
-qgl::content::CONTENT_DICTIONARY_BUFFER::CONTENT_DICTIONARY_BUFFER() :
+qgl::content::CONTENT_DICTIONARY_METADATA_BUFFER::CONTENT_DICTIONARY_METADATA_BUFFER() :
    m_count(0),
    m_entrySize(0),
    m_reserved1(0),
@@ -10,7 +10,7 @@ qgl::content::CONTENT_DICTIONARY_BUFFER::CONTENT_DICTIONARY_BUFFER() :
 {
 }
 
-qgl::content::CONTENT_DICTIONARY_BUFFER::CONTENT_DICTIONARY_BUFFER(size_t count,
+qgl::content::CONTENT_DICTIONARY_METADATA_BUFFER::CONTENT_DICTIONARY_METADATA_BUFFER(size_t count,
                                                                    size_t entrySize, 
                                                                    uint64_t flags) :
    m_count(count),
@@ -20,7 +20,7 @@ qgl::content::CONTENT_DICTIONARY_BUFFER::CONTENT_DICTIONARY_BUFFER(size_t count,
 {
 }
 
-qgl::content::CONTENT_DICTIONARY_BUFFER::CONTENT_DICTIONARY_BUFFER(const qgl::content::CONTENT_DICTIONARY_BUFFER& r) :
+qgl::content::CONTENT_DICTIONARY_METADATA_BUFFER::CONTENT_DICTIONARY_METADATA_BUFFER(const qgl::content::CONTENT_DICTIONARY_METADATA_BUFFER& r) :
    m_count(r.m_count),
    m_entrySize(r.m_entrySize),
    m_reserved1(r.m_reserved1),
@@ -28,7 +28,7 @@ qgl::content::CONTENT_DICTIONARY_BUFFER::CONTENT_DICTIONARY_BUFFER(const qgl::co
 {
 }
 
-qgl::content::CONTENT_DICTIONARY_BUFFER::CONTENT_DICTIONARY_BUFFER(qgl::content::CONTENT_DICTIONARY_BUFFER&& r) :
+qgl::content::CONTENT_DICTIONARY_METADATA_BUFFER::CONTENT_DICTIONARY_METADATA_BUFFER(qgl::content::CONTENT_DICTIONARY_METADATA_BUFFER&& r) :
    m_count(r.m_count),
    m_entrySize(r.m_entrySize),
    m_reserved1(r.m_reserved1),

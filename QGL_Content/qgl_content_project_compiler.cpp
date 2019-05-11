@@ -31,8 +31,8 @@ void qgl::content::compile_project(content_project& proj,
 
    //Write the dictionary header
    static constexpr auto dictEntrySize = sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER);
-   static constexpr auto dictHeaderSize = sizeof(CONTENT_DICTIONARY_BUFFER);
-   CONTENT_DICTIONARY_BUFFER dictHeader(proj.count(), dictEntrySize, 0);
+   static constexpr auto dictHeaderSize = sizeof(CONTENT_DICTIONARY_METADATA_BUFFER);
+   CONTENT_DICTIONARY_METADATA_BUFFER dictHeader(proj.count(), dictEntrySize, 0);
    write_file_sync(hndl, dictHeaderSize, offset, &dictHeaderSize);
    offset += dictHeaderSize;
 

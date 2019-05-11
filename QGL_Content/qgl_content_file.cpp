@@ -114,8 +114,8 @@ void qgl::content::content_file::p_load_dictionary()
 {
    //Read the dictionary header
    size_t offset = sizeof(m_header);
-   CONTENT_DICTIONARY_BUFFER dictHeader;
-   read_file_sync<CONTENT_DICTIONARY_BUFFER>(m_handle, sizeof(CONTENT_DICTIONARY_BUFFER), offset, &dictHeader);
+   CONTENT_DICTIONARY_METADATA_BUFFER dictHeader;
+   read_file_sync<CONTENT_DICTIONARY_METADATA_BUFFER>(m_handle, sizeof(CONTENT_DICTIONARY_METADATA_BUFFER), offset, &dictHeader);
 
    //Create the dictionary.
    m_dictionary = content_dictionary(dictHeader);
@@ -147,8 +147,8 @@ void qgl::content::content_file::p_write_dictionary()
 {
    //Write the dictionary header.
    constexpr size_t dictHeaderOffset = sizeof(CONTENT_HEADER_BUFFER);
-   constexpr size_t dictHeaderSize = sizeof(CONTENT_DICTIONARY_BUFFER);
-   write_file_sync<CONTENT_DICTIONARY_BUFFER>(m_handle,
+   constexpr size_t dictHeaderSize = sizeof(CONTENT_DICTIONARY_METADATA_BUFFER);
+   write_file_sync<CONTENT_DICTIONARY_METADATA_BUFFER>(m_handle,
                                               dictHeaderSize,
                                               dictHeaderOffset,
                                               &m_dictionary.buffer());

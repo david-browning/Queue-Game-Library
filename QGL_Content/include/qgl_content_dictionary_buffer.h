@@ -3,18 +3,18 @@
 
 namespace qgl::content
 {
-   struct LIB_EXPORT CONTENT_DICTIONARY_BUFFER
+   struct LIB_EXPORT CONTENT_DICTIONARY_METADATA_BUFFER
    {
       public:
-      CONTENT_DICTIONARY_BUFFER();
+      CONTENT_DICTIONARY_METADATA_BUFFER();
 
-      CONTENT_DICTIONARY_BUFFER(size_t count,
+      CONTENT_DICTIONARY_METADATA_BUFFER(size_t count,
                                 size_t entrySize,
-                                uint64_t flags);
+                                uint64_t flags = DEFAULT_FLAGS);
 
-      CONTENT_DICTIONARY_BUFFER(const CONTENT_DICTIONARY_BUFFER& r);
+      CONTENT_DICTIONARY_METADATA_BUFFER(const CONTENT_DICTIONARY_METADATA_BUFFER& r);
 
-      CONTENT_DICTIONARY_BUFFER(CONTENT_DICTIONARY_BUFFER&& r);   
+      CONTENT_DICTIONARY_METADATA_BUFFER(CONTENT_DICTIONARY_METADATA_BUFFER&& r);   
 
       inline size_t count() const
       {
@@ -31,8 +31,8 @@ namespace qgl::content
          return m_flags;
       }
 
-      friend void swap(CONTENT_DICTIONARY_BUFFER& first, 
-                       CONTENT_DICTIONARY_BUFFER& second) noexcept
+      friend void swap(CONTENT_DICTIONARY_METADATA_BUFFER& first, 
+                       CONTENT_DICTIONARY_METADATA_BUFFER& second) noexcept
       {
          using std::swap;
          swap(first.m_count, second.m_count);
@@ -41,7 +41,7 @@ namespace qgl::content
          swap(first.m_reserved1, second.m_reserved1);
       }
 
-      CONTENT_DICTIONARY_BUFFER& operator=(CONTENT_DICTIONARY_BUFFER r) noexcept
+      CONTENT_DICTIONARY_METADATA_BUFFER& operator=(CONTENT_DICTIONARY_METADATA_BUFFER r) noexcept
       {
          swap(*this, r);
          return *this;
@@ -57,5 +57,7 @@ namespace qgl::content
       uint64_t m_flags;
 
       uint64_t m_reserved1;
+
+      static constexpr uint64_t DEFAULT_FLAGS = 0;
    };
 }
