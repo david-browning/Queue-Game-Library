@@ -1,8 +1,7 @@
 #include "pch.h"
 #include "include/qgl_content_dictionary.h"
 
-qgl::content::content_dictionary::content_dictionary() :
-    m_entries(0)
+qgl::content::content_dictionary::content_dictionary()
 {
 }
 
