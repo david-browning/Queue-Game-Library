@@ -143,6 +143,10 @@ namespace qgl::content
 
       private:
 
+      friend void write_dictionary(const winrt::file_handle& hndl,
+                                   size_t dictionaryOffset,
+                                   const content_dictionary& dict);
+
       /*
        Returns a metadata buffer that is used for writing the dictionary
        to a file.
