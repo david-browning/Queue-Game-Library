@@ -1,10 +1,11 @@
 #include "pch.h"
-#include "include/qgl_file_importers.h"
-#include "include/qgl_importer_wstring.h"
-#include "include/qgl_importer_string.h"
-#include "include/qgl_importer_struct.h"
+#include "include/Content-Importers/qgl_file_importers.h"
+#include "include/Content-Importers/qgl_importer_wstring.h"
+#include "include/Content-Importers/qgl_importer_string.h"
+#include "include/Content-Importers/qgl_importer_struct.h"
 
-std::shared_ptr<std::wstring> qgl::content::wstring_file_loader::operator()(const content_file & f)
+std::shared_ptr<std::wstring> qgl::content::wstring_file_loader::operator()(
+    const content_file & f)
 {
    //Make sure the wstring file has the correct loader.
    auto& headerInfo = f.header().info();
@@ -27,7 +28,8 @@ std::shared_ptr<std::wstring> qgl::content::wstring_file_loader::operator()(cons
    return std::make_shared<std::wstring>(wsImporter.load(f.handle(), entry));
 }
 
-std::shared_ptr<std::string> qgl::content::string_file_loader::operator()(const content_file& f)
+std::shared_ptr<std::string> qgl::content::string_file_loader::operator()(
+    const content_file& f)
 {
    //Make sure the string file has the correct loader.
    auto& headerInfo = f.header().info();
