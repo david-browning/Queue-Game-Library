@@ -59,7 +59,7 @@ namespace qgl::content
    }
 
    void write_header(const winrt::file_handle& hndl,
-                    const CONTENT_FILE_HEADER_BUFFER& hdr)
+                     const CONTENT_FILE_HEADER_BUFFER& hdr)
    {
       write_file_sync(hndl, sizeof(hdr), 0, &hdr);
    }
@@ -87,9 +87,13 @@ namespace qgl::content
       write_dictionary_metadata(hndl, dict.buffer(), dictionaryOffset);
 
       //Write each entry.
-      for (auto& entry : dict)
-      {
+      size_t entryOffset = dictionaryOffset +
+         sizeof(CONTENT_DICTIONARY_METADATA_BUFFER);
 
+      for (auto& it = dict.cbegin(); it != dict.cend(); ++it)
+      {
+         write_dictionary_entry(hndl, *it, entryOffset);
+         entryOffset += sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER);
       }
    }
 
@@ -98,11 +102,14 @@ namespace qgl::content
       CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
       const void* contentData)
    {
+      write_file_sync(hndl, entry.size(), entry.offset(), contentData);
    }
 
    size_t dictionary_data_offset(
       const CONTENT_FILE_HEADER_BUFFER& fileHeader,
       const CONTENT_DICTIONARY_METADATA_BUFFER& dictMeta)
    {
+      return fileHeader.dictionary_offset() + sizeof(dictMeta) +
+         (dictMeta.count() * dictMeta.entry_size());
    }
 }
