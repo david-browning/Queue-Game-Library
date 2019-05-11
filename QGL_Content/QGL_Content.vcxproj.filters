@@ -17,9 +17,6 @@
     <Filter Include="Header Files\Content Buffers">
       <UniqueIdentifier>{dce79dea-c583-4adb-973f-9bb5733d562f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Importers">
-      <UniqueIdentifier>{fb41a891-d209-4fff-8621-188c90c5cf56}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Content Buffers">
       <UniqueIdentifier>{a33edd2d-e54f-432e-b72a-48614af954b2}</UniqueIdentifier>
     </Filter>
@@ -87,9 +84,6 @@
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_file_importers.cpp">
-      <Filter>Source Files\Content Importers</Filter>
     </ClCompile>
     <ClCompile Include="qgl_content_store_config.cpp">
       <Filter>Source Files\Content Store</Filter>
@@ -184,6 +178,15 @@
       <Filter>Header Files\Content Importers</Filter>
     </ClInclude>
     <ClInclude Include="include\Content-Importers\qgl_importer_testers.h">
+      <Filter>Header Files\Content Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content-Importers\qgl_content_store_config_file_loader.h">
+      <Filter>Header Files\Content Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content-Importers\qgl_string_file_loader.h">
+      <Filter>Header Files\Content Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content-Importers\qgl_wstring_file_loader.h">
       <Filter>Header Files\Content Importers</Filter>
     </ClInclude>
   </ItemGroup>
