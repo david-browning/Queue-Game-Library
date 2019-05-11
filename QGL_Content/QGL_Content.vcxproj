@@ -158,15 +158,15 @@
     <ClInclude Include="include\Content-Buffers\qgl_content_dict_entry_buffer.h" />
     <ClInclude Include="include\Content-Buffers\qgl_content_file_header_buffer.h" />
     <ClInclude Include="include\Content-Buffers\qgl_content_metadata_buffer.h" />
-    <ClInclude Include="include\Content-Importers\qgl_content_store_config_file_loader.h" />
+    <ClInclude Include="include\Content-Importers\qgl_file_loader_content_store_config.h" />
     <ClInclude Include="include\Content-Importers\qgl_file_importers.h" />
     <ClInclude Include="include\Content-Importers\qgl_iimporter.h" />
     <ClInclude Include="include\Content-Importers\qgl_importer_string.h" />
     <ClInclude Include="include\Content-Importers\qgl_importer_struct.h" />
     <ClInclude Include="include\Content-Importers\qgl_importer_testers.h" />
     <ClInclude Include="include\Content-Importers\qgl_importer_wstring.h" />
-    <ClInclude Include="include\Content-Importers\qgl_string_file_loader.h" />
-    <ClInclude Include="include\Content-Importers\qgl_wstring_file_loader.h" />
+    <ClInclude Include="include\Content-Importers\qgl_file_loader_string.h" />
+    <ClInclude Include="include\Content-Importers\qgl_file_loader_wstring.h" />
     <ClInclude Include="include\qgl_content_dictionary.h" />
     <ClInclude Include="include\qgl_content_file.h" />
     <ClInclude Include="include\qgl_content_project.h" />
@@ -198,6 +198,9 @@
     <ClCompile Include="qgl_content_metadata_buffer.cpp" />
     <ClCompile Include="qgl_content_dict_entry_buffer.cpp" />
     <ClCompile Include="qgl_file_helpers.cpp" />
+    <ClCompile Include="qgl_file_loader_content_store_config.cpp" />
+    <ClCompile Include="qgl_file_loader_string.cpp" />
+    <ClCompile Include="qgl_file_loader_wstring.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

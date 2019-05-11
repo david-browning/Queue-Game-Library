@@ -109,6 +109,15 @@
     <ClCompile Include="qgl_content_file_header_buffer.cpp">
       <Filter>Source Files\Content Buffers</Filter>
     </ClCompile>
+    <ClCompile Include="qgl_file_loader_content_store_config.cpp">
+      <Filter>Source Files\Content Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_file_loader_string.cpp">
+      <Filter>Source Files\Content Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_file_loader_wstring.cpp">
+      <Filter>Source Files\Content Importers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLContent.h">
@@ -180,13 +189,13 @@
     <ClInclude Include="include\Content-Importers\qgl_importer_testers.h">
       <Filter>Header Files\Content Importers</Filter>
     </ClInclude>
-    <ClInclude Include="include\Content-Importers\qgl_content_store_config_file_loader.h">
+    <ClInclude Include="include\Content-Importers\qgl_file_loader_content_store_config.h">
       <Filter>Header Files\Content Importers</Filter>
     </ClInclude>
-    <ClInclude Include="include\Content-Importers\qgl_string_file_loader.h">
+    <ClInclude Include="include\Content-Importers\qgl_file_loader_string.h">
       <Filter>Header Files\Content Importers</Filter>
     </ClInclude>
-    <ClInclude Include="include\Content-Importers\qgl_wstring_file_loader.h">
+    <ClInclude Include="include\Content-Importers\qgl_file_loader_wstring.h">
       <Filter>Header Files\Content Importers</Filter>
     </ClInclude>
   </ItemGroup>
