@@ -71,8 +71,8 @@ void qgl::graphics::root_signature::p_allocate()
    // This is the highest version the sample supports. If CheckFeatureSupport succeeds, 
    //the HighestVersion returned will not be greater than this.
    featureData.HighestVersion = D3D_ROOT_SIGNATURE_VERSION_1_1;
-   if (FAILED(m_dev_p->CheckFeatureSupport(D3D12_FEATURE_ROOT_SIGNATURE, 
-                                           &featureData, 
+   if (FAILED(m_dev_p->CheckFeatureSupport(D3D12_FEATURE_ROOT_SIGNATURE,
+                                           &featureData,
                                            sizeof(featureData))))
    {
       featureData.HighestVersion = D3D_ROOT_SIGNATURE_VERSION_1_0;
@@ -80,7 +80,7 @@ void qgl::graphics::root_signature::p_allocate()
 
    //Populate a root signature description
    CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC desc;
-   desc.Init_1_1(static_cast<UINT>(m_params.size()), m_params.data(), 0, nullptr, 
+   desc.Init_1_1(static_cast<UINT>(m_params.size()), m_params.data(), 0, nullptr,
                  D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
    //Serialize the signature.

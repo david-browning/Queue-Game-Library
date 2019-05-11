@@ -118,7 +118,7 @@ void qgl::graphics::texture::p_createViewDesc()
       }
       case D3D12_SRV_DIMENSION_TEXTURECUBEARRAY:
       {
-         assert(m_data.array_size() % 6 == 0);  
+         assert(m_data.array_size() % 6 == 0);
          m_viewDesc.TextureCubeArray.MipLevels = static_cast<UINT>(m_data.mip_length());
          m_viewDesc.TextureCubeArray.NumCubes = static_cast<UINT>(m_data.array_size() / 6);
          break;

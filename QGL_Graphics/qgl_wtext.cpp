@@ -49,8 +49,8 @@ qgl::graphics::wtext::wtext(std::wstring&& text,
    m_text_p = std::make_shared<std::wstring>(std::move(text));
 }
 
-qgl::graphics::wtext::wtext(std::shared_ptr<std::wstring>& text_p, 
-                            D2D_RECT_F& layout, 
+qgl::graphics::wtext::wtext(std::shared_ptr<std::wstring>& text_p,
+                            D2D_RECT_F& layout,
                             const content::wcontent_item::str_t & name,
                             const content::wcontent_item::id_t & id) :
    m_rect(layout),
@@ -61,9 +61,9 @@ qgl::graphics::wtext::wtext(std::shared_ptr<std::wstring>& text_p,
 {
 }
 
-qgl::graphics::wtext::wtext(std::shared_ptr<std::wstring>& text_p, 
-                            D2D_RECT_F&& layout, 
-                            const content::wcontent_item::str_t& name, 
+qgl::graphics::wtext::wtext(std::shared_ptr<std::wstring>& text_p,
+                            D2D_RECT_F&& layout,
+                            const content::wcontent_item::str_t& name,
                             const content::wcontent_item::id_t& id) :
    m_rect(std::move(layout)),
    m_text_p(text_p),

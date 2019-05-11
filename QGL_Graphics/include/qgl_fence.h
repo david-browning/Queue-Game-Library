@@ -146,7 +146,7 @@ namespace qgl::graphics
 
          //Update the fence 
          winrt::check_hresult(m_cmdQueue->Signal(get(), toSignal.value()));
-         
+
          //Unlock the mutex.
          m_mutex.unlock();
       }

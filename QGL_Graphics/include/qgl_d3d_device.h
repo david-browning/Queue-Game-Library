@@ -5,7 +5,7 @@
 
 namespace qgl::graphics
 {
-class LIB_EXPORT graphics_device
+   class LIB_EXPORT graphics_device
    {
       public:
       using appview_pt = std::shared_ptr<winrt::Windows::UI::ViewManagement::ApplicationView>;

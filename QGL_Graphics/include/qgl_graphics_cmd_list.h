@@ -37,7 +37,7 @@ namespace qgl::graphics::low
        transitions, and closes the command list to that it can be executed.
        Call "get()" or "com_get()" to get the list so it can be executed.
        */
-      void end(); 
+      void end();
 
       /*
        Sets the root signature for the command list.
@@ -71,7 +71,7 @@ namespace qgl::graphics::low
 
       /*
        Sets the frame (including the render target, depth stencil, viewport, and scissor) for
-       the graphics command list. Usually, this is the first command to queue before queuing 
+       the graphics command list. Usually, this is the first command to queue before queuing
        other rendering commands.
        */
       void frame_buffer(frame& f);
@@ -141,7 +141,7 @@ namespace qgl::graphics::low
       private:
       #pragma warning(push)
       #pragma warning(disable: 4251)
-      
+
       /*
        List of pending resource transitions.
        These are vectors instead of queues so that we can get the raw array pointer and

@@ -50,7 +50,7 @@ namespace qgl::graphics
 
       inline void refresh(UINT r)
       {
-        m_refresh = r;
+         m_refresh = r;
       }
 
       /*

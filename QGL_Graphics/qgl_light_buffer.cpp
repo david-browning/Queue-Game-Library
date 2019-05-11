@@ -1,17 +1,17 @@
 #include "pch.h"
 #include "include/qgl_light_buffer.h"
 
-static constexpr float LIGHT_DEFAULT_POS[4] = 
+static constexpr float LIGHT_DEFAULT_POS[4] =
 {
    0.0f, 0.0f, 0.0f, 0.0f
 };
 
-static constexpr float LIGHT_DEFAULT_LOOK_AT[4] = 
+static constexpr float LIGHT_DEFAULT_LOOK_AT[4] =
 {
    0.0f, 0.0f, 0.0f, 0.0f
 };
 
-static constexpr float LIGHT_DEFAULT_COLOR[4] = 
+static constexpr float LIGHT_DEFAULT_COLOR[4] =
 {
    1.0f, 1.0f, 1.0f, 1.0f
 };

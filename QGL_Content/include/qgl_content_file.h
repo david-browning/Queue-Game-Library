@@ -22,21 +22,21 @@ namespace qgl::content
        File path must be absolute.
        */
       content_file(const winrt::hstring& objName,
-             qgl_version_t comVersion,
-             RESOURCE_TYPES resourceType,
-             CONTENT_LOADER_IDS loaderType,
-             const winrt::hstring& filePath);
+                   qgl_version_t comVersion,
+                   RESOURCE_TYPES resourceType,
+                   CONTENT_LOADER_IDS loaderType,
+                   const winrt::hstring& filePath);
 
-      /*
-       Opens a new file for writing
-       File path must be absolute.
-       */
+            /*
+             Opens a new file for writing
+             File path must be absolute.
+             */
       content_file(const CONTENT_FILE_HEADER_BUFFER& headr,
-             const winrt::hstring& filePath);
+                   const winrt::hstring& filePath);
 
-      /*
-       Cannot copy files.
-       */
+            /*
+             Cannot copy files.
+             */
       content_file(const content_file&) = delete;
 
       /*

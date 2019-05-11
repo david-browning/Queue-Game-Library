@@ -49,7 +49,7 @@ namespace qgl::graphics::low
       {
          return m_ranges.size();
       }
-      
+
       private:
       void p_allocate();
 
@@ -70,7 +70,7 @@ namespace qgl::graphics::low
        The table that can actually be set in a root signature.
        */
       CD3DX12_ROOT_PARAMETER1 m_table;
-      
+
 
       /*
        Which shader stages can see the table.

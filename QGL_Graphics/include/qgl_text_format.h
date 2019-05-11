@@ -9,7 +9,7 @@ namespace qgl::graphics
       public:
       text_format(const TEXT_FORMAT_BUFFER& format,
                   const winrt::com_ptr<IDWriteFactory>& factory_p,
-                  const content::wcontent_item::str_t& name, 
+                  const content::wcontent_item::str_t& name,
                   const content::wcontent_item::id_t& id);
 
       text_format(const text_format& r);

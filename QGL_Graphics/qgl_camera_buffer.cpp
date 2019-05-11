@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "include/qgl_camera_buffer.h"
 
-static constexpr float DEFAULT_CAMERA_LOOK_AT[4] = 
+static constexpr float DEFAULT_CAMERA_LOOK_AT[4] =
 {
    1.0f, 1.0f, 1.0f, 1.0f
 };

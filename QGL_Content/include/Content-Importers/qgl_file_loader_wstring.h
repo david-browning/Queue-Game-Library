@@ -4,8 +4,8 @@
 
 namespace qgl::content
 {
-    struct LIB_EXPORT wstring_file_loader
-    {
-        std::shared_ptr<std::wstring> operator()(const content_file& f);
-    };
+   struct LIB_EXPORT wstring_file_loader
+   {
+      std::shared_ptr<std::wstring> operator()(const content_file& f);
+   };
 }

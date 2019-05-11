@@ -7,7 +7,7 @@
 namespace qgl::graphics
 {
    template<typename T>
-   class const_buffer : 
+   class const_buffer :
       public low::igpu_buffer<int, D3D12_CONSTANT_BUFFER_VIEW_DESC, d3d_resource>,
       public low::imappable<T>
    {

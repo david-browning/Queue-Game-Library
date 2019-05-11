@@ -26,7 +26,7 @@ namespace qgl::graphics
       {
          return m_viewport;
       }
-      
+
       friend void swap(viewport& first, viewport& second) noexcept
       {
          using std::swap;

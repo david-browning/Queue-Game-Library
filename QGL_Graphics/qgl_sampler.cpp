@@ -1,13 +1,13 @@
 #include "pch.h"
 #include "include/qgl_sampler.h"
 
-qgl::graphics::sampler::sampler(const SAMPLER_BUFFER& buffer, 
-                                winrt::com_ptr<d3d_device>& dev_p, 
-                                const content::wcontent_item::str_t& name, 
+qgl::graphics::sampler::sampler(const SAMPLER_BUFFER& buffer,
+                                winrt::com_ptr<d3d_device>& dev_p,
+                                const content::wcontent_item::str_t& name,
                                 const content::wcontent_item::id_t& id) :
    igpu_buffer(dev_p),
-   content_item(name, id, 
-                qgl::content::RESOURCE_TYPES::RESOURCE_TYPE_DESCRIPTION, 
+   content_item(name, id,
+                qgl::content::RESOURCE_TYPES::RESOURCE_TYPE_DESCRIPTION,
                 qgl::content::CONTENT_LOADER_IDS::CONTENT_LOADER_ID_SAMPLER)
 {
    m_samplerDesc.AddressU = buffer.address_u();

@@ -89,13 +89,13 @@ void qgl::graphics::graphics_device::reset(GRAPHICS_CONFIG_BUFFER& newConfig)
 {
    m_wasFullScreen = m_config.full_screen();
    m_config = newConfig;
-   
+
 
 
 
    m_d2dDeviceContext_p->SetTarget(nullptr);
    m_d3d11DeviceContext_p->Flush();
-     
+
 
    //Set full-screen / window mode for the window.
    auto fullNow = m_config.full_screen();
@@ -188,7 +188,7 @@ void qgl::graphics::graphics_device::p_make_graphics()
    if (m_config.adapter_devID() != 0)
    {
       //Find the adapter that matches the config's devID.
-      for(size_t i = 0; i < m_adapters.size(); i++)
+      for (size_t i = 0; i < m_adapters.size(); i++)
       {
          DXGI_ADAPTER_DESC3 desc;
          winrt::check_hresult(m_adapters[i]->GetDesc3(&desc));
@@ -242,7 +242,7 @@ void qgl::graphics::graphics_device::p_make_context_sensitive_members()
 
    //Set the swap chain color space.
    p_set_color_space();
-   
+
    m_syncInterval = get_sync_interval(m_config);
    m_swapFlags = get_swap_flag(m_config);
 }

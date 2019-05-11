@@ -61,7 +61,7 @@ namespace qgl::graphics
 
       private:
       friend class low::graphics_command_list;
-      
+
       const std::vector<D3D12_ROOT_PARAMETER1>& params() const
       {
          return m_params;
@@ -97,6 +97,6 @@ namespace qgl::graphics
        Which GPU to upload the root signature to.
        */
       UINT m_nodeMask;
-           
+
    };
 }

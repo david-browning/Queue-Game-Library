@@ -17,7 +17,7 @@ namespace qgl::graphics::low
    };
 
    /*
-    ResourceDescriptionT describes the resource. For a buffer, this may be a 
+    ResourceDescriptionT describes the resource. For a buffer, this may be a
       D3D12_SUBRESOURCE_DATA.
     ViewDescriptionT is the type of view that gets exposed to the shader pipeline. Most likely it
        is D3D_*_BUFFER_VIEW
@@ -25,7 +25,7 @@ namespace qgl::graphics::low
     UAlignment is the alignment of the resource.
 
     GPU Buffers can offer their resources to the OS to free video memory. It is the application's
-    responsibility to offer and reclaim a resource when it is needed. A good time to offer 
+    responsibility to offer and reclaim a resource when it is needed. A good time to offer
     resources is when the app is minimized or suspended.
     */
    template<typename ResourceDescriptionT, typename ViewDescriptionT, typename resourceT>

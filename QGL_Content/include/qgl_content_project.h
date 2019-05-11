@@ -1,7 +1,7 @@
 #pragma once
 #include "qgl_content_include.h"
 #include "qgl_content_dict_entry_buffer.h"
-#include "qgl_content_header_buffer.h"
+#include "qgl_content_file_header_buffer.h"
 
 namespace qgl::content
 {
@@ -13,7 +13,7 @@ namespace qgl::content
       using container = std::list<entry_pair>;
       using iterator = container::iterator;
       using const_iterator = container::const_iterator;
-               
+
       content_project();
 
       content_project(const content_project& r) = delete;
@@ -21,7 +21,7 @@ namespace qgl::content
       content_project(content_project&& r) = default;
 
       virtual ~content_project() noexcept = default;
-            
+
       inline size_t count() const
       {
          return m_entries.size();
@@ -78,7 +78,7 @@ namespace qgl::content
       }
 
       private:
-      
+
       #pragma warning(push)
       #pragma warning(disable: 4251)
       container m_entries;

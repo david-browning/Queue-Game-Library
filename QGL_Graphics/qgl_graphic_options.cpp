@@ -39,7 +39,7 @@ bool qgl::graphics::graphic_options::valid(const GRAPHICS_CONFIG_BUFFER& config)
       throw std::invalid_argument("Tearing is enabled but not supported.");
    }
    #endif
-      
+
    isValid = isValid && (!config.stereo() || m_3d);
    #ifdef DEBUG
    if (!isValid)
@@ -47,7 +47,7 @@ bool qgl::graphics::graphic_options::valid(const GRAPHICS_CONFIG_BUFFER& config)
       throw std::invalid_argument("Stereo is enabled but not supported.");
    }
    #endif
-   
+
 
    isValid = isValid && (!config.hdr() || m_hdr);
    #ifdef DEBUG
@@ -108,8 +108,8 @@ void qgl::graphics::graphic_options::p_populate(const graphics_device& dev)
    m_hdr = qgl::graphics::support_hdr(output6, m_desc);
 
    //Enumerate the display modes.
-   m_modes = qgl::graphics::enum_display_modes(output6, 
-                                               dev.format(), 
+   m_modes = qgl::graphics::enum_display_modes(output6,
+                                               dev.format(),
                                                dev.config().interlacing(),
                                                m_3d);
 

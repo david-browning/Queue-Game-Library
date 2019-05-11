@@ -50,7 +50,7 @@ namespace qgl::graphics::low
       /*
        Destructor
        */
-         virtual ~icommand_list()
+      virtual ~icommand_list()
       {
          m_cmdList_p = nullptr;
          m_allocator_p = nullptr;
@@ -223,7 +223,7 @@ namespace qgl::graphics::low
       #pragma endregion
 
       protected:
-            
+
       pipeline_state& m_pipelineState_p;
 
       #pragma warning(push)
@@ -231,13 +231,13 @@ namespace qgl::graphics::low
       winrt::com_ptr<d3d_cmd_allocator> m_allocator_p;
 
       winrt::com_ptr<d3d_command_list> m_cmdList_p;
-      
+
       /*
        Keep a list of the descriptor heaps to set. This is here so that the array of descriptor
        heap pointers does not go out of scope when descriptors() has finished.
        */
       std::vector<ID3D12DescriptorHeap*> m_heapsToSet;
-      
+
       std::vector<D3D12_VERTEX_BUFFER_VIEW> m_vertexBufferViews;
 
       std::vector<D3D12_INDEX_BUFFER_VIEW> m_indexBufferViews;

@@ -8,14 +8,14 @@ namespace qgl::graphics
    {
       public:
       brush(const BRUSH_BUFFER& fmtBuffer,
-                   const winrt::com_ptr<d2d_context>& devContext_p,
-                   const content::wcontent_item::str_t& name,
-                   const content::wcontent_item::id_t& id);
+            const winrt::com_ptr<d2d_context>& devContext_p,
+            const content::wcontent_item::str_t& name,
+            const content::wcontent_item::id_t& id);
 
-      /*
-       Copy constructor.
-       This does a deep copy of the brush, but not the render target.
-       */
+     /*
+      Copy constructor.
+      This does a deep copy of the brush, but not the render target.
+      */
       brush(const brush& r);
 
       /*
@@ -47,7 +47,7 @@ namespace qgl::graphics
       {
          return m_brush;
       }
-      
+
       private:
       void p_make_brush();
 

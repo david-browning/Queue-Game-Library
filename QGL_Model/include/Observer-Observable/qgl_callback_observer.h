@@ -4,67 +4,67 @@
 namespace qgl
 {
     /*
-     A callback observer is a concrete version of iobserver. Instead of 
+     A callback observer is a concrete version of iobserver. Instead of
      listening to a subject using the update function, this raises a callback
      when the subject notifies this observer.
      */
-    template<class MessageT>
-    class callback_observer : public iobserver<MessageT>
-    {
-        public:
-        using CallbackT = std::function<void(MessageT)>;
-               
-        callback_observer(CallbackT callback) :
-            m_callback(callback)
-        {
+   template<class MessageT>
+   class callback_observer : public iobserver<MessageT>
+   {
+      public:
+      using CallbackT = std::function<void(MessageT)>;
 
-        }
+      callback_observer(CallbackT callback) :
+         m_callback(callback)
+      {
 
-        callback_observer(const callback_observer& c) = default;
+      }
 
-        callback_observer(callback_observer&& m) = default;
+      callback_observer(const callback_observer& c) = default;
 
-        virtual ~callback_observer() noexcept = default;
+      callback_observer(callback_observer&& m) = default;
 
-        protected:
-        virtual void update(MessageT msg)
-        {
-            m_callback(msg);
-        }
+      virtual ~callback_observer() noexcept = default;
 
-        private:
-        CallbackT m_callback;
-    };
+      protected:
+      virtual void update(MessageT msg)
+      {
+         m_callback(msg);
+      }
 
-    template<class MessageT,
-             class ClassT>
-    class member_callback_observer : public iobserver<MessageT>
-    {
-        public:
-        using MemberCallbackT = std::function<void(ClassT&, MessageT)>;
+      private:
+      CallbackT m_callback;
+   };
 
-        member_callback_observer(ClassT& memberclass, 
-                                 MemberCallbackT callback) :
-            m_callback(callback),
-            m_class(memberclass)
-        {
+   template<class MessageT,
+      class ClassT>
+      class member_callback_observer : public iobserver<MessageT>
+   {
+      public:
+      using MemberCallbackT = std::function<void(ClassT&, MessageT)>;
 
-        }
+      member_callback_observer(ClassT& memberclass,
+                               MemberCallbackT callback) :
+         m_callback(callback),
+         m_class(memberclass)
+      {
 
-        member_callback_observer(const member_callback_observer&) = default;
+      }
 
-        member_callback_observer(member_callback_observer&&) = default;
+      member_callback_observer(const member_callback_observer&) = default;
 
-        virtual ~member_callback_observer() noexcept = default;
+      member_callback_observer(member_callback_observer&&) = default;
 
-        protected:
-        virtual void update(MessageT msg)
-        {
-            m_callback(m_class.get(), msg);
-        }
+      virtual ~member_callback_observer() noexcept = default;
 
-        private:
-        MemberCallbackT m_callback;
-        std::reference_wrapper<ClassT> m_class;
-    };
+      protected:
+      virtual void update(MessageT msg)
+      {
+         m_callback(m_class.get(), msg);
+      }
+
+      private:
+      MemberCallbackT m_callback;
+      std::reference_wrapper<ClassT> m_class;
+   };
 }

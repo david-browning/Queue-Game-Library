@@ -17,7 +17,7 @@ qgl::graphics::text_render_component::text_render_component(brush& brsh,
 {
 }
 
-qgl::graphics::text_render_component::text_render_component(brush&& brsh, 
+qgl::graphics::text_render_component::text_render_component(brush&& brsh,
                                                             text_format&& fmt) :
    m_brush_p(std::make_shared<brush>(std::move(brsh))),
    m_format_p(std::make_shared<text_format>(std::move(fmt))),

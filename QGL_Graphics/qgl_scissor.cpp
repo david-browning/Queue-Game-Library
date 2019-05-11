@@ -11,7 +11,7 @@ qgl::graphics::scissor::scissor(const viewport& vp)
    m_scissor.bottom = static_cast<LONG>(d3dViewport.TopLeftY + d3dViewport.Height);
 }
 
-qgl::graphics::scissor::scissor(const scissor& r):
+qgl::graphics::scissor::scissor(const scissor& r) :
    m_scissor(r.m_scissor)
 {
 }

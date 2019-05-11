@@ -34,7 +34,7 @@ namespace qgl::graphics
          for (size_t i = 0; i < m_frames.size(); i++)
          {
             m_cmdList_ps.emplace_back(dev_p->com_d3d12_device(), pipelineState_p, nodeMask);
-            
+
             #ifdef DEBUG
             std::wstringstream nameStream;
             nameStream << "Graphics Command List " << i;
@@ -193,7 +193,7 @@ namespace qgl::graphics
          ID3D12CommandList* cmdLists[] = { frontCMDList.get() };
          m_fence_p->queue()->ExecuteCommandLists(1, cmdLists);
 
-         
+
          auto& rTarget = m_frames.front()->frame_buffer();
          //End the d2d draw.
          winrt::check_hresult(m_dev->d2d1_context()->EndDraw());

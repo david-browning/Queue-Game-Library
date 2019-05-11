@@ -5,8 +5,8 @@
 
 namespace qgl::content
 {
-    struct LIB_EXPORT content_store_config_loader
-    {
-        std::shared_ptr<content_store_config> operator()(const content_file& f);
-    };
+   struct LIB_EXPORT content_store_config_loader
+   {
+      std::shared_ptr<content_store_config> operator()(const content_file& f);
+   };
 }

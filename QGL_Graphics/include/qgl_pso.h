@@ -62,7 +62,7 @@ namespace qgl::graphics
          {
             throw std::invalid_argument("Maximum of 8 RTVs allowed.");
          }
-         
+
          m_psoDesc.NumRenderTargets = static_cast<UINT>(numFrames);
          size_t i = 0;
          for (auto it = first; it != last; ++it)
@@ -174,7 +174,7 @@ namespace qgl::graphics
 
       #pragma warning(push)
       #pragma warning(disable: 4251)
-      
+
       mutable winrt::com_ptr<ID3D12PipelineState> m_pso_p;
 
       winrt::com_ptr<d3d_device> m_dev_p;

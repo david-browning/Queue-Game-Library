@@ -158,7 +158,7 @@ namespace qgl::graphics
             throw std::out_of_range("The index is out of range.");
          }
       }
-       
+
       private:
       void p_allocate(D3D12_DESCRIPTOR_HEAP_FLAGS heapFlag,
                       UINT nodeMask)

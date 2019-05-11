@@ -5,10 +5,10 @@
 
 namespace qgl::graphics::low
 {
-   template<size_t UAlignment, 
-      D3D12_RESOURCE_STATES CreationState = D3D12_RESOURCE_STATE_COPY_DEST, 
+   template<size_t UAlignment,
+      D3D12_RESOURCE_STATES CreationState = D3D12_RESOURCE_STATE_COPY_DEST,
       D3D12_HEAP_TYPE  HeapType = D3D12_HEAP_TYPE_UPLOAD>
-   class LIB_EXPORT buffer_allocator : public imemory_allocator<UAlignment>
+      class LIB_EXPORT buffer_allocator : public imemory_allocator<UAlignment>
    {
       public:
       buffer_allocator(const winrt::com_ptr<d3d_device>& dev_p) :
@@ -37,8 +37,8 @@ namespace qgl::graphics::low
       }
 
       /*
-       Allocates a D3D resource and heap for it. Additional bytes may be added to properly 
-       align the buffer. The resource's initial state is 
+       Allocates a D3D resource and heap for it. Additional bytes may be added to properly
+       align the buffer. The resource's initial state is
        determined by the class's templates.
        */
       virtual D3D12_GPU_VIRTUAL_ADDRESS allocate(size_t buffSize)
@@ -71,7 +71,7 @@ namespace qgl::graphics::low
       {
          p_free_buffer(addr);
       }
-           
+
       /*
        Returns a reference to the resource that was allocated at the given GPU address.
        Throws an exception if the address is not mapped.
@@ -87,7 +87,7 @@ namespace qgl::graphics::low
       }
 
       private:
- 
+
       inline void p_free_buffer(const D3D12_GPU_VIRTUAL_ADDRESS& addr)
       {
          //Remove the resource from the heap map.

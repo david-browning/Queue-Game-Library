@@ -72,7 +72,7 @@ namespace qgl::graphics
       #pragma warning(disable: 4251)
       std::vector<DXGI_MODE_DESC1> m_modes;
       #pragma warning(pop)
-      
+
       DXGI_OUTPUT_DESC1 m_desc;
       bool m_3d;
       bool m_tearing;

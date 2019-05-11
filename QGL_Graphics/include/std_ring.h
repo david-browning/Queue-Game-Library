@@ -54,9 +54,9 @@ namespace std
        */
       size_t advance()
       {
-        return m_current = (m_current + 1) % size();
+         return m_current = (m_current + 1) % size();
       }
-           
+
       void advance_to(size_t idx)
       {
          if (idx >= 0 && idx < size())
@@ -133,7 +133,7 @@ namespace std
          return m_ring.size();
       }
 
-      auto begin() 
+      auto begin()
       {
          return m_ring.begin();
       }

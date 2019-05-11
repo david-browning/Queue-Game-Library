@@ -7,24 +7,24 @@ namespace qgl::graphics
    {
       public:
       wtext(const std::wstring& text,
-           const D2D_RECT_F& layout,
-           const content::wcontent_item::str_t& name,
-           const content::wcontent_item::id_t& id);
+            const D2D_RECT_F& layout,
+            const content::wcontent_item::str_t& name,
+            const content::wcontent_item::id_t& id);
 
       wtext(std::wstring&& text,
-           const D2D_RECT_F& layout,
-           const content::wcontent_item::str_t& name,
-           const content::wcontent_item::id_t& id);
+            const D2D_RECT_F& layout,
+            const content::wcontent_item::str_t& name,
+            const content::wcontent_item::id_t& id);
 
       wtext(const std::wstring& text,
-           D2D_RECT_F&& layout,
-           const content::wcontent_item::str_t& name,
-           const content::wcontent_item::id_t& id);
+            D2D_RECT_F&& layout,
+            const content::wcontent_item::str_t& name,
+            const content::wcontent_item::id_t& id);
 
       wtext(std::wstring&& text,
-           D2D_RECT_F&& layout,
-           const content::wcontent_item::str_t& name,
-           const content::wcontent_item::id_t& id);
+            D2D_RECT_F&& layout,
+            const content::wcontent_item::str_t& name,
+            const content::wcontent_item::id_t& id);
 
       wtext(std::shared_ptr<std::wstring>& text_p,
             D2D_RECT_F& layout,
@@ -35,7 +35,7 @@ namespace qgl::graphics
             D2D_RECT_F&& layout,
             const content::wcontent_item::str_t& name,
             const content::wcontent_item::id_t& id);
-      
+
       wtext(const wtext& r) = default;
 
       wtext(wtext&& r) = default;

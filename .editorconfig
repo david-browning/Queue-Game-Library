@@ -5,6 +5,12 @@
 indent_style = space
 guidelines  = 80
 
+[*.h]
+indent_size = 3
+
+[*.cpp]
+indent_size = 3
+
 # Xml files
 [*.xml]
 indent_size = 2

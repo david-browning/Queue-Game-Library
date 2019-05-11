@@ -20,7 +20,7 @@ namespace qgl::graphics::low
       sub_allocator(sub_allocator&& r) = delete;
 
       virtual ~sub_allocator();
-      
+
       virtual D3D12_GPU_VIRTUAL_ADDRESS allocate(size_t buffSize)
       {
          //If the list of allocations is empty, then just add a new one.

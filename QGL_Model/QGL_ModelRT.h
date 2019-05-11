@@ -4,16 +4,15 @@
 
 namespace winrt::QGL_Model::implementation
 {
-    struct QGL_ModelRT : QGL_ModelRTT<QGL_ModelRT>
-    {
-        QGL_ModelRT() = default;
-
-    };
+   struct QGL_ModelRT : QGL_ModelRTT<QGL_ModelRT>
+   {
+      QGL_ModelRT() = default;
+   };
 }
 
 namespace winrt::QGL_Model::factory_implementation
 {
-    struct QGL_ModelRT : QGL_ModelRTT<QGL_ModelRT, implementation::QGL_ModelRT>
-    {
-    };
+   struct QGL_ModelRT : QGL_ModelRTT<QGL_ModelRT, implementation::QGL_ModelRT>
+   {
+   };
 }

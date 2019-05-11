@@ -15,7 +15,7 @@ namespace qgl::graphics
       using ViewDescriptionT = D3D12_DEPTH_STENCIL_VIEW_DESC;
 
       public:
-      depth_stencil(const DEPTH_STENCIL_BUFFER& buffer, 
+      depth_stencil(const DEPTH_STENCIL_BUFFER& buffer,
                     const winrt::com_ptr<d3d_device>& dev_p,
                     const window& wnd,
                     size_t frameIndex,
@@ -113,7 +113,7 @@ namespace qgl::graphics
          swap(*this, r);
          return *this;
       }
-      
+
       private:
       void p_allocate();
 
@@ -123,7 +123,7 @@ namespace qgl::graphics
       ViewDescriptionT m_viewDesc;
 
       D3D12_CPU_DESCRIPTOR_HANDLE m_handle;
-      
+
       D3D12_CLEAR_VALUE m_clearValue;
 
       D3D12_DEPTH_STENCIL_DESC m_depthState;

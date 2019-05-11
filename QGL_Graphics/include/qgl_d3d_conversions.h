@@ -9,19 +9,19 @@ namespace qgl::graphics::convert
    {
       switch (t)
       {
-         case D3D12_DESCRIPTOR_RANGE_TYPE::D3D12_DESCRIPTOR_RANGE_TYPE_CBV :
+         case D3D12_DESCRIPTOR_RANGE_TYPE::D3D12_DESCRIPTOR_RANGE_TYPE_CBV:
          {
             return low::RESOURCE_TYPES::RESOURCE_TYPE_CONST_BUFFER;
          }
-         case D3D12_DESCRIPTOR_RANGE_TYPE::D3D12_DESCRIPTOR_RANGE_TYPE_SAMPLER :
+         case D3D12_DESCRIPTOR_RANGE_TYPE::D3D12_DESCRIPTOR_RANGE_TYPE_SAMPLER:
          {
             return low::RESOURCE_TYPES::RESOURCE_TYPE_SAMPLER;
          }
-         case D3D12_DESCRIPTOR_RANGE_TYPE::D3D12_DESCRIPTOR_RANGE_TYPE_SRV :
+         case D3D12_DESCRIPTOR_RANGE_TYPE::D3D12_DESCRIPTOR_RANGE_TYPE_SRV:
          {
             return low::RESOURCE_TYPES::RESOURCE_TYPE_TEXTURE;
          }
-         default :
+         default:
          {
 
          }

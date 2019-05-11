@@ -27,8 +27,8 @@ namespace qgl::content
       }
 
       virtual LoadT load(_IN_HANDLE_ const winrt::file_handle& fileHandle,
-                           _IN_ const CONTENT_DICTIONARY_ENTRY_BUFFER& lookup,
-                           const IDT& newID = -1) const
+                         _IN_ const CONTENT_DICTIONARY_ENTRY_BUFFER& lookup,
+                         const IDT& newID = -1) const
       {
          qgl::graphics::TEXTURE_BUFFER ret(lookup.size());
 

@@ -149,11 +149,11 @@ void qgl::content::content_file::p_write_dictionary()
    constexpr size_t dictHeaderOffset = sizeof(CONTENT_FILE_HEADER_BUFFER);
    constexpr size_t dictHeaderSize = sizeof(CONTENT_DICTIONARY_METADATA_BUFFER);
    write_file_sync<CONTENT_DICTIONARY_METADATA_BUFFER>(m_handle,
-                                              dictHeaderSize,
-                                              dictHeaderOffset,
-                                              &m_dictionary.buffer());
+                                                       dictHeaderSize,
+                                                       dictHeaderOffset,
+                                                       &m_dictionary.buffer());
 
-   //Offset to where to write the dictionary entry.
+            //Offset to where to write the dictionary entry.
    size_t entryOffset = dictHeaderOffset + dictHeaderSize;
 
    //Offset to where the dictionary data is.

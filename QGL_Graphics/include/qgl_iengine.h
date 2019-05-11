@@ -5,11 +5,11 @@
 
 namespace qgl::graphics
 {
-   /* 
+   /*
      Provides a mechanism to submit work to the GPU.
      Queuing, signaling, and waiting are thread safe. Flushing and clearing are not.
-     There should be only 1 thread responsible for flushing queued operations. Additional 
-     synchronization is required so that the owning thread waits for all queue operations to 
+     There should be only 1 thread responsible for flushing queued operations. Additional
+     synchronization is required so that the owning thread waits for all queue operations to
      complete.
     */
    template<typename ValueT>
@@ -37,7 +37,7 @@ namespace qgl::graphics
       {
 
       }
-      
+
       /*
        Waits for a fence to have a specific value.
        Get's the fence's current value and if that value is greater than the

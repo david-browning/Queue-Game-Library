@@ -26,42 +26,42 @@ namespace qgl::graphics
       {
          return m_isFrontCounterClockwise;
       }
-      
+
       inline INT depth_bias() const
       {
          return m_depthBias;
       }
-      
+
       inline FLOAT depth_bias_clamp() const
       {
          return m_depthBiasClamp;
       }
-      
+
       inline FLOAT slope_scaled_depth_bias() const
       {
          return m_slopeScaledDepthBias;
       }
-      
+
       inline BOOL depth_clip() const
       {
          return m_isDepthClip;
       }
-      
+
       inline BOOL multisample() const
       {
          return m_isMultisample;
       }
-      
+
       inline BOOL antialiased_lines() const
       {
          return m_isAntialiasedLine;
       }
-      
+
       inline UINT forced_sample_counit() const
       {
          return m_forcedSampleCount;
       }
-      
+
       inline D3D12_CONSERVATIVE_RASTERIZATION_MODE conservative_rasterization_mode() const
       {
          return static_cast<D3D12_CONSERVATIVE_RASTERIZATION_MODE>(m_conservativeRaster);

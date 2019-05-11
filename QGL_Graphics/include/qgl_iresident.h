@@ -50,7 +50,7 @@ namespace qgl::graphics::low
       {
          if (!m_isResident)
          {
-     
+
          }
       }
 
@@ -58,7 +58,7 @@ namespace qgl::graphics::low
       {
          if (m_isResident)
          {
-            
+
          }
       }
 

@@ -16,7 +16,7 @@ qgl::graphics::window::window(const appview_pt& appView_p,
    m_coreWin_p(coreWindow_p)
 {
    p_update_dimmensions();
-   m_coreWin_p->SizeChanged({this, &window::p_resize_completed});
+   m_coreWin_p->SizeChanged({ this, &window::p_resize_completed });
 }
 
 qgl::graphics::window::window(window && r) :
@@ -66,7 +66,7 @@ void qgl::graphics::window::p_update_dimmensions()
 {
    //Get the window bounds which are measured in device-independent pixels.
    const auto& bnds = m_coreWin_p->Bounds();
-   
+
    //Get the DPI of the screen.
    auto dpInfo = winrt::Windows::Graphics::Display::DisplayInformation::GetForCurrentView();
    float dpi = dpInfo.LogicalDpi();

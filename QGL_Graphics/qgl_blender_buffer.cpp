@@ -76,16 +76,16 @@ BLEND_DESC& qgl::graphics::BLEND_DESC::operator=(const BLEND_DESC& r)
 {
    if (&r != this)
    {
-      this->BlendEnable             = r.BlendEnable;
-      this->BlendOp                 = r.BlendOp;
-      this->BlendOpAlpha            = r.BlendOpAlpha;
-      this->DestBlend               = r.DestBlend;
-      this->DestBlendAlpha          = r.DestBlendAlpha;
-      this->LogicOp                 = r.LogicOp;
-      this->LogicOpEnable           = r.LogicOpEnable;
-      this->RenderTargetWriteMask   = r.RenderTargetWriteMask;
-      this->SrcBlend                = r.SrcBlend;
-      this->SrcBlendAlpha           = r.SrcBlendAlpha;
+      this->BlendEnable = r.BlendEnable;
+      this->BlendOp = r.BlendOp;
+      this->BlendOpAlpha = r.BlendOpAlpha;
+      this->DestBlend = r.DestBlend;
+      this->DestBlendAlpha = r.DestBlendAlpha;
+      this->LogicOp = r.LogicOp;
+      this->LogicOpEnable = r.LogicOpEnable;
+      this->RenderTargetWriteMask = r.RenderTargetWriteMask;
+      this->SrcBlend = r.SrcBlend;
+      this->SrcBlendAlpha = r.SrcBlendAlpha;
    }
 
    return *this;
@@ -93,16 +93,16 @@ BLEND_DESC& qgl::graphics::BLEND_DESC::operator=(const BLEND_DESC& r)
 
 BLEND_DESC& qgl::graphics::BLEND_DESC::operator=(const D3D12_RENDER_TARGET_BLEND_DESC& r)
 {
-   this->BlendEnable             = static_cast<uint8_t>(r.BlendEnable);
-   this->BlendOp                 = static_cast<uint8_t>(r.BlendOp);
-   this->BlendOpAlpha            = static_cast<uint8_t>(r.BlendOpAlpha);
-   this->DestBlend               = static_cast<uint8_t>(r.DestBlend);
-   this->DestBlendAlpha          = static_cast<uint8_t>(r.DestBlendAlpha);
-   this->LogicOp                 = static_cast<uint8_t>(r.LogicOp);
-   this->LogicOpEnable           = static_cast<uint8_t>(r.LogicOpEnable);
-   this->RenderTargetWriteMask   = static_cast<uint8_t>(r.RenderTargetWriteMask);
-   this->SrcBlend                = static_cast<uint8_t>(r.SrcBlend);
-   this->SrcBlendAlpha           = static_cast<uint8_t>(r.SrcBlendAlpha);
+   this->BlendEnable = static_cast<uint8_t>(r.BlendEnable);
+   this->BlendOp = static_cast<uint8_t>(r.BlendOp);
+   this->BlendOpAlpha = static_cast<uint8_t>(r.BlendOpAlpha);
+   this->DestBlend = static_cast<uint8_t>(r.DestBlend);
+   this->DestBlendAlpha = static_cast<uint8_t>(r.DestBlendAlpha);
+   this->LogicOp = static_cast<uint8_t>(r.LogicOp);
+   this->LogicOpEnable = static_cast<uint8_t>(r.LogicOpEnable);
+   this->RenderTargetWriteMask = static_cast<uint8_t>(r.RenderTargetWriteMask);
+   this->SrcBlend = static_cast<uint8_t>(r.SrcBlend);
+   this->SrcBlendAlpha = static_cast<uint8_t>(r.SrcBlendAlpha);
 
    return *this;
 }

@@ -86,7 +86,7 @@ namespace qgl::graphics
          swap(first.m_d2dRenderTarget_p, second.m_d2dRenderTarget_p);
          swap(static_cast<low::igpu_buffer<DXGI_SWAP_CHAIN_DESC1, D3D12_RENDER_TARGET_VIEW_DESC, d3d_render_target>&>(first),
               static_cast<low::igpu_buffer<DXGI_SWAP_CHAIN_DESC1, D3D12_RENDER_TARGET_VIEW_DESC, d3d_render_target>&>(second));
-         
+
       }
 
       render_target& operator=(render_target r) noexcept

@@ -78,9 +78,9 @@ static const std::string LIB_EXPORT_STR = "__declspec(dllexport)";
 
 inline std::string HrToString(unsigned long hr)
 {
-    char s_str[64] = {};
-    sprintf_s(s_str, "HRESULT of 0x%08X", static_cast<unsigned long>(hr));
-    return std::string(s_str);
+   char s_str[64] = {};
+   sprintf_s(s_str, "HRESULT of 0x%08X", static_cast<unsigned long>(hr));
+   return std::string(s_str);
 }
 
 #else
@@ -514,27 +514,27 @@ inline constexpr result_t MakeResult(const bool failed,
                                      const facility_result_t facility,
                                      const code_result_t code) noexcept
 {
-    return (failed ? 0x8000000000000000 : 0) |
-        (((uint64_t)facility & 0x7FFFFFFF) << (sizeof(code_result_t) * uint32_t(8))) |
-        code;
+   return (failed ? 0x8000000000000000 : 0) |
+      (((uint64_t)facility & 0x7FFFFFFF) << (sizeof(code_result_t) * uint32_t(8))) |
+      code;
 }
 
 //Returns true if the result indicates a failure.
 inline constexpr bool ResultFailed(const result_t r) noexcept
 {
-    return r < 0;
+   return r < 0;
 }
 
 //Returns the error code from the result.
 inline code_result_t GetCodeFromResult(const result_t r) noexcept
 {
-    return (code_result_t)(r & 0x00000000FFFFFFFF);
+   return (code_result_t)(r & 0x00000000FFFFFFFF);
 }
 
 //Returns the facility code from the result.
 inline facility_result_t GetFacilityFromResult(const result_t r) noexcept
 {
-    return (facility_result_t)((r >> sizeof(code_result_t) * 8) & 0x00007FFFFFFF);
+   return (facility_result_t)((r >> sizeof(code_result_t) * 8) & 0x00007FFFFFFF);
 }
 
 static constexpr facility_result_t FACILITY_NONE = 0x0000;
@@ -607,12 +607,12 @@ static constexpr result_t RES_UNKNOWN_THREAD_ERROR = MakeResult(true, FACILITY_T
 #endif
 class file_not_found_exception : public std::exception
 {
-    public:
-    file_not_found_exception() :
-        std::exception("The file was not found.")
-    {
+   public:
+   file_not_found_exception() :
+      std::exception("The file was not found.")
+   {
 
-    }
+   }
 };
 #ifdef _WIN32
 #pragma warning(pop)
@@ -621,33 +621,33 @@ class file_not_found_exception : public std::exception
 template<typename T>
 constexpr T logbn(const T base, const T n)
 {
-    return (n > base - 1) ? 1 + logbn(n / base, base) : 0;
+   return (n > base - 1) ? 1 + logbn(n / base, base) : 0;
 }
 
 template<typename T>
 constexpr T RoundUp(_IN_ const T val, _IN_ const T nearest)
 {
-    T remainder = val % nearest;
-    return remainder == 0 ? val : val + nearest - remainder;
+   T remainder = val % nearest;
+   return remainder == 0 ? val : val + nearest - remainder;
 }
 
 template<typename T>
 constexpr T GetMin(T value)
 {
-    return value;
+   return value;
 }
 
 template<typename T, typename... Tlist>
 constexpr T GetMin(T value, Tlist... list)
 {
-    T min = GetMin<T>(list...);
-    return value < min ? value : min;
+   T min = GetMin<T>(list...);
+   return value < min ? value : min;
 }
 
 inline constexpr uintptr_t MemAlignAddress(const uintptr_t addr,
                                            const size_t alignment) noexcept
 {
-    return (addr + alignment - 1) & ~(alignment - 1);
+   return (addr + alignment - 1) & ~(alignment - 1);
 }
 
 template<typename T>
@@ -656,16 +656,16 @@ void MemoryReplace(_IN_ARR_Z_ T* ptr,
                    _IN_ const T with,
                    _IN_SIZE_ size_t numElements)
 {
-    if (numElements > 0 && ptr != nullptr)
-    {
-        for (int i = 0; i < numElements; i++)
-        {
-            if (ptr[i] == toReplace)
-            {
-                ptr[i] = with;
-            }
-        }
-    }
+   if (numElements > 0 && ptr != nullptr)
+   {
+      for (int i = 0; i < numElements; i++)
+      {
+         if (ptr[i] == toReplace)
+         {
+            ptr[i] = with;
+         }
+      }
+   }
 }
 
 template<typename T>
@@ -673,14 +673,14 @@ void MemorySet(_IN_POINTER_ T* const ptr,
                _IN_ T val,
                _IN_SIZE_ size_t numElements)
 {
-    if (numElements > 0 && ptr != nullptr)
-    {
-        numElements--;
-        while (numElements--)
-        {
-            ptr[numElements] = val;
-        }
-    }
+   if (numElements > 0 && ptr != nullptr)
+   {
+      numElements--;
+      while (numElements--)
+      {
+         ptr[numElements] = val;
+      }
+   }
 }
 
 /*
@@ -693,13 +693,13 @@ void MemoryCopy(_IN_POINTER_ T* const dest,
                 _IN_POINTER_ const T* src,
                 _IN_SIZE_ size_t numElements)
 {
-    if (numElements != 0 && dest != nullptr && src != nullptr)
-    {
-        for (size_t i = 0; i < numElements; i++)
-        {
-            dest[i] = src[i];
-        }
-    }
+   if (numElements != 0 && dest != nullptr && src != nullptr)
+   {
+      for (size_t i = 0; i < numElements; i++)
+      {
+         dest[i] = src[i];
+      }
+   }
 }
 
 /*
@@ -710,17 +710,17 @@ void MemoryCopyUntil(_IN_POINTER_ T* dest,
                      _IN_POINTER_ const T* src,
                      _IN_SIZE_ T terminator)
 {
-    if (dest == nullptr || src == nullptr)
-    {
-        return;
-    }
+   if (dest == nullptr || src == nullptr)
+   {
+      return;
+   }
 
-    int i = 0;
-    while (src[i] != terminator)
-    {
-        dest[i] = src[i];
-        i++;
-    }
+   int i = 0;
+   while (src[i] != terminator)
+   {
+      dest[i] = src[i];
+      i++;
+   }
 }
 
 /*
@@ -733,13 +733,13 @@ T* MemoryFind(_IN_POINTER_ const T* ptr,
               _IN_ T val,
               _IN_SIZE_ size_t numElements)
 {
-    for (size_t i = 0; i < numElements; i++)
-    {
-        if (ptr[i] == val)
-        {
-            return ptr + i;
-        }
-    }
+   for (size_t i = 0; i < numElements; i++)
+   {
+      if (ptr[i] == val)
+      {
+         return ptr + i;
+      }
+   }
 }
 
 /*
@@ -754,24 +754,24 @@ int MemoryCompare(_IN_POINTER_ const T* p1,
                   _IN_POINTER_ const T* p2,
                   _IN_SIZE_ const size_t numElements)
 {
-    if (p1 == nullptr || p2 == nullptr || numElements == 0)
-    {
-        return -2;
-    }
+   if (p1 == nullptr || p2 == nullptr || numElements == 0)
+   {
+      return -2;
+   }
 
-    for (size_t i = 0; i < numElements; i++)
-    {
-        if (p1[i] < p2[i])
-        {
-            return -1;
-        }
-        else if (p1[i] > p2[i])
-        {
-            return 1;
-        }
-    }
+   for (size_t i = 0; i < numElements; i++)
+   {
+      if (p1[i] < p2[i])
+      {
+         return -1;
+      }
+      else if (p1[i] > p2[i])
+      {
+         return 1;
+      }
+   }
 
-    return 0;
+   return 0;
 }
 
 /*
@@ -783,7 +783,7 @@ constexpr size_t MemoryLength(_IN_ARR_Z_ const T* str,
                               _IN_OPT_ const T terminator = 0,
                               _IN_OPT_ const size_t i = 0)
 {
-    return (str && str[i] != terminator) ? MemoryLength(str, terminator, i + 1) + 1 : 0;
+   return (str && str[i] != terminator) ? MemoryLength(str, terminator, i + 1) + 1 : 0;
 }
 
 template<typename T>
@@ -791,37 +791,37 @@ constexpr void mem_reverse(T* const mem,
                            const size_t start,
                            const size_t end)
 {
-    if (start < end)
-    {
-        std::swap(mem[start], mem[end]);
-        mem_reverse(mem, start + 1, end - 1);
-    }
+   if (start < end)
+   {
+      std::swap(mem[start], mem[end]);
+      mem_reverse(mem, start + 1, end - 1);
+   }
 }
 
 template<typename T>
 constexpr void mem_reverse(T* const mem,
                            const size_t elementCount)
 {
-    mem_reverse(mem, 0, elementCount - 1);
+   mem_reverse(mem, 0, elementCount - 1);
 }
 
 template<typename T>
 size_t BitCount(_IN_ T n)
 {
-    std::bitset<sizeof(T) * CHAR_BIT> b(n);
-    return b.count();
+   std::bitset<sizeof(T) * CHAR_BIT> b(n);
+   return b.count();
 }
 
 inline bool approx_equal(float expected,
                          float actual,
                          float tolerance = FLT_EPSILON)
 {
-    return abs(expected - actual) < tolerance;
+   return abs(expected - actual) < tolerance;
 }
 
 inline bool approx_equal(double expected,
                          double actual,
                          double tolerance = DBL_EPSILON)
 {
-    return abs(expected - actual) < tolerance;
+   return abs(expected - actual) < tolerance;
 }

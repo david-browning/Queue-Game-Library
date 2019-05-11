@@ -24,5 +24,5 @@ qgl::graphics::light::light(const LIGHT_BUFFER& lBuffer,
 
 qgl::graphics::light::~light()
 {
-   
+
 }

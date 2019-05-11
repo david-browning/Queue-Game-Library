@@ -3,7 +3,7 @@
 #include "include/qgl_dsv_descriptor_heap.h"
 #include "include/qgl_window.h"
 
-qgl::graphics::depth_stencil::depth_stencil(const DEPTH_STENCIL_BUFFER& buffer, 
+qgl::graphics::depth_stencil::depth_stencil(const DEPTH_STENCIL_BUFFER& buffer,
                                             const winrt::com_ptr<d3d_device>& dev_p,
                                             const window& wnd,
                                             size_t frameIndex,
