@@ -70,17 +70,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="qgl_content_header_buffer.cpp">
-      <Filter>Source Files\Content Buffers</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_content_info_buffer.cpp">
-      <Filter>Source Files\Content Buffers</Filter>
-    </ClCompile>
     <ClCompile Include="qgl_file_helpers.cpp">
       <Filter>Source Files\Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_content_dictionary_buffer.cpp">
-      <Filter>Source Files\Content Buffers</Filter>
     </ClCompile>
     <ClCompile Include="qgl_content_file.cpp">
       <Filter>Source Files\Files</Filter>
@@ -115,6 +106,15 @@
     <ClCompile Include="QGL_ContentRT.cpp">
       <Filter>win_rt</Filter>
     </ClCompile>
+    <ClCompile Include="qgl_content_dictionary_metadata_buffer.cpp">
+      <Filter>Source Files\Content Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_content_metadata_buffer.cpp">
+      <Filter>Source Files\Content Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_content_file_header_buffer.cpp">
+      <Filter>Source Files\Content Buffers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLContent.h">
@@ -144,15 +144,6 @@
     <ClInclude Include="include\qgl_content_file.h">
       <Filter>Header Files\Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_content_info_buffer.h">
-      <Filter>Header Files\Content Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_content_header_buffer.h">
-      <Filter>Header Files\Content Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_content_dictionary_buffer.h">
-      <Filter>Header Files\Content Buffers</Filter>
-    </ClInclude>
     <ClInclude Include="include\qgl_content_item.h">
       <Filter>Header Files\Content Items</Filter>
     </ClInclude>
@@ -171,9 +162,6 @@
     <ClInclude Include="include\qgl_content_project.h">
       <Filter>Header Files\Content Project</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_content_dict_entry_buffer.h">
-      <Filter>Header Files\Content Buffers</Filter>
-    </ClInclude>
     <ClInclude Include="include\qgl_content_project_compiler.h">
       <Filter>Header Files\Content Project</Filter>
     </ClInclude>
@@ -182,6 +170,18 @@
     </ClInclude>
     <ClInclude Include="QGL_ContentRT.h">
       <Filter>win_rt</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content-Buffers\qgl_content_dict_entry_buffer.h">
+      <Filter>Header Files\Content Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content-Buffers\qgl_content_dictionary_metadata_buffer.h">
+      <Filter>Header Files\Content Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content-Buffers\qgl_content_metadata_buffer.h">
+      <Filter>Header Files\Content Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content-Buffers\qgl_content_file_header_buffer.h">
+      <Filter>Header Files\Content Buffers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

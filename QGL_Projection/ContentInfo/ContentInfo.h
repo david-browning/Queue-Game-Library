@@ -39,7 +39,7 @@ namespace winrt::QGL_Projection::implementation
                                                                    Windows::Foundation::Collections::IVector<QGL_Projection::ResourceType> const& supportedResourceTypes);
 
       private:
-      qgl::content::CONTENT_INFO_BUFFER m_buffer;
+      qgl::content::CONTENT_METADATA_BUFFER m_buffer;
       QGL_Projection::ResourceType m_resourceModel;
       QGL_Projection::ContentLoader m_loaderModel;
       QGL_Projection::CompilerVersion m_compilerVersion;

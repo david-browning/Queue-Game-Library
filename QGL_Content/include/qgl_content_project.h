@@ -54,12 +54,12 @@ namespace qgl::content
 
       const_iterator cend() const noexcept;
 
-      const CONTENT_HEADER_BUFFER& header() const
+      const CONTENT_FILE_HEADER_BUFFER& header() const
       {
          return m_header;
       }
 
-      void header(const CONTENT_HEADER_BUFFER& hdr)
+      void header(const CONTENT_FILE_HEADER_BUFFER& hdr)
       {
          m_header = hdr;
       }
@@ -84,7 +84,7 @@ namespace qgl::content
       container m_entries;
       #pragma warning(pop)
 
-      CONTENT_HEADER_BUFFER m_header;
+      CONTENT_FILE_HEADER_BUFFER m_header;
    };
 
    extern LIB_EXPORT content_project load_project(const winrt::hstring& absPath);

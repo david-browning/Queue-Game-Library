@@ -31,7 +31,7 @@ namespace qgl::content
        Opens a new file for writing
        File path must be absolute.
        */
-      content_file(const CONTENT_HEADER_BUFFER& headr,
+      content_file(const CONTENT_FILE_HEADER_BUFFER& headr,
              const winrt::hstring& filePath);
 
       /*
@@ -78,7 +78,7 @@ namespace qgl::content
          return m_dictionary.size();
       }
 
-      inline const CONTENT_HEADER_BUFFER& header() const
+      inline const CONTENT_FILE_HEADER_BUFFER& header() const
       {
          return m_header;
       }
@@ -108,7 +108,7 @@ namespace qgl::content
       static constexpr size_t READ_INDEX = 0;
       static constexpr size_t WRITE_INDEX = 1;
 
-      CONTENT_HEADER_BUFFER m_header;
+      CONTENT_FILE_HEADER_BUFFER m_header;
       content_dictionary m_dictionary;
       #pragma warning(push)
       #pragma warning(disable: 4251)

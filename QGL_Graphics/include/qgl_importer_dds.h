@@ -48,7 +48,7 @@ namespace qgl::content
                                                                size_t offset = -1) const
       {
          static constexpr RESOURCE_TYPES rType = RESOURCE_TYPES::RESOURCE_TYPE_TEXTURE;
-         static CONTENT_INFO_BUFFER info(rType, this->id());
+         static CONTENT_METADATA_BUFFER info(rType, this->id());
          return CONTENT_DICTIONARY_ENTRY_BUFFER(data.size(), info, objName, offset);
       }
 

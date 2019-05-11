@@ -1,7 +1,7 @@
 #pragma once
 #include "include/qgl_content_include.h"
-#include "include/qgl_content_dictionary_buffer.h"
-#include "include/qgl_content_dict_entry_buffer.h"
+#include "include/Content-Buffers/qgl_content_dictionary_metadata_buffer.h"
+#include "include/Content-Buffers/qgl_content_dict_entry_buffer.h"
 
 namespace qgl::content
 {

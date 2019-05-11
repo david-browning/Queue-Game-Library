@@ -23,7 +23,7 @@ qgl::content::content_file::content_file(const winrt::hstring& objName,
                                          RESOURCE_TYPES resourceType,
                                          CONTENT_LOADER_IDS loaderType,
                                          const winrt::hstring& filePath) :
-   m_header(CONTENT_INFO_BUFFER(resourceType, loaderType, objName)),
+   m_header(CONTENT_METADATA_BUFFER(resourceType, loaderType, objName)),
    m_handle(),
    m_entryDataToWrite(),
    m_dictionary(),
@@ -35,7 +35,7 @@ qgl::content::content_file::content_file(const winrt::hstring& objName,
 }
 
 //Opens a new file for writing
-qgl::content::content_file::content_file(const CONTENT_HEADER_BUFFER& headr,
+qgl::content::content_file::content_file(const CONTENT_FILE_HEADER_BUFFER& headr,
                                          const winrt::hstring& filePath) :
    m_header(headr),
    m_handle(),
@@ -146,7 +146,7 @@ void qgl::content::content_file::p_write_header()
 void qgl::content::content_file::p_write_dictionary()
 {
    //Write the dictionary header.
-   constexpr size_t dictHeaderOffset = sizeof(CONTENT_HEADER_BUFFER);
+   constexpr size_t dictHeaderOffset = sizeof(CONTENT_FILE_HEADER_BUFFER);
    constexpr size_t dictHeaderSize = sizeof(CONTENT_DICTIONARY_METADATA_BUFFER);
    write_file_sync<CONTENT_DICTIONARY_METADATA_BUFFER>(m_handle,
                                               dictHeaderSize,

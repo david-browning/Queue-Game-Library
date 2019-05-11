@@ -97,7 +97,7 @@ qgl::content::content_project qgl::content::load_project(const winrt::hstring& a
 
    size_t offset = 0;
    content_project ret;
-   CONTENT_HEADER_BUFFER hdr;
+   CONTENT_FILE_HEADER_BUFFER hdr;
    //Read the header.
    read_file_sync(fileHandle, sizeof(hdr), offset, &hdr);
    ret.header(hdr);

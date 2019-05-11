@@ -7,7 +7,7 @@
 namespace qgl::content
 {
    template<CONTENT_LOADER_IDS expected>
-   inline void check_loader_id(const CONTENT_INFO_BUFFER& info)
+   inline void check_loader_id(const CONTENT_METADATA_BUFFER& info)
    {
       if (info.loader_id() != expected)
       {
@@ -22,7 +22,7 @@ namespace qgl::content
    }
 
    template<RESOURCE_TYPES expected>
-   inline void check_resource_type(const CONTENT_INFO_BUFFER& info)
+   inline void check_resource_type(const CONTENT_METADATA_BUFFER& info)
    {
       if (info.resource_type() != expected)
       {
@@ -37,7 +37,7 @@ namespace qgl::content
    }
 
    template<RESOURCE_TYPES expectedResource, CONTENT_LOADER_IDS expectedLoader>
-   inline void check_loader_and_resource(const CONTENT_INFO_BUFFER& info)
+   inline void check_loader_and_resource(const CONTENT_METADATA_BUFFER& info)
    {
       if (info.resource_type() != expectedResource ||
           info.loader_id() != expectedLoader)
