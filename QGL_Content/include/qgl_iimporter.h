@@ -5,13 +5,18 @@
 
 namespace qgl::content
 {
-   /*
-    LoadT: object that this importer returns.
-    */
-    template<typename LoadT>
+    /*
+     Entry importers load data stored in a content file.
+     Overload load and dict_entry when implementing this class.
+     LoadT: object that this importer returns.
+     */
+    template<class LoadT>
     class ientry_importer
     {
         public:
+        
+        /*
+         */
         constexpr ientry_importer(CONTENT_LOADER_IDS contentImporterID) :
             m_contentImporterID(contentImporterID)
         {
@@ -36,12 +41,19 @@ namespace qgl::content
         }
 
         /*
-         
+         Loads content from a file using the lookup data.
+         The file must be opened with read permissions.
+         Returns the data loaded.
          */
-        virtual LoadT load(const winrt::file_handle& fileHandle,
-                           const CONTENT_DICTIONARY_ENTRY_BUFFER& lookup,
-                           IDT id = -1) const = 0;
+        virtual LoadT load(
+            const winrt::file_handle& fileHandle,
+            const CONTENT_DICTIONARY_ENTRY_BUFFER& lookup) const = 0;
 
+        /*
+         Creates a dictionary entry for the given content.
+         The offset is the offset into the file where the content's data
+         is stored.
+         */
         virtual const CONTENT_DICTIONARY_ENTRY_BUFFER dict_entry(
             const LoadT& data,
             const winrt::hstring& objName,
@@ -58,22 +70,22 @@ namespace qgl::content
         /*
          Returns true if an entry importer is the same as this.
          */
-        inline virtual bool operator==(const ientry_importer& other) const final
+        virtual bool operator==(const ientry_importer& other) const final
         {
             return m_contentImporterID == other.m_contentImporterID;
         }
 
         /*
-         Returns true if an entry import is not the same as this.
+         Returns true if an entry importer is not the same as this.
          */
-        inline virtual bool operator!=(const ientry_importer& other) const final
+        virtual bool operator!=(const ientry_importer& other) const final
         {
             return m_contentImporterID != other.m_contentImporterID;
         }
 
         private:
         /*
-         LoaderID. 
+         LoaderID.
          */
         CONTENT_LOADER_IDS m_contentImporterID;
     };

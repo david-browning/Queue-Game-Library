@@ -12,7 +12,7 @@ namespace qgl::content
     Constructor checks if the content store exists on the disk and throws an exception if
     it doesn't.
     */
-   template<typename ContentCharT, typename IDT>
+   template<typename IDT>
    class content_store
    {
       public:
