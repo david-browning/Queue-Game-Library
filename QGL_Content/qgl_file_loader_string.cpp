@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "include/Content-Importers/qgl_file_loader_string.h"
+#include "include/Content-Files/qgl_file_loader_string.h"
 #include "include/Content-Importers/qgl_importer_testers.h"
 #include "include/Content-Importers/qgl_importer_string.h"
 
@@ -7,7 +7,7 @@ std::shared_ptr<std::string> qgl::content::string_file_loader::operator()(
    const content_file & f)
 {
     //Make sure the string file has the correct loader.
-   auto& headerInfo = f.header().info();
+   auto& headerInfo = f.header().metadata();
    check_loader_and_resource<RESOURCE_TYPES::RESOURCE_TYPE_STRING,
       CONTENT_LOADER_IDS::CONTENT_LOADER_ID_STRING>(headerInfo);
 

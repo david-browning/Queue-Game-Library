@@ -1,12 +1,12 @@
 #include "pch.h"
-#include "include/Content-Importers/qgl_file_loader_content_store_config.h"
+#include "include/Content-Files/qgl_file_loader_content_store_config.h"
 #include "include/Content-Importers/qgl_importer_testers.h"
 #include "include/Content-Importers/qgl_importer_wstring.h"
 
 std::shared_ptr<qgl::content::content_store_config>
 qgl::content::content_store_config_loader::operator()(const content_file & f)
 {
-   auto& headerInfo = f.header().info();
+   auto& headerInfo = f.header().metadata();
    check_loader_and_resource<RESOURCE_TYPES::RESOURCE_TYPE_DESCRIPTION,
       CONTENT_LOADER_IDS::CONTENT_LOADER_ID_STORE_CONFIG>(headerInfo);
 

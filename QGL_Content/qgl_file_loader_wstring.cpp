@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "include/Content-Importers/qgl_file_loader_wstring.h"
+#include "include/Content-Files/qgl_file_loader_wstring.h"
 #include "include/Content-Importers/qgl_importer_testers.h"
 #include "include/Content-Importers/qgl_importer_wstring.h"
 
@@ -7,7 +7,7 @@ std::shared_ptr<std::wstring> qgl::content::wstring_file_loader::operator()(
    const content_file & f)
 {
      //Make sure the wstring file has the correct loader.
-   auto& headerInfo = f.header().info();
+   auto& headerInfo = f.header().metadata();
    check_loader_and_resource<RESOURCE_TYPES::RESOURCE_TYPE_STRING,
       CONTENT_LOADER_IDS::CONTENT_LOADER_ID_WSTRING>(headerInfo);
 
