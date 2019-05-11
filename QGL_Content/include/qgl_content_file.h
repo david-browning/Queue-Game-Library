@@ -128,7 +128,7 @@ namespace qgl::content
       #pragma warning(disable: 4251)
 
       /*
-       An array of pointer to data that is pending writes to the content file.
+       An array of pointers to data that is pending writes to the content file.
        This is only populated when the content file is in write mode.
        */
       std::vector<const void*> m_entryDataToWrite;
