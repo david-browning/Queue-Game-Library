@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.Windows.CppWinRT.1.0.190109.2\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.1.0.190109.2\build\native\Microsoft.Windows.CppWinRT.props')" />
   <PropertyGroup Label="Globals">
@@ -158,21 +158,21 @@
     <ClInclude Include="include\Content-Buffers\qgl_content_dict_entry_buffer.h" />
     <ClInclude Include="include\Content-Buffers\qgl_content_file_header_buffer.h" />
     <ClInclude Include="include\Content-Buffers\qgl_content_metadata_buffer.h" />
+    <ClInclude Include="include\Content-Importers\qgl_file_importers.h" />
+    <ClInclude Include="include\Content-Importers\qgl_iimporter.h" />
+    <ClInclude Include="include\Content-Importers\qgl_importer_string.h" />
+    <ClInclude Include="include\Content-Importers\qgl_importer_struct.h" />
+    <ClInclude Include="include\Content-Importers\qgl_importer_wstring.h" />
     <ClInclude Include="include\qgl_content_dictionary.h" />
     <ClInclude Include="include\qgl_content_file.h" />
     <ClInclude Include="include\qgl_content_project.h" />
     <ClInclude Include="include\qgl_content_project_compiler.h" />
     <ClInclude Include="include\qgl_content_store.h" />
     <ClInclude Include="include\qgl_content_store_config.h" />
-    <ClInclude Include="include\qgl_file_importers.h" />
-    <ClInclude Include="include\qgl_iimporter.h" />
     <ClInclude Include="include\qgl_content_include.h" />
     <ClInclude Include="include\qgl_content_item.h" />
     <ClInclude Include="include\qgl_content_types.h" />
     <ClInclude Include="include\qgl_file_helpers.h" />
-    <ClInclude Include="include\qgl_importer_string.h" />
-    <ClInclude Include="include\qgl_importer_struct.h" />
-    <ClInclude Include="include\qgl_importer_wstring.h" />
     <ClInclude Include="QGLContent.h" />
     <ClInclude Include="include\ResourceLists.h" />
     <ClInclude Include="QGL_ContentRT.h" />

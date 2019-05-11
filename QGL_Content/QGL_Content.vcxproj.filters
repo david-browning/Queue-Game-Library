@@ -123,23 +123,11 @@
     <ClInclude Include="include\qgl_content_include.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_importer_string.h">
-      <Filter>Header Files\Content Importers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_importer_struct.h">
-      <Filter>Header Files\Content Importers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_importer_wstring.h">
-      <Filter>Header Files\Content Importers</Filter>
-    </ClInclude>
     <ClInclude Include="include\qgl_file_helpers.h">
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="include\qgl_content_types.h">
       <Filter>Header Files\Content Info</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_iimporter.h">
-      <Filter>Header Files\Content Importers</Filter>
     </ClInclude>
     <ClInclude Include="include\qgl_content_file.h">
       <Filter>Header Files\Files</Filter>
@@ -149,9 +137,6 @@
     </ClInclude>
     <ClInclude Include="include\qgl_content_dictionary.h">
       <Filter>Header Files\Dictionary</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_file_importers.h">
-      <Filter>Header Files\Content Importers</Filter>
     </ClInclude>
     <ClInclude Include="include\qgl_content_store.h">
       <Filter>Header Files\Content Store</Filter>
@@ -182,6 +167,21 @@
     </ClInclude>
     <ClInclude Include="include\Content-Buffers\qgl_content_file_header_buffer.h">
       <Filter>Header Files\Content Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content-Importers\qgl_file_importers.h">
+      <Filter>Header Files\Content Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content-Importers\qgl_iimporter.h">
+      <Filter>Header Files\Content Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content-Importers\qgl_importer_string.h">
+      <Filter>Header Files\Content Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content-Importers\qgl_importer_struct.h">
+      <Filter>Header Files\Content Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content-Importers\qgl_importer_wstring.h">
+      <Filter>Header Files\Content Importers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

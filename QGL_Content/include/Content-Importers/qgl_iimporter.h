@@ -2,6 +2,7 @@
 #include "include/qgl_content_include.h"
 #include "include/qgl_content_item.h"
 #include "include/qgl_content_types.h"
+#include "include/Content-Buffers/qgl_content_dict_entry_buffer.h"
 
 namespace qgl::content
 {
@@ -54,7 +55,7 @@ namespace qgl::content
          The offset is the offset into the file where the content's data
          is stored.
          */
-        virtual const CONTENT_DICTIONARY_ENTRY_BUFFER dict_entry(
+        virtual CONTENT_DICTIONARY_ENTRY_BUFFER dict_entry(
             const LoadT& data,
             const winrt::hstring& objName,
             size_t offset = -1) const = 0;
