@@ -54,25 +54,6 @@ namespace qgl::content
       ~CONTENT_METADATA_BUFFER() = default;
            
       /*
-       Returns the number of bytes a character uses.
-       */
-      inline uint8_t content_char_width() const
-      {
-         return (m_flags1 & 0x70) >> 4;
-      }
-
-      /*
-       Sets the number of characters 
-       */
-      inline void content_char_width(uint8_t charWidthBytes)
-      {
-         //Clear the width flags first.
-         m_flags1 &= 0x8F;
-
-         m_flags1 |= ((charWidthBytes & 0x07) << 4);
-      }
-
-      /*
        Returns true if the content is supposed to be visible.
        */
       inline bool content_visible() const
@@ -209,7 +190,6 @@ namespace qgl::content
        */
       void name(const winrt::hstring& n);
 
-
       /*
        Version the content was compiled.
        */
@@ -231,7 +211,7 @@ namespace qgl::content
       uint16_t m_loaderID;
 
       /*
-       { 1 Is Shared }{ 3 Char Width }{ 1 IsVisible }{ 1 IsPhysical }{ 2 Flags }
+       { 1 Is Shared }{ 3 }{ 1 IsVisible }{ 1 IsPhysical }{ 2 Flags }
        */
       uint8_t m_flags1;
 
@@ -245,9 +225,9 @@ namespace qgl::content
       wchar_t m_name[CONTENT_MAX_NAME_LEN] = { 0 };
 
       /*
-       Content is visible and has 1 byte char width
+       Content is visible.
        */
-      static constexpr uint8_t DEFAULT_FLAGS = 0b00011000;
+      static constexpr uint8_t DEFAULT_FLAGS = 0b00001000;
 
    };
 }
