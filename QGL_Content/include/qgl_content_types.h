@@ -3,8 +3,11 @@
 
 namespace qgl::content
 {
-   static constexpr uint64_t QGL_CONTENT_PROJECT_MAGIC_NUMBER = 0x8A473F4DB11D8CE7;
-   static constexpr uint64_t QGL_CONTENT_PROJECT_ENTRY_SEPERATOR_MAGIC_NUMBER = 0xF6C3A57BD87C798B;
+   static constexpr uint64_t QGL_CONTENT_PROJECT_MAGIC_NUMBER = 
+       0x8A473F4DB11D8CE7;
+
+   static constexpr uint64_t QGL_CONTENT_PROJECT_ENTRY_SEPERATOR_MAGIC_NUMBER = 
+       0xF6C3A57BD87C798B;
 
    enum RESOURCE_TYPES : uint16_t
    {
