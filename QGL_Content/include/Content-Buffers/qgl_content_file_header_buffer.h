@@ -46,6 +46,11 @@ namespace qgl::content
          return m_metadata;
       }
 
+      auto dictionary_offset() const
+      {
+         return m_offset;
+      }
+
       friend void swap(CONTENT_FILE_HEADER_BUFFER& first,
                        CONTENT_FILE_HEADER_BUFFER& second) noexcept
       {
