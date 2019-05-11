@@ -35,9 +35,6 @@
     <Filter Include="Source Files\Helpers">
       <UniqueIdentifier>{92cc3976-ecf3-47c1-aabd-0f64d5ca2279}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Files">
-      <UniqueIdentifier>{0c4c8c7f-4fb2-4af7-b0d1-15b371375b2a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Dictionary">
       <UniqueIdentifier>{ac08ab35-cdf4-45c3-9f2f-0432ef0e709a}</UniqueIdentifier>
     </Filter>
@@ -65,13 +62,13 @@
     <Filter Include="Header Files\Content Files">
       <UniqueIdentifier>{7afd98e3-e081-45cf-b7b9-cb189cc5e2f4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Content Files">
+      <UniqueIdentifier>{0c4c8c7f-4fb2-4af7-b0d1-15b371375b2a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="qgl_file_helpers.cpp">
       <Filter>Source Files\Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_content_file.cpp">
-      <Filter>Source Files\Files</Filter>
     </ClCompile>
     <ClCompile Include="qgl_content_dictionary.cpp">
       <Filter>Source Files\Dictionary</Filter>
@@ -110,13 +107,16 @@
       <Filter>Source Files\Content Buffers</Filter>
     </ClCompile>
     <ClCompile Include="qgl_file_loader_content_store_config.cpp">
-      <Filter>Source Files\Content Importers</Filter>
+      <Filter>Source Files\Content Files</Filter>
     </ClCompile>
     <ClCompile Include="qgl_file_loader_string.cpp">
-      <Filter>Source Files\Content Importers</Filter>
+      <Filter>Source Files\Content Files</Filter>
     </ClCompile>
     <ClCompile Include="qgl_file_loader_wstring.cpp">
-      <Filter>Source Files\Content Importers</Filter>
+      <Filter>Source Files\Content Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_content_file_helpers.cpp">
+      <Filter>Source Files\Content Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -131,9 +131,6 @@
     </ClInclude>
     <ClInclude Include="include\qgl_content_types.h">
       <Filter>Header Files\Content Info</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_content_file.h">
-      <Filter>Header Files\Content Files</Filter>
     </ClInclude>
     <ClInclude Include="include\qgl_content_item.h">
       <Filter>Header Files\Content Items</Filter>
@@ -199,6 +196,9 @@
       <Filter>Header Files\Content Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Content-Files\qgl_file_loader_wstring.h">
+      <Filter>Header Files\Content Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content-Files\qgl_content_file_helpers.h">
       <Filter>Header Files\Content Files</Filter>
     </ClInclude>
   </ItemGroup>
