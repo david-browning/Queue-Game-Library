@@ -183,6 +183,9 @@
     <ClInclude Include="include\Content-Importers\qgl_importer_wstring.h">
       <Filter>Header Files\Content Importers</Filter>
     </ClInclude>
+    <ClInclude Include="include\Content-Importers\qgl_importer_testers.h">
+      <Filter>Header Files\Content Importers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="QGL_Content.def">
