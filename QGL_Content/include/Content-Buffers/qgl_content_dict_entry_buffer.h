@@ -12,7 +12,7 @@ namespace qgl::content
       public:
       /*
        Default constructor.
-       Sets the offset to 0, flags to default, metadata to default, and 
+       Sets the offset to 0, flags to default, metadata to default, and
        content's data size to 0.
        */
       CONTENT_DICTIONARY_ENTRY_BUFFER();
@@ -25,17 +25,17 @@ namespace qgl::content
        Copy constructor.
        */
       CONTENT_DICTIONARY_ENTRY_BUFFER(
-          const CONTENT_DICTIONARY_ENTRY_BUFFER& r) = default;
+         const CONTENT_DICTIONARY_ENTRY_BUFFER& r) = default;
 
-      /*
-       Move constructor.
-       */
+     /*
+      Move constructor.
+      */
       CONTENT_DICTIONARY_ENTRY_BUFFER(
-          CONTENT_DICTIONARY_ENTRY_BUFFER&& r) = default;
-      
-      /*
-       Destructor. Do not mark virtual.
-       */
+         CONTENT_DICTIONARY_ENTRY_BUFFER&& r) = default;
+
+     /*
+      Destructor. Do not mark virtual.
+      */
       ~CONTENT_DICTIONARY_ENTRY_BUFFER() noexcept = default;
 
       /*
@@ -69,8 +69,8 @@ namespace qgl::content
       {
          return m_info;
       }
-      
-      friend void swap(CONTENT_DICTIONARY_ENTRY_BUFFER& first, 
+
+      friend void swap(CONTENT_DICTIONARY_ENTRY_BUFFER& first,
                        CONTENT_DICTIONARY_ENTRY_BUFFER& second) noexcept
       {
          using std::swap;
@@ -81,15 +81,24 @@ namespace qgl::content
       }
 
       CONTENT_DICTIONARY_ENTRY_BUFFER& operator=(
-          CONTENT_DICTIONARY_ENTRY_BUFFER r)  noexcept
+         CONTENT_DICTIONARY_ENTRY_BUFFER r) noexcept
       {
          swap(*this, r);
          return *this;
       }
 
+      template<class DictionaryEntryForwardIterator, class DataForwardIterator>
+      friend void write_dictionary_data(
+         const winrt::file_handle& hndl,
+         size_t startOffset,
+         DictionaryEntryForwardIterator firstDictEntry,
+         DictionaryEntryForwardIterator lastDictEntry,
+         DataForwardIterator firstContentData,
+         DataForwardIterator lastContentData);
+
       private:
 
-       /* 
+       /*
        Offset in the file (in bytes) to the object's data.
        */
       uint64_t m_offset;
