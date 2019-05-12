@@ -193,11 +193,6 @@ template <typename D> winrt::guid consume_QGL_Projection_IContentInfo<D>::Guid()
     return result;
 }
 
-template <typename D> void consume_QGL_Projection_IContentInfo<D>::Guid(winrt::guid const& g) const
-{
-    check_hresult(WINRT_SHIM(QGL_Projection::IContentInfo)->Guid2(get_abi(g)));
-}
-
 template <typename D> void consume_QGL_Projection_IContentInfoStatics<D>::WriteContentInfoToBuffer(QGL_Projection::ContentInfo const& info, Windows::Storage::Streams::DataWriter const& r) const
 {
     check_hresult(WINRT_SHIM(QGL_Projection::IContentInfoStatics)->WriteContentInfoToBuffer(get_abi(info), get_abi(r)));
@@ -690,18 +685,6 @@ struct produce<D, QGL_Projection::IContentInfo> : produce_base<D, QGL_Projection
             typename D::abi_guard guard(this->shim());
             WINRT_ASSERT_DECLARATION(Guid, WINRT_WRAP(winrt::guid));
             *result = detach_from<winrt::guid>(this->shim().Guid());
-            return 0;
-        }
-        catch (...) { return to_hresult(); }
-    }
-
-    int32_t WINRT_CALL Guid2(winrt::guid g) noexcept final
-    {
-        try
-        {
-            typename D::abi_guard guard(this->shim());
-            WINRT_ASSERT_DECLARATION(Guid, WINRT_WRAP(void), winrt::guid const&);
-            this->shim().Guid(*reinterpret_cast<winrt::guid const*>(&g));
             return 0;
         }
         catch (...) { return to_hresult(); }

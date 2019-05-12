@@ -21,7 +21,6 @@ namespace winrt::QGL_Projection::implementation
         QGL_Projection::CompilerVersion CompilerVersion();
         void CompilerVersion(QGL_Projection::CompilerVersion const& value);
         winrt::guid Guid();
-        void Guid(winrt::guid const& g);
         winrt::event_token PropertyChanged(Windows::UI::Xaml::Data::PropertyChangedEventHandler const& handler);
         void PropertyChanged(winrt::event_token const& token) noexcept;
 

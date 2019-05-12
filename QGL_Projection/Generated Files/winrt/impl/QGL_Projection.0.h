@@ -89,7 +89,7 @@ template <> struct guid_storage<QGL_Projection::ICompilerVersion>{ static conste
 template <> struct guid_storage<QGL_Projection::ICompilerVersionFactory>{ static constexpr guid value{ 0x003D485D,0x499D,0x5D3C,{ 0x9E,0x21,0x5F,0x42,0x65,0xBE,0x47,0x57 } }; };
 template <> struct guid_storage<QGL_Projection::ICompilerVersionStatics>{ static constexpr guid value{ 0xDCEAFF11,0xDB3D,0x51DF,{ 0x98,0x04,0x1B,0x4A,0xC7,0x11,0xEC,0x83 } }; };
 template <> struct guid_storage<QGL_Projection::IContentExtension>{ static constexpr guid value{ 0xC115F115,0xA39A,0x5849,{ 0x96,0xBD,0x51,0x06,0x4F,0x9F,0x17,0x9A } }; };
-template <> struct guid_storage<QGL_Projection::IContentInfo>{ static constexpr guid value{ 0xF0B1ADA2,0x7BF0,0x5E50,{ 0x87,0x10,0xF6,0x27,0x80,0x51,0x0B,0x85 } }; };
+template <> struct guid_storage<QGL_Projection::IContentInfo>{ static constexpr guid value{ 0x90B6ECEF,0x5C22,0x5FF5,{ 0xA5,0xB0,0x63,0x9C,0xBE,0xC4,0x3B,0x47 } }; };
 template <> struct guid_storage<QGL_Projection::IContentInfoStatics>{ static constexpr guid value{ 0xB85CA99F,0x4936,0x5A87,{ 0x97,0xED,0xED,0xD4,0x3B,0xC3,0x0D,0xFB } }; };
 template <> struct guid_storage<QGL_Projection::IContentLoader>{ static constexpr guid value{ 0xB8A4EFE6,0x3720,0x5A38,{ 0xB4,0x6A,0x35,0x84,0x19,0xA9,0x35,0x35 } }; };
 template <> struct guid_storage<QGL_Projection::IContentLoaderFactory>{ static constexpr guid value{ 0xC26C11EA,0x9FCF,0x5445,{ 0x99,0x6E,0x16,0x87,0xF7,0x67,0xCF,0xE9 } }; };
@@ -150,7 +150,6 @@ template <> struct abi<QGL_Projection::IContentInfo>{ struct type : IInspectable
     virtual int32_t WINRT_CALL get_CompilerVersion(void** value) noexcept = 0;
     virtual int32_t WINRT_CALL put_CompilerVersion(void* value) noexcept = 0;
     virtual int32_t WINRT_CALL Guid(winrt::guid* result) noexcept = 0;
-    virtual int32_t WINRT_CALL Guid2(winrt::guid g) noexcept = 0;
 };};
 
 template <> struct abi<QGL_Projection::IContentInfoStatics>{ struct type : IInspectable
@@ -260,7 +259,6 @@ struct consume_QGL_Projection_IContentInfo
     QGL_Projection::CompilerVersion CompilerVersion() const;
     void CompilerVersion(QGL_Projection::CompilerVersion const& value) const;
     winrt::guid Guid() const;
-    void Guid(winrt::guid const& g) const;
 };
 template <> struct consume<QGL_Projection::IContentInfo> { template <typename D> using type = consume_QGL_Projection_IContentInfo<D>; };
 

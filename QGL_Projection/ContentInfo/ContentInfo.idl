@@ -17,7 +17,6 @@ namespace QGL_Projection
       QGL_Projection.CompilerVersion CompilerVersion;
 
       GUID Guid();
-      void Guid(GUID g);
 
       static void WriteContentInfoToBuffer(ContentInfo info, Windows.Storage.Streams.DataWriter r);
 

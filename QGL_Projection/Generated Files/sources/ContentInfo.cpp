@@ -68,11 +68,6 @@ namespace winrt::QGL_Projection::implementation
         throw hresult_not_implemented();
     }
 
-    void ContentInfo::Guid(winrt::guid const& g)
-    {
-        throw hresult_not_implemented();
-    }
-
     winrt::event_token ContentInfo::PropertyChanged(Windows::UI::Xaml::Data::PropertyChangedEventHandler const& handler)
     {
         throw hresult_not_implemented();
