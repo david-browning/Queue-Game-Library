@@ -171,20 +171,6 @@ namespace qgl::content
       private:
 
       /*
-       Returns a reference to the GUID.
-       */
-      inline GUID& guid()
-      {
-          return m_guid;
-      }
-
-      /*
-       Converts the string to a GUID and sets the content's GUID.
-       Throws if the string cannot be converted to a GUID.
-       */
-      void guid_str(const winrt::hstring& g);
-
-      /*
        Sets the content's name.
        Throws if the name is too long.
        */
