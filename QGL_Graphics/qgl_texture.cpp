@@ -5,8 +5,8 @@
 qgl::graphics::texture::texture(const TEXTURE_BUFFER& textureData,
                                 winrt::com_ptr<d3d_device>& dev_p,
                                 qgl::content::CONTENT_LOADER_IDS loaderID,
-                                const content::wcontent_item::str_t& name,
-                                const content::wcontent_item::id_t& id) :
+                                const std::wstring& name,
+                                const content::content_id id) :
    m_textureDesc(),
    m_viewDesc(),
    m_data(textureData),
@@ -22,8 +22,8 @@ qgl::graphics::texture::texture(const TEXTURE_BUFFER& textureData,
 qgl::graphics::texture::texture(TEXTURE_BUFFER&& textureData,
                                 winrt::com_ptr<d3d_device>& dev_p,
                                 qgl::content::CONTENT_LOADER_IDS loaderID,
-                                const content::wcontent_item::str_t& name,
-                                const content::wcontent_item::id_t& id) :
+                                const std::wstring& name,
+                                const content::content_id id) :
    m_textureDesc(),
    m_viewDesc(),
    m_data(std::move(textureData)),

@@ -7,7 +7,7 @@ namespace qgl::graphics
 {
    class LIB_EXPORT texture :
       public low::igpu_buffer<D3D12_RESOURCE_DESC, D3D12_SHADER_RESOURCE_VIEW_DESC, d3d_resource>,
-      public content::wcontent_item
+      public content::content_item
    {
       public:
       using ResourceDescriptionT = D3D12_RESOURCE_DESC;
@@ -16,14 +16,14 @@ namespace qgl::graphics
       texture(const TEXTURE_BUFFER& textureData,
               winrt::com_ptr<d3d_device>& dev_p,
               qgl::content::CONTENT_LOADER_IDS loaderID,
-              const content::wcontent_item::str_t& name,
-              const content::wcontent_item::id_t& id);
+              const std::wstring& name,
+              const content::content_id id);
 
       texture(TEXTURE_BUFFER&& textureData,
               winrt::com_ptr<d3d_device>& dev_p,
               qgl::content::CONTENT_LOADER_IDS loaderID,
-              const content::wcontent_item::str_t& name,
-              const content::wcontent_item::id_t& id);
+              const std::wstring& name,
+              const content::content_id id);
 
       texture(const texture& r) = delete;
 

@@ -3,38 +3,38 @@
 
 namespace qgl::graphics
 {
-   class LIB_EXPORT wtext : qgl::content::wcontent_item
+   class LIB_EXPORT wtext : qgl::content::content_item
    {
       public:
       wtext(const std::wstring& text,
             const D2D_RECT_F& layout,
-            const content::wcontent_item::str_t& name,
-            const content::wcontent_item::id_t& id);
+            const std::wstring& name,
+            const content::content_id id);
 
       wtext(std::wstring&& text,
             const D2D_RECT_F& layout,
-            const content::wcontent_item::str_t& name,
-            const content::wcontent_item::id_t& id);
+            const std::wstring& name,
+            const content::content_id id);
 
       wtext(const std::wstring& text,
             D2D_RECT_F&& layout,
-            const content::wcontent_item::str_t& name,
-            const content::wcontent_item::id_t& id);
+            const std::wstring& name,
+            const content::content_id id);
 
       wtext(std::wstring&& text,
             D2D_RECT_F&& layout,
-            const content::wcontent_item::str_t& name,
-            const content::wcontent_item::id_t& id);
+            const std::wstring& name,
+            const content::content_id id);
 
       wtext(std::shared_ptr<std::wstring>& text_p,
             D2D_RECT_F& layout,
-            const content::wcontent_item::str_t& name,
-            const content::wcontent_item::id_t& id);
+            const std::wstring& name,
+            const content::content_id id);
 
       wtext(std::shared_ptr<std::wstring>& text_p,
             D2D_RECT_F&& layout,
-            const content::wcontent_item::str_t& name,
-            const content::wcontent_item::id_t& id);
+            const std::wstring& name,
+            const content::content_id id);
 
       wtext(const wtext& r) = default;
 

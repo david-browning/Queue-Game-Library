@@ -13,7 +13,7 @@ namespace qgl::graphics
     */
    class LIB_EXPORT sampler :
       public low::igpu_buffer<D3D12_SAMPLER_DESC, nullptr_t, d3d_resource>,
-      public content::wcontent_item
+      public content::content_item
    {
       public:
       using ResourceDescriptionT = D3D12_SAMPLER_DESC;
@@ -21,8 +21,8 @@ namespace qgl::graphics
 
       sampler(const SAMPLER_BUFFER& buffer,
               winrt::com_ptr<d3d_device>& dev_p,
-              const content::wcontent_item::str_t& name,
-              const content::wcontent_item::id_t& id);
+              const std::wstring& name,
+              const content::content_id id);
 
       sampler(const sampler& r) = delete;
 

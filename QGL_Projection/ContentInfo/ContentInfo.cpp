@@ -241,9 +241,9 @@ namespace winrt::QGL_Projection::implementation
       return winrt::guid(m_buffer.guid());
    }
 
-   void ContentInfo::Guid(winrt::guid const & g)
+   void ContentInfo::Guid(winrt::guid const& g)
    {
-      m_buffer.guid(g);
+      m_buffer.guid() = g;
    }
 
    winrt::event_token ContentInfo::PropertyChanged(Windows::UI::Xaml::Data::PropertyChangedEventHandler const& handler)

@@ -3,8 +3,8 @@
 
 qgl::graphics::sampler::sampler(const SAMPLER_BUFFER& buffer,
                                 winrt::com_ptr<d3d_device>& dev_p,
-                                const content::wcontent_item::str_t& name,
-                                const content::wcontent_item::id_t& id) :
+                                const std::wstring& name,
+                                const content::content_id id) :
    igpu_buffer(dev_p),
    content_item(name, id,
                 qgl::content::RESOURCE_TYPES::RESOURCE_TYPE_DESCRIPTION,

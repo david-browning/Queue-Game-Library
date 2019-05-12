@@ -4,13 +4,13 @@
 
 namespace qgl::graphics
 {
-   class LIB_EXPORT text_format : public qgl::content::wcontent_item
+   class LIB_EXPORT text_format : public qgl::content::content_item
    {
       public:
       text_format(const TEXT_FORMAT_BUFFER& format,
                   const winrt::com_ptr<IDWriteFactory>& factory_p,
-                  const content::wcontent_item::str_t& name,
-                  const content::wcontent_item::id_t& id);
+                  const std::wstring& name,
+                  const content::content_id id);
 
       text_format(const text_format& r);
 

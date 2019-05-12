@@ -5,13 +5,13 @@
 
 namespace qgl::graphics
 {
-   class alignas(alignof(DirectX::XMVECTOR)) light : public qgl::content::wcontent_item
+   class alignas(alignof(DirectX::XMVECTOR)) light : public qgl::content::content_item
    {
       public:
       light(const LIGHT_BUFFER& lBuffer,
             winrt::com_ptr<d3d_device>& dev_p,
-            const content::wcontent_item::str_t& name,
-            const content::wcontent_item::id_t& id);
+            const std::wstring& name,
+            const content::content_id id);
 
       light(const light& c) = delete;
 

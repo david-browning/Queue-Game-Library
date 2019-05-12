@@ -3,8 +3,8 @@
 
 qgl::graphics::text_format::text_format(const TEXT_FORMAT_BUFFER& format,
                                         const winrt::com_ptr<IDWriteFactory>& factory_p,
-                                        const content::wcontent_item::str_t& name,
-                                        const content::wcontent_item::id_t& id) :
+                                        const std::wstring& name,
+                                        const content::content_id id) :
    m_buffer(format),
    m_factory_p(factory_p),
    content_item(name, id,

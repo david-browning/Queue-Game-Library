@@ -4,8 +4,8 @@
 
 qgl::graphics::brush::brush(const BRUSH_BUFFER& fmtBuffer,
                             const winrt::com_ptr<d2d_context>& devContext_p,
-                            const content::wcontent_item::str_t& name,
-                            const content::wcontent_item::id_t& id) :
+                            const std::wstring& name,
+                            const content::content_id id) :
    m_brushData(fmtBuffer),
    m_devContext(devContext_p),
    content_item(name, id,
