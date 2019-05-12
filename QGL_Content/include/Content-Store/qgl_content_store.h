@@ -13,7 +13,7 @@ namespace qgl::content
     After loading, content pointers can be accessed by using a content ID.
     The content ID is assigned when a content file is loaded.
     */
-   LIB_EXPORT class content_store
+   class LIB_EXPORT content_store
    {
       public:
       using FileStringT = winrt::hstring;
