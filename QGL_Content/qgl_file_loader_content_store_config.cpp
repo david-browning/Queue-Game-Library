@@ -5,7 +5,7 @@
 
 std::shared_ptr<qgl::content::content_store_config>
 qgl::content::content_store_config_loader::operator()(
-   const content_file<true>& f)
+   const content_file_read& f)
 {
    auto& headerInfo = f.header().metadata();
    check_loader_and_resource<RESOURCE_TYPES::RESOURCE_TYPE_DESCRIPTION,

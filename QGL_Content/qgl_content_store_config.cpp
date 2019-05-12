@@ -1,8 +1,9 @@
 #include "pch.h"
-#include "include/qgl_content_store_config.h"
+#include "include/Content-Store/qgl_content_store_config.h"
 #include "include/qgl_file_helpers.h"
 
-qgl::content::content_store_config::content_store_config(const winrt::hstring& storePath) :
+qgl::content::content_store_config::content_store_config(
+   const winrt::hstring& storePath) :
    m_storePath(storePath)
 {
    //Check that the location exists.

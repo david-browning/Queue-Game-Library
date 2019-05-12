@@ -118,6 +118,9 @@
     <ClCompile Include="qgl_content_file_helpers.cpp">
       <Filter>Source Files\Content Files</Filter>
     </ClCompile>
+    <ClCompile Include="qgl_content_store.cpp">
+      <Filter>Source Files\Content Store</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLContent.h">
@@ -137,12 +140,6 @@
     </ClInclude>
     <ClInclude Include="include\qgl_content_dictionary.h">
       <Filter>Header Files\Dictionary</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_content_store.h">
-      <Filter>Header Files\Content Store</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_content_store_config.h">
-      <Filter>Header Files\Content Store</Filter>
     </ClInclude>
     <ClInclude Include="include\qgl_content_project.h">
       <Filter>Header Files\Content Project</Filter>
@@ -200,6 +197,15 @@
     </ClInclude>
     <ClInclude Include="include\Content-Files\qgl_content_file_helpers.h">
       <Filter>Header Files\Content Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content-Store\qgl_content_store.h">
+      <Filter>Header Files\Content Store</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content-Store\qgl_content_store_accessor.h">
+      <Filter>Header Files\Content Store</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content-Store\qgl_content_store_config.h">
+      <Filter>Header Files\Content Store</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

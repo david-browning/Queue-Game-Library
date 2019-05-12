@@ -169,11 +169,12 @@
     <ClInclude Include="include\Content-Importers\qgl_importer_struct.h" />
     <ClInclude Include="include\Content-Importers\qgl_importer_testers.h" />
     <ClInclude Include="include\Content-Importers\qgl_importer_wstring.h" />
+    <ClInclude Include="include\Content-Store\qgl_content_store.h" />
+    <ClInclude Include="include\Content-Store\qgl_content_store_accessor.h" />
+    <ClInclude Include="include\Content-Store\qgl_content_store_config.h" />
     <ClInclude Include="include\qgl_content_dictionary.h" />
     <ClInclude Include="include\qgl_content_project.h" />
     <ClInclude Include="include\qgl_content_project_compiler.h" />
-    <ClInclude Include="include\qgl_content_store.h" />
-    <ClInclude Include="include\qgl_content_store_config.h" />
     <ClInclude Include="include\qgl_content_include.h" />
     <ClInclude Include="include\qgl_content_item.h" />
     <ClInclude Include="include\qgl_content_types.h" />
@@ -187,6 +188,7 @@
     <ClCompile Include="qgl_content_file_helpers.cpp" />
     <ClCompile Include="qgl_content_project_compiler.cpp" />
     <ClCompile Include="qgl_content_project.cpp" />
+    <ClCompile Include="qgl_content_store.cpp" />
     <ClCompile Include="qgl_content_store_config.cpp" />
     <ClCompile Include="pch.h" />
     <ClCompile Include="pch.cpp">
