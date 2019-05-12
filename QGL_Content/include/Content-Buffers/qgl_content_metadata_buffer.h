@@ -108,6 +108,12 @@ namespace qgl::content
       }
 
       /*
+       Sets the content's name.
+       Throws if the name is too long.
+       */
+      void name(const winrt::hstring& n);
+
+      /*
        Returns the type of content this is.
        */
       inline RESOURCE_TYPES resource_type() const
@@ -115,6 +121,9 @@ namespace qgl::content
          return static_cast<RESOURCE_TYPES>(m_type);
       }
 
+      /*
+       Returns a reference to the resource type.
+       */
       auto& resource_type()
       {
          return m_type;
@@ -128,6 +137,9 @@ namespace qgl::content
          return static_cast<CONTENT_LOADER_IDS>(m_loaderID);
       }
 
+      /*
+       Returns a reference to the loader ID.
+       */
       auto& loader_id()
       {
          return m_loaderID;
@@ -179,13 +191,6 @@ namespace qgl::content
       }
 
       private:
-
-      /*
-       Sets the content's name.
-       Throws if the name is too long.
-       */
-      void name(const winrt::hstring& n);
-
       /*
        Version the content was compiled.
        */
