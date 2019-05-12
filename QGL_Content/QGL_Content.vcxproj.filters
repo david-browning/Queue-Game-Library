@@ -207,6 +207,9 @@
     <ClInclude Include="include\Content-Store\qgl_content_store_config.h">
       <Filter>Header Files\Content Store</Filter>
     </ClInclude>
+    <ClInclude Include="include\Content-Store\qgl_content_iterator.h">
+      <Filter>Header Files\Content Store</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="QGL_Content.def">

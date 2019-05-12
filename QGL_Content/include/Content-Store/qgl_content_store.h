@@ -1,6 +1,9 @@
 #pragma once
 #include "include/qgl_content_include.h"
 #include "include/Content-Store/qgl_content_store_config.h"
+#include "include/Content-Store/qgl_content_store_accessor.h"
+#include "include/Content-Files/qgl_file_loader_content_store_config.h"
+#include "include/Content-Store/qgl_content_iterator.h"
 
 namespace qgl::content
 {
@@ -14,8 +17,11 @@ namespace qgl::content
    {
       public:
       using FileStringT = winrt::hstring;
-      using IDT = uint64_t;
-      IDT INVALID_ID = static_cast<IDT>(-1);
+      using id_t = uint64_t;
+      id_t INVALID_ID = static_cast<id_t>(-1);
+      using map_t = std::unordered_map<id_t, content_accessor<id_t>>;
+      using iterator = content_iterator<id_t, map_t::iterator>;
+      using const_iterator = content_iterator<id_t, map_t::const_iterator>;
 
       /*
        Creates a content store using the configuration.
@@ -43,17 +49,17 @@ namespace qgl::content
        If the file has not been loaded into the store, this returns
        content_store::INVALID_ID.
        */
-      IDT file_id(const FileStringT& relativePath);
+      id_t file_id(const FileStringT& relativePath) const;
 
       /*
        Loads the content from the relative path and returns an ID that can be
        used to lookup a shared_ptr to the loaded item.
-       LoadingUnaryPredicate: Unary predicate takes a const content_file_read& 
-       and returns a shared_ptr to content. See string_file_loader for an 
+       LoadingUnaryPredicate: Unary predicate takes a const content_file_read&
+       and returns a shared_ptr to content. See string_file_loader for an
        example.
        */
       template<class LoadingUnaryPredicate>
-      IDT load(const FileStringT& relativePath, LoadingUnaryPredicate pred)
+      id_t load(const FileStringT& relativePath, LoadingUnaryPredicate pred)
       {
          //Check if the file already has an ID.
          auto fileID = file_id(relativePath);
@@ -64,7 +70,7 @@ namespace qgl::content
          }
 
          //Get and then increment the ID for the content we are loading.
-         IDT retID = m_nextID.fetch_add(1);
+         id_t retID = m_nextID.fetch_add(1);
 
          //Map the content path to the content's ID.
          m_fileNameIDMap[relativePath] = retID;
@@ -75,28 +81,30 @@ namespace qgl::content
 
          //Use the loader predicate to load the file.
          //Store the shared_ptr in the map of ID->shared_ptr
-         m_IDContentMap[retID] = pred(f);
+         m_IDContentMap[retID] = content_accessor<id_t>(retID, pred(f));
+
+         return retID;
       }
 
       /*
-       Returns a shared_ptr to content. Throws an exception if content ID is 
+       Returns a shared_ptr to content. Throws an exception if content ID is
        not mapped in the store.
        */
       template<class T>
-      std::shared_ptr<T> shared_get(IDT contentID)
+      std::shared_ptr<T> shared_get(id_t contentID)
       {
          return std::reinterpret_pointer_cast<T, void>(
-            m_IDContentMap.at(contentID));
+            m_IDContentMap.at(contentID).shared_get());
       }
 
       /*
-       Returns a const pointer to to content. Throws an exception if the content
+       Returns a const pointer to content. Throws an exception if the content
        ID is not mapped in the store.
        */
       template<class T>
-      const T* get(IDT contentID)
+      const T* get(id_t contentID)
       {
-         return static_cast<T*>(m_IDContentMap[contentID].get());
+         return static_cast<T*>(m_IDContentMap.at(contentID).get());
       }
 
       /*
@@ -105,11 +113,19 @@ namespace qgl::content
        */
       FileStringT abs_path(const FileStringT& relativePath) const;
 
+      iterator begin();
+
+      iterator end();
+
+      iterator find_with(iterator first,
+                         iterator last,
+                         RESOURCE_TYPES type);
+
       private:
       /*
        Next ID to give to content.
        */
-      std::atomic<IDT> m_nextID;
+      std::atomic<id_t> m_nextID;
 
       /*
        Content store configuration.
@@ -119,11 +135,11 @@ namespace qgl::content
       /*
        Maps a file name to a content ID.
        */
-      std::unordered_map<FileStringT, IDT> m_fileNameIDMap;
+      std::unordered_map<FileStringT, id_t> m_fileNameIDMap;
 
       /*
        Maps a content ID to the content.
        */
-      std::unordered_map<IDT, std::shared_ptr<void>> m_IDContentMap;
+      map_t m_IDContentMap;
    };
 }

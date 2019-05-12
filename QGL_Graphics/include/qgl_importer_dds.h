@@ -8,8 +8,8 @@ namespace qgl::content
 {
    using namespace qgl::graphics;
 
-   template<typename ContentCharT = char, typename IDT = content_id>
-   class dds_importer : public ientry_importer<ContentCharT, IDT, TEXTURE_BUFFER>
+   template<typename ContentCharT = char, typename id_t = content_id>
+   class dds_importer : public ientry_importer<ContentCharT, id_t, TEXTURE_BUFFER>
    {
       public:
       using LoadT = TEXTURE_BUFFER;
@@ -28,7 +28,7 @@ namespace qgl::content
 
       virtual LoadT load(_IN_HANDLE_ const winrt::file_handle& fileHandle,
                          _IN_ const CONTENT_DICTIONARY_ENTRY_BUFFER& lookup,
-                         const IDT& newID = -1) const
+                         const id_t& newID = -1) const
       {
          qgl::graphics::TEXTURE_BUFFER ret(lookup.size());
 

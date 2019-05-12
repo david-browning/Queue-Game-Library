@@ -5,9 +5,9 @@
 
 namespace qgl::content
 {
-   template<typename ContentCharT = char, typename IDT = content_id>
+   template<typename ContentCharT = char, typename id_t = content_id>
    using sampler_importer = struct_importer<qgl::graphics::SAMPLER_BUFFER,
       CONTENT_LOADER_IDS::CONTENT_LOADER_ID_SAMPLER,
       RESOURCE_TYPES::RESOURCE_TYPE_DESCRIPTION,
-      ContentCharT, IDT>;
+      ContentCharT, id_t>;
 }

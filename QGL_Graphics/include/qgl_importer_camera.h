@@ -5,9 +5,9 @@
 
 namespace qgl::content
 {
-   template<typename ContentCharT = char, typename IDT = content_id>
+   template<typename ContentCharT = char, typename id_t = content_id>
    using camera_importer = struct_importer<qgl::graphics::CAMERA_BUFFER,
       CONTENT_LOADER_IDS::CONTENT_LOADER_ID_CAMERA,
       RESOURCE_TYPES::RESOURCE_TYPE_CAMERA,
-      ContentCharT, IDT>;
+      ContentCharT, id_t>;
 }

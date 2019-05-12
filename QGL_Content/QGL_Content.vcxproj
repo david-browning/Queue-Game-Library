@@ -169,6 +169,7 @@
     <ClInclude Include="include\Content-Importers\qgl_importer_struct.h" />
     <ClInclude Include="include\Content-Importers\qgl_importer_testers.h" />
     <ClInclude Include="include\Content-Importers\qgl_importer_wstring.h" />
+    <ClInclude Include="include\Content-Store\qgl_content_iterator.h" />
     <ClInclude Include="include\Content-Store\qgl_content_store.h" />
     <ClInclude Include="include\Content-Store\qgl_content_store_accessor.h" />
     <ClInclude Include="include\Content-Store\qgl_content_store_config.h" />

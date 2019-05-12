@@ -9,7 +9,8 @@ namespace qgl::content
 
    }
 
-   content_store::IDT content_store::file_id(const FileStringT& relativePath)
+   content_store::id_t content_store::file_id(
+      const FileStringT& relativePath) const
    {
 
    }
@@ -17,6 +18,6 @@ namespace qgl::content
    content_store::FileStringT content_store::abs_path(
       const FileStringT& relativePath) const
    {
-      return FileStringT();
+      
    }
 }
