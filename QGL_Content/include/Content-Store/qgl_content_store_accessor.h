@@ -1,5 +1,6 @@
 #pragma once
 #include "include/qgl_content_include.h"
+#include "include/Content-Buffers/qgl_content_metadata_buffer.h"
 
 namespace qgl::content
 {
@@ -8,9 +9,12 @@ namespace qgl::content
    {
       public:
       template<class T>
-      content_accessor(IDT id, std::shared_ptr<T>& ptr) :
+      content_accessor(IDT id,
+                       const CONTENT_METADATA_BUFFER& meta,
+                       std::shared_ptr<T>& ptr) :
          m_id(id),
-         m_ptr(ptr)
+         m_ptr(ptr),
+         m_metadata(meta)
       {
 
       }
@@ -48,12 +52,18 @@ namespace qgl::content
          return m_ptr;
       }
 
+      const CONTENT_METADATA_BUFFER& metadata() const
+      {
+         return m_metadata;
+      }
+
       friend void swap(content_accessor<IDT>& first,
                        content_accessor<IDT>& second)
       {
          using std::swap;
          swap(first.m_id, second.m_id);
          swap(first.m_ptr, second.m_ptr);
+         swap(first.m_metadata, second.m_metadata);
       }
 
       content_accessor<IDT>& operator=(content_accessor<IDT> other)
@@ -73,5 +83,7 @@ namespace qgl::content
        Shared pointer to content
        */
       std::shared_ptr<void> m_ptr;
+
+      CONTENT_METADATA_BUFFER m_metadata;
    };
 }
