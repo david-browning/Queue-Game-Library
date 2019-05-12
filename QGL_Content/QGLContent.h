@@ -12,6 +12,6 @@
 #include "include/Content-Importers/qgl_importer_wstring.h"
 
 #include "include/Content-Files/qgl_file_importers.h"
-#include "include/qgl_content_store.h"
+#include "include/Content-Store/qgl_content_store.h"
 #include "include/qgl_content_project.h"
 #include "include/qgl_content_project_compiler.h"

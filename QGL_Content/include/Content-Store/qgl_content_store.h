@@ -19,9 +19,15 @@ namespace qgl::content
       using FileStringT = winrt::hstring;
       using id_t = uint64_t;
       id_t INVALID_ID = static_cast<id_t>(-1);
-      using map_t = std::unordered_map<id_t, content_accessor<id_t>>;
-      using iterator = content_iterator<id_t, map_t::iterator>;
-      using const_iterator = content_iterator<id_t, map_t::const_iterator>;
+      using id_to_content_map_t = std::unordered_map<id_t, size_t>;
+
+      using content_list_t = std::vector<content_accessor<id_t>>;
+
+      using iterator = content_list_t::iterator;
+      using const_iterator = content_list_t::const_iterator;
+
+      using iterator_ref = iterator::reference;
+      using const_iterator_ref = const_iterator::reference;
 
       /*
        Creates a content store using the configuration.
@@ -81,7 +87,11 @@ namespace qgl::content
 
          //Use the loader predicate to load the file.
          //Store the shared_ptr in the map of ID->shared_ptr
-         m_IDContentMap[retID] = content_accessor<id_t>(retID, pred(f));
+         auto data = content_accessor<id_t>(retID,
+                                            f.header().metadata(),
+                                            pred(f));
+         m_contentList.push_back(data);
+         m_IDContentMap[retID] = m_contentList.size() - 1;
 
          return retID;
       }
@@ -113,13 +123,36 @@ namespace qgl::content
        */
       FileStringT abs_path(const FileStringT& relativePath) const;
 
+      /*
+       Returns an iterator to the begining of all loaded content.
+       */
       iterator begin();
 
+      /*
+       Returns an iterator to the end of all loaded content.
+       */
       iterator end();
 
+      /*
+       Returns a const iterator to the begining of all loaded content.
+       */
+      const_iterator cbegin() const;
+
+      /*
+       Returns a const iterator to the end of all loaded content.
+       */
+      const_iterator cend() const;
+
+      /*
+       Searches through all loaded content until it finds content who's
+       resource type matches type.
+       Returns an iterator to that content.
+       To keep searching forward, call this again using the return value as
+       the first iterator.
+       */
       iterator find_with(iterator first,
                          iterator last,
-                         RESOURCE_TYPES type);
+                         RESOURCE_TYPES type) const;
 
       private:
       /*
@@ -133,13 +166,16 @@ namespace qgl::content
       content_store_config m_config;
 
       /*
-       Maps a file name to a content ID.
+       Maps a relative file path to a content ID.
        */
       std::unordered_map<FileStringT, id_t> m_fileNameIDMap;
 
       /*
-       Maps a content ID to the content.
+       Maps a content ID an index. The index is used to lookup the 
+       content_accessor from the content list.
        */
-      map_t m_IDContentMap;
+      id_to_content_map_t m_IDContentMap;
+
+      content_list_t m_contentList;
    };
 }
