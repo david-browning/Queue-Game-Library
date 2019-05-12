@@ -77,45 +77,45 @@ namespace winrt::QGL_Projection::implementation
    {
       QGL_Projection::ContentInfo ret = winrt::make<QGL_Projection::implementation::ContentInfo>();
 
-      //Read the compiler version.
-      auto v = winrt::make<QGL_Projection::implementation::CompilerVersion>(r.ReadUInt32());
-      ret.CompilerVersion(v);
+      ////Read the compiler version.
+      //auto v = winrt::make<QGL_Projection::implementation::CompilerVersion>(r.ReadUInt32());
+      //ret.CompilerVersion(v);
 
-      //Read the GUID
-      ret.Guid(r.ReadGuid());
+      ////Read the GUID
+      //ret.Guid(r.ReadGuid());
 
-      //Read the resource type
-      auto resId = r.ReadUInt16();
-      auto rType = FindModel(resId, supportedResourceTypes);
-      if (rType == nullptr)
-      {
-         return nullptr;
-      }
+      ////Read the resource type
+      //auto resId = r.ReadUInt16();
+      //auto rType = FindModel(resId, supportedResourceTypes);
+      //if (rType == nullptr)
+      //{
+      //   return nullptr;
+      //}
 
-      ret.ResourceType(rType);
+      //ret.ResourceType(rType);
 
-      //Read the loader ID
-      auto ldrID = r.ReadUInt16();
-      auto ldr = FindModel(ldrID, rType);
-      if (ldr == nullptr)
-      {
-         return nullptr;
-      }
-      ret.ContentLoader(ldr);
+      ////Read the loader ID
+      //auto ldrID = r.ReadUInt16();
+      //auto ldr = FindModel(ldrID, rType);
+      //if (ldr == nullptr)
+      //{
+      //   return nullptr;
+      //}
+      //ret.ContentLoader(ldr);
 
-      //Read the flags.
-      //IsShared.
-      //CharLength
-      //Content Visible
-      ret.ContentVisible(r.ReadBoolean());
-      //Content Obey Physics
-      ret.ContentObeyPhysics(r.ReadBoolean());
+      ////Read the flags.
+      ////IsShared.
+      ////CharLength
+      ////Content Visible
+      //ret.ContentVisible(r.ReadBoolean());
+      ////Content Obey Physics
+      //ret.ContentObeyPhysics(r.ReadBoolean());
 
-      //Length of the content name.
-      auto nameLen = r.ReadUInt32();
+      ////Length of the content name.
+      //auto nameLen = r.ReadUInt32();
 
-      //Content name.
-      ret.ContentName(r.ReadString(nameLen));
+      ////Content name.
+      //ret.ContentName(r.ReadString(nameLen));
 
       return ret;
    }
