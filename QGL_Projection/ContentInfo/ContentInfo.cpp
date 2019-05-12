@@ -197,7 +197,7 @@ namespace winrt::QGL_Projection::implementation
       if (value != nullptr && m_resourceModel != value)
       {
          m_resourceModel = value;
-         m_buffer.resource_type(static_cast<RESOURCE_TYPES>(m_resourceModel.Value()));
+         m_buffer.resource_type() = m_resourceModel.Value();
          m_propertyChanged(*this, PropertyChangedEventArgs{ L"ResourceType" });
       }
    }
@@ -214,7 +214,7 @@ namespace winrt::QGL_Projection::implementation
          m_loaderModel = value;
          if (m_loaderModel != nullptr)
          {
-            m_buffer.loader_id(static_cast<qgl::content::CONTENT_LOADER_IDS>(m_loaderModel.Value()));
+            m_buffer.loader_id() = m_loaderModel.Value();
          }
 
          m_propertyChanged(*this, PropertyChangedEventArgs{ L"ContentLoader" });

@@ -115,12 +115,22 @@ namespace qgl::content
          return static_cast<RESOURCE_TYPES>(m_type);
       }
 
+      auto& resource_type()
+      {
+         return m_type;
+      }
+
       /*
        Returns the loader ID this content uses.
        */
       inline CONTENT_LOADER_IDS loader_id() const
       {
          return static_cast<CONTENT_LOADER_IDS>(m_loaderID);
+      }
+
+      auto& loader_id()
+      {
+         return m_loaderID;
       }
 
       /*

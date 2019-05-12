@@ -104,8 +104,3 @@ winrt::hstring qgl::content::CONTENT_METADATA_BUFFER::guid_str() const
       winrt::throw_hresult(hr);
    }
 }
-
-void qgl::content::CONTENT_METADATA_BUFFER::guid_str(const winrt::hstring& g)
-{
-   winrt::check_hresult(CLSIDFromString(g.c_str(), &m_guid));
-}
