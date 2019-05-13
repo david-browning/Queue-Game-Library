@@ -82,6 +82,7 @@ namespace qgl::content
 
    /*
     Opens a file for read access.
+    Creates the file if it does not exist.
     Throws an exception on error.
     */
    extern LIB_EXPORT winrt::file_handle open_file_read(
@@ -90,6 +91,7 @@ namespace qgl::content
 
   /*
    Opens a file for write access.
+   Creates the file if it does not exist.
    Throws an exception on error.
    */
    extern LIB_EXPORT winrt::file_handle open_file_write(
@@ -98,6 +100,7 @@ namespace qgl::content
 
   /*
    Opens a file for read and write access.
+   Creates the file if it does not exist.
    Throws an exception on error.
    */
    extern LIB_EXPORT winrt::file_handle open_file_readwrite(
