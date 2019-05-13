@@ -13,8 +13,8 @@ namespace QGL_Content_UnitTests
     Open a file using QGL functions and attempt to read or write using the
     Windows API. If opening a file throws an exception, or we cannot read or
     write to the file, then the test fails.
-    This assumes fill_security_attributes and 
-    fill_createfile_extended_parameters are correct.
+    This assumes make_default_security_attributes and 
+    make_default_open_file_params are correct.
     */
    TEST_CLASS(OpenFileHelperTests)
    {
@@ -25,9 +25,9 @@ namespace QGL_Content_UnitTests
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\OpenNewFileWrite.txt");
 
-         SECURITY_ATTRIBUTES sa = qgl::content::fill_security_attributes();
+         SECURITY_ATTRIBUTES sa = qgl::content::make_default_security_attributes();
          auto openParameters = 
-            fill_createfile_extended_parameters_no_overlapped(&sa);
+            make_open_file_params_no_offset(&sa);
 
          winrt::file_handle handle;
          try
@@ -73,9 +73,9 @@ namespace QGL_Content_UnitTests
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\OpenNewFileReadWrite.txt");
 
-         SECURITY_ATTRIBUTES sa = qgl::content::fill_security_attributes();
+         SECURITY_ATTRIBUTES sa = qgl::content::make_default_security_attributes();
          auto openParameters = 
-            fill_createfile_extended_parameters_no_overlapped(&sa);
+            make_open_file_params_no_offset(&sa);
 
          winrt::file_handle handle;
          try

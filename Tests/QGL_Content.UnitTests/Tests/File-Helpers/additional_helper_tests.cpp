@@ -22,7 +22,7 @@ namespace QGL_Content_UnitTests
          DWORD expectedLowerBytes = 0xFFFF'FFFE;
 
          OVERLAPPED overlapped;
-         qgl::content::fill_overlapped(largeSize, &overlapped);
+         qgl::content::make_overlapped(largeSize, &overlapped);
 
          Assert::AreEqual(expectedLowerBytes, overlapped.Offset,
                           L"The low bytes are not correct.");
@@ -43,7 +43,7 @@ namespace QGL_Content_UnitTests
          winrt::hstring newFilePath(root + 
                                     L"\\CreateDefaultSecurityParameters.txt");
 
-         SECURITY_ATTRIBUTES sa = qgl::content::fill_security_attributes();
+         SECURITY_ATTRIBUTES sa = qgl::content::make_default_security_attributes();
          CREATEFILE2_EXTENDED_PARAMETERS openParams = { 0 };
          openParams.dwSize = sizeof(CREATEFILE2_EXTENDED_PARAMETERS);
          openParams.dwFileAttributes = FILE_ATTRIBUTE_NORMAL;
@@ -64,7 +64,7 @@ namespace QGL_Content_UnitTests
 
       /*
        Test passes if we can open a file using the create file parameters.
-       Assumes fill_security_attributes is correct.
+       Assumes make_default_security_attributes is correct.
        */
       TEST_METHOD(CreateDefaultOpenParameters)
       {
@@ -72,8 +72,8 @@ namespace QGL_Content_UnitTests
          winrt::hstring newFilePath(root +
                                     L"\\CreateDefaultOpenParameters.txt");
 
-         SECURITY_ATTRIBUTES sa = qgl::content::fill_security_attributes();
-         auto openParams = fill_createfile_extended_parameters(&sa);
+         SECURITY_ATTRIBUTES sa = qgl::content::make_default_security_attributes();
+         auto openParams = make_default_open_file_params(&sa);
 
          try
          {
@@ -97,8 +97,8 @@ namespace QGL_Content_UnitTests
 
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\FileSize.txt");
-         SECURITY_ATTRIBUTES sa = qgl::content::fill_security_attributes();
-         auto openParams = fill_createfile_extended_parameters(&sa);
+         SECURITY_ATTRIBUTES sa = qgl::content::make_default_security_attributes();
+         auto openParams = make_default_open_file_params(&sa);
 
          //Open a file for writing.
          auto handle = open_file_write(newFilePath, openParams);

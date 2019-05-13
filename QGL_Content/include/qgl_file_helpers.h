@@ -7,14 +7,14 @@ namespace qgl::content
      Populates an OVERLAPPED so it can be used to read and write a file using
      an offset.
      */
-    extern LIB_EXPORT void fill_overlapped(size_t offsetBytes, 
+    extern LIB_EXPORT void make_overlapped(size_t offsetBytes, 
                                            OVERLAPPED* over_p);
 
    /*
     Returns a SECURITY_ATTRIBUTES for use with reading and writing files.
     The default attributes allow file handles to be inherited.
     */
-    extern LIB_EXPORT SECURITY_ATTRIBUTES fill_security_attributes();
+    extern LIB_EXPORT SECURITY_ATTRIBUTES make_default_security_attributes();
 
    /*
     Returns a CREATEFILE2_EXTENDED_PARAMETERS for use with reading and 
@@ -23,11 +23,11 @@ namespace qgl::content
     CREATEFILE2_EXTENDED_PARAMETERS.
     */
     extern LIB_EXPORT CREATEFILE2_EXTENDED_PARAMETERS 
-       fill_createfile_extended_parameters(
+       make_default_open_file_params(
       SECURITY_ATTRIBUTES* attr_p);
 
     extern LIB_EXPORT CREATEFILE2_EXTENDED_PARAMETERS
-       fill_createfile_extended_parameters_no_overlapped(
+       make_open_file_params_no_offset(
           SECURITY_ATTRIBUTES* attr_p);
 
    /*
@@ -44,7 +44,7 @@ namespace qgl::content
    {
       DWORD bytesRead = 0;
       OVERLAPPED overlapped;
-      fill_overlapped(offsetBytes, &overlapped);
+      make_overlapped(offsetBytes, &overlapped);
 
       auto result = ReadFile(fileHandle.get(), (void*)buffer_p,
          (DWORD)bytesToRead, &bytesRead, &overlapped);
@@ -72,7 +72,7 @@ namespace qgl::content
    {
       DWORD bytesWritten = 0;
       OVERLAPPED overlapped;
-      fill_overlapped(offsetBytes, &overlapped);
+      make_overlapped(offsetBytes, &overlapped);
 
       auto result = WriteFile(fileHandle.get(), (void*)buffer_p,
          (DWORD)bytesToWrite, &bytesWritten, &overlapped);

@@ -8,8 +8,8 @@ using namespace qgl::content;
 namespace QGL_Content_UnitTests
 {
    /*
-    These tests assume fill_overlapped, fill_security_attributes,
-    fill_createfile_extended_parameters, open_file_read, and open_file_write
+    These tests assume make_overlapped, make_default_security_attributes,
+    make_default_open_file_params, open_file_read, and open_file_write
     are correct.
     */
    TEST_CLASS(WriteFileTests)
@@ -24,8 +24,8 @@ namespace QGL_Content_UnitTests
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\WriteEntireFileAndVerify.txt");
 
-         auto sa = fill_security_attributes();
-         auto openParams = fill_createfile_extended_parameters(&sa);
+         auto sa = make_default_security_attributes();
+         auto openParams = make_default_open_file_params(&sa);
 
          auto handle = open_file_write(newFilePath, openParams);
 
@@ -54,8 +54,8 @@ namespace QGL_Content_UnitTests
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\WriteFirstPartAndVerify.txt");
 
-         auto sa = fill_security_attributes();
-         auto openParams = fill_createfile_extended_parameters(&sa);
+         auto sa = make_default_security_attributes();
+         auto openParams = make_default_open_file_params(&sa);
 
          auto handle = open_file_write(newFilePath, openParams);
          write_file_sync(handle, data_size / 2, 0, data_to_rw);
@@ -82,8 +82,8 @@ namespace QGL_Content_UnitTests
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\WriteSecondPartAndVerify.txt");
 
-         auto sa = fill_security_attributes();
-         auto openParams = fill_createfile_extended_parameters(&sa);
+         auto sa = make_default_security_attributes();
+         auto openParams = make_default_open_file_params(&sa);
 
          auto handle = open_file_write(newFilePath, openParams);
          write_file_sync(handle, data_size / 2, data_size / 2, 
@@ -95,7 +95,7 @@ namespace QGL_Content_UnitTests
          char readBuffer[data_size / 2] = { 0 };
          DWORD bytesRead = 0;
          OVERLAPPED offsetOverlapped;
-         fill_overlapped(data_size / 2, &offsetOverlapped);
+         make_overlapped(data_size / 2, &offsetOverlapped);
          auto result = ReadFile(handle.get(), readBuffer, data_size / 2,
                                 &bytesRead, &offsetOverlapped);
 

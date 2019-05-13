@@ -11,8 +11,8 @@ namespace QGL_Content_UnitTests
    /*
     Truncating tests pass if, after truncating the file, the file size is 0.
     This assumes open_file_write, read_file_sync, write_file_sync, 
-    fill_security_attributes, file_size, and 
-    fill_createfile_extended_parameters are correct.
+    make_default_security_attributes, file_size, and 
+    make_default_open_file_params are correct.
     */
    TEST_CLASS(TunrcateFileTests)
    {
@@ -23,8 +23,8 @@ namespace QGL_Content_UnitTests
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\TruncateExistingFile.txt");
 
-         SECURITY_ATTRIBUTES sa = qgl::content::fill_security_attributes();
-         auto openParams = fill_createfile_extended_parameters(&sa);
+         SECURITY_ATTRIBUTES sa = qgl::content::make_default_security_attributes();
+         auto openParams = make_default_open_file_params(&sa);
 
          auto handle = qgl::content::open_file_write(newFilePath, openParams);
 

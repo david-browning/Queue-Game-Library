@@ -6,7 +6,7 @@ using namespace winrt::param;
 using namespace winrt::Windows::Storage;
 using namespace qgl::content;
 
-void qgl::content::fill_overlapped(size_t offsetBytes, OVERLAPPED* over_p)
+void qgl::content::make_overlapped(size_t offsetBytes, OVERLAPPED* over_p)
 {
    ZeroMemory(over_p, sizeof(OVERLAPPED));
    over_p->hEvent = nullptr;
@@ -14,7 +14,7 @@ void qgl::content::fill_overlapped(size_t offsetBytes, OVERLAPPED* over_p)
    over_p->OffsetHigh = (offsetBytes >> 32) & 0xFFFF'FFFF;
 }
 
-SECURITY_ATTRIBUTES qgl::content::fill_security_attributes()
+SECURITY_ATTRIBUTES qgl::content::make_default_security_attributes()
 {
    SECURITY_ATTRIBUTES ret;
    ret.bInheritHandle = TRUE;
@@ -24,17 +24,17 @@ SECURITY_ATTRIBUTES qgl::content::fill_security_attributes()
 }
 
 CREATEFILE2_EXTENDED_PARAMETERS
-qgl::content::fill_createfile_extended_parameters(
+qgl::content::make_default_open_file_params(
    SECURITY_ATTRIBUTES * attr_p)
 {
    auto ret = 
-      qgl::content::fill_createfile_extended_parameters_no_overlapped(attr_p);
+      qgl::content::make_open_file_params_no_offset(attr_p);
    ret.dwFileAttributes |= FILE_FLAG_OVERLAPPED;
    return ret;
 }
 
 CREATEFILE2_EXTENDED_PARAMETERS 
-qgl::content::fill_createfile_extended_parameters_no_overlapped(
+qgl::content::make_open_file_params_no_offset(
    SECURITY_ATTRIBUTES * attr_p)
 {
    CREATEFILE2_EXTENDED_PARAMETERS ret;

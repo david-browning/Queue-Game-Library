@@ -8,8 +8,8 @@ using namespace qgl::content;
 namespace QGL_Content_UnitTests
 {
    /*
-    These tests assume fill_overlapped, fill_security_attributes,
-    fill_createfile_extended_parameters, write_file_sync, open_file_read, 
+    These tests assume make_overlapped, make_default_security_attributes,
+    make_default_open_file_params, write_file_sync, open_file_read, 
     and open_file_write are correct.
     */
    TEST_CLASS(ReadFileTests)
@@ -23,8 +23,8 @@ namespace QGL_Content_UnitTests
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\ReadEntireFile.txt");
 
-         auto sa = fill_security_attributes();
-         auto openParams = fill_createfile_extended_parameters(&sa);
+         auto sa = make_default_security_attributes();
+         auto openParams = make_default_open_file_params(&sa);
 
          auto handle = open_file_write(newFilePath, openParams);
          write_file_sync(handle, data_size / 2, 0, data_to_rw);
@@ -48,8 +48,8 @@ namespace QGL_Content_UnitTests
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\ReadFileFirstPart.txt");
 
-         auto sa = fill_security_attributes();
-         auto openParams = fill_createfile_extended_parameters(&sa);
+         auto sa = make_default_security_attributes();
+         auto openParams = make_default_open_file_params(&sa);
 
          auto handle = open_file_write(newFilePath, openParams);
          write_file_sync(handle, data_size / 2, 0, data_to_rw);
@@ -72,8 +72,8 @@ namespace QGL_Content_UnitTests
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\ReadFileSecondPart.txt");
 
-         auto sa = fill_security_attributes();
-         auto openParams = fill_createfile_extended_parameters(&sa);
+         auto sa = make_default_security_attributes();
+         auto openParams = make_default_open_file_params(&sa);
 
          auto handle = open_file_write(newFilePath, openParams);
          write_file_sync(handle, 
