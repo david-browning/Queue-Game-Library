@@ -26,7 +26,8 @@ namespace QGL_Content_UnitTests
          winrt::hstring newFilePath(root + L"\\OpenNewFileWrite.txt");
 
          SECURITY_ATTRIBUTES sa = qgl::content::fill_security_attributes();
-         auto openParameters = fill_createfile_extended_parameters(&sa);
+         auto openParameters = 
+            fill_createfile_extended_parameters_no_overlapped(&sa);
 
          winrt::file_handle handle;
          try
@@ -47,12 +48,12 @@ namespace QGL_Content_UnitTests
                                  static_cast<DWORD>(buffer.size()),
                                  &written,
                                  nullptr);
-
+         auto lastError = GetLastError();
          Assert::IsTrue(result != 0, L"Failed to write to the file.");
 
          char readBack[5];
          result = ReadFile(handle.get(), readBack, 4, &written, nullptr);
-         auto lastError = GetLastError();
+         lastError = GetLastError();
 
          Assert::IsTrue(result == 0,
                         L"Writing the file is supposed to fail.");
@@ -73,7 +74,8 @@ namespace QGL_Content_UnitTests
          winrt::hstring newFilePath(root + L"\\OpenNewFileReadWrite.txt");
 
          SECURITY_ATTRIBUTES sa = qgl::content::fill_security_attributes();
-         auto openParameters = fill_createfile_extended_parameters(&sa);
+         auto openParameters = 
+            fill_createfile_extended_parameters_no_overlapped(&sa);
 
          winrt::file_handle handle;
          try

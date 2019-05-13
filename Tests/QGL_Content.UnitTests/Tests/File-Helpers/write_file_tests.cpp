@@ -8,7 +8,7 @@ using namespace qgl::content;
 namespace QGL_Content_UnitTests
 {
    /*
-    These tests assume fill_overlapped, fill_security_attributes, 
+    These tests assume fill_overlapped, fill_security_attributes,
     fill_createfile_extended_parameters, open_file_read, and open_file_write
     are correct.
     */
@@ -16,7 +16,7 @@ namespace QGL_Content_UnitTests
    {
       public:
       /*
-       Create a file, write some data to it, close the file, re-open it and 
+       Create a file, write some data to it, close the file, re-open it and
        read the data.
        */
       TEST_METHOD(WriteEntireFileAndVerify)
@@ -46,7 +46,7 @@ namespace QGL_Content_UnitTests
       }
 
       /*
-       Create a file, write some data to it, close the file, re-open it and 
+       Create a file, write some data to it, close the file, re-open it and
        read the first half of the data.
        */
       TEST_METHOD(WriteFirstPartAndVerify)
@@ -74,27 +74,29 @@ namespace QGL_Content_UnitTests
       }
 
       /*
-       Create a file, write some data to it, close the file, re-open it and 
+       Create a file, write some data to it, close the file, re-open it and
        read the second half of the data.
        */
       TEST_METHOD(WriteSecondPartAndVerify)
       {
          auto root = ApplicationData::Current().LocalFolder().Path();
-         winrt::hstring newFilePath(root + L"\\WriteFirstPartAndVerify.txt");
+         winrt::hstring newFilePath(root + L"\\WriteSecondPartAndVerify.txt");
 
          auto sa = fill_security_attributes();
          auto openParams = fill_createfile_extended_parameters(&sa);
 
          auto handle = open_file_write(newFilePath, openParams);
-         write_file_sync(handle, data_size / 2, data_size / 2, data_to_rw);
+         write_file_sync(handle, data_size / 2, data_size / 2, 
+                         data_to_rw + (data_size / 2));
+
          handle.close();
 
          handle = open_file_read(newFilePath, openParams);
-         char* readBuffer[data_size / 2];
+         char readBuffer[data_size / 2] = { 0 };
          DWORD bytesRead = 0;
          OVERLAPPED offsetOverlapped;
          fill_overlapped(data_size / 2, &offsetOverlapped);
-         auto result = ReadFile(handle.get(), readBuffer, data_size/2, 
+         auto result = ReadFile(handle.get(), readBuffer, data_size / 2,
                                 &bytesRead, &offsetOverlapped);
 
          Assert::IsTrue(result != 0, L"Could not read the file.");

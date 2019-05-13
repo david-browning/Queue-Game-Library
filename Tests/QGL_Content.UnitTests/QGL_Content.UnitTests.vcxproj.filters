@@ -100,4 +100,9 @@
   <ItemGroup>
     <None Include="QGL_Content.UnitTests_TemporaryKey.pfx" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Tests\Test-Files\CheckMe.txt">
+      <Filter>Tests\Test-Files</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

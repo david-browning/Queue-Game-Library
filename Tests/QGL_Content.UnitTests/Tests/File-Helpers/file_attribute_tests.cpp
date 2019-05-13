@@ -53,10 +53,15 @@ namespace QGL_Content_UnitTests
        */
       TEST_METHOD(FileExistsTrue)
       {
-         auto installDir = winrt::Windows::ApplicationModel::
-            Package::Current().InstalledLocation().Path();
+         auto rootPath = winrt::Windows::Storage::ApplicationData::Current().
+            LocalFolder().Path();
 
-         auto fileToCheck = installDir + L"\\Tests\\Test-Files\\CheckMe.txt";
+         auto fileToCheck = rootPath + L"\\FileExistsTrue.txt";
+         auto sa = qgl::content::fill_security_attributes();
+         auto openParams = 
+            qgl::content::fill_createfile_extended_parameters_no_overlapped(&sa);
+         auto handle = qgl::content::open_file_write(fileToCheck, openParams);
+         handle.close();
 
          Assert::IsTrue(qgl::content::file_exists(fileToCheck),
                         L"The file should exist.");

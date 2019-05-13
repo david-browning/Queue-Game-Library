@@ -33,7 +33,9 @@ namespace QGL_Content_UnitTests
          handle = open_file_read(newFilePath, openParams);
          auto fileData = file_data(handle);
 
-         Assert::IsTrue(memcmp(fileData.data(), data_to_rw, fileData.size()),
+         Assert::IsTrue(memcmp(fileData.data(), 
+                               data_to_rw, 
+                               fileData.size()) == 0,
                         L"The file data is not correct.");
       }
        
@@ -57,7 +59,7 @@ namespace QGL_Content_UnitTests
          char fileData[data_size / 2];
          read_file_sync(handle, data_size / 2, 0, fileData);
 
-         Assert::IsTrue(memcmp(fileData, data_to_rw, data_size / 2),
+         Assert::IsTrue(memcmp(fileData, data_to_rw, data_size / 2) == 0,
                         L"The file data is not correct.");
       }
 
@@ -74,7 +76,10 @@ namespace QGL_Content_UnitTests
          auto openParams = fill_createfile_extended_parameters(&sa);
 
          auto handle = open_file_write(newFilePath, openParams);
-         write_file_sync(handle, data_size / 2, 0, data_to_rw);
+         write_file_sync(handle, 
+                         data_size / 2,
+                         data_size / 2, 
+                         data_to_rw + (data_size / 2));
          handle.close();
 
          handle = open_file_read(newFilePath, openParams);

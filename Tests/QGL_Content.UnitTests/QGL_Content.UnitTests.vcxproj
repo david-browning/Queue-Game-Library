@@ -307,6 +307,9 @@
       <Project>{d5f8ec52-9052-4a1e-81ca-ea32c414ec11}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Tests\Test-Files\CheckMe.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
