@@ -7,13 +7,14 @@ namespace qgl::content
      Populates an OVERLAPPED so it can be used to read and write a file using
      an offset.
      */
-   void fill_overlapped(size_t offsetBytes, OVERLAPPED* over_p);
+    extern LIB_EXPORT void fill_overlapped(size_t offsetBytes, 
+                                           OVERLAPPED* over_p);
 
    /*
     Returns a SECURITY_ATTRIBUTES for use with reading and writing files.
     The default attributes allow file handles to be inherited.
     */
-   SECURITY_ATTRIBUTES fill_security_attributes();
+    extern LIB_EXPORT SECURITY_ATTRIBUTES fill_security_attributes();
 
    /*
     Returns a CREATEFILE2_EXTENDED_PARAMETERS for use with reading and 
@@ -21,7 +22,8 @@ namespace qgl::content
     The SECURITY_ATTRIBUTES pointer must remain valid for the lifetime of the
     CREATEFILE2_EXTENDED_PARAMETERS.
     */
-   CREATEFILE2_EXTENDED_PARAMETERS fill_createfile_extended_parameters(
+    extern LIB_EXPORT CREATEFILE2_EXTENDED_PARAMETERS 
+       fill_createfile_extended_parameters(
       SECURITY_ATTRIBUTES* attr_p);
 
    /*

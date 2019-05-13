@@ -23,8 +23,9 @@ SECURITY_ATTRIBUTES qgl::content::fill_security_attributes()
    return ret;
 }
 
-CREATEFILE2_EXTENDED_PARAMETERS fill_createfile_extended_parameters(
-   SECURITY_ATTRIBUTES* attr_p)
+CREATEFILE2_EXTENDED_PARAMETERS
+qgl::content::fill_createfile_extended_parameters(
+   SECURITY_ATTRIBUTES * attr_p)
 {
    CREATEFILE2_EXTENDED_PARAMETERS ret;
    ret.dwSize = sizeof(CREATEFILE2_EXTENDED_PARAMETERS);
