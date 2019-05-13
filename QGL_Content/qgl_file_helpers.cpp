@@ -27,10 +27,20 @@ CREATEFILE2_EXTENDED_PARAMETERS
 qgl::content::fill_createfile_extended_parameters(
    SECURITY_ATTRIBUTES * attr_p)
 {
+   auto ret = 
+      qgl::content::fill_createfile_extended_parameters_no_overlapped(attr_p);
+   ret.dwFileAttributes |= FILE_FLAG_OVERLAPPED;
+   return ret;
+}
+
+CREATEFILE2_EXTENDED_PARAMETERS 
+qgl::content::fill_createfile_extended_parameters_no_overlapped(
+   SECURITY_ATTRIBUTES * attr_p)
+{
    CREATEFILE2_EXTENDED_PARAMETERS ret;
    ret.dwSize = sizeof(CREATEFILE2_EXTENDED_PARAMETERS);
    ret.dwFileAttributes = FILE_ATTRIBUTE_NORMAL;
-   ret.dwFileFlags = FILE_FLAG_SEQUENTIAL_SCAN | FILE_FLAG_OVERLAPPED;
+   ret.dwFileFlags = FILE_FLAG_SEQUENTIAL_SCAN;
    ret.dwSecurityQosFlags = SECURITY_ANONYMOUS;
    ret.hTemplateFile = nullptr;
    ret.lpSecurityAttributes = attr_p;

@@ -26,6 +26,10 @@ namespace qgl::content
        fill_createfile_extended_parameters(
       SECURITY_ATTRIBUTES* attr_p);
 
+    extern LIB_EXPORT CREATEFILE2_EXTENDED_PARAMETERS
+       fill_createfile_extended_parameters_no_overlapped(
+          SECURITY_ATTRIBUTES* attr_p);
+
    /*
     Reads bytesToRead bytes from a file and stores it in buffer_p.
     Specify the offset into the file using offsetBytes.
@@ -170,7 +174,9 @@ namespace qgl::content
     */
    inline bool file_exists(const winrt::hstring& absPath)
    {
-      return attribute_exists<FILE_ATTRIBUTE_NORMAL>(absPath);
+      auto attr = GetFileAttributes(absPath.c_str());
+      return attr != INVALID_FILE_ATTRIBUTES && 
+         !(attr & FILE_ATTRIBUTE_DIRECTORY);
    }
 
 }
