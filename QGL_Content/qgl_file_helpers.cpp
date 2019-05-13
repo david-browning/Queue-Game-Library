@@ -4,6 +4,37 @@
 
 using namespace winrt::param;
 using namespace winrt::Windows::Storage;
+using namespace qgl::content;
+
+void qgl::content::fill_overlapped(size_t offsetBytes, OVERLAPPED* over_p)
+{
+   ZeroMemory(over_p, sizeof(OVERLAPPED));
+   over_p->hEvent = nullptr;
+   over_p->Offset = offsetBytes & 0xFFFF'FFFF;
+   over_p->OffsetHigh = (offsetBytes >> 32) & 0xFFFF'FFFF;
+}
+
+SECURITY_ATTRIBUTES qgl::content::fill_security_attributes()
+{
+   SECURITY_ATTRIBUTES ret;
+   ret.bInheritHandle = TRUE;
+   ret.nLength = sizeof(SECURITY_ATTRIBUTES);
+   ret.lpSecurityDescriptor = nullptr;
+   return ret;
+}
+
+CREATEFILE2_EXTENDED_PARAMETERS fill_createfile_extended_parameters(
+   SECURITY_ATTRIBUTES* attr_p)
+{
+   CREATEFILE2_EXTENDED_PARAMETERS ret;
+   ret.dwSize = sizeof(CREATEFILE2_EXTENDED_PARAMETERS);
+   ret.dwFileAttributes = FILE_ATTRIBUTE_NORMAL;
+   ret.dwFileFlags = FILE_FLAG_SEQUENTIAL_SCAN;
+   ret.dwSecurityQosFlags = SECURITY_ANONYMOUS;
+   ret.hTemplateFile = nullptr;
+   ret.lpSecurityAttributes = attr_p;
+   return ret;
+}
 
 winrt::file_handle qgl::content::open_file_read(
    const winrt::hstring& filePath,
