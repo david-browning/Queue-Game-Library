@@ -20,6 +20,9 @@
     <Filter Include="Tests\File-Helpers">
       <UniqueIdentifier>{528f29b4-60fd-4acb-8ebf-095e22119683}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\Test-Files">
+      <UniqueIdentifier>{9b8ff837-4a2d-4c6b-91f6-b2de97584859}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="UnitTestApp.xaml" />
