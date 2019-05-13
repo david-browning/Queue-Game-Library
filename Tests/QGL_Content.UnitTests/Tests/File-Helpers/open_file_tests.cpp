@@ -5,6 +5,7 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace winrt::Windows;
 using namespace winrt::Windows::Storage;
+using namespace qgl::content;
 
 namespace QGL_Content_UnitTests
 {
@@ -12,6 +13,8 @@ namespace QGL_Content_UnitTests
     Open a file using QGL functions and attempt to read or write using the
     Windows API. If opening a file throws an exception, or we cannot read or
     write to the file, then the test fails.
+    This assumes fill_security_attributes and 
+    fill_createfile_extended_parameters are correct.
     */
    TEST_CLASS(OpenFileHelperTests)
    {
@@ -22,17 +25,8 @@ namespace QGL_Content_UnitTests
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\OpenNewFileWrite.txt");
 
-         CREATEFILE2_EXTENDED_PARAMETERS openParameters = { 0 };
-         openParameters.dwSize = sizeof(CREATEFILE2_EXTENDED_PARAMETERS);
-         openParameters.dwFileAttributes = FILE_ATTRIBUTE_NORMAL;
-         openParameters.dwFileFlags = FILE_FLAG_SEQUENTIAL_SCAN;
-         openParameters.dwSecurityQosFlags = SECURITY_ANONYMOUS;
-         openParameters.hTemplateFile = nullptr;
-         SECURITY_ATTRIBUTES sa;
-         sa.bInheritHandle = TRUE;
-         sa.nLength = sizeof(sa);
-         sa.lpSecurityDescriptor = nullptr;
-         openParameters.lpSecurityAttributes = &sa;
+         SECURITY_ATTRIBUTES sa = qgl::content::fill_security_attributes();
+         auto openParameters = fill_createfile_extended_parameters(&sa);
 
          winrt::file_handle handle;
          try
@@ -78,17 +72,8 @@ namespace QGL_Content_UnitTests
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\OpenNewFileReadWrite.txt");
 
-         CREATEFILE2_EXTENDED_PARAMETERS openParameters = { 0 };
-         openParameters.dwSize = sizeof(CREATEFILE2_EXTENDED_PARAMETERS);
-         openParameters.dwFileAttributes = FILE_ATTRIBUTE_NORMAL;
-         openParameters.dwFileFlags = FILE_FLAG_SEQUENTIAL_SCAN;
-         openParameters.dwSecurityQosFlags = SECURITY_ANONYMOUS;
-         openParameters.hTemplateFile = nullptr;
-         SECURITY_ATTRIBUTES sa;
-         sa.bInheritHandle = TRUE;
-         sa.nLength = sizeof(sa);
-         sa.lpSecurityDescriptor = nullptr;
-         openParameters.lpSecurityAttributes = &sa;
+         SECURITY_ATTRIBUTES sa = qgl::content::fill_security_attributes();
+         auto openParameters = fill_createfile_extended_parameters(&sa);
 
          winrt::file_handle handle;
          try
