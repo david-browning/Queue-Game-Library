@@ -29,7 +29,7 @@ CREATEFILE2_EXTENDED_PARAMETERS fill_createfile_extended_parameters(
    CREATEFILE2_EXTENDED_PARAMETERS ret;
    ret.dwSize = sizeof(CREATEFILE2_EXTENDED_PARAMETERS);
    ret.dwFileAttributes = FILE_ATTRIBUTE_NORMAL;
-   ret.dwFileFlags = FILE_FLAG_SEQUENTIAL_SCAN;
+   ret.dwFileFlags = FILE_FLAG_SEQUENTIAL_SCAN | FILE_FLAG_OVERLAPPED;
    ret.dwSecurityQosFlags = SECURITY_ANONYMOUS;
    ret.hTemplateFile = nullptr;
    ret.lpSecurityAttributes = attr_p;
