@@ -139,6 +139,8 @@ namespace qgl::content
 
    /*
     Returns true if the directory exists.
+    Returns false if the directory does not exist, or the path does not point 
+    to a directory.
     The directory path must be absolute.
     */
    inline bool dir_exists(const winrt::hstring& absPath)
@@ -148,6 +150,8 @@ namespace qgl::content
 
    /*
     Returns true if the file exists.
+    Returns false if the file does not exist or the path does not point to a
+    file.
     The file path must be an absolute path.
     */
    inline bool file_exists(const winrt::hstring& absPath)
