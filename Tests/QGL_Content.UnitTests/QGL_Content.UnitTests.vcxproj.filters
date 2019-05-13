@@ -60,6 +60,9 @@
     <ClCompile Include="Tests\Buffers\file_header_buffer_tests.cpp">
       <Filter>Tests\Buffers</Filter>
     </ClCompile>
+    <ClCompile Include="Tests\File-Helpers\additional_helper_tests.cpp">
+      <Filter>Tests\File-Helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

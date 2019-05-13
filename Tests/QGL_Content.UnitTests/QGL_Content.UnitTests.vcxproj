@@ -272,6 +272,7 @@
     <ClCompile Include="Tests\Buffers\dict_metadata_buffer_tests.cpp" />
     <ClCompile Include="Tests\Buffers\file_header_buffer_tests.cpp" />
     <ClCompile Include="Tests\Dictionary\content_dictionary_test.cpp" />
+    <ClCompile Include="Tests\File-Helpers\additional_helper_tests.cpp" />
     <ClCompile Include="Tests\File-Helpers\file_attribute_tests.cpp" />
     <ClCompile Include="Tests\File-Helpers\open_file_tests.cpp" />
     <ClCompile Include="Tests\File-Helpers\read_file_tests.cpp" />

@@ -5,20 +5,25 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace QGL_Content_UnitTests
 {
-   TEST_CLASS(ReadFileTests)
+   TEST_CLASS(FileHelperTests)
    {
       public:
-      TEST_METHOD(ReadEntireFile)
+      TEST_METHOD(CreateOverlapped)
       {
 
       }
 
-      TEST_METHOD(ReadFileFirstPart)
+      TEST_METHOD(ValidOverlapped)
       {
 
       }
 
-      TEST_METHOD(ReadFileSecondPart)
+      TEST_METHOD(CreateDefaultSecurityParameters)
+      {
+
+      }
+
+      TEST_METHOD(CreateDefaultOpenParameters)
       {
 
       }
