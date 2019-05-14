@@ -29,14 +29,14 @@
     <Filter Include="Tests\Importers">
       <UniqueIdentifier>{369a8661-1998-4b09-ad51-4620a583e8c0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tests\Content-Items">
-      <UniqueIdentifier>{b3be9ada-4353-4caa-bf2e-3b3af05f5d64}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Tests\Content-Store">
       <UniqueIdentifier>{bae817d9-5a9c-438d-9332-1599f8e095c3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Tests\File-Loaders">
       <UniqueIdentifier>{1b52f684-06b3-4311-b8a1-c6a1c39737dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Content-File">
+      <UniqueIdentifier>{0d395d05-667d-4424-bfce-c4b3c266ff39}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -95,6 +95,48 @@
     </ClCompile>
     <ClCompile Include="Tests\Read-Write-Helpers\content_data_rw_tests.cpp">
       <Filter>Tests\Read-Write-Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Content-File\move_constructor.cpp">
+      <Filter>Tests\Content-File</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Content-File\open_existing_file_read.cpp">
+      <Filter>Tests\Content-File</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Content-File\open_existing_file_write.cpp">
+      <Filter>Tests\Content-File</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Content-File\open_new_file_read.cpp">
+      <Filter>Tests\Content-File</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Content-File\open_new_file_write.cpp">
+      <Filter>Tests\Content-File</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Content-File\read_accessors.cpp">
+      <Filter>Tests\Content-File</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Content-File\write_accessors.cpp">
+      <Filter>Tests\Content-File</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\File-Loaders\content_store_config_loader.cpp">
+      <Filter>Tests\File-Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\File-Loaders\string_file_loader.cpp">
+      <Filter>Tests\File-Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\File-Loaders\wstring_file_loader.cpp">
+      <Filter>Tests\File-Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Importers\import_helper_tests.cpp">
+      <Filter>Tests\Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Importers\string_importer_tests.cpp">
+      <Filter>Tests\Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Importers\struct_importer_tests.cpp">
+      <Filter>Tests\Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Importers\wstring_importer_tests.cpp">
+      <Filter>Tests\Importers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

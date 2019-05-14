@@ -153,9 +153,6 @@
     <ClInclude Include="include\Content-Importers\qgl_importer_wstring.h">
       <Filter>Header Files\Content-Importers</Filter>
     </ClInclude>
-    <ClInclude Include="include\Content-Importers\qgl_importer_testers.h">
-      <Filter>Header Files\Content-Importers</Filter>
-    </ClInclude>
     <ClInclude Include="include\Content-Files\qgl_content_file.h">
       <Filter>Header Files\Content-Files</Filter>
     </ClInclude>
@@ -203,6 +200,9 @@
     </ClInclude>
     <ClInclude Include="include\qgl_content_item.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content-Importers\qgl_import_helpers.h">
+      <Filter>Header Files\Content-Importers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

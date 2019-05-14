@@ -271,6 +271,13 @@
     <ClCompile Include="Tests\Buffers\dict_entry_buffer_tests.cpp" />
     <ClCompile Include="Tests\Buffers\dict_metadata_buffer_tests.cpp" />
     <ClCompile Include="Tests\Buffers\file_header_buffer_tests.cpp" />
+    <ClCompile Include="Tests\Content-File\move_constructor.cpp" />
+    <ClCompile Include="Tests\Content-File\open_existing_file_read.cpp" />
+    <ClCompile Include="Tests\Content-File\open_existing_file_write.cpp" />
+    <ClCompile Include="Tests\Content-File\open_new_file_read.cpp" />
+    <ClCompile Include="Tests\Content-File\open_new_file_write.cpp" />
+    <ClCompile Include="Tests\Content-File\read_accessors.cpp" />
+    <ClCompile Include="Tests\Content-File\write_accessors.cpp" />
     <ClCompile Include="Tests\Dictionary\content_dictionary_test.cpp" />
     <ClCompile Include="Tests\File-Helpers\additional_helper_tests.cpp" />
     <ClCompile Include="Tests\File-Helpers\file_attribute_tests.cpp" />
@@ -278,6 +285,13 @@
     <ClCompile Include="Tests\File-Helpers\read_file_tests.cpp" />
     <ClCompile Include="Tests\File-Helpers\truncate_file_tests.cpp" />
     <ClCompile Include="Tests\File-Helpers\write_file_tests.cpp" />
+    <ClCompile Include="Tests\File-Loaders\content_store_config_loader.cpp" />
+    <ClCompile Include="Tests\File-Loaders\string_file_loader.cpp" />
+    <ClCompile Include="Tests\File-Loaders\wstring_file_loader.cpp" />
+    <ClCompile Include="Tests\Importers\import_helper_tests.cpp" />
+    <ClCompile Include="Tests\Importers\string_importer_tests.cpp" />
+    <ClCompile Include="Tests\Importers\struct_importer_tests.cpp" />
+    <ClCompile Include="Tests\Importers\wstring_importer_tests.cpp" />
     <ClCompile Include="Tests\Read-Write-Helpers\content_data_rw_tests.cpp" />
     <ClCompile Include="Tests\Read-Write-Helpers\dict_meta_rw_tests.cpp" />
     <ClCompile Include="Tests\Read-Write-Helpers\dict_rw_tests.cpp" />
