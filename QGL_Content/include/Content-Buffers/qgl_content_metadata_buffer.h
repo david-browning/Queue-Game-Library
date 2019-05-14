@@ -8,7 +8,7 @@ namespace qgl::content
    static constexpr size_t QGL_GUID_STR_LEN = 36;
 
    /*
-    Stores metadata about content. Content could be a texture, geometry, or 
+    Stores metadata about content. Content could be a texture, geometry, or
     other data used in the engine.
     */
    struct LIB_EXPORT CONTENT_METADATA_BUFFER
@@ -24,9 +24,9 @@ namespace qgl::content
       CONTENT_METADATA_BUFFER();
 
       CONTENT_METADATA_BUFFER(RESOURCE_TYPES type,
-                          CONTENT_LOADER_IDS loaderID,
-                           const wchar_t* name,
-                          size_t nameLength);
+                              CONTENT_LOADER_IDS loaderID,
+                              const wchar_t* name,
+                              size_t nameLength);
 
       /*
        Sets the compiler version to latest.
@@ -35,8 +35,8 @@ namespace qgl::content
        Throws if the name is too long.
        */
       CONTENT_METADATA_BUFFER(RESOURCE_TYPES type,
-                          CONTENT_LOADER_IDS loaderID,
-                          const winrt::hstring& name);
+                              CONTENT_LOADER_IDS loaderID,
+                              const winrt::hstring& name);
 
       /*
        Copy constructor.
@@ -52,7 +52,7 @@ namespace qgl::content
        Destructor. Do not mark as virtual.
        */
       ~CONTENT_METADATA_BUFFER() = default;
-           
+
       /*
        Returns true if the content is supposed to be visible.
        */
@@ -104,7 +104,7 @@ namespace qgl::content
        */
       winrt::hstring name() const
       {
-          return winrt::hstring(m_name);
+         return winrt::hstring(m_name);
       }
 
       /*
@@ -167,7 +167,7 @@ namespace qgl::content
        */
       winrt::hstring guid_str() const;
 
-      friend void swap(CONTENT_METADATA_BUFFER& first, 
+      friend void swap(CONTENT_METADATA_BUFFER& first,
                        CONTENT_METADATA_BUFFER& second) noexcept
       {
          using std::swap;
@@ -219,7 +219,7 @@ namespace qgl::content
       uint8_t m_reserved1;
 
       uint16_t m_reserved2;
-                  
+
       /*
        Name of this content object.
        */
