@@ -11,7 +11,7 @@ namespace qgl::content
       public:
       /*
        Default constructor.
-       This metadata buffer has not dictionary entries, default flags, and
+       This metadata buffer has no dictionary entries, default flags, and
        the entry size is 0.
        */
       CONTENT_DICTIONARY_METADATA_BUFFER();
