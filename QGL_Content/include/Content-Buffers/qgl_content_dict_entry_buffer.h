@@ -87,6 +87,15 @@ namespace qgl::content
          return *this;
       }
 
+      friend bool operator==(const CONTENT_DICTIONARY_ENTRY_BUFFER& r,
+                             const CONTENT_DICTIONARY_ENTRY_BUFFER& l) noexcept
+      {
+         return r.m_offset == l.m_offset &&
+            r.m_size == l.m_size &&
+            r.m_flags == l.m_flags &&
+            r.m_info == l.m_info;
+      }
+
       template<class DictionaryEntryForwardIterator, class DataForwardIterator>
       friend void write_dictionary_data(
          const winrt::file_handle& hndl,

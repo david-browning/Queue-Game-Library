@@ -66,6 +66,13 @@ namespace qgl::content
          return *this;
       }
 
+      friend bool operator==(const CONTENT_FILE_HEADER_BUFFER& r,
+                             const CONTENT_FILE_HEADER_BUFFER& l) noexcept
+      {
+         return r.m_metadata == l.m_metadata &&
+            r.m_offset == l.m_offset;
+      }
+
       private:
       CONTENT_METADATA_BUFFER m_metadata;
 

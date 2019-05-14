@@ -6,86 +6,96 @@ namespace qgl::content
     /*
      This is metadata for a content dictionary.
      */
-    struct LIB_EXPORT CONTENT_DICTIONARY_METADATA_BUFFER
-    {
-        public:
-        /*
-         Default constructor.
-         This metadata buffer has not dictionary entries, default flags, and
-         the entry size is 0.
-         */
-        CONTENT_DICTIONARY_METADATA_BUFFER();
+   struct LIB_EXPORT CONTENT_DICTIONARY_METADATA_BUFFER
+   {
+      public:
+      /*
+       Default constructor.
+       This metadata buffer has not dictionary entries, default flags, and
+       the entry size is 0.
+       */
+      CONTENT_DICTIONARY_METADATA_BUFFER();
 
-        CONTENT_DICTIONARY_METADATA_BUFFER(size_t count,
-                                           size_t entrySize,
-                                           uint64_t flags = DEFAULT_FLAGS);
+      CONTENT_DICTIONARY_METADATA_BUFFER(size_t count,
+                                         size_t entrySize,
+                                         uint64_t flags = DEFAULT_FLAGS);
 
-        CONTENT_DICTIONARY_METADATA_BUFFER(
-            const CONTENT_DICTIONARY_METADATA_BUFFER& r) = default;
+      CONTENT_DICTIONARY_METADATA_BUFFER(
+         const CONTENT_DICTIONARY_METADATA_BUFFER& r) = default;
 
-        CONTENT_DICTIONARY_METADATA_BUFFER(
-            CONTENT_DICTIONARY_METADATA_BUFFER&& r) = default;
+      CONTENT_DICTIONARY_METADATA_BUFFER(
+         CONTENT_DICTIONARY_METADATA_BUFFER&& r) = default;
 
-        /*
-         Returns the number of items in the dictionary.
-         */
-        inline size_t count() const noexcept
-        {
-            return static_cast<size_t>(m_count);
-        }
+     /*
+      Returns the number of items in the dictionary.
+      */
+      inline size_t count() const noexcept
+      {
+         return static_cast<size_t>(m_count);
+      }
 
-        /*
-         Returns the size, in bytes, of a dictionary entry.
-         */
-        inline size_t entry_size() const noexcept
-        {
-            return static_cast<size_t>(m_entrySize);
-        }
+      /*
+       Returns the size, in bytes, of a dictionary entry.
+       */
+      inline size_t entry_size() const noexcept
+      {
+         return static_cast<size_t>(m_entrySize);
+      }
 
-        /*
-         Returns the dictionary flags.
-         */
-        inline auto flags() const noexcept
-        {
-            return m_flags;
-        }
+      /*
+       Returns the dictionary flags.
+       */
+      inline auto flags() const noexcept
+      {
+         return m_flags;
+      }
 
-        friend void swap(CONTENT_DICTIONARY_METADATA_BUFFER& first,
-                         CONTENT_DICTIONARY_METADATA_BUFFER& second) noexcept
-        {
-            using std::swap;
-            swap(first.m_count, second.m_count);
-            swap(first.m_entrySize, second.m_entrySize);
-            swap(first.m_flags, second.m_flags);
-            swap(first.m_reserved1, second.m_reserved1);
-        }
+      friend void swap(CONTENT_DICTIONARY_METADATA_BUFFER& first,
+                       CONTENT_DICTIONARY_METADATA_BUFFER& second) noexcept
+      {
+         using std::swap;
+         swap(first.m_count, second.m_count);
+         swap(first.m_entrySize, second.m_entrySize);
+         swap(first.m_flags, second.m_flags);
+         swap(first.m_reserved1, second.m_reserved1);
+      }
 
-        CONTENT_DICTIONARY_METADATA_BUFFER& operator=(
-            CONTENT_DICTIONARY_METADATA_BUFFER r) noexcept
-        {
-            swap(*this, r);
-            return *this;
-        }
+      CONTENT_DICTIONARY_METADATA_BUFFER& operator=(
+         CONTENT_DICTIONARY_METADATA_BUFFER r) noexcept
+      {
+         swap(*this, r);
+         return *this;
+      }
 
-        private:
+      friend bool operator==(
+         const CONTENT_DICTIONARY_METADATA_BUFFER& r,
+         const CONTENT_DICTIONARY_METADATA_BUFFER& l) noexcept
+      {
+         return r.m_count == l.m_count &&
+            r.m_entrySize == l.m_entrySize &&
+            r.m_flags == l.m_flags &&
+            r.m_reserved1 == l.m_reserved1;
+      }
 
-        /*
-         Number of entries in the dictionary.
-         */
-        uint64_t m_count;
+      private:
 
-        /*
-         Size (in bytes) of each entry in the dictionary.
-         */
-        uint64_t m_entrySize;
+      /*
+       Number of entries in the dictionary.
+       */
+      uint64_t m_count;
 
-        /*
-         Reserved right now.
-         */
-        uint64_t m_flags;
+      /*
+       Size (in bytes) of each entry in the dictionary.
+       */
+      uint64_t m_entrySize;
 
-        uint64_t m_reserved1;
+      /*
+       Reserved right now.
+       */
+      uint64_t m_flags;
 
-        static constexpr uint64_t DEFAULT_FLAGS = 0;
-    };
+      uint64_t m_reserved1;
+
+      static constexpr uint64_t DEFAULT_FLAGS = 0;
+   };
 }
