@@ -23,6 +23,9 @@
     <Filter Include="Tests\Test-Files">
       <UniqueIdentifier>{9b8ff837-4a2d-4c6b-91f6-b2de97584859}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\Read-Write-Helpers">
+      <UniqueIdentifier>{1828aae1-a58f-43e2-af6d-65ecf1b5b05f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="UnitTestApp.xaml" />
@@ -62,6 +65,24 @@
     </ClCompile>
     <ClCompile Include="Tests\File-Helpers\additional_helper_tests.cpp">
       <Filter>Tests\File-Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Read-Write-Helpers\ContentDataRWTests.cpp">
+      <Filter>Tests\Read-Write-Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Read-Write-Helpers\DictMetaRWTests.cpp">
+      <Filter>Tests\Read-Write-Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Read-Write-Helpers\DictRWTests.cpp">
+      <Filter>Tests\Read-Write-Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Read-Write-Helpers\HeaderRWTests.cpp">
+      <Filter>Tests\Read-Write-Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Read-Write-Helpers\OffsetTests.cpp">
+      <Filter>Tests\Read-Write-Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Read-Write-Helpers\ValidDataTests.cpp">
+      <Filter>Tests\Read-Write-Helpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

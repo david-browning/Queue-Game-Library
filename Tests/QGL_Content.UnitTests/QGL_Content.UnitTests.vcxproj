@@ -278,6 +278,12 @@
     <ClCompile Include="Tests\File-Helpers\read_file_tests.cpp" />
     <ClCompile Include="Tests\File-Helpers\truncate_file_tests.cpp" />
     <ClCompile Include="Tests\File-Helpers\write_file_tests.cpp" />
+    <ClCompile Include="Tests\Read-Write-Helpers\ContentDataRWTests.cpp" />
+    <ClCompile Include="Tests\Read-Write-Helpers\DictMetaRWTests.cpp" />
+    <ClCompile Include="Tests\Read-Write-Helpers\DictRWTests.cpp" />
+    <ClCompile Include="Tests\Read-Write-Helpers\HeaderRWTests.cpp" />
+    <ClCompile Include="Tests\Read-Write-Helpers\OffsetTests.cpp" />
+    <ClCompile Include="Tests\Read-Write-Helpers\ValidDataTests.cpp" />
     <ClCompile Include="UnitTestApp.xaml.cpp">
       <DependentUpon>UnitTestApp.xaml</DependentUpon>
     </ClCompile>
