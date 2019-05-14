@@ -14,6 +14,8 @@ namespace qgl::content
 
       /*
        Default constructor.
+       Sets the dictionary offset to sizeof(*this) and the metadata uses 
+       its default constructor.
        */
       CONTENT_FILE_HEADER_BUFFER();
 
@@ -46,6 +48,10 @@ namespace qgl::content
          return m_metadata;
       }
 
+      /*
+       The dictionary always comes after the file header. This should always
+       be sizeof(*this)
+       */
       auto dictionary_offset() const
       {
          return m_offset;
