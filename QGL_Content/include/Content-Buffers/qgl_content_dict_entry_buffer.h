@@ -12,7 +12,7 @@ namespace qgl::content
       public:
       /*
        Default constructor.
-       Sets the offset to 0, flags to default, metadata to default, and
+       Sets the offset to -1, flags to default, metadata to default, and
        content's data size to 0.
        */
       CONTENT_DICTIONARY_ENTRY_BUFFER();

@@ -3,7 +3,7 @@
 using namespace qgl::content;
 
 CONTENT_DICTIONARY_ENTRY_BUFFER::CONTENT_DICTIONARY_ENTRY_BUFFER() :
-   m_offset(0),
+   m_offset(-1),
    m_flags(DEFAULT_FLAGS),
    m_size(0),
    m_info()
