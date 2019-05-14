@@ -53,10 +53,17 @@ namespace QGL_Content_UnitTests
        */
       TEST_METHOD(FileExistsTrue)
       {
+         auto fileToCheck = winrt::Windows::ApplicationModel::Package::
+            Current().InstalledLocation().Path() + 
+            L"\\Tests\\Test-Files\\CheckMe.txt";
+         Assert::IsTrue(qgl::content::file_exists(fileToCheck),
+                        L"The file in the install path should exist.");
+
+
          auto rootPath = winrt::Windows::Storage::ApplicationData::Current().
             LocalFolder().Path();
 
-         auto fileToCheck = rootPath + L"\\FileExistsTrue.txt";
+         fileToCheck = rootPath + L"\\FileExistsTrue.txt";
          auto sa = qgl::content::make_default_security_attributes();
          auto openParams = 
             qgl::content::make_open_file_params_no_offset(&sa);
