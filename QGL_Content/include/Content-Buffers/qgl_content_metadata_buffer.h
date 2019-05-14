@@ -201,7 +201,7 @@ namespace qgl::content
       {
          return r.m_compilerVersion == l.m_compilerVersion &&
             r.m_flags1 == l.m_flags1 &&
-            memcmp(r.m_guid, l.m_guid, sizeof(GUID)) &&
+            r.m_guid == l.m_guid &&
             r.m_loaderID == r.m_loaderID &&
             wcscmp(r.m_name, l.m_name) == 0 &&
             r.m_reserved1 == l.m_reserved1 &&
