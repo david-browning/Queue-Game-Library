@@ -90,7 +90,7 @@ namespace qgl::content
       size_t entryOffset = dictionaryOffset +
          sizeof(CONTENT_DICTIONARY_METADATA_BUFFER);
 
-      for (auto& it = dict.cbegin(); it != dict.cend(); ++it)
+      for (auto it = dict.cbegin(); it != dict.cend(); ++it)
       {
          write_dictionary_entry(hndl, *it, entryOffset);
          entryOffset += sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER);

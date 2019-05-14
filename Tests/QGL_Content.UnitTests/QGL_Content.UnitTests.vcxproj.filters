@@ -26,6 +26,18 @@
     <Filter Include="Tests\Read-Write-Helpers">
       <UniqueIdentifier>{1828aae1-a58f-43e2-af6d-65ecf1b5b05f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\Importers">
+      <UniqueIdentifier>{369a8661-1998-4b09-ad51-4620a583e8c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Content-Items">
+      <UniqueIdentifier>{b3be9ada-4353-4caa-bf2e-3b3af05f5d64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Content-Store">
+      <UniqueIdentifier>{bae817d9-5a9c-438d-9332-1599f8e095c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\File-Loaders">
+      <UniqueIdentifier>{1b52f684-06b3-4311-b8a1-c6a1c39737dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="UnitTestApp.xaml" />

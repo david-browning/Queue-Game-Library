@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "include/Content-Files/qgl_file_loader_content_store_config.h"
+#include "include/File-Loaders/qgl_file_loader_content_store_config.h"
 #include "include/Content-Importers/qgl_importer_testers.h"
 #include "include/Content-Importers/qgl_importer_wstring.h"
 

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "include/qgl_content_dictionary.h"
+#include "include/Content-Dictionary/qgl_content_dictionary.h"
 
 qgl::content::content_dictionary::content_dictionary()
 {

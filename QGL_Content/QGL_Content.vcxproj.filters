@@ -14,64 +14,55 @@
     <Filter Include="Source Files">
       <UniqueIdentifier>{2c5af4f4-51b1-4211-b45e-0d7bea265f26}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Content Buffers">
-      <UniqueIdentifier>{dce79dea-c583-4adb-973f-9bb5733d562f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Content Buffers">
-      <UniqueIdentifier>{a33edd2d-e54f-432e-b72a-48614af954b2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Content Items">
-      <UniqueIdentifier>{3dbd6721-fc42-41f4-9be0-18c2769bb094}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Helpers">
-      <UniqueIdentifier>{fa623608-11fb-497c-b29c-325f22b1f404}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Dictionary">
-      <UniqueIdentifier>{5a4c8f2e-74ec-4d23-a8e1-91f63e9d6846}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Content Info">
-      <UniqueIdentifier>{e2063901-f82c-4423-b8c6-f3fa9e289af6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Helpers">
-      <UniqueIdentifier>{92cc3976-ecf3-47c1-aabd-0f64d5ca2279}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Dictionary">
-      <UniqueIdentifier>{ac08ab35-cdf4-45c3-9f2f-0432ef0e709a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="win_rt">
       <UniqueIdentifier>{137f24ca-e72d-4842-89e2-ff42f933adb9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Content Importers">
-      <UniqueIdentifier>{98c751e9-3d64-492e-bc29-476d3b45d681}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Content Importers">
-      <UniqueIdentifier>{bcba7f5b-d743-49a4-bfc4-241f8a7192cd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Content Store">
       <UniqueIdentifier>{18bf9f31-03da-498e-a1b5-7aa4bf0aba1c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Content Store">
-      <UniqueIdentifier>{0e99215e-ef92-4eb3-b541-e7812cbf0d9b}</UniqueIdentifier>
+    <Filter Include="Header Files\File-Loaders">
+      <UniqueIdentifier>{e50531ff-c61b-45c9-b76e-be9dc9fae521}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Content Project">
+    <Filter Include="Header Files\Content-Project">
       <UniqueIdentifier>{43969cc7-8121-4076-977d-12ff28f77390}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Content Project">
-      <UniqueIdentifier>{5ef97647-96e1-444f-bd89-172b8d5cd2b7}</UniqueIdentifier>
+    <Filter Include="Header Files\Content-Dictionary">
+      <UniqueIdentifier>{5a4c8f2e-74ec-4d23-a8e1-91f63e9d6846}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Content Files">
+    <Filter Include="Header Files\Content-Files">
       <UniqueIdentifier>{7afd98e3-e081-45cf-b7b9-cb189cc5e2f4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Content Files">
+    <Filter Include="Header Files\Content-Buffers">
+      <UniqueIdentifier>{dce79dea-c583-4adb-973f-9bb5733d562f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Content-Buffers">
+      <UniqueIdentifier>{a33edd2d-e54f-432e-b72a-48614af954b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Content-Files">
       <UniqueIdentifier>{0c4c8c7f-4fb2-4af7-b0d1-15b371375b2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Content-Importers">
+      <UniqueIdentifier>{bcba7f5b-d743-49a4-bfc4-241f8a7192cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Content-Project">
+      <UniqueIdentifier>{5ef97647-96e1-444f-bd89-172b8d5cd2b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Content-Store">
+      <UniqueIdentifier>{0e99215e-ef92-4eb3-b541-e7812cbf0d9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Content-Dictionary">
+      <UniqueIdentifier>{ac08ab35-cdf4-45c3-9f2f-0432ef0e709a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Content-Importers">
+      <UniqueIdentifier>{98c751e9-3d64-492e-bc29-476d3b45d681}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\File-Loaders">
+      <UniqueIdentifier>{7d2fd789-cc43-44b5-bb2e-0abe2cc650f8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="qgl_file_helpers.cpp">
-      <Filter>Source Files\Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="qgl_content_dictionary.cpp">
-      <Filter>Source Files\Dictionary</Filter>
+      <Filter>Source Files\Content-Dictionary</Filter>
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
       <Filter>win_rt</Filter>
@@ -83,43 +74,46 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="qgl_content_store_config.cpp">
-      <Filter>Source Files\Content Store</Filter>
+      <Filter>Source Files\Content-Store</Filter>
     </ClCompile>
     <ClCompile Include="qgl_content_dict_entry_buffer.cpp">
-      <Filter>Source Files\Content Buffers</Filter>
+      <Filter>Source Files\Content-Buffers</Filter>
     </ClCompile>
     <ClCompile Include="qgl_content_project.cpp">
-      <Filter>Source Files\Content Project</Filter>
+      <Filter>Source Files\Content-Project</Filter>
     </ClCompile>
     <ClCompile Include="qgl_content_project_compiler.cpp">
-      <Filter>Source Files\Content Project</Filter>
+      <Filter>Source Files\Content-Project</Filter>
     </ClCompile>
     <ClCompile Include="QGL_ContentRT.cpp">
       <Filter>win_rt</Filter>
     </ClCompile>
     <ClCompile Include="qgl_content_dictionary_metadata_buffer.cpp">
-      <Filter>Source Files\Content Buffers</Filter>
+      <Filter>Source Files\Content-Buffers</Filter>
     </ClCompile>
     <ClCompile Include="qgl_content_metadata_buffer.cpp">
-      <Filter>Source Files\Content Buffers</Filter>
+      <Filter>Source Files\Content-Buffers</Filter>
     </ClCompile>
     <ClCompile Include="qgl_content_file_header_buffer.cpp">
-      <Filter>Source Files\Content Buffers</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_file_loader_content_store_config.cpp">
-      <Filter>Source Files\Content Files</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_file_loader_string.cpp">
-      <Filter>Source Files\Content Files</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_file_loader_wstring.cpp">
-      <Filter>Source Files\Content Files</Filter>
+      <Filter>Source Files\Content-Buffers</Filter>
     </ClCompile>
     <ClCompile Include="qgl_content_file_helpers.cpp">
-      <Filter>Source Files\Content Files</Filter>
+      <Filter>Source Files\Content-Files</Filter>
     </ClCompile>
     <ClCompile Include="qgl_content_store.cpp">
-      <Filter>Source Files\Content Store</Filter>
+      <Filter>Source Files\Content-Store</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_file_helpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_file_loader_wstring.cpp">
+      <Filter>Source Files\File-Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_file_loader_content_store_config.cpp">
+      <Filter>Source Files\File-Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_file_loader_string.cpp">
+      <Filter>Source Files\File-Loaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -129,24 +123,6 @@
     <ClInclude Include="include\qgl_content_include.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_file_helpers.h">
-      <Filter>Header Files\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_content_types.h">
-      <Filter>Header Files\Content Info</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_content_item.h">
-      <Filter>Header Files\Content Items</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_content_dictionary.h">
-      <Filter>Header Files\Dictionary</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_content_project.h">
-      <Filter>Header Files\Content Project</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_content_project_compiler.h">
-      <Filter>Header Files\Content Project</Filter>
-    </ClInclude>
     <ClInclude Include="include\ResourceLists.h">
       <Filter>win_rt</Filter>
     </ClInclude>
@@ -154,49 +130,37 @@
       <Filter>win_rt</Filter>
     </ClInclude>
     <ClInclude Include="include\Content-Buffers\qgl_content_dict_entry_buffer.h">
-      <Filter>Header Files\Content Buffers</Filter>
+      <Filter>Header Files\Content-Buffers</Filter>
     </ClInclude>
     <ClInclude Include="include\Content-Buffers\qgl_content_dictionary_metadata_buffer.h">
-      <Filter>Header Files\Content Buffers</Filter>
+      <Filter>Header Files\Content-Buffers</Filter>
     </ClInclude>
     <ClInclude Include="include\Content-Buffers\qgl_content_metadata_buffer.h">
-      <Filter>Header Files\Content Buffers</Filter>
+      <Filter>Header Files\Content-Buffers</Filter>
     </ClInclude>
     <ClInclude Include="include\Content-Buffers\qgl_content_file_header_buffer.h">
-      <Filter>Header Files\Content Buffers</Filter>
+      <Filter>Header Files\Content-Buffers</Filter>
     </ClInclude>
     <ClInclude Include="include\Content-Importers\qgl_iimporter.h">
-      <Filter>Header Files\Content Importers</Filter>
+      <Filter>Header Files\Content-Importers</Filter>
     </ClInclude>
     <ClInclude Include="include\Content-Importers\qgl_importer_string.h">
-      <Filter>Header Files\Content Importers</Filter>
+      <Filter>Header Files\Content-Importers</Filter>
     </ClInclude>
     <ClInclude Include="include\Content-Importers\qgl_importer_struct.h">
-      <Filter>Header Files\Content Importers</Filter>
+      <Filter>Header Files\Content-Importers</Filter>
     </ClInclude>
     <ClInclude Include="include\Content-Importers\qgl_importer_wstring.h">
-      <Filter>Header Files\Content Importers</Filter>
+      <Filter>Header Files\Content-Importers</Filter>
     </ClInclude>
     <ClInclude Include="include\Content-Importers\qgl_importer_testers.h">
-      <Filter>Header Files\Content Importers</Filter>
+      <Filter>Header Files\Content-Importers</Filter>
     </ClInclude>
     <ClInclude Include="include\Content-Files\qgl_content_file.h">
-      <Filter>Header Files\Content Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Content-Files\qgl_file_importers.h">
-      <Filter>Header Files\Content Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Content-Files\qgl_file_loader_content_store_config.h">
-      <Filter>Header Files\Content Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Content-Files\qgl_file_loader_string.h">
-      <Filter>Header Files\Content Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Content-Files\qgl_file_loader_wstring.h">
-      <Filter>Header Files\Content Files</Filter>
+      <Filter>Header Files\Content-Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Content-Files\qgl_content_file_helpers.h">
-      <Filter>Header Files\Content Files</Filter>
+      <Filter>Header Files\Content-Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Content-Store\qgl_content_store.h">
       <Filter>Header Files\Content Store</Filter>
@@ -209,6 +173,36 @@
     </ClInclude>
     <ClInclude Include="include\Content-Store\qgl_content_iterator.h">
       <Filter>Header Files\Content Store</Filter>
+    </ClInclude>
+    <ClInclude Include="include\File-Loaders\qgl_file_loader_content_store_config.h">
+      <Filter>Header Files\File-Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\File-Loaders\qgl_file_loader_string.h">
+      <Filter>Header Files\File-Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\File-Loaders\qgl_file_loader_wstring.h">
+      <Filter>Header Files\File-Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\File-Loaders\qgl_file_loaders.h">
+      <Filter>Header Files\File-Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content-Dictionary\qgl_content_dictionary.h">
+      <Filter>Header Files\Content-Dictionary</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content-Project\qgl_content_project.h">
+      <Filter>Header Files\Content-Project</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content-Project\qgl_content_project_compiler.h">
+      <Filter>Header Files\Content-Project</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_content_types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_file_helpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_content_item.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
