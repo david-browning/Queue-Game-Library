@@ -17,18 +17,24 @@ namespace qgl::content
       /*
        Default constructor.
        Sets the flags to default, resource and loader to unknown, the name to
-       the empty string, and the compiler version to latest.
+       the empty string, and the compiler version to latest. The content is
+       visible and does not obey physics.
        Creates a new GUID.
        Throws an exception if a GUID cannot be created.
        */
       CONTENT_METADATA_BUFFER();
 
+      /*
+        The content is visible and does not obey physics.
+        Sets the compiler version to latest.
+       */
       CONTENT_METADATA_BUFFER(RESOURCE_TYPES type,
                               CONTENT_LOADER_IDS loaderID,
                               const wchar_t* name,
                               size_t nameLength);
 
       /*
+       The content is visible and does not obey physics.
        Sets the compiler version to latest.
        Creates a new GUID.
        Throws an exception if a GUID cannot be created.
