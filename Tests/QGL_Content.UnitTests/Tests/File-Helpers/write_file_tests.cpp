@@ -24,15 +24,12 @@ namespace QGL_Content_UnitTests
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\WriteEntireFileAndVerify.txt");
 
-         auto sa = make_default_security_attributes();
-         auto openParams = make_default_open_file_params(&sa);
-
-         auto handle = open_file_write(newFilePath, openParams);
+         auto handle = open_file_write(newFilePath);
 
          write_file_sync(handle, data_size, 0, data_to_rw);
          handle.close();
 
-         handle = open_file_read(newFilePath, openParams);
+         handle = open_file_read(newFilePath);
 
 
          char* readBuffer[data_size];
@@ -54,14 +51,11 @@ namespace QGL_Content_UnitTests
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\WriteFirstPartAndVerify.txt");
 
-         auto sa = make_default_security_attributes();
-         auto openParams = make_default_open_file_params(&sa);
-
-         auto handle = open_file_write(newFilePath, openParams);
+         auto handle = open_file_write(newFilePath);
          write_file_sync(handle, data_size / 2, 0, data_to_rw);
          handle.close();
 
-         handle = open_file_read(newFilePath, openParams);
+         handle = open_file_read(newFilePath);
          char* readBuffer[data_size / 2];
          DWORD bytesRead = 0;
          auto result = ReadFile(handle.get(), readBuffer, data_size / 2,
@@ -82,16 +76,13 @@ namespace QGL_Content_UnitTests
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\WriteSecondPartAndVerify.txt");
 
-         auto sa = make_default_security_attributes();
-         auto openParams = make_default_open_file_params(&sa);
-
-         auto handle = open_file_write(newFilePath, openParams);
+         auto handle = open_file_write(newFilePath);
          write_file_sync(handle, data_size / 2, data_size / 2, 
                          data_to_rw + (data_size / 2));
 
          handle.close();
 
-         handle = open_file_read(newFilePath, openParams);
+         handle = open_file_read(newFilePath);
          char readBuffer[data_size / 2] = { 0 };
          DWORD bytesRead = 0;
          OVERLAPPED offsetOverlapped;

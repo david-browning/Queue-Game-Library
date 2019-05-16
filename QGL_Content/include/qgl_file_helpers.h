@@ -11,25 +11,25 @@ namespace qgl::content
     extern LIB_EXPORT void make_overlapped(size_t offsetBytes, 
                                            OVERLAPPED* over_p);
 
-   /*
-    Returns a SECURITY_ATTRIBUTES for use with reading and writing files.
-    The default attributes allow file handles to be inherited.
-    */
-    extern LIB_EXPORT SECURITY_ATTRIBUTES make_default_security_attributes();
+   ///*
+   // Returns a SECURITY_ATTRIBUTES for use with reading and writing files.
+   // The default attributes allow file handles to be inherited.
+   // */
+   // extern LIB_EXPORT SECURITY_ATTRIBUTES make_default_security_attributes();
 
-   /*
-    Returns a CREATEFILE2_EXTENDED_PARAMETERS for use with reading and 
-    writing files. It supports opening files for reading and writing.
-    The SECURITY_ATTRIBUTES pointer must remain valid for the lifetime of the
-    CREATEFILE2_EXTENDED_PARAMETERS.
-    */
-    extern LIB_EXPORT CREATEFILE2_EXTENDED_PARAMETERS 
-       make_default_open_file_params(
-      SECURITY_ATTRIBUTES* attr_p);
+   ///*
+   // Returns a CREATEFILE2_EXTENDED_PARAMETERS for use with reading and 
+   // writing files. It supports opening files for reading and writing.
+   // The SECURITY_ATTRIBUTES pointer must remain valid for the lifetime of the
+   // CREATEFILE2_EXTENDED_PARAMETERS.
+   // */
+   // extern LIB_EXPORT CREATEFILE2_EXTENDED_PARAMETERS 
+   //    make_default_open_file_params(
+   //   SECURITY_ATTRIBUTES* attr_p);
 
-    extern LIB_EXPORT CREATEFILE2_EXTENDED_PARAMETERS
-       make_open_file_params_no_offset(
-          SECURITY_ATTRIBUTES* attr_p);
+   // extern LIB_EXPORT CREATEFILE2_EXTENDED_PARAMETERS
+   //    make_open_file_params_no_offset(
+   //       SECURITY_ATTRIBUTES* attr_p);
 
    /*
     Reads bytesToRead bytes from a file and stores it in buffer_p.
@@ -93,8 +93,7 @@ namespace qgl::content
     Throws an exception on error.
     */
    extern LIB_EXPORT winrt::file_handle open_file_read(
-      const winrt::hstring& filePath,
-      CREATEFILE2_EXTENDED_PARAMETERS& params);
+      const winrt::hstring& filePath);
 
   /*
    Opens a file for write access.
@@ -102,8 +101,7 @@ namespace qgl::content
    Throws an exception on error.
    */
    extern LIB_EXPORT winrt::file_handle open_file_write(
-      const winrt::hstring& filePath,
-      CREATEFILE2_EXTENDED_PARAMETERS& params);
+      const winrt::hstring& filePath);
 
   /*
    Opens a file for read and write access.
@@ -111,8 +109,7 @@ namespace qgl::content
    Throws an exception on error.
    */
    extern LIB_EXPORT winrt::file_handle open_file_readwrite(
-      const winrt::hstring& filePath,
-      CREATEFILE2_EXTENDED_PARAMETERS& params);
+      const winrt::hstring& filePath);
 
    /*
     Opens a storage file for read and write access. 

@@ -35,57 +35,6 @@ namespace QGL_Content_UnitTests
       }
 
       /*
-       Test passes if we can open a file using the security parameters.
-       */
-      TEST_METHOD(CreateDefaultSecurityParameters)
-      {
-         auto root = ApplicationData::Current().LocalFolder().Path();
-         winrt::hstring newFilePath(root + 
-                                    L"\\CreateDefaultSecurityParameters.txt");
-
-         SECURITY_ATTRIBUTES sa = qgl::content::make_default_security_attributes();
-         CREATEFILE2_EXTENDED_PARAMETERS openParams = { 0 };
-         openParams.dwSize = sizeof(CREATEFILE2_EXTENDED_PARAMETERS);
-         openParams.dwFileAttributes = FILE_ATTRIBUTE_NORMAL;
-         openParams.dwFileFlags = FILE_FLAG_SEQUENTIAL_SCAN;
-         openParams.dwSecurityQosFlags = SECURITY_ANONYMOUS;
-         openParams.hTemplateFile = nullptr;
-         openParams.lpSecurityAttributes = &sa;
-
-         try
-         {
-            auto handle = open_file_write(newFilePath, openParams);
-         }
-         catch (winrt::hresult_error&)
-         {
-            Assert::Fail(L"Exception opening the file.");
-         }
-      }
-
-      /*
-       Test passes if we can open a file using the create file parameters.
-       Assumes make_default_security_attributes is correct.
-       */
-      TEST_METHOD(CreateDefaultOpenParameters)
-      {
-         auto root = ApplicationData::Current().LocalFolder().Path();
-         winrt::hstring newFilePath(root +
-                                    L"\\CreateDefaultOpenParameters.txt");
-
-         SECURITY_ATTRIBUTES sa = qgl::content::make_default_security_attributes();
-         auto openParams = make_default_open_file_params(&sa);
-
-         try
-         {
-            auto handle = open_file_write(newFilePath, openParams);
-         }
-         catch (winrt::hresult_error&)
-         {
-            Assert::Fail(L"Exception opening the file.");
-         }
-      }
-
-      /*
        Create a file with some known size. Check if the function to get the file
        size returns the expected size.
        Assumes open_file_read and open_file_write are correct.
@@ -97,11 +46,9 @@ namespace QGL_Content_UnitTests
 
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\FileSize.txt");
-         SECURITY_ATTRIBUTES sa = qgl::content::make_default_security_attributes();
-         auto openParams = make_default_open_file_params(&sa);
 
          //Open a file for writing.
-         auto handle = open_file_write(newFilePath, openParams);
+         auto handle = open_file_write(newFilePath);
 
          //Write data to the file.
          write_file_sync(handle, bufferSize, 0, buffer);
@@ -110,7 +57,7 @@ namespace QGL_Content_UnitTests
          handle.close();
 
          //Open the file with read permissions.
-         handle = open_file_read(newFilePath, openParams);
+         handle = open_file_read(newFilePath);
 
          //Get file size.
          auto fileSize = file_size(handle);

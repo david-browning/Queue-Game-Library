@@ -18,7 +18,7 @@ void qgl::content::make_overlapped(size_t offsetBytes, OVERLAPPED* over_p)
    over_p->OffsetHigh = (offsetBytes >> 32) & 0xFFFF'FFFF;
 }
 
-SECURITY_ATTRIBUTES qgl::content::make_default_security_attributes()
+SECURITY_ATTRIBUTES make_default_security_attributes()
 {
    SECURITY_ATTRIBUTES ret;
    ret.bInheritHandle = TRUE;
@@ -27,23 +27,12 @@ SECURITY_ATTRIBUTES qgl::content::make_default_security_attributes()
    return ret;
 }
 
-CREATEFILE2_EXTENDED_PARAMETERS
-qgl::content::make_default_open_file_params(
-   SECURITY_ATTRIBUTES * attr_p)
-{
-   auto ret = 
-      qgl::content::make_open_file_params_no_offset(attr_p);
-   ret.dwFileAttributes |= FILE_FLAG_OVERLAPPED;
-   return ret;
-}
-
-CREATEFILE2_EXTENDED_PARAMETERS 
-qgl::content::make_open_file_params_no_offset(
+CREATEFILE2_EXTENDED_PARAMETERS make_default_open_file_params(
    SECURITY_ATTRIBUTES * attr_p)
 {
    CREATEFILE2_EXTENDED_PARAMETERS ret;
    ret.dwSize = sizeof(CREATEFILE2_EXTENDED_PARAMETERS);
-   ret.dwFileAttributes = FILE_ATTRIBUTE_NORMAL;
+   ret.dwFileAttributes = FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED;
    ret.dwFileFlags = FILE_FLAG_SEQUENTIAL_SCAN;
    ret.dwSecurityQosFlags = SECURITY_ANONYMOUS;
    ret.hTemplateFile = nullptr;
@@ -51,10 +40,10 @@ qgl::content::make_open_file_params_no_offset(
    return ret;
 }
 
-winrt::file_handle qgl::content::open_file_read(
-   const winrt::hstring& filePath,
-   CREATEFILE2_EXTENDED_PARAMETERS& params)
+winrt::file_handle qgl::content::open_file_read(const winrt::hstring& filePath)
 {
+   auto sa = make_default_security_attributes();
+   auto params = make_default_open_file_params(&sa);
    auto h = winrt::file_handle(CreateFile2(filePath.c_str(),
                                            GENERIC_READ,
                                            FILE_SHARE_READ,
@@ -68,10 +57,10 @@ winrt::file_handle qgl::content::open_file_read(
    return h;
 }
 
-winrt::file_handle qgl::content::open_file_write(
-   const winrt::hstring& filePath,
-   CREATEFILE2_EXTENDED_PARAMETERS& params)
+winrt::file_handle qgl::content::open_file_write(const winrt::hstring& filePath)
 {
+   auto sa = make_default_security_attributes();
+   auto params = make_default_open_file_params(&sa);
    auto h = winrt::file_handle(CreateFile2(filePath.c_str(),
                                            GENERIC_WRITE,
                                            0,
@@ -85,10 +74,10 @@ winrt::file_handle qgl::content::open_file_write(
    return h;
 }
 
-winrt::file_handle qgl::content::open_file_readwrite(
-   const winrt::hstring& filePath,
-   CREATEFILE2_EXTENDED_PARAMETERS& params)
+winrt::file_handle qgl::content::open_file_readwrite(const winrt::hstring& filePath)
 {
+   auto sa = make_default_security_attributes();
+   auto params = make_default_open_file_params(&sa);
    auto h = winrt::file_handle(CreateFile2(filePath.c_str(),
                                            GENERIC_READ | GENERIC_WRITE,
                                            FILE_SHARE_READ,
@@ -116,9 +105,9 @@ winrt::file_handle qgl::content::open_file_readwrite(
    auto hr = handleAccess->Create(HANDLE_ACCESS_OPTIONS::HAO_READ |
                                   HANDLE_ACCESS_OPTIONS::HAO_WRITE,
                                   HANDLE_SHARING_OPTIONS::HSO_SHARE_READ,
-                                  HANDLE_OPTIONS::HO_OVERLAPPED | 
-                                  HANDLE_OPTIONS::HO_SEQUENTIAL_SCAN, 
-                                  nullptr, 
+                                  HANDLE_OPTIONS::HO_OVERLAPPED |
+                                  HANDLE_OPTIONS::HO_SEQUENTIAL_SCAN,
+                                  nullptr,
                                   &hndl);
 
    winrt::check_hresult(hr);

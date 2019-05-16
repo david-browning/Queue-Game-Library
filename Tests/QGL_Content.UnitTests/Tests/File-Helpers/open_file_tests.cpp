@@ -26,15 +26,10 @@ namespace QGL_Content_UnitTests
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\OpenNewFileWrite.txt");
 
-         SECURITY_ATTRIBUTES sa = qgl::content::make_default_security_attributes();
-         auto openParameters =
-            make_open_file_params_no_offset(&sa);
-
          winrt::file_handle handle;
          try
          {
-            handle = qgl::content::open_file_write(newFilePath,
-                                                   openParameters);
+            handle = qgl::content::open_file_write(newFilePath);
 
          }
          catch (winrt::hresult_error&)
@@ -74,15 +69,10 @@ namespace QGL_Content_UnitTests
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\OpenNewFileReadWrite.txt");
 
-         SECURITY_ATTRIBUTES sa = qgl::content::make_default_security_attributes();
-         auto openParameters =
-            make_open_file_params_no_offset(&sa);
-
          winrt::file_handle handle;
          try
          {
-            handle = qgl::content::open_file_readwrite(newFilePath,
-                                                       openParameters);
+            handle = qgl::content::open_file_readwrite(newFilePath);
          }
          catch (winrt::hresult_error&)
          {

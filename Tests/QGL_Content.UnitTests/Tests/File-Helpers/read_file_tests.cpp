@@ -23,14 +23,11 @@ namespace QGL_Content_UnitTests
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\ReadEntireFile.txt");
 
-         auto sa = make_default_security_attributes();
-         auto openParams = make_default_open_file_params(&sa);
-
-         auto handle = open_file_write(newFilePath, openParams);
+         auto handle = open_file_write(newFilePath);
          write_file_sync(handle, data_size / 2, 0, data_to_rw);
          handle.close();
 
-         handle = open_file_read(newFilePath, openParams);
+         handle = open_file_read(newFilePath);
          auto fileData = file_data(handle);
 
          Assert::IsTrue(memcmp(fileData.data(), 
@@ -48,14 +45,11 @@ namespace QGL_Content_UnitTests
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\ReadFileFirstPart.txt");
 
-         auto sa = make_default_security_attributes();
-         auto openParams = make_default_open_file_params(&sa);
-
-         auto handle = open_file_write(newFilePath, openParams);
+         auto handle = open_file_write(newFilePath);
          write_file_sync(handle, data_size / 2, 0, data_to_rw);
          handle.close();
 
-         handle = open_file_read(newFilePath, openParams);
+         handle = open_file_read(newFilePath);
          char fileData[data_size / 2];
          read_file_sync(handle, data_size / 2, 0, fileData);
 
@@ -72,17 +66,14 @@ namespace QGL_Content_UnitTests
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\ReadFileSecondPart.txt");
 
-         auto sa = make_default_security_attributes();
-         auto openParams = make_default_open_file_params(&sa);
-
-         auto handle = open_file_write(newFilePath, openParams);
+         auto handle = open_file_write(newFilePath);
          write_file_sync(handle, 
                          data_size / 2,
                          data_size / 2, 
                          data_to_rw + (data_size / 2));
          handle.close();
 
-         handle = open_file_read(newFilePath, openParams);
+         handle = open_file_read(newFilePath);
          char fileData[data_size / 2];
          read_file_sync(handle, data_size / 2, data_size / 2, fileData);
 

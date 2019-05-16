@@ -23,10 +23,7 @@ namespace QGL_Content_UnitTests
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\TruncateExistingFile.txt");
 
-         SECURITY_ATTRIBUTES sa = qgl::content::make_default_security_attributes();
-         auto openParams = make_default_open_file_params(&sa);
-
-         auto handle = qgl::content::open_file_write(newFilePath, openParams);
+         auto handle = qgl::content::open_file_write(newFilePath);
 
          //Write to it.
          std::string buffer("Test");
@@ -36,7 +33,7 @@ namespace QGL_Content_UnitTests
          handle.close();
 
          //Open file for read write
-         handle = open_file_readwrite(newFilePath, openParams);
+         handle = open_file_readwrite(newFilePath);
 
          //Get file size.
          auto fileSize = file_size(handle);
@@ -48,7 +45,7 @@ namespace QGL_Content_UnitTests
          handle.close();
 
          //Open file for read.
-         handle = open_file_read(newFilePath, openParams);
+         handle = open_file_read(newFilePath);
 
          //Get file size.
          auto truncatedSize = file_size(handle);

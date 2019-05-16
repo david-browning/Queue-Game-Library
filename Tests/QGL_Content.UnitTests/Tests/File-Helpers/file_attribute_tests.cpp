@@ -64,10 +64,7 @@ namespace QGL_Content_UnitTests
             LocalFolder().Path();
 
          fileToCheck = rootPath + L"\\FileExistsTrue.txt";
-         auto sa = qgl::content::make_default_security_attributes();
-         auto openParams = 
-            qgl::content::make_open_file_params_no_offset(&sa);
-         auto handle = qgl::content::open_file_write(fileToCheck, openParams);
+         auto handle = qgl::content::open_file_write(fileToCheck);
          handle.close();
 
          Assert::IsTrue(qgl::content::file_exists(fileToCheck),
