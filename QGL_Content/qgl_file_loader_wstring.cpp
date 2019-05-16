@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "include/File-Loaders/qgl_file_loader_wstring.h"
-#include "include/Content-Importers/qgl_importer_testers.h"
+#include "include/Content-Importers/qgl_import_helpers.h"
 #include "include/Content-Importers/qgl_importer_wstring.h"
 
 std::shared_ptr<std::wstring> qgl::content::wstring_file_loader::operator()(
