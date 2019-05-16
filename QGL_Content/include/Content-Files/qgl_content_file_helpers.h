@@ -72,7 +72,7 @@ namespace qgl::content
     Writes the dictionary metadata to a content file.
     The file must be opened with write permissions.
     */
-   void write_dictionary_metadata(
+   extern LIB_EXPORT void write_dictionary_metadata(
       const winrt::file_handle& hndl,
       const CONTENT_DICTIONARY_METADATA_BUFFER& meta,
       size_t offset);
