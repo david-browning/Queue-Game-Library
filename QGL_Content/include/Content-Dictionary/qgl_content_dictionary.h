@@ -13,7 +13,7 @@ namespace qgl::content
    class LIB_EXPORT content_dictionary
    {
       public:
-      using DictionaryEntryIterator =
+      using DictionaryEntryIterator = 
          std::vector<CONTENT_DICTIONARY_ENTRY_BUFFER>::iterator;
 
       /*
@@ -72,9 +72,8 @@ namespace qgl::content
 
       /*
        Returns a const reference to the idx'th item in the dictionary.
-       Does no bounds checking.
        */
-      const CONTENT_DICTIONARY_ENTRY_BUFFER& operator[](
+      inline const CONTENT_DICTIONARY_ENTRY_BUFFER& operator[](
          size_t idx) const noexcept
       {
          return m_entries[idx];
@@ -82,9 +81,9 @@ namespace qgl::content
 
       /*
        Returns a reference to the idx'th item in the dictionary.
-       Does no bounds checking.
        */
-      CONTENT_DICTIONARY_ENTRY_BUFFER& operator[](size_t idx) noexcept
+      inline CONTENT_DICTIONARY_ENTRY_BUFFER& operator[](
+         size_t idx) noexcept
       {
          return m_entries[idx];
       }
@@ -129,6 +128,13 @@ namespace qgl::content
          return m_entries.size();
       }
 
+      friend void swap(content_dictionary& first,
+                       content_dictionary& second) noexcept
+      {
+         using std::swap;
+         swap(first.m_entries, second.m_entries);
+      }
+            
       /*
        Returns a metadata buffer that is used for writing the dictionary
        to a file.
@@ -141,13 +147,6 @@ namespace qgl::content
             0);
       }
 
-      friend void swap(content_dictionary& first,
-                       content_dictionary& second) noexcept
-      {
-         using std::swap;
-         swap(first.m_entries, second.m_entries);
-      }
-
       /*
        Overwrites this with r and returns a reference to this.
        */
@@ -157,20 +156,7 @@ namespace qgl::content
          return *this;
       }
 
-      /*
-       Returns true if the two dictionaries have the same metadata and 
-       entries.
-       */
-      friend bool operator==(const content_dictionary& r,
-                             const content_dictionary& l) noexcept
-      {
-         return r.m_meta == l.m_meta &&
-            +r.m_entries == l.m_entries;
-      }
-
       private:
-
-      CONTENT_DICTIONARY_METADATA_BUFFER m_meta;
 
       #pragma warning(push)
       #pragma warning(disable: 4251)
