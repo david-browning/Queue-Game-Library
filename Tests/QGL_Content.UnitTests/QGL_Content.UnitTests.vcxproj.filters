@@ -179,5 +179,8 @@
     <Text Include="Tests\Test-Files\CheckMe.txt">
       <Filter>Tests\Test-Files</Filter>
     </Text>
+    <Text Include="StorageFile.txt">
+      <Filter>Tests\Test-Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

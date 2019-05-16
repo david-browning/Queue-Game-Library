@@ -1,5 +1,6 @@
 #pragma once
 #include "include/qgl_content_include.h"
+#include <winrt/Windows.Storage.h>
 
 namespace qgl::content
 {
@@ -112,6 +113,15 @@ namespace qgl::content
    extern LIB_EXPORT winrt::file_handle open_file_readwrite(
       const winrt::hstring& filePath,
       CREATEFILE2_EXTENDED_PARAMETERS& params);
+
+   /*
+    Opens a storage file for read and write access. 
+    TODO: Don't know if the file is valid after the storage file goes out of
+    scope.
+    Throws an exception on error.
+    */
+   extern LIB_EXPORT winrt::file_handle open_file_readwrite(
+      const winrt::Windows::Storage::StorageFile& f);
 
   /*
    Sets a handle's file pointer to zero and marks it as the end of the file.
