@@ -156,6 +156,17 @@ namespace qgl::content
          return *this;
       }
 
+
+      /*
+       Returns true if the two dictionaries have the same metadata and
+       entries.
+       */
+      friend bool operator==(const content_dictionary& r,
+                             const content_dictionary& l) noexcept
+      {
+         return r.m_entries == l.m_entries;
+      }
+
       private:
 
       #pragma warning(push)
