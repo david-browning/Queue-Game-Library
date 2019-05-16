@@ -164,10 +164,13 @@ namespace qgl::content
       friend bool operator==(const content_dictionary& r,
                              const content_dictionary& l) noexcept
       {
-         return r.m_entries == l.m_entries;
+         return r.m_meta == l.m_meta &&
+            +r.m_entries == l.m_entries;
       }
 
       private:
+
+      CONTENT_DICTIONARY_METADATA_BUFFER m_meta;
 
       #pragma warning(push)
       #pragma warning(disable: 4251)
