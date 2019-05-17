@@ -23,7 +23,8 @@ namespace qgl::content
 
       /*
        Creates a dictionary from the header. The dictionary is empty and must
-       be populated using the accesses functions.
+       be populated using the accesses functions. The at and [] functions
+       can be used to access the empty entries.
        */
       content_dictionary(const CONTENT_DICTIONARY_METADATA_BUFFER& buf);
 
@@ -54,7 +55,7 @@ namespace qgl::content
 
       /*
        Returns a const reference to the idx'th item in the dictionary.
-       This throws an exception if the index is out of bounds.
+       This throws out_of_range if the index is out of bounds.
        */
       inline const CONTENT_DICTIONARY_ENTRY_BUFFER& at(size_t idx) const
       {
@@ -63,7 +64,7 @@ namespace qgl::content
 
       /*
        Returns a reference to the idx'th item in the dictionary.
-       This throws an exception if the index is out of bounds.
+       This throws out_of_range if the index is out of bounds.
        */
       inline CONTENT_DICTIONARY_ENTRY_BUFFER& at(size_t idx)
       {
