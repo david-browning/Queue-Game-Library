@@ -58,7 +58,7 @@ namespace qgl::content
             }
 
             read_in();
-            
+
             if (!valid_content_file(m_handle))
             {
                throw std::invalid_argument("The file has incorrect data.");
@@ -154,13 +154,13 @@ namespace qgl::content
 
          //Write the content data. This also updated the dictionary offsets, 
          //which is necessary before writing the dictionary.
-         write_dictionary_data(m_handle,
-                               dictionary_data_offset(m_header,
-                                                      m_dictionary.buffer()),
-                               m_dictionary.begin(),
-                               m_dictionary.end(),
-                               m_entryDataToWrite.begin(),
-                               m_entryDataToWrite.end());
+         write_dictionary_content(m_handle,
+                                  dictionary_data_offset(m_header,
+                                                         m_dictionary.buffer()),
+                                  m_dictionary.begin(),
+                                  m_dictionary.end(),
+                                  m_entryDataToWrite.begin(),
+                                  m_entryDataToWrite.end());
 
          //Dictionary entry offsets should be correct now.
          //Write the dictionary.
