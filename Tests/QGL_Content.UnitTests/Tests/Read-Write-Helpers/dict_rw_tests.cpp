@@ -64,15 +64,18 @@ namespace QGL_Content_UnitTests
       {
          //Create a dictionary.
          content_dictionary toWrite;
-         CONTENT_METADATA_BUFFER meta;
-         CONTENT_DICTIONARY_ENTRY_BUFFER entry1(sizeof(meta), meta, 64);
+         CONTENT_METADATA_BUFFER meta(RESOURCE_TYPES::RESOURCE_TYPE_BRUSH,
+                                      CONTENT_LOADER_ID_BRUSH,
+                                      L"Brush");
+         CONTENT_DICTIONARY_ENTRY_BUFFER entry1(sizeof(meta), meta, 256);
          toWrite.push_back(entry1);
 
          //Write it at the correct offsets using tested APIs.
          CONTENT_FILE_HEADER_BUFFER hdr;
          const auto dictMetaOffset = hdr.dictionary_offset();
          auto toWriteMeta = toWrite.buffer();
-         auto entryOffset = dictMetaOffset + toWriteMeta.entry_size();
+         auto entryOffset = dictMetaOffset +
+            sizeof(CONTENT_DICTIONARY_METADATA_BUFFER);
 
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\ReadDictionary.txt");
@@ -80,15 +83,19 @@ namespace QGL_Content_UnitTests
          auto hndl = open_file_write(newFilePath);
          write_file_sync(hndl, sizeof(toWriteMeta), 
                          dictMetaOffset, &toWriteMeta);
-         write_file_sync(hndl, sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER),
-                         entryOffset, &toWrite.at(0));
+         write_dictionary_entry(hndl, toWrite.at(0), entryOffset);
          hndl.close();
 
-         //Read it back
+
+
+         //Read it back using tested APIs.
          hndl = open_file_read(newFilePath);
-         auto toRead = load_dictionary(hndl, dictMetaOffset);
+         auto  toRead = load_dictionary(hndl, dictMetaOffset);
 
          //Check the dictionaries are equal.
+         Assert::IsTrue(toWrite.buffer() == toRead.buffer(),
+                        L"Buffers should be equal.");
+
          Assert::IsTrue(toWrite == toRead,
                         L"The dictionaries should be equal.");
       }
@@ -101,15 +108,18 @@ namespace QGL_Content_UnitTests
                 
          //Create a dictionary.
          content_dictionary toWrite;
-         CONTENT_METADATA_BUFFER meta;
-         CONTENT_DICTIONARY_ENTRY_BUFFER entry1(sizeof(meta), meta, 64);
+         CONTENT_METADATA_BUFFER meta(RESOURCE_TYPES::RESOURCE_TYPE_BRUSH,
+                                      CONTENT_LOADER_ID_BRUSH,
+                                      L"Brush");
+         CONTENT_DICTIONARY_ENTRY_BUFFER entry1(sizeof(meta), meta, 256);
          toWrite.push_back(entry1);
 
          //Write it using the API to test.
          CONTENT_FILE_HEADER_BUFFER hdr;
          const auto dictMetaOffset = hdr.dictionary_offset();
          auto toWriteMeta = toWrite.buffer();
-         auto entryOffset = dictMetaOffset + toWriteMeta.entry_size();
+         auto entryOffset = dictMetaOffset +
+            sizeof(CONTENT_DICTIONARY_METADATA_BUFFER);
 
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\WriteDictionary.txt");
