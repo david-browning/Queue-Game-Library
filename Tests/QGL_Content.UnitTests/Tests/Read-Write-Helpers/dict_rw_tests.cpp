@@ -57,13 +57,81 @@ namespace QGL_Content_UnitTests
                         L"The entries are not the same.");
       }
 
+      /*
+       Assumes content_dictionary is correct.
+       */
       TEST_METHOD(ReadDictionary)
       {
+         //Create a dictionary.
+         content_dictionary toWrite;
+         CONTENT_METADATA_BUFFER meta;
+         CONTENT_DICTIONARY_ENTRY_BUFFER entry1(sizeof(meta), meta, 64);
+         toWrite.push_back(entry1);
+
+         //Write it at the correct offsets using tested APIs.
+         CONTENT_FILE_HEADER_BUFFER hdr;
+         const auto dictMetaOffset = hdr.dictionary_offset();
+         auto toWriteMeta = toWrite.buffer();
+         auto entryOffset = dictMetaOffset + toWriteMeta.entry_size();
+
+         auto root = ApplicationData::Current().LocalFolder().Path();
+         winrt::hstring newFilePath(root + L"\\ReadDictionary.txt");
+
+         auto hndl = open_file_write(newFilePath);
+         write_file_sync(hndl, sizeof(toWriteMeta), 
+                         dictMetaOffset, &toWriteMeta);
+         write_file_sync(hndl, sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER),
+                         entryOffset, &toWrite.at(0));
+         hndl.close();
+
+         //Read it back
+         hndl = open_file_read(newFilePath);
+         auto toRead = load_dictionary(hndl, dictMetaOffset);
+
+         //Check the dictionaries are equal.
+         Assert::IsTrue(toWrite == toRead,
+                        L"The dictionaries should be equal.");
       }
 
+      /*
+       Assumes content_dictionary is correct.
+       */
       TEST_METHOD(WriteDictionary)
       {
+                
+         //Create a dictionary.
+         content_dictionary toWrite;
+         CONTENT_METADATA_BUFFER meta;
+         CONTENT_DICTIONARY_ENTRY_BUFFER entry1(sizeof(meta), meta, 64);
+         toWrite.push_back(entry1);
 
+         //Write it using the API to test.
+         CONTENT_FILE_HEADER_BUFFER hdr;
+         const auto dictMetaOffset = hdr.dictionary_offset();
+         auto toWriteMeta = toWrite.buffer();
+         auto entryOffset = dictMetaOffset + toWriteMeta.entry_size();
+
+         auto root = ApplicationData::Current().LocalFolder().Path();
+         winrt::hstring newFilePath(root + L"\\WriteDictionary.txt");
+
+         auto hndl = open_file_write(newFilePath);
+         write_dictionary(hndl, dictMetaOffset, toWrite);
+         hndl.close();
+
+         //Read it back using tested APIs.
+         hndl = open_file_read(newFilePath);
+         
+         CONTENT_DICTIONARY_METADATA_BUFFER toReadMeta;
+         read_file_sync(hndl, sizeof(toReadMeta), dictMetaOffset, &toReadMeta);
+         
+         content_dictionary toRead(toReadMeta);
+         CONTENT_DICTIONARY_ENTRY_BUFFER toReadEntry;
+         read_file_sync(hndl, sizeof(toReadEntry), entryOffset, &toReadEntry);
+         toRead.push_back(toReadEntry);
+
+         //Check that the dictionaries are equal.
+         Assert::IsTrue(toWrite == toRead,
+                        L"The dictionaries should be equal.");
       }
    };
 }
