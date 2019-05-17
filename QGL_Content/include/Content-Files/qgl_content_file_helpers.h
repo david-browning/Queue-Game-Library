@@ -7,7 +7,7 @@
 namespace qgl::content
 {
    using content_data_buffer_t = std::vector<uint8_t>;
-   
+
    /*
     Reads the file header from a content file and returns it.
     The file must be opened with read permissions.
@@ -97,10 +97,29 @@ namespace qgl::content
    /*
     Writes the content data to the content file.
     */
-   extern LIB_EXPORT void write_dictionary_entry_data(
+   extern LIB_EXPORT void write_content_data(
       const winrt::file_handle& hndl,
       CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
       const void* contentData);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
    /*
     Returns the offset, in bytes, to where content data starts in a file.
@@ -115,17 +134,21 @@ namespace qgl::content
 
    extern LIB_EXPORT bool valid_content_file(const winrt::file_handle& hndl);
 
-    /*
-    Writes the dictionary entry data to the file.
-    The file must be opened with write permissions.
+   /*
+    Writes the content data, stored in a dictionary, to a content file.
+    The file handle must be opened with write permissions.
+    startOffset is the offset, in bytes, to where content data begins. This
+    can be found using dictionary_data_offset().
+    The dictionary iterators point to a CONTENT_DICTIONARY_ENTRY_BUFFER that 
+    describes the content's size and metadata. Size and metadata must be valid.
     */
    template<class DictionaryEntryForwardIterator, class DataForwardIterator>
-   void write_dictionary_data(const winrt::file_handle& hndl,
-                              size_t startOffset,
-                              DictionaryEntryForwardIterator firstDictEntry,
-                              DictionaryEntryForwardIterator lastDictEntry,
-                              DataForwardIterator firstContentData,
-                              DataForwardIterator lastContentData)
+   void write_dictionary_content(const winrt::file_handle& hndl,
+                                 size_t startOffset,
+                                 DictionaryEntryForwardIterator firstDictEntry,
+                                 DictionaryEntryForwardIterator lastDictEntry,
+                                 DataForwardIterator firstContentData,
+                                 DataForwardIterator lastContentData)
    {
       //Check that the iterator types are expected.
       auto firstData = *firstContentData;
@@ -155,7 +178,7 @@ namespace qgl::content
          firstDictEntry->offset() = startOffset;
          startOffset += firstDictEntry->size();
 
-         write_dictionary_entry_data(hndl, *firstDictEntry, *firstContentData);
+         write_content_data(hndl, *firstDictEntry, *firstContentData);
 
          firstDictEntry++;
          firstContentData++;

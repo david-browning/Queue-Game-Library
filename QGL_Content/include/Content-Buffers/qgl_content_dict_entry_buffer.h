@@ -100,7 +100,7 @@ namespace qgl::content
       }
 
       template<class DictionaryEntryForwardIterator, class DataForwardIterator>
-      friend void write_dictionary_data(
+      friend void write_dictionary_content(
          const winrt::file_handle& hndl,
          size_t startOffset,
          DictionaryEntryForwardIterator firstDictEntry,

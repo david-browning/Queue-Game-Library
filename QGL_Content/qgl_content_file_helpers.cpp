@@ -97,7 +97,7 @@ namespace qgl::content
       }
    }
 
-   void write_dictionary_entry_data(
+   void write_content_data(
       const winrt::file_handle& hndl,
       CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
       const void* contentData)
