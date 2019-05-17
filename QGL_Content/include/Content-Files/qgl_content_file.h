@@ -25,8 +25,8 @@ namespace qgl::content
        File path must be absolute.
        If the file does not exist, this creates a new one only if WriteMode is
        true.
-       If the file does not exist and WriteMode is false, then this throws an
-       exception.
+       If the file does not exist and WriteMode is false, then this throws 
+       invalid_argument.
        If the file exists, the constructor checks if the file is valid. If the
        file is not valid, this throws an exception.
        */
@@ -41,6 +41,7 @@ namespace qgl::content
          }
          else
          {
+            //If read mode and the file does not exist:
             if (!existingFile)
             {
                throw std::invalid_argument("The file does not exist.");
@@ -49,6 +50,7 @@ namespace qgl::content
             m_handle = open_file_read(filePath);
          }
 
+         //File exists. Try to read it.
          if (existingFile)
          {
             if (!valid_content_file_size(m_handle))
@@ -85,7 +87,7 @@ namespace qgl::content
 
        /*
         Returns a const reference to the idx'th item in the dictionary.
-        Throws an exception if idx is out of range.
+        Throws an out_of_range if idx is out of range.
         */
       const CONTENT_DICTIONARY_ENTRY_BUFFER& at(size_t idx) const
       {
@@ -94,7 +96,7 @@ namespace qgl::content
 
       /*
        Returns a reference to the idx'th item in the dictionary.
-       Throws an exception if idx is out of range.
+       Throws an out_of_range if idx is out of range.
        This function is only valid if the file was opened with write
        permissions.
        */
