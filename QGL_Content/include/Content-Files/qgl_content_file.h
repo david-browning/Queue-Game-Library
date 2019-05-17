@@ -32,26 +32,12 @@ namespace qgl::content
        */
       content_file(const winrt::hstring& filePath)
       {
-         //Create the parameters to open the file.
-         CREATEFILE2_EXTENDED_PARAMETERS openParameters = { 0 };
-         openParameters.dwSize = sizeof(CREATEFILE2_EXTENDED_PARAMETERS);
-         openParameters.dwFileAttributes = FILE_ATTRIBUTE_NORMAL;
-         openParameters.dwFileFlags =
-            FILE_FLAG_OVERLAPPED | FILE_FLAG_SEQUENTIAL_SCAN;
-         openParameters.dwSecurityQosFlags = SECURITY_ANONYMOUS;
-         openParameters.hTemplateFile = nullptr;
-         SECURITY_ATTRIBUTES sa;
-         sa.bInheritHandle = TRUE;
-         sa.nLength = sizeof(sa);
-         sa.lpSecurityDescriptor = nullptr;
-         openParameters.lpSecurityAttributes = &sa;
-
          //Check if the file exists.
          const bool existingFile = file_exists(filePath);
 
          if (WriteMode)
          {
-            m_handle = open_file_readwrite(filePath, openParameters);
+            m_handle = open_file_readwrite(filePath);
          }
          else
          {
@@ -60,7 +46,7 @@ namespace qgl::content
                throw std::invalid_argument("The file does not exist.");
             }
 
-            m_handle = open_file_read(filePath, openParameters);
+            m_handle = open_file_read(filePath);
          }
 
          if (existingFile)
@@ -163,11 +149,11 @@ namespace qgl::content
       template<typename = std::enable_if<WriteMode == true>>
       void flush()
       {
+         //Write the header.
          write_header(m_handle, m_header);
-         write_dictionary(m_handle,
-                          m_header.dictionary_offset(),
-                          m_dictionary);
 
+         //Write the content data. This also updated the dictionary offsets, 
+         //which is necessary before writing the dictionary.
          write_dictionary_data(m_handle,
                                dictionary_data_offset(m_header,
                                                       m_dictionary.buffer()),
@@ -175,6 +161,12 @@ namespace qgl::content
                                m_dictionary.end(),
                                m_entryDataToWrite.begin(),
                                m_entryDataToWrite.end());
+
+         //Dictionary entry offsets should be correct now.
+         //Write the dictionary.
+         write_dictionary(m_handle,
+                          m_header.dictionary_offset(),
+                          m_dictionary);
       }
 
       private:
