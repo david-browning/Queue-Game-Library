@@ -102,25 +102,6 @@ namespace qgl::content
       CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
       const void* contentData);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
    /*
     Returns the offset, in bytes, to where content data starts in a file.
     Content data comes after the file header and dictionary.
@@ -141,6 +122,15 @@ namespace qgl::content
     can be found using dictionary_data_offset().
     The dictionary iterators point to a CONTENT_DICTIONARY_ENTRY_BUFFER that 
     describes the content's size and metadata. Size and metadata must be valid.
+    The entry's offset parameter does not need to be set because it can only 
+    be determined when based off the dictionary entry before it. As a 
+    side-effect, this function updates the dictionary entry buffers's offset
+    parameter. 
+    the offsets correctly, you must call this function BEFORE writing the
+    dictionary entries to the file.
+    The dictionary entry and data iterators work in pairs. The first dictionary
+    entry refers to the first data pointer. There must be an equal number of 
+    dictionary iterators as data iterators.
     */
    template<class DictionaryEntryForwardIterator, class DataForwardIterator>
    void write_dictionary_content(const winrt::file_handle& hndl,
