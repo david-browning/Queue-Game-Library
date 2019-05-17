@@ -85,7 +85,7 @@ namespace QGL_Content_UnitTests
                           L"The dictionary size should be 1.");
 
 
-         CONTENT_DICTIONARY_ENTRY_BUFFER movedBuffer;
+         CONTENT_DICTIONARY_ENTRY_BUFFER movedBuffer(defaultBuffer);
          dict.push_back(std::move(movedBuffer));
          Assert::AreEqual(static_cast<size_t>(2),
                           dict.size(),
@@ -120,10 +120,6 @@ namespace QGL_Content_UnitTests
             8);
          content_dictionary dict(meta);
 
-         CONTENT_DICTIONARY_ENTRY_BUFFER defaultBuffer;
-         Assert::IsTrue(dict.at(1) == defaultBuffer,
-                        L"The entry is not default.");
-
          CONTENT_METADATA_BUFFER metadata;
          CONTENT_DICTIONARY_ENTRY_BUFFER entry3(64, metadata, 32);
          dict.at(3) = entry3;
@@ -142,10 +138,6 @@ namespace QGL_Content_UnitTests
             sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER),
             8);
          content_dictionary dict(meta);
-
-         CONTENT_DICTIONARY_ENTRY_BUFFER defaultBuffer;
-         Assert::IsTrue(dict[1] == defaultBuffer,
-                        L"The entry is not default.");
 
          CONTENT_METADATA_BUFFER metadata;
          CONTENT_DICTIONARY_ENTRY_BUFFER entry3(64, metadata, 32);
