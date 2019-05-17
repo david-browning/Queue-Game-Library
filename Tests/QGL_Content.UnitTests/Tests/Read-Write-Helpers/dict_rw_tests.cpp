@@ -137,7 +137,7 @@ namespace QGL_Content_UnitTests
          content_dictionary toRead(toReadMeta);
          CONTENT_DICTIONARY_ENTRY_BUFFER toReadEntry;
          read_file_sync(hndl, sizeof(toReadEntry), entryOffset, &toReadEntry);
-         toRead.push_back(toReadEntry);
+         toRead.at(0) = toReadEntry;
 
          //Check that the dictionaries are equal.
          Assert::IsTrue(toWrite == toRead,
