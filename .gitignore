@@ -85,7 +85,7 @@ ipch/
 *.VC.VC.opendb
 
 # C++ WinRT Generated Files
-#"Generated Files/"
+"Generated Files/"
 
 # Visual Studio profiler
 *.psess
