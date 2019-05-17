@@ -9,6 +9,8 @@ namespace qgl::content
    struct LIB_EXPORT CONTENT_DICTIONARY_METADATA_BUFFER
    {
       public:
+      static constexpr uint64_t DEFAULT_FLAGS = 0;
+
       /*
        Default constructor.
        This metadata buffer has no dictionary entries, default flags, and
@@ -95,7 +97,5 @@ namespace qgl::content
       uint64_t m_flags;
 
       uint64_t m_reserved1;
-
-      static constexpr uint64_t DEFAULT_FLAGS = 0;
    };
 }

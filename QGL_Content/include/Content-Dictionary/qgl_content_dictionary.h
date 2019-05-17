@@ -134,6 +134,7 @@ namespace qgl::content
       {
          using std::swap;
          swap(first.m_entries, second.m_entries);
+         swap(first.m_flags, second.m_flags);
       }
             
       /*
@@ -145,7 +146,7 @@ namespace qgl::content
          return CONTENT_DICTIONARY_METADATA_BUFFER(
             m_entries.size(),
             sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER),
-            0);
+            m_flags);
       }
 
       /*
@@ -165,10 +166,13 @@ namespace qgl::content
       friend bool operator==(const content_dictionary& r,
                              const content_dictionary& l) noexcept
       {
-         return r.m_entries == l.m_entries;
+         return r.m_entries == l.m_entries && 
+            r.m_flags == l.m_flags;
       }
 
       private:
+
+      uint64_t m_flags;
 
       #pragma warning(push)
       #pragma warning(disable: 4251)

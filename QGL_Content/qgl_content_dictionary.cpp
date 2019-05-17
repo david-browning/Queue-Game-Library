@@ -1,13 +1,15 @@
 #include "pch.h"
 #include "include/Content-Dictionary/qgl_content_dictionary.h"
 
-qgl::content::content_dictionary::content_dictionary()
+qgl::content::content_dictionary::content_dictionary() :
+   m_flags(CONTENT_DICTIONARY_METADATA_BUFFER::DEFAULT_FLAGS)
 {
 }
 
 qgl::content::content_dictionary::content_dictionary(
    const CONTENT_DICTIONARY_METADATA_BUFFER& buf) :
-   m_entries(buf.count())
+   m_entries(buf.count()),
+   m_flags(buf.flags())
 {
 }
 
