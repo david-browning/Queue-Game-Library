@@ -67,27 +67,27 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
-    <IncludePath>$(ProjectDir)ContentProject;$(ProjectDir)ContentInfo;$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)include;$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
-    <IncludePath>$(ProjectDir)ContentProject;$(ProjectDir)ContentInfo;$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)include;$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)ContentProject;$(ProjectDir)ContentInfo;$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)include;$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir)ContentProject;$(ProjectDir)ContentInfo;$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)include;$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)ContentProject;$(ProjectDir)ContentInfo;$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)include;$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)ContentProject;$(ProjectDir)ContentInfo;$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)include;$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup>
@@ -136,34 +136,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="CompilerVersion.h" />
-    <ClInclude Include="ContentInfo\ContentInfo.h" />
-    <ClInclude Include="ContentInfo\ContentLoader.h" />
-    <ClInclude Include="ContentInfo\ResourceType.h" />
-    <ClInclude Include="ContentProject\ContentProject.h" />
-    <ClInclude Include="ContentProject\ContentProjectEntry.h" />
+    <ClInclude Include="include\CompilerVersion.h" />
+    <ClInclude Include="include\ContentLoader.h" />
+    <ClInclude Include="include\ResourceType.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CompilerVersion.cpp" />
-    <ClCompile Include="ContentInfo\ContentInfo.cpp" />
-    <ClCompile Include="ContentInfo\ContentLoader.cpp" />
-    <ClCompile Include="ContentInfo\ResourceType.cpp" />
-    <ClCompile Include="ContentProject\ContentProject.cpp" />
-    <ClCompile Include="ContentProject\ContentProjectEntry.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Midl Include="CompilerVersion.idl" />
-    <Midl Include="ContentInfo\ContentInfo.idl" />
-    <Midl Include="ContentInfo\ContentLoader.idl" />
-    <Midl Include="ContentInfo\ResourceType.idl" />
-    <Midl Include="ContentProject\ContentProject.idl" />
-    <Midl Include="ContentProject\ContentProjectEntry.idl" />
-    <Midl Include="IContentExtension.idl" />
+    <ClCompile Include="src\Projections\Content\Content-Metadata\ContentLoader.cpp" />
+    <ClCompile Include="src\Projections\Content\Content-Metadata\ResourceType.cpp" />
+    <ClCompile Include="src\Projections\Model\Versioning\CompilerVersion.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -176,6 +161,11 @@
     <ProjectReference Include="..\QGL_Model\QGL_Model.vcxproj">
       <Project>{d5f8ec52-9052-4a1e-81ca-ea32c414ec11}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="src\Projections\Content\Content-Metadata\ContentLoader.idl" />
+    <Midl Include="src\Projections\Content\Content-Metadata\ResourceType.idl" />
+    <Midl Include="src\Projections\Model\Versioning\CompilerVersion.idl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

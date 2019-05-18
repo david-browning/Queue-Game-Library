@@ -1,0 +1,18 @@
+namespace QGL_Projection
+{
+   [default_interface]
+   runtimeclass ResourceType : Windows.Foundation.IStringable
+   {
+      //Constructor.
+      ResourceType(UInt16 enumValue, String name);
+
+      //Returns the value of the resouce type.
+      //This maps to the C++ enum qgl::content::RESOURCE_TYPES
+      UInt16 Value{ get; };
+
+      //Collection of content loaders that can load this resource type.
+      //Each item is a ContentLoader.
+      Windows.Foundation.Collections.IObservableVector<IInspectable> 
+          SupportedLoaders { get; };
+   }
+}

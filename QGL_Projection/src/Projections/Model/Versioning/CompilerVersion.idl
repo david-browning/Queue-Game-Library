@@ -1,0 +1,12 @@
+namespace QGL_Projection
+{
+   [default_interface]
+   runtimeclass CompilerVersion : Windows.Foundation.IStringable
+   {
+      //Constructor.
+      CompilerVersion(UInt32 val, String str);
+
+      //Returns the compiler version value.
+      UInt32 Value { get; };
+   }
+}
