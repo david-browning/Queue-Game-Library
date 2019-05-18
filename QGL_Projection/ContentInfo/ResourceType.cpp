@@ -9,12 +9,12 @@ namespace winrt::QGL_Projection::implementation
       m_type(static_cast<qgl::content::RESOURCE_TYPES>(val)),
       m_name(name)
    {
-      m_observableSupportedLoaders = winrt::single_threaded_observable_vector<IInspectable>();
-      m_supportedLoaders = winrt::single_threaded_vector<QGL_Projection::ContentLoader>();
+      //m_observableSupportedLoaders = winrt::single_threaded_observable_vector<IInspectable>();
+      //m_supportedLoaders = winrt::single_threaded_vector<QGL_Projection::ContentLoader>();
       for (auto it : loaders)
       {
-         m_observableSupportedLoaders.Append(it);
-         m_supportedLoaders.Append(it);
+         //m_observableSupportedLoaders.Append(it);
+         //m_supportedLoaders.Append(it);
       }
    }
 
