@@ -1,8 +1,0 @@
-namespace QGL_Content_Builder.Extensions
-{
-   [default_interface]
-   runtimeclass UnknownContentExtension : QGL_Projection.IContentExtension
-   {
-      UnknownContentExtension();
-   }
-}
