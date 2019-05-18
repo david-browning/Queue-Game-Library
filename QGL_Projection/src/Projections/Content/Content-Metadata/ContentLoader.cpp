@@ -3,16 +3,19 @@
 
 namespace winrt::QGL_Projection::implementation
 {
-    ContentLoader::ContentLoader(uint16_t enumValue, hstring const& name)
-    {
-        throw hresult_not_implemented();
-    }
-    uint16_t ContentLoader::Value()
-    {
-        throw hresult_not_implemented();
-    }
-    hstring ContentLoader::ToString()
-    {
-        throw hresult_not_implemented();
-    }
+   ContentLoader::ContentLoader(uint16_t enumValue, hstring const& name) :
+      m_id(static_cast<qgl::content::CONTENT_LOADER_IDS>(enumValue)),
+      m_name(name)
+   {
+   }
+
+   uint16_t ContentLoader::Value()
+   {
+      return m_id;
+   }
+
+   hstring ContentLoader::ToString()
+   {
+      return m_name;
+   }
 }
