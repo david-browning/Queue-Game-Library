@@ -256,6 +256,7 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <None Include="QGL_Content.UnitTests_TemporaryKey.pfx" />
+    <None Include="TestSettings.runsettings" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\LockScreenLogo.scale-200.png" />
@@ -267,6 +268,11 @@
     <Image Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="content_data_write_tests.cpp" />
+    <ClCompile Include="content_file_header_read_tests.cpp" />
+    <ClCompile Include="dict_meta_read_tests.cpp" />
+    <ClCompile Include="dict_read_tests.cpp" />
+    <ClCompile Include="read_file_offset_tests.cpp" />
     <ClCompile Include="Tests\Buffers\content_metadata_buffer_tests.cpp" />
     <ClCompile Include="Tests\Buffers\dict_entry_buffer_tests.cpp" />
     <ClCompile Include="Tests\Buffers\dict_metadata_buffer_tests.cpp" />
@@ -292,10 +298,10 @@
     <ClCompile Include="Tests\Importers\string_importer_tests.cpp" />
     <ClCompile Include="Tests\Importers\struct_importer_tests.cpp" />
     <ClCompile Include="Tests\Importers\wstring_importer_tests.cpp" />
-    <ClCompile Include="Tests\Read-Write-Helpers\content_data_rw_tests.cpp" />
-    <ClCompile Include="Tests\Read-Write-Helpers\dict_meta_rw_tests.cpp" />
-    <ClCompile Include="Tests\Read-Write-Helpers\dict_rw_tests.cpp" />
-    <ClCompile Include="Tests\Read-Write-Helpers\header_rw_tests.cpp" />
+    <ClCompile Include="Tests\Read-Write-Helpers\content_data_read_tests.cpp" />
+    <ClCompile Include="Tests\Read-Write-Helpers\dict_meta_write_tests.cpp" />
+    <ClCompile Include="Tests\Read-Write-Helpers\dict_write_tests.cpp" />
+    <ClCompile Include="Tests\Read-Write-Helpers\content_file_header_write_tests.cpp" />
     <ClCompile Include="Tests\Read-Write-Helpers\offset_tests.cpp" />
     <ClCompile Include="Tests\Read-Write-Helpers\valid_data_tests.cpp" />
     <ClCompile Include="UnitTestApp.xaml.cpp">
@@ -311,6 +317,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="write_file_offset_tests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <SDKReference Include="CppUnitTestFramework.Universal, Version=$(UnitTestPlatformVersion)" />

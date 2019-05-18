@@ -28,24 +28,12 @@ namespace QGL_Content_UnitTests
          //Write to it.
          std::string buffer("Test");
          write_file_sync(handle, buffer.size(), 0, buffer.c_str());
-
-         //Close the file.
-         handle.close();
-
-         //Open file for read write
-         handle = open_file_readwrite(newFilePath);
-
+       
          //Get file size.
          auto fileSize = file_size(handle);
 
          //Truncate file
          truncate_file(handle);
-
-         //Close file
-         handle.close();
-
-         //Open file for read.
-         handle = open_file_read(newFilePath);
 
          //Get file size.
          auto truncatedSize = file_size(handle);

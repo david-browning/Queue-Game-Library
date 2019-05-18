@@ -84,18 +84,6 @@
     <ClCompile Include="Tests\Read-Write-Helpers\offset_tests.cpp">
       <Filter>Tests\Read-Write-Helpers</Filter>
     </ClCompile>
-    <ClCompile Include="Tests\Read-Write-Helpers\header_rw_tests.cpp">
-      <Filter>Tests\Read-Write-Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="Tests\Read-Write-Helpers\dict_rw_tests.cpp">
-      <Filter>Tests\Read-Write-Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="Tests\Read-Write-Helpers\dict_meta_rw_tests.cpp">
-      <Filter>Tests\Read-Write-Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="Tests\Read-Write-Helpers\content_data_rw_tests.cpp">
-      <Filter>Tests\Read-Write-Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="Tests\Content-File\move_constructor.cpp">
       <Filter>Tests\Content-File</Filter>
     </ClCompile>
@@ -138,6 +126,36 @@
     <ClCompile Include="Tests\Importers\wstring_importer_tests.cpp">
       <Filter>Tests\Importers</Filter>
     </ClCompile>
+    <ClCompile Include="content_data_write_tests.cpp">
+      <Filter>Tests\Read-Write-Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Read-Write-Helpers\content_data_read_tests.cpp">
+      <Filter>Tests\Read-Write-Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="read_file_offset_tests.cpp">
+      <Filter>Tests\File-Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="write_file_offset_tests.cpp">
+      <Filter>Tests\File-Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="content_file_header_read_tests.cpp">
+      <Filter>Tests\Read-Write-Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Read-Write-Helpers\content_file_header_write_tests.cpp">
+      <Filter>Tests\Read-Write-Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="dict_read_tests.cpp">
+      <Filter>Tests\Read-Write-Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Read-Write-Helpers\dict_write_tests.cpp">
+      <Filter>Tests\Read-Write-Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="dict_meta_read_tests.cpp">
+      <Filter>Tests\Read-Write-Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Read-Write-Helpers\dict_meta_write_tests.cpp">
+      <Filter>Tests\Read-Write-Helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -174,6 +192,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="QGL_Content.UnitTests_TemporaryKey.pfx" />
+    <None Include="TestSettings.runsettings" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Tests\Test-Files\CheckMe.txt">
