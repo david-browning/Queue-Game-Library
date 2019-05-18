@@ -158,6 +158,14 @@ namespace qgl::content
       {
          return m_compilerVersion;
       }
+            
+      /*
+       Returns the compiler version this content was compiled for.
+       */
+      inline qgl::qgl_version_t& version()
+      {
+         return m_compilerVersion;
+      }
 
       /*
        Returns a const reference to the content's GUID.
