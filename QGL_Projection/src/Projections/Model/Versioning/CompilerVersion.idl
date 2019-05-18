@@ -8,5 +8,12 @@ namespace QGL_Projection
 
       //Returns the compiler version value.
       UInt32 Value { get; };
+
+      static CompilerVersion Version_0_1 { get; };
+
+      static CompilerVersion Version_0_2 { get; };
+      
+      static Windows.Foundation.Collections.IVector<CompilerVersion> 
+         CompilerVersions{ get; };
    }
 }
