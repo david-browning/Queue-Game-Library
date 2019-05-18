@@ -138,6 +138,7 @@
   <ItemGroup>
     <ClInclude Include="include\CompilerVersion.h" />
     <ClInclude Include="include\ContentLoader.h" />
+    <ClInclude Include="include\ContentMetadata.h" />
     <ClInclude Include="include\ResourceType.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
@@ -147,6 +148,7 @@
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
     <ClCompile Include="src\Projections\Content\Content-Metadata\ContentLoader.cpp" />
+    <ClCompile Include="src\Projections\Content\Content-Metadata\ContentMetadata.cpp" />
     <ClCompile Include="src\Projections\Content\Content-Metadata\ResourceType.cpp" />
     <ClCompile Include="src\Projections\Model\Versioning\CompilerVersion.cpp" />
   </ItemGroup>
@@ -164,6 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <Midl Include="src\Projections\Content\Content-Metadata\ContentLoader.idl" />
+    <Midl Include="src\Projections\Content\Content-Metadata\ContentMetadata.idl" />
     <Midl Include="src\Projections\Content\Content-Metadata\ResourceType.idl" />
     <Midl Include="src\Projections\Model\Versioning\CompilerVersion.idl" />
   </ItemGroup>

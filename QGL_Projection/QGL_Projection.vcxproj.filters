@@ -12,6 +12,9 @@
     <ClCompile Include="src\Projections\Content\Content-Metadata\ResourceType.cpp">
       <Filter>Source Files\Projections\Content\Content-Metadata</Filter>
     </ClCompile>
+    <ClCompile Include="src\Projections\Content\Content-Metadata\ContentMetadata.cpp">
+      <Filter>Source Files\Projections\Content\Content-Metadata</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -22,6 +25,9 @@
       <Filter>Header Files\Projections\Content\Content-Metadata</Filter>
     </ClInclude>
     <ClInclude Include="include\ResourceType.h">
+      <Filter>Header Files\Projections\Content\Content-Metadata</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ContentMetadata.h">
       <Filter>Header Files\Projections\Content\Content-Metadata</Filter>
     </ClInclude>
   </ItemGroup>
@@ -84,6 +90,9 @@
       <Filter>Source Files\Projections\Content\Content-Metadata</Filter>
     </Midl>
     <Midl Include="src\Projections\Content\Content-Metadata\ResourceType.idl">
+      <Filter>Source Files\Projections\Content\Content-Metadata</Filter>
+    </Midl>
+    <Midl Include="src\Projections\Content\Content-Metadata\ContentMetadata.idl">
       <Filter>Source Files\Projections\Content\Content-Metadata</Filter>
     </Midl>
   </ItemGroup>
