@@ -17,12 +17,12 @@ namespace qgl::content
     File Structure:
     QGL_CONTENT_PROJECT_MAGIC_NUMBER
     CONTENT_METADATA_BUFFER
-    Number of entries : 2 bytes
+    Number of entries : 8 bytes
     N * 
       {
          QGL_CONTENT_PROJECT_ENTRY_SEPERATOR_MAGIC_NUMBER
          CONTENT_METADATA_BUFFER
-         Number of characters in path : 2 Bytes
+         Number of characters in path : 8 Bytes
          WString Path
       }
     */
@@ -30,7 +30,7 @@ namespace qgl::content
    {
       public:
       using entry_pair = std::pair<CONTENT_METADATA_BUFFER, winrt::hstring>;
-      using container = std::list<entry_pair>;
+      using container = std::vector<entry_pair>;
       using iterator = container::iterator;
       using const_iterator = container::const_iterator;
 
@@ -38,6 +38,9 @@ namespace qgl::content
        Open a content project file in read-write mode.
        File path must be absolute.
        If the file does not exist, this creates a new one.
+       When creating a new file, the content metadata is default and the list
+       of project entries is empty.
+
        If the file exists, the constructor checks if the file is valid. If the 
        file is not valid, this throws an exception.
        */
@@ -64,6 +67,22 @@ namespace qgl::content
        Flushes any changes to the content file to the disk.
        */
       void flush();
+
+      /*
+       Returns a reference to the content project's metadata.
+       */
+      CONTENT_METADATA_BUFFER& metadata() noexcept
+      {
+         return m_hdr;
+      }
+
+      /*
+       Returns a const reference to the content project's metadata.
+       */
+      const CONTENT_METADATA_BUFFER& metadata() const noexcept
+      {
+         return m_hdr;
+      }
 
       /*
        Returns the number of entries in the project.
@@ -96,25 +115,37 @@ namespace qgl::content
        Returns a reference to the idx'th project entry.
        This throws out_of_range if the index is out of bounds.
        */
-      entry_pair& at(size_t idx);
+      entry_pair& at(size_t idx)
+      {
+         return m_entries.at(idx);
+      }
 
       /*
        Returns a const reference to the idx'th project entry.
        This throws out_of_range if the index is out of bounds.
        */
-      const entry_pair& at(size_t idx) const;
+      const entry_pair& at(size_t idx) const
+      {
+         return m_entries.at(idx);
+      }
 
       /*
        Returns a reference to the idx'th project entry. 
        This does no bounds checking.
        */
-      entry_pair& operator[](size_t idx) noexcept;
+      entry_pair& operator[](size_t idx) noexcept
+      {
+         return m_entries[idx];
+      }
            
       /*
        Returns a const reference to the idx'th project entry.
        This does no bounds checking.
        */
-      const entry_pair& operator[](size_t idx) const noexcept;
+      const entry_pair& operator[](size_t idx) const noexcept
+      {
+         return m_entries[idx];
+      }
 
       /*
        Returns the project entry at the given position.

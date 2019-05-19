@@ -13,3 +13,5 @@
 
 #include "include/File-Loaders/qgl_file_loaders.h"
 #include "include/Content-Store/qgl_content_store.h"
+
+#include "include/Content-Project/qgl_content_project.h"

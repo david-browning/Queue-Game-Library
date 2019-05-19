@@ -35,6 +35,9 @@
     <Filter Include="Tests\Content-File">
       <UniqueIdentifier>{0d395d05-667d-4424-bfce-c4b3c266ff39}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\Content-Project">
+      <UniqueIdentifier>{67831c04-2799-4849-b570-bc6c98c25cad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="UnitTestApp.xaml" />
@@ -125,6 +128,9 @@
     </ClCompile>
     <ClCompile Include="Tests\additional_helper_tests.cpp">
       <Filter>Tests\File-Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="content_project_tests.cpp">
+      <Filter>Tests\Content-Project</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
