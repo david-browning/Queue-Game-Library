@@ -6,7 +6,7 @@ qgl::content::content_project::content_project(const winrt::hstring& filePath)
 {
    auto exists = file_exists(filePath);
    m_handle = open_file_readwrite(filePath);
-   if(exists)
+   if (exists)
    {
       read_in();
    }
@@ -60,19 +60,19 @@ void qgl::content::content_project::flush()
 void qgl::content::content_project::read_in()
 {
    size_t offset = 0;
-   
+
    //Read the magic number and check it.
    uint64_t readMagicNumber = 0;
    read_file_sync(m_handle, sizeof(readMagicNumber), offset, &readMagicNumber);
    offset += sizeof(readMagicNumber);
    if (readMagicNumber != QGL_CONTENT_PROJECT_MAGIC_NUMBER)
    {
-       
+      throw std::exception("The project's magic number is not correct.");
    }
 
    //Read the metadata
    read_file_sync(m_handle, sizeof(m_hdr), offset, &m_hdr);
-   offset += sizeof(sizeof(m_hdr));
+   offset += sizeof(m_hdr);
 
    //Read the number of entries. 8 bytes.
    uint64_t numEntries = 0;
@@ -88,7 +88,7 @@ void qgl::content::content_project::read_in()
       offset += sizeof(readMagicNumber);
       if (readMagicNumber != QGL_CONTENT_PROJECT_ENTRY_SEPERATOR_MAGIC_NUMBER)
       {
-
+         throw std::exception("The entry's magic number is not correct.");
       }
 
       //Read the metadata
@@ -105,7 +105,7 @@ void qgl::content::content_project::read_in()
       //not support resize.
       std::wstring path;
       path.resize(numChars);
-      read_file_sync(m_handle, numChars * sizeof(wchar_t), 
+      read_file_sync(m_handle, numChars * sizeof(wchar_t),
                      offset, path.data());
       offset += sizeof(numChars * sizeof(wchar_t));
 

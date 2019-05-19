@@ -31,42 +31,66 @@ namespace QGL_Content_UnitTests
       /*
        Assume the new file constructor, flush, and entry accessors are correct.
        */
-      //TEST_METHOD(ConstructorExistingProjectFile)
-      //{
-      //   auto root = ApplicationData::Current().LocalFolder().Path();
-      //   winrt::hstring newFilePath(root +
-      //                              L"\\ConstructorExistingProjectFile.txt");
+      TEST_METHOD(ConstructorExistingProjectFile)
+      {
+         auto root = ApplicationData::Current().LocalFolder().Path();
+         winrt::hstring newFilePath(root +
+                                    L"\\ConstructorExistingProjectFile.txt");
+         DeleteFile(newFilePath.c_str());
 
-      //   content_project projectWrite(newFilePath);
-      //   CONTENT_METADATA_BUFFER projectMeta(RESOURCE_TYPE_CAMERA,
-      //                                       CONTENT_LOADER_ID_CAMERA,
-      //                                       L"ProjectName");
-      //   projectWrite.metadata() == projectMeta;
+         content_project projectWrite(newFilePath);
+         CONTENT_METADATA_BUFFER projectMeta(RESOURCE_TYPE_CAMERA,
+                                             CONTENT_LOADER_ID_CAMERA,
+                                             L"ProjectName");
+         projectWrite.metadata() = projectMeta;
 
-      //   CONTENT_METADATA_BUFFER entryMeta(RESOURCE_TYPE_BRUSH,
-      //                                     CONTENT_LOADER_ID_BRUSH,
-      //                                     L"Brush");
-      //   projectWrite.emplace_back(entryMeta, L"C:\\SomeFile.txt");
+         CONTENT_METADATA_BUFFER entryMeta(RESOURCE_TYPE_BRUSH,
+                                           CONTENT_LOADER_ID_BRUSH,
+                                           L"Brush");
+         projectWrite.emplace_back(entryMeta, L"C:\\SomeFile.txt");
 
-      //   projectWrite.flush();
+         projectWrite.flush();
 
-      //   content_project projectRead(newFilePath);
-      //   Assert::IsTrue(projectRead.metadata() == projectWrite.metadata(),
-      //                  L"The project metadata is not equal.");
+         content_project projectRead(newFilePath);
+         Assert::IsTrue(projectRead.metadata() == projectWrite.metadata(),
+                        L"The project metadata is not equal.");
 
-      //   for (size_t i = 0; i < projectRead.size(); i++)
-      //   {
-      //      Assert::IsTrue(projectRead[i].first == projectWrite[i].first,
-      //                     L"The project entry metadata is not equal.");
+         for (size_t i = 0; i < projectRead.size(); i++)
+         {
+            Assert::IsTrue(projectRead[i].first == projectWrite[i].first,
+                           L"The project entry metadata is not equal.");
 
-      //      Assert::IsTrue(projectRead[i].second == projectWrite[i].second,
-      //                     L"The entry paths are not equal.");
-      //   }
-      //}
+            Assert::IsTrue(projectRead[i].second == projectWrite[i].second,
+                           L"The entry paths are not equal.");
+         }
+      }
 
       TEST_METHOD(ContentProjectMoveConstructor)
       {
+         auto root = ApplicationData::Current().LocalFolder().Path();
+         winrt::hstring newFilePath(root +
+                                    L"\\ContentProjectMoveConstructor.txt");
+         DeleteFile(newFilePath.c_str());
 
+         content_project projectWrite(newFilePath);
+         CONTENT_METADATA_BUFFER projectMeta(RESOURCE_TYPE_CAMERA,
+                                             CONTENT_LOADER_ID_CAMERA,
+                                             L"ProjectName");
+         projectWrite.metadata() = projectMeta;
+
+         CONTENT_METADATA_BUFFER entryMeta(RESOURCE_TYPE_BRUSH,
+                                           CONTENT_LOADER_ID_BRUSH,
+                                           L"Brush");
+         projectWrite.emplace_back(entryMeta, L"C:\\SomeFile.txt");
+
+
+         content_project projectMoved(std::move(projectWrite));
+
+         Assert::IsTrue(projectMoved[0].first == entryMeta,
+                        L"The entry's metadata is not correct.");
+
+         Assert::IsTrue(projectMoved[0].second == L"C:\\SomeFile.txt",
+                        L"The entry's path is not correct.");
       }
 
       TEST_METHOD(ContentProjectFlush)
@@ -79,9 +103,9 @@ namespace QGL_Content_UnitTests
 
          content_project projectWrite(newFilePath);
          CONTENT_METADATA_BUFFER projectMeta(RESOURCE_TYPE_CAMERA,
-                                             CONTENT_LOADER_ID_CAMERA,
+                                              CONTENT_LOADER_ID_CAMERA,
                                              L"ProjectName");
-         projectWrite.metadata() == projectMeta;
+         projectWrite.metadata() = projectMeta;
 
          CONTENT_METADATA_BUFFER entryMeta(RESOURCE_TYPE_BRUSH,
                                            CONTENT_LOADER_ID_BRUSH,
@@ -106,7 +130,7 @@ namespace QGL_Content_UnitTests
          //Read the metadata and check it.
          size_t offset = sizeof(readMagic);
          CONTENT_METADATA_BUFFER readMetadata;
-         read_file_sync(hndl, offset, sizeof(readMagic),
+         read_file_sync(hndl, sizeof(readMetadata), offset,
                         &readMetadata);
          Assert::IsTrue(projectMeta == readMetadata,
                         L"The project metadata is not correct.");
@@ -256,30 +280,6 @@ namespace QGL_Content_UnitTests
          Assert::IsTrue(2 == projectWrite.size(),
                         L"The size should be 2.");
       }
-
-      //TEST_METHOD(ContentProjectEmplacing)
-      //{
-      //   auto root = ApplicationData::Current().LocalFolder().Path();
-      //   winrt::hstring newFilePath(root +
-      //                              L"\\ContentProjectEmplacing.txt");
-
-      //   content_project projectWrite(newFilePath);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      //}
 
       /*
        Assume emplacing and index operator is correct.
