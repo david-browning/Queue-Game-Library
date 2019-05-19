@@ -13,12 +13,19 @@ namespace qgl::content
     is addressed using a dictionary. The dictionary can be iterated through
     using the begin() and end() functions.
     WriteMode: Set to true to open the file with write permissions.
+
+    File Structure:
+    CONTENT_FILE_HEADER_BUFFER
+    CONTENT_DICTIONARY_METADATA_BUFFER
+    N * CONTENT_DICTIONARY_ENTRY_BUFFER
+    N * Buffers
     */
    template<bool WriteMode>
    class content_file
    {
       public:
-      using DataIterator = std::list<content_data_buffer_t>::iterator;
+      using data_container = std::list<content_data_buffer_t>;
+      using DataIterator = data_container::iterator;
 
       /*
        Opens a content file.
@@ -203,7 +210,7 @@ namespace qgl::content
        An array of pointers to data that is pending writes to the content file.
        This is only populated when the content file is in write mode.
        */
-      std::list<content_data_buffer_t> m_entryDataToWrite;
+      data_container m_entryDataToWrite;
 
       /*
        File handle.
