@@ -1,9 +1,11 @@
 #include "pch.h"
 #include "CppUnitTest.h"
+#include <winrt/Windows.Storage.h>
 #include <winrt/Windows.ApplicationModel.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace winrt::Windows::Storage;
+using namespace winrt::Windows;
 using namespace qgl::content;
 
 namespace QGL_Content_UnitTests
@@ -63,6 +65,25 @@ namespace QGL_Content_UnitTests
          auto fileSize = file_size(handle);
 
          Assert::AreEqual(bufferSize, fileSize,
+                          L"The file size is not correct.");
+      }
+
+      TEST_METHOD(StorageFileSize)
+      {
+         test_storage_file_size();
+      }
+
+      private:
+      winrt::fire_and_forget test_storage_file_size()
+      {
+         auto root = ApplicationModel::Package::Current().InstalledLocation();
+
+         auto f = co_await root.CreateFileAsync(
+            L"Tests\\Test-Files\\CheckMe.txt",
+            CreationCollisionOption::OpenIfExists);
+
+         auto fileSize = file_size(f);
+         Assert::AreEqual(static_cast<size_t>(8), fileSize,
                           L"The file size is not correct.");
       }
    };

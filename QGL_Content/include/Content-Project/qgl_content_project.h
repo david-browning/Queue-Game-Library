@@ -197,6 +197,12 @@ namespace qgl::content
 
       private:
 
+      /*
+       Reads in the file using m_handle. Also verifies that the file is
+       correct.
+       Assume m_handle is valid and has RW permissions.
+       Throws exception if there is a problem reading or the file is invalid.
+       */
       void read_in();
 
       /*
@@ -212,6 +218,6 @@ namespace qgl::content
       /*
        File handle.
        */
-      winrt::handle m_handle;
+      winrt::file_handle m_handle;
    };
 }

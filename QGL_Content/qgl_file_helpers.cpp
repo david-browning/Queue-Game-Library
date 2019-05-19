@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "include/qgl_file_helpers.h"
+#include <winrt/Windows.Storage.h>
 #include <winrt/Windows.Storage.AccessCache.h>
 
 typedef DWORD SHGDNF;
@@ -55,6 +56,25 @@ winrt::file_handle qgl::content::open_file_read(const winrt::hstring& filePath)
    }
 
    return h;
+}
+
+LIB_EXPORT winrt::file_handle qgl::content::open_file_read(
+   const winrt::Windows::Storage::StorageFile & f)
+{
+   winrt::com_ptr<IStorageItemHandleAccess> handleAccess =
+      f.as<IStorageItemHandleAccess>();
+
+   HANDLE hndl;
+   auto hr = handleAccess->Create(HANDLE_ACCESS_OPTIONS::HAO_READ,
+                                  HANDLE_SHARING_OPTIONS::HSO_SHARE_READ,
+                                  HANDLE_OPTIONS::HO_OVERLAPPED |
+                                  HANDLE_OPTIONS::HO_SEQUENTIAL_SCAN,
+                                  nullptr,
+                                  &hndl);
+
+   winrt::check_hresult(hr);
+
+   return winrt::file_handle(hndl);
 }
 
 winrt::file_handle qgl::content::open_file_write(const winrt::hstring& filePath)
@@ -113,7 +133,6 @@ winrt::file_handle qgl::content::open_file_readwrite(
    winrt::check_hresult(hr);
 
    return winrt::file_handle(hndl);
-
 }
 
 LIB_EXPORT void qgl::content::truncate_file(const winrt::file_handle& hdnl)
@@ -141,6 +160,13 @@ size_t qgl::content::file_size(const winrt::file_handle& hndl)
    }
 
    return static_cast<size_t>(fileInfo.EndOfFile.QuadPart);
+}
+
+LIB_EXPORT size_t qgl::content::file_size(
+   const winrt::Windows::Storage::StorageFile & f)
+{
+   auto hndl = open_file_read(f);
+   return file_size(hndl);
 }
 
 std::vector<uint8_t> qgl::content::file_data(const winrt::file_handle& hndl)
