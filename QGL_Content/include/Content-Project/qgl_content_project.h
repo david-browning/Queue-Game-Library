@@ -62,8 +62,6 @@ namespace qgl::content
 
       /*
        Flushes any changes to the content file to the disk.
-       This function is only valid if the file was opened with write 
-       permissions.
        */
       void flush();
 
@@ -95,12 +93,28 @@ namespace qgl::content
       }
 
       /*
-       Removes the last project entry from this.
+       Returns a reference to the idx'th project entry.
+       This throws out_of_range if the index is out of bounds.
        */
-      void pop_back()
-      {
-         m_entries.pop_back();
-      }
+      entry_pair& at(size_t idx);
+
+      /*
+       Returns a const reference to the idx'th project entry.
+       This throws out_of_range if the index is out of bounds.
+       */
+      const entry_pair& at(size_t idx) const;
+
+      /*
+       Returns a reference to the idx'th project entry. 
+       This does no bounds checking.
+       */
+      entry_pair& operator[](size_t idx) noexcept;
+           
+      /*
+       Returns a const reference to the idx'th project entry.
+       This does no bounds checking.
+       */
+      const entry_pair& operator[](size_t idx) const noexcept;
 
       /*
        Returns the project entry at the given position.
