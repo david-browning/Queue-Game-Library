@@ -9,6 +9,9 @@ namespace qgl::content
    static constexpr uint64_t QGL_CONTENT_PROJECT_ENTRY_SEPERATOR_MAGIC_NUMBER =
       0xF6C3A57BD87C798B;
 
+   static constexpr uint64_t QGL_CONTENT_FILE_MAGIC_NUMBER = 
+      0x0E72B375C1C649159;
+
    enum RESOURCE_TYPES : uint16_t
    {
       RESOURCE_TYPE_UNKNOWN = 0,
