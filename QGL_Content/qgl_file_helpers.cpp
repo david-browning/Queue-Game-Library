@@ -10,6 +10,8 @@ using namespace winrt::param;
 using namespace winrt::Windows::Storage;
 using namespace qgl::content;
 
+static constexpr DWORD DEFAULT_SHARE_MODE = FILE_SHARE_READ | FILE_SHARE_WRITE;
+
 
 void qgl::content::make_overlapped(size_t offsetBytes, OVERLAPPED* over_p)
 {
@@ -47,7 +49,7 @@ winrt::file_handle qgl::content::open_file_read(const winrt::hstring& filePath)
    auto params = make_default_open_file_params(&sa);
    auto h = winrt::file_handle(CreateFile2(filePath.c_str(),
                                            GENERIC_READ,
-                                           FILE_SHARE_READ,
+                                           DEFAULT_SHARE_MODE,
                                            OPEN_EXISTING,
                                            &params));
    if (!h)
@@ -66,7 +68,8 @@ LIB_EXPORT winrt::file_handle qgl::content::open_file_read(
 
    HANDLE hndl;
    auto hr = handleAccess->Create(HANDLE_ACCESS_OPTIONS::HAO_READ,
-                                  HANDLE_SHARING_OPTIONS::HSO_SHARE_READ,
+                                  HANDLE_SHARING_OPTIONS::HSO_SHARE_READ |
+                                  HANDLE_SHARING_OPTIONS::HSO_SHARE_WRITE,
                                   HANDLE_OPTIONS::HO_OVERLAPPED |
                                   HANDLE_OPTIONS::HO_SEQUENTIAL_SCAN,
                                   nullptr,
@@ -83,7 +86,7 @@ winrt::file_handle qgl::content::open_file_write(const winrt::hstring& filePath)
    auto params = make_default_open_file_params(&sa);
    auto h = winrt::file_handle(CreateFile2(filePath.c_str(),
                                            GENERIC_WRITE,
-                                           0,
+                                           DEFAULT_SHARE_MODE,
                                            CREATE_ALWAYS,
                                            &params));
    if (!h)
@@ -100,7 +103,7 @@ winrt::file_handle qgl::content::open_file_readwrite(const winrt::hstring& fileP
    auto params = make_default_open_file_params(&sa);
    auto h = winrt::file_handle(CreateFile2(filePath.c_str(),
                                            GENERIC_READ | GENERIC_WRITE,
-                                           FILE_SHARE_READ,
+                                           DEFAULT_SHARE_MODE,
                                            OPEN_ALWAYS,
                                            &params));
 
@@ -124,7 +127,8 @@ winrt::file_handle qgl::content::open_file_readwrite(
    HANDLE hndl;
    auto hr = handleAccess->Create(HANDLE_ACCESS_OPTIONS::HAO_READ |
                                   HANDLE_ACCESS_OPTIONS::HAO_WRITE,
-                                  HANDLE_SHARING_OPTIONS::HSO_SHARE_READ,
+                                  HANDLE_SHARING_OPTIONS::HSO_SHARE_READ |
+                                  HANDLE_SHARING_OPTIONS::HSO_SHARE_WRITE,
                                   HANDLE_OPTIONS::HO_OVERLAPPED |
                                   HANDLE_OPTIONS::HO_SEQUENTIAL_SCAN,
                                   nullptr,
