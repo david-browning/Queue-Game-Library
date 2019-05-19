@@ -2,9 +2,8 @@
 #include "include/qgl_file_helpers.h"
 #include "include/Content-Files/qgl_content_file_helpers.h"
 
-namespace qgl::content
+namespace qgl::content::content_file_helpers
 {
-
    CONTENT_FILE_HEADER_BUFFER load_header(const winrt::file_handle& hndl)
    {
       CONTENT_FILE_HEADER_BUFFER ret;
@@ -124,6 +123,11 @@ namespace qgl::content
          sizeof(CONTENT_DICTIONARY_METADATA_BUFFER);
 
       return sz >= minValidFileSize;
+   }
+
+   LIB_EXPORT bool valid_content_file_magic_number(uint64_t magicNum)
+   {
+      return true;
    }
    
    bool valid_content_file(const winrt::file_handle & hndl)

@@ -5,6 +5,7 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace winrt::Windows::Storage;
 using namespace qgl::content;
+using namespace qgl::content::content_file_helpers;
 
 namespace QGL_Content_UnitTests
 {

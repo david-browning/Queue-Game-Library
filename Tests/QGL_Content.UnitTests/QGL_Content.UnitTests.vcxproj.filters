@@ -78,12 +78,6 @@
     <ClCompile Include="Tests\File-Helpers\additional_helper_tests.cpp">
       <Filter>Tests\File-Helpers</Filter>
     </ClCompile>
-    <ClCompile Include="Tests\Read-Write-Helpers\valid_data_tests.cpp">
-      <Filter>Tests\Read-Write-Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="Tests\Read-Write-Helpers\offset_tests.cpp">
-      <Filter>Tests\Read-Write-Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="Tests\Content-File\move_constructor.cpp">
       <Filter>Tests\Content-File</Filter>
     </ClCompile>
@@ -126,34 +120,40 @@
     <ClCompile Include="Tests\Importers\wstring_importer_tests.cpp">
       <Filter>Tests\Importers</Filter>
     </ClCompile>
-    <ClCompile Include="content_data_write_tests.cpp">
-      <Filter>Tests\Read-Write-Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="Tests\Read-Write-Helpers\content_data_read_tests.cpp">
       <Filter>Tests\Read-Write-Helpers</Filter>
     </ClCompile>
-    <ClCompile Include="read_file_offset_tests.cpp">
-      <Filter>Tests\File-Helpers</Filter>
+    <ClCompile Include="Tests\Read-Write-Helpers\content_data_write_tests.cpp">
+      <Filter>Tests\Read-Write-Helpers</Filter>
     </ClCompile>
-    <ClCompile Include="write_file_offset_tests.cpp">
-      <Filter>Tests\File-Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="content_file_header_read_tests.cpp">
+    <ClCompile Include="Tests\Read-Write-Helpers\content_file_header_read_tests.cpp">
       <Filter>Tests\Read-Write-Helpers</Filter>
     </ClCompile>
     <ClCompile Include="Tests\Read-Write-Helpers\content_file_header_write_tests.cpp">
       <Filter>Tests\Read-Write-Helpers</Filter>
     </ClCompile>
-    <ClCompile Include="dict_read_tests.cpp">
+    <ClCompile Include="Tests\Read-Write-Helpers\dict_meta_read_tests.cpp">
+      <Filter>Tests\Read-Write-Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Read-Write-Helpers\dict_meta_write_tests.cpp">
+      <Filter>Tests\Read-Write-Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Read-Write-Helpers\dict_read_tests.cpp">
       <Filter>Tests\Read-Write-Helpers</Filter>
     </ClCompile>
     <ClCompile Include="Tests\Read-Write-Helpers\dict_write_tests.cpp">
       <Filter>Tests\Read-Write-Helpers</Filter>
     </ClCompile>
-    <ClCompile Include="dict_meta_read_tests.cpp">
+    <ClCompile Include="Tests\Read-Write-Helpers\offset_tests.cpp">
       <Filter>Tests\Read-Write-Helpers</Filter>
     </ClCompile>
-    <ClCompile Include="Tests\Read-Write-Helpers\dict_meta_write_tests.cpp">
+    <ClCompile Include="Tests\Read-Write-Helpers\read_file_offset_tests.cpp">
+      <Filter>Tests\Read-Write-Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Read-Write-Helpers\valid_data_tests.cpp">
+      <Filter>Tests\Read-Write-Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Read-Write-Helpers\write_file_offset_tests.cpp">
       <Filter>Tests\Read-Write-Helpers</Filter>
     </ClCompile>
   </ItemGroup>
@@ -198,7 +198,7 @@
     <Text Include="Tests\Test-Files\CheckMe.txt">
       <Filter>Tests\Test-Files</Filter>
     </Text>
-    <Text Include="StorageFile.txt">
+    <Text Include="Tests\Test-Files\StorageFile.txt">
       <Filter>Tests\Test-Files</Filter>
     </Text>
   </ItemGroup>

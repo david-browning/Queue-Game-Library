@@ -7,7 +7,10 @@
 namespace qgl::content
 {
    using content_data_buffer_t = std::vector<uint8_t>;
+}
 
+namespace qgl::content::content_file_helpers
+{
    /*
     Reads the file header from a content file and returns it.
     The file must be opened with read permissions.
@@ -110,11 +113,6 @@ namespace qgl::content
       const CONTENT_FILE_HEADER_BUFFER& fileHeader,
       const CONTENT_DICTIONARY_METADATA_BUFFER& dictMeta);
 
-   extern LIB_EXPORT bool valid_content_file_size(
-      const winrt::file_handle& hndl);
-
-   extern LIB_EXPORT bool valid_content_file(const winrt::file_handle& hndl);
-
    /*
     Writes the content data, stored in a dictionary, to a content file.
     The file handle must be opened with write permissions.
@@ -174,4 +172,11 @@ namespace qgl::content
          firstContentData++;
       }
    }
+
+   extern LIB_EXPORT bool valid_content_file_size(
+      const winrt::file_handle& hndl);
+
+   extern LIB_EXPORT bool valid_content_file_magic_number(uint64_t magicNum);
+
+   extern LIB_EXPORT bool valid_content_file(const winrt::file_handle& hndl);
 }
