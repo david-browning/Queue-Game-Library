@@ -103,7 +103,7 @@ namespace QGL_Content_UnitTests
 
          content_project projectWrite(newFilePath);
          CONTENT_METADATA_BUFFER projectMeta(RESOURCE_TYPE_CAMERA,
-                                              CONTENT_LOADER_ID_CAMERA,
+                                             CONTENT_LOADER_ID_CAMERA,
                                              L"ProjectName");
          projectWrite.metadata() = projectMeta;
 
@@ -173,7 +173,7 @@ namespace QGL_Content_UnitTests
             read_file_sync(hndl, numChars * sizeof(wchar_t), offset,
                            readPath.data());
             Assert::IsTrue(projectWrite.at(i).second == readPath,
-                             L"The file path is not correct.");
+                           L"The file path is not correct.");
             offset += numChars * sizeof(wchar_t);
          }
       }
@@ -211,7 +211,7 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER newEntryMeta(RESOURCE_TYPE_BRUSH,
                                               CONTENT_LOADER_ID_BRUSH,
                                               L"NewEntry");
-         auto newEntry = std::make_pair(newEntryMeta, 
+         auto newEntry = std::make_pair(newEntryMeta,
                                         std::wstring(L"NewPath.txt"));
          projectWrite.at(1) = newEntry;
 
@@ -350,14 +350,14 @@ namespace QGL_Content_UnitTests
 
          content_project projectWrite(newFilePath);
 
-         std::vector<CONTENT_METADATA_BUFFER> metaDatas = 
+         std::vector<CONTENT_METADATA_BUFFER> metaDatas =
          {
             CONTENT_METADATA_BUFFER(),
             CONTENT_METADATA_BUFFER(),
             CONTENT_METADATA_BUFFER()
          };
 
-         std::vector<winrt::hstring> paths = 
+         std::vector<winrt::hstring> paths =
          {
             L"1",
             L"2",
@@ -379,6 +379,50 @@ namespace QGL_Content_UnitTests
             Assert::IsTrue(entry.second == paths[i],
                            L"Path is not correct.");
             i++;
+         }
+      }
+
+      TEST_METHOD(StorageFileOpenFlushRead)
+      {
+         test_storage_file();
+      }
+
+      private:
+      winrt::fire_and_forget test_storage_file()
+      {
+         auto root = ApplicationData::Current().LocalFolder();
+         auto f = co_await root.CreateFileAsync(
+            L"StorageFileOpenFlushRead.txt",
+            CreationCollisionOption::ReplaceExisting);
+
+
+         content_project projectWrite(f);
+         CONTENT_METADATA_BUFFER projectMeta(RESOURCE_TYPE_CAMERA,
+                                             CONTENT_LOADER_ID_CAMERA,
+                                             L"ProjectName");
+         projectWrite.metadata() = projectMeta;
+
+         CONTENT_METADATA_BUFFER entryMeta(RESOURCE_TYPE_BRUSH,
+                                           CONTENT_LOADER_ID_BRUSH,
+                                           L"Brush");
+         projectWrite.emplace_back(entryMeta, L"C:\\SomeFile.txt");
+
+         projectWrite.emplace_back(entryMeta, L"C:\\SomeFile2.txt");
+
+         //Flush it
+         projectWrite.flush();
+
+         content_project projectRead(f.Path());
+         Assert::IsTrue(projectRead.metadata() == projectWrite.metadata(),
+                        L"The project metadata is not equal.");
+
+         for (size_t i = 0; i < projectRead.size(); i++)
+         {
+            Assert::IsTrue(projectRead[i].first == projectWrite[i].first,
+                           L"The project entry metadata is not equal.");
+
+            Assert::IsTrue(projectRead[i].second == projectWrite[i].second,
+                           L"The entry paths are not equal.");
          }
       }
    };
