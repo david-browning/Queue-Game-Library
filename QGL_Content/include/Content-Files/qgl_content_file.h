@@ -32,7 +32,7 @@ namespace qgl::content
        File path must be absolute.
        If the file does not exist, this creates a new one only if WriteMode is
        true.
-       If the file does not exist and WriteMode is false, then this throws 
+       If the file does not exist and WriteMode is false, then this throws
        invalid_argument.
        If the file exists, the constructor checks if the file is valid. If the
        file is not valid, this throws an exception.
@@ -44,6 +44,7 @@ namespace qgl::content
 
          if (WriteMode)
          {
+            //Open file for read write mode.
             m_handle = open_file_readwrite(filePath);
          }
          else
@@ -54,24 +55,81 @@ namespace qgl::content
                throw std::invalid_argument("The file does not exist.");
             }
 
+            //Open file for read mode.
             m_handle = open_file_read(filePath);
          }
 
          //File exists. Try to read it.
          if (existingFile)
          {
-            if (!valid_content_file_size(m_handle))
-            {
-               throw std::invalid_argument(
-                  "The file exists, but it is too small to be valid");
-            }
-
+            check_and_throw_file_size();
             read_in();
+         }
+      }
 
-            if (!valid_content_file(m_handle))
+      /*
+       Opens a content file by taking ownership of the file handle. The file
+       handle is moved so after construction, it is no longer valid.
+       If the file is empty, then this creates a new empty content file only if
+       WriteMode is true and the handle has write permissions.
+       If the file is not empty, this attempts to read and verify the content
+       file data. If the file is not valid or the handle does not have read
+       permissions, this throws an exception.
+       */
+      content_file(winrt::file_handle& hndl) 
+      {
+         bool existingFile = file_size(hndl) > 0;
+         if (!WriteMode)
+         {
+            //If read mode and the file does not exist:
+            if (!existingFile)
             {
-               throw std::invalid_argument("The file has incorrect data.");
+               throw std::invalid_argument("The file does not exist.");
             }
+         }
+
+         m_handle.attach(hndl.detach());
+
+         //File exists. Try to read it.
+         if (existingFile)
+         {
+            check_and_throw_file_size();
+            read_in();
+         }
+      }
+
+      /*
+       Opens a content file.
+       If the file is empty, then this creates a new empty content file only if
+       WriteMode is true and the handle has write permissions.
+       If the file is not empty, this attempts to read and verify the content
+       file data. If the file is not valid or the handle does not have read
+       permissions, this throws an exception.
+       */
+      content_file(const winrt::Windows::Storage::StorageFile& f)
+      {
+         bool existingFile = file_size(f) > 0;
+         if (WriteMode)
+         {
+            m_handle = open_file_readwrite(f);
+         }
+         else
+         {
+            //If read mode and the file does not exist:
+            if (!existingFile)
+            {
+               throw std::invalid_argument("The file does not exist.");
+            }
+
+            //Open file for read mode.
+            m_handle = open_file_read(f);
+         }
+
+         //File exists. Try to read it.
+         if (existingFile)
+         {
+            check_and_throw_file_size();
+            read_in();
          }
       }
 
@@ -183,16 +241,32 @@ namespace qgl::content
       void read_in()
       {
          //Read the file header.
-         m_header = load_header(m_handle);
+         m_header = content_file_helpers::load_header(m_handle);
 
          //Read the dictionary.
-         m_dictionary = load_dictionary(m_handle, m_header.dictionary_offset());
+         m_dictionary = content_file_helpers::load_dictionary(m_handle,
+                                                              m_header.dictionary_offset());
 
          //Read all the entry data in.
          for (auto& entry : m_dictionary)
          {
-            auto data = load_content_data(m_handle, entry);
+            auto data = content_file_helpers::load_content_data(m_handle,
+                                                                entry);
             m_entryDataToWrite.push_back(data);
+         }
+
+         if (!content_file_helpers::valid_content_file(m_handle))
+         {
+            throw std::invalid_argument("The file has incorrect data.");
+         }
+      }
+
+      void check_and_throw_file_size()
+      {
+         if (!content_file_helpers::valid_content_file_size(m_handle))
+         {
+            throw std::invalid_argument(
+               "The file exists, but it is too small to be valid");
          }
       }
 
