@@ -183,6 +183,11 @@ namespace qgl::content
          return m_entries.begin();
       }
 
+      const_iterator begin() const noexcept
+      {
+         return m_entries.cbegin();
+      }
+
       /*
        Returns a const iterator to the beginning of the project entries.
        */
@@ -197,6 +202,11 @@ namespace qgl::content
       iterator end() noexcept
       {
          return m_entries.end();
+      }
+
+      const_iterator end() const noexcept
+      {
+         return m_entries.cend();
       }
 
       /*
