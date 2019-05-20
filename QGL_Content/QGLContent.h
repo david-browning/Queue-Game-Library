@@ -15,3 +15,4 @@
 #include "include/Content-Store/qgl_content_store.h"
 
 #include "include/Content-Project/qgl_content_project.h"
+#include "include/Content-Project/qgl_content_project_compiler.h"
