@@ -141,6 +141,19 @@ namespace qgl::content
       }
 
       /*
+       Emplaces an entry to be written when flush is called.
+       */
+      template<typename = std::enable_if<WriteMode == true>>
+      void emplace_back(const CONTENT_METADATA_BUFFER& entryMeta,
+                        const content_data_buffer_t& buffer)
+      {
+         CONTENT_DICTIONARY_ENTRY_BUFFER dictEntry(buffer.size(),
+                                                   entryMeta);
+         m_dictionary.push_back(dictEntry);
+         m_entryDataToWrite.push_back(buffer);
+      }
+
+      /*
        Returns the number of items in the dictionary.
        */
       inline size_t size() const noexcept
