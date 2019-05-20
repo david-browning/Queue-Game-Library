@@ -68,37 +68,6 @@ namespace qgl::content
       }
 
       /*
-       Opens a content file by taking ownership of the file handle. The file
-       handle is moved so after construction, it is no longer valid.
-       If the file is empty, then this creates a new empty content file only if
-       WriteMode is true and the handle has write permissions.
-       If the file is not empty, this attempts to read and verify the content
-       file data. If the file is not valid or the handle does not have read
-       permissions, this throws an exception.
-       */
-      content_file(winrt::file_handle& hndl) 
-      {
-         bool existingFile = file_size(hndl) > 0;
-         if (!WriteMode)
-         {
-            //If read mode and the file does not exist:
-            if (!existingFile)
-            {
-               throw std::invalid_argument("The file does not exist.");
-            }
-         }
-
-         m_handle.attach(hndl.detach());
-
-         //File exists. Try to read it.
-         if (existingFile)
-         {
-            check_and_throw_file_size();
-            read_in();
-         }
-      }
-
-      /*
        Opens a content file.
        If the file is empty, then this creates a new empty content file only if
        WriteMode is true and the handle has write permissions.
