@@ -113,66 +113,6 @@ namespace qgl::content::content_file_helpers
       const CONTENT_FILE_HEADER_BUFFER& fileHeader,
       const CONTENT_DICTIONARY_METADATA_BUFFER& dictMeta);
 
-   /*
-    Writes the content data, stored in a dictionary, to a content file.
-    The file handle must be opened with write permissions.
-    startOffset is the offset, in bytes, to where content data begins. This
-    can be found using dictionary_data_offset().
-    The dictionary iterators point to a CONTENT_DICTIONARY_ENTRY_BUFFER that 
-    describes the content's size and metadata. Size and metadata must be valid.
-    The entry's offset parameter does not need to be set because it can only 
-    be determined when based off the dictionary entry before it. As a 
-    side-effect, this function updates the dictionary entry buffers's offset
-    parameter. 
-    the offsets correctly, you must call this function BEFORE writing the
-    dictionary entries to the file.
-    The dictionary entry and data iterators work in pairs. The first dictionary
-    entry refers to the first data pointer. There must be an equal number of 
-    dictionary iterators as data iterators.
-    */
-   template<class DictionaryEntryForwardIterator, class DataForwardIterator>
-   void write_dictionary_content(const winrt::file_handle& hndl,
-                                 size_t startOffset,
-                                 DictionaryEntryForwardIterator firstDictEntry,
-                                 DictionaryEntryForwardIterator lastDictEntry,
-                                 DataForwardIterator firstContentData,
-                                 DataForwardIterator lastContentData)
-   {
-      //Check that the iterator types are expected.
-      auto firstData = *firstContentData;
-      static_assert(
-         std::is_same<decltype(firstData), content_data_buffer_t>::value,
-         "Content data iterators must point to content_data_buffer_t.");
-
-      auto firstEntry = *firstDictEntry;
-      static_assert(
-         std::is_same<decltype(firstEntry),
-         CONTENT_DICTIONARY_ENTRY_BUFFER>::value,
-         "Dictionary iterators must be a CONTENT_DICTIONARY_ENTRY_BUFFER");
-
-      //Check that there are the same number of dictionary entries as data 
-      //pointers.
-      if (std::distance(firstContentData, lastContentData) !=
-          std::distance(firstDictEntry, lastDictEntry))
-      {
-         throw std::invalid_argument("There must be an equal number of "
-                                     "dictionary entries and content data "
-                                     "pointers.");
-      }
-
-      while (firstDictEntry != lastDictEntry)
-      {
-         //Adjust the dictionary entry's data pointer.
-         firstDictEntry->offset() = startOffset;
-         startOffset += firstDictEntry->size();
-
-         write_content_data(hndl, *firstDictEntry, *firstContentData);
-
-         firstDictEntry++;
-         firstContentData++;
-      }
-   }
-
    extern LIB_EXPORT bool valid_content_file_size(
       const winrt::file_handle& hndl);
 
