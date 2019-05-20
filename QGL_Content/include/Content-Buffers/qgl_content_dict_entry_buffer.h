@@ -21,7 +21,7 @@ namespace qgl::content
        Flags are set to default.
        */
       CONTENT_DICTIONARY_ENTRY_BUFFER(size_t entrySize,
-                                      CONTENT_METADATA_BUFFER& entryInfo,
+                                      const CONTENT_METADATA_BUFFER& entryInfo,
                                       size_t entryOffset = -1);
 
       /*
