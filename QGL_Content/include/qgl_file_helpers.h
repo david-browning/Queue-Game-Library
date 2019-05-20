@@ -8,15 +8,15 @@ namespace qgl::content
      Populates an OVERLAPPED so it can be used to read and write a file using
      an offset.
      */
-    extern LIB_EXPORT void make_overlapped(size_t offsetBytes, 
-                                           OVERLAPPED* over_p);
+   extern LIB_EXPORT void make_overlapped(size_t offsetBytes,
+                                          OVERLAPPED* over_p);
 
-   /*
-    Reads bytesToRead bytes from a file and stores it in buffer_p.
-    Specify the offset into the file using offsetBytes.
-    File handle must be open with read permissions.
-    Throws an exception on error.
-    */
+  /*
+   Reads bytesToRead bytes from a file and stores it in buffer_p.
+   Specify the offset into the file using offsetBytes.
+   File handle must be open with read permissions.
+   Throws an exception on error.
+   */
    template<typename T>
    void read_file_sync(const winrt::file_handle& fileHandle,
                        size_t bytesToRead,
@@ -90,6 +90,13 @@ namespace qgl::content
    extern LIB_EXPORT winrt::file_handle open_file_write(
       const winrt::hstring& filePath);
 
+   /*
+    Opens a file for write access.
+    Throws an exception on error.
+    */
+   extern LIB_EXPORT winrt::file_handle open_file_write(
+      const winrt::Windows::Storage::StorageFile& f);
+
   /*
    Opens a file for read and write access.
    Creates the file if it does not exist.
@@ -99,7 +106,7 @@ namespace qgl::content
       const winrt::hstring& filePath);
 
    /*
-    Opens a storage file for read and write access. 
+    Opens a storage file for read and write access.
     TODO: Don't know if the file is valid after the storage file goes out of
     scope.
     Throws an exception on error.
@@ -154,7 +161,7 @@ namespace qgl::content
 
    /*
     Returns true if the directory exists.
-    Returns false if the directory does not exist, or the path does not point 
+    Returns false if the directory does not exist, or the path does not point
     to a directory.
     The directory path must be absolute.
     */
@@ -172,7 +179,7 @@ namespace qgl::content
    inline bool file_exists(const winrt::hstring& absPath)
    {
       auto attr = GetFileAttributes(absPath.c_str());
-      return attr != INVALID_FILE_ATTRIBUTES && 
+      return attr != INVALID_FILE_ATTRIBUTES &&
          !(attr & FILE_ATTRIBUTE_DIRECTORY);
    }
 
