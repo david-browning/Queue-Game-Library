@@ -123,7 +123,10 @@
     <ClCompile Include="Tests\additional_helper_tests.cpp">
       <Filter>Tests\File-Helpers</Filter>
     </ClCompile>
-    <ClCompile Include="content_project_tests.cpp">
+    <ClCompile Include="Tests\content_project_compiler_tests.cpp">
+      <Filter>Tests\Content-Project</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\content_project_tests.cpp">
       <Filter>Tests\Content-Project</Filter>
     </ClCompile>
   </ItemGroup>

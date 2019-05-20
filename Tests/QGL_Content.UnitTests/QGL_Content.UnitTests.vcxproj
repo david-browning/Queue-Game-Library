@@ -268,7 +268,6 @@
     <Image Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="content_project_tests.cpp" />
     <ClCompile Include="Tests\additional_helper_tests.cpp" />
     <ClCompile Include="Tests\content_data_read_tests.cpp" />
     <ClCompile Include="Tests\content_data_write_tests.cpp" />
@@ -276,6 +275,8 @@
     <ClCompile Include="Tests\content_file_header_read_tests.cpp" />
     <ClCompile Include="Tests\content_file_header_write_tests.cpp" />
     <ClCompile Include="Tests\content_metadata_buffer_tests.cpp" />
+    <ClCompile Include="Tests\content_project_compiler_tests.cpp" />
+    <ClCompile Include="Tests\content_project_tests.cpp" />
     <ClCompile Include="Tests\content_store_config_loader.cpp" />
     <ClCompile Include="Tests\dict_entry_buffer_tests.cpp" />
     <ClCompile Include="Tests\dict_metadata_buffer_tests.cpp" />
