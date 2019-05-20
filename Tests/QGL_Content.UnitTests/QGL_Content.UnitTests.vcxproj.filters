@@ -114,12 +114,6 @@
     <ClCompile Include="Tests\import_helper_tests.cpp">
       <Filter>Tests\Importers</Filter>
     </ClCompile>
-    <ClCompile Include="Tests\read_file_offset_tests.cpp">
-      <Filter>Tests\File-Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="Tests\write_file_offset_tests.cpp">
-      <Filter>Tests\File-Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="Tests\write_file_tests.cpp">
       <Filter>Tests\File-Helpers</Filter>
     </ClCompile>
