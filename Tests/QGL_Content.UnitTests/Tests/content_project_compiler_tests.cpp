@@ -12,7 +12,7 @@ namespace QGL_Content_UnitTests
       public:
       TEST_METHOD(CompileProjectStorageFile)
       {
-         test_compile_project_storage_file();
+         //test_compile_project_storage_file();
       }
 
       TEST_METHOD(CompileProjectFile)
