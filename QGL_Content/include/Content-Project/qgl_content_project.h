@@ -47,6 +47,18 @@ namespace qgl::content
       content_project(const winrt::hstring& filePath);
 
       /*
+       Opens a content project file in read-write mode. The storage file must
+       allow write permissions.
+       If the file does not exist, this creates a new one.
+       When creating a new file, the content metadata is default and the list 
+       of project entries is empty.
+
+       If the file exists, the constructor checks if the file is valid. If the 
+       file is not valid, this throws an exception.
+       */
+      content_project(const winrt::Windows::Storage::StorageFile& f);
+
+      /*
        Cannot copy projects.
        */
       content_project(const content_project&) = delete;

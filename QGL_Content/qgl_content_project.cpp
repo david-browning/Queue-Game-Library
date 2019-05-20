@@ -12,6 +12,19 @@ qgl::content::content_project::content_project(const winrt::hstring& filePath)
    }
 }
 
+qgl::content::content_project::content_project(
+   const winrt::Windows::Storage::StorageFile & f)
+{
+   //The storage file already exists, so to check if it is an old file, check
+   //if it is greater than 0 bytes.
+   auto exists = file_size(f) > 0;
+   m_handle = open_file_readwrite(f);
+   if (exists)
+   {
+      read_in();
+   }
+}
+
 void qgl::content::content_project::flush()
 {
    size_t offset = 0;
