@@ -138,6 +138,7 @@ namespace qgl::content
 
       static constexpr uint32_t DEFAULT_FLAGS = 0;
 
-      static constexpr uint32_t IS_SHARED_FLAG = (1 << 31);
+      static constexpr uint32_t IS_SHARED_FLAG = 
+         static_cast<uint32_t>(1 << 31);
    };
 }
