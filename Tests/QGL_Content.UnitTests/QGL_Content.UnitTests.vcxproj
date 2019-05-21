@@ -272,6 +272,7 @@
     <ClCompile Include="Tests\content_dictionary_test.cpp" />
     <ClCompile Include="Tests\content_file_header_read_tests.cpp" />
     <ClCompile Include="Tests\content_file_header_write_tests.cpp" />
+    <ClCompile Include="Tests\content_file_tests.cpp" />
     <ClCompile Include="Tests\content_metadata_buffer_tests.cpp" />
     <ClCompile Include="Tests\content_project_compiler_tests.cpp" />
     <ClCompile Include="Tests\content_project_tests.cpp" />
@@ -286,7 +287,6 @@
     <ClCompile Include="Tests\file_header_buffer_tests.cpp" />
     <ClCompile Include="Tests\import_helper_tests.cpp" />
     <ClCompile Include="Tests\open_file_tests.cpp" />
-    <ClCompile Include="Tests\read_file_tests.cpp" />
     <ClCompile Include="Tests\string_file_loader.cpp" />
     <ClCompile Include="Tests\string_importer_tests.cpp" />
     <ClCompile Include="Tests\struct_importer_tests.cpp" />

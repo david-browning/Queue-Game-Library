@@ -111,9 +111,6 @@
     <ClCompile Include="Tests\write_file_tests.cpp">
       <Filter>Tests\File-Helpers</Filter>
     </ClCompile>
-    <ClCompile Include="Tests\read_file_tests.cpp">
-      <Filter>Tests\File-Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="Tests\additional_helper_tests.cpp">
       <Filter>Tests\File-Helpers</Filter>
     </ClCompile>
@@ -122,6 +119,9 @@
     </ClCompile>
     <ClCompile Include="Tests\content_project_tests.cpp">
       <Filter>Tests\Content-Project</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\content_file_tests.cpp">
+      <Filter>Tests\Content-File</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
