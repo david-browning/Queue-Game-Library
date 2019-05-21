@@ -15,7 +15,7 @@ namespace QGL_Content_UnitTests
       /*
        Assume write_file_sync, open_file_read, and open_file_write are correct.
        */
-      TEST_METHOD(ReadHeader)
+      TEST_METHOD(ReadContentFileHeader)
       {
          CONTENT_METADATA_BUFFER hdrMeta(
             RESOURCE_TYPES::RESOURCE_TYPE_BRUSH,
@@ -25,15 +25,15 @@ namespace QGL_Content_UnitTests
          CONTENT_FILE_HEADER_BUFFER hdr(hdrMeta);
 
          auto root = ApplicationData::Current().LocalFolder().Path();
-         winrt::hstring newFilePath(root + L"\\ReadHeader.txt");
+         winrt::hstring newFilePath(root + L"\\ReadContentFileHeader.txt");
          auto hndl = open_file_write(newFilePath);
          write_file_sync(hndl, sizeof(hdr), 0, &hdr);
 
          hndl.close();
 
          hndl = open_file_read(newFilePath);
-         CONTENT_FILE_HEADER_BUFFER readHdr;
-         read_file_sync(hndl, sizeof(hdr), 0, &readHdr);
+         CONTENT_FILE_HEADER_BUFFER readHdr = 
+            content_file_helpers::load_header(hndl);
 
          Assert::IsTrue(hdr == readHdr,
                         L"The headers are not the same.");
