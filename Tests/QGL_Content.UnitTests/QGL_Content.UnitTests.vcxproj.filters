@@ -66,12 +66,6 @@
     <ClCompile Include="Tests\content_dictionary_test.cpp">
       <Filter>Tests\Dictionary</Filter>
     </ClCompile>
-    <ClCompile Include="Tests\content_data_read_tests.cpp">
-      <Filter>Tests\Content-File</Filter>
-    </ClCompile>
-    <ClCompile Include="Tests\content_data_write_tests.cpp">
-      <Filter>Tests\Content-File</Filter>
-    </ClCompile>
     <ClCompile Include="Tests\content_file_header_read_tests.cpp">
       <Filter>Tests\Content-File</Filter>
     </ClCompile>

@@ -43,17 +43,6 @@ namespace qgl::content::content_file_helpers
       size_t entryOffset);
 
    /*
-    Reads the dictionary from a content file and returns it. The dictionary
-    offset is stored in the file's header.
-    The file must be opened with read permissions.
-    This does not validate the data read.
-    Throws an exception if there is an error reading.
-    */
-   extern LIB_EXPORT content_dictionary load_dictionary(
-      const winrt::file_handle& hndl,
-      size_t dictionaryOffset);
-
-   /*
     Reads the content data from a content file. The data is accessed using the
     dictionary entry. Returns a vector of bytes.
     The file must be opened with read permissions.
@@ -88,14 +77,6 @@ namespace qgl::content::content_file_helpers
       const winrt::file_handle& hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
       size_t offset);
-
-   /*
-    Writes a dictionary to a content file.
-    The file must be opened with write permissions.
-    */
-   extern LIB_EXPORT void write_dictionary(const winrt::file_handle& hndl,
-                                           size_t dictionaryOffset,
-                                           const content_dictionary& dict);
 
    /*
     Writes the content data to the content file.

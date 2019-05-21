@@ -29,23 +29,6 @@ namespace qgl::content::content_file_helpers
       return ret;
    }
 
-   content_dictionary load_dictionary(const winrt::file_handle& hndl,
-                                      size_t dictionaryOffset)
-   {
-      content_dictionary ret(load_dictionary_metadata(hndl, dictionaryOffset));
-
-      size_t entryOffset = dictionaryOffset +
-         sizeof(CONTENT_DICTIONARY_METADATA_BUFFER);
-
-      for (size_t i = 0; i < ret.size(); i++)
-      {
-         ret[i] = load_dictionary_entry(hndl, entryOffset);
-         entryOffset += sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER);
-      }
-
-      return ret;
-   }
-
    std::vector<uint8_t> load_content_data(
       const winrt::file_handle& hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry)
@@ -76,24 +59,6 @@ namespace qgl::content::content_file_helpers
                                size_t offset)
    {
       write_file_sync(hndl, sizeof(entry), offset, &entry);
-   }
-
-   void write_dictionary(const winrt::file_handle& hndl,
-                         size_t dictionaryOffset,
-                         const content_dictionary& dict)
-   {
-      //Write the dictionary metadata.
-      write_dictionary_metadata(hndl, dict.buffer(), dictionaryOffset);
-
-      //Write each entry.
-      size_t entryOffset = dictionaryOffset +
-         sizeof(CONTENT_DICTIONARY_METADATA_BUFFER);
-
-      for (auto it = dict.cbegin(); it != dict.cend(); ++it)
-      {
-         write_dictionary_entry(hndl, *it, entryOffset);
-         entryOffset += sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER);
-      }
    }
 
    void write_content_data(
