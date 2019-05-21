@@ -84,9 +84,9 @@ void content_file::flush()
 void content_file::push_back(const CONTENT_METADATA_BUFFER& meta,
                              const content_data_buffer_t& buff)
 {
-   content_buffer_type cont;
-   std::get<VARIANT_INDEX_BUFFER>(cont) = buff;
+   content_buffer_type cont(buff);
    CONTENT_DICTIONARY_ENTRY_BUFFER entry(buff.size(), meta);
+   entry.shared(false);
 
    m_entryDataToWrite.push_back(std::move(cont));
    m_dict.push_back(std::move(entry));
@@ -95,9 +95,7 @@ void content_file::push_back(const CONTENT_METADATA_BUFFER& meta,
 void content_file::push_back(const CONTENT_METADATA_BUFFER& meta,
                              const shared_content_data_buffer_t& buff)
 {
-   content_buffer_type cont;
-   std::get<VARIANT_INDEX_PATH>(cont) = buff;
-   m_entryDataToWrite.push_back(cont);
+   content_buffer_type cont(buff);
    CONTENT_DICTIONARY_ENTRY_BUFFER entry(shared_entry_data_size(buff),
                                          meta);
    entry.shared(true);
