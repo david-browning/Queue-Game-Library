@@ -23,6 +23,9 @@ namespace QGL_Content_UnitTests
          Assert::AreEqual(static_cast<uint32_t>(0),
                           e.flags(),
                           L"The flags are not correct.");
+         
+         Assert::IsFalse(e.shared(),
+                         L"The entry should not be shared.");
 
          const auto& m = e.metadata();
 
@@ -42,6 +45,7 @@ namespace QGL_Content_UnitTests
 
          Assert::IsFalse(m.obey_physics(),
                          L"The content should not obey physics.");
+
       }
 
       TEST_METHOD(Constructor)
@@ -153,6 +157,18 @@ namespace QGL_Content_UnitTests
       TEST_METHOD(FlagsGet)
       {
          //Tested by constructor tests.
+      }
+
+      TEST_METHOD(SharedSet)
+      {
+         CONTENT_DICTIONARY_ENTRY_BUFFER e;
+         e.shared(true);
+         Assert::IsTrue(e.shared(),
+                        L"Entry should be shared.");
+
+         e.shared(false);
+         Assert::IsFalse(e.shared(),
+                         L"Entry should not be shared.");
       }
 
       TEST_METHOD(MetadataGet)

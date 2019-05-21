@@ -65,6 +65,18 @@ namespace qgl::content
          return m_flags;
       }
 
+      inline bool shared() const noexcept
+      {
+         return (m_flags & IS_SHARED_FLAG) != 0;
+      }
+
+      void shared(bool value) noexcept
+      {
+         auto bit = static_cast<uint32_t>(value ? 1 : 0);
+         auto oldFlags = m_flags & ~IS_SHARED_FLAG;
+         m_flags = oldFlags | (bit << 31);
+      }
+
       /*
        Returns a reference to the content's metadata.
        */
@@ -99,15 +111,6 @@ namespace qgl::content
             r.m_info == l.m_info;
       }
 
-      template<class DictionaryEntryForwardIterator, class DataForwardIterator>
-      friend void write_dictionary_content(
-         const winrt::file_handle& hndl,
-         size_t startOffset,
-         DictionaryEntryForwardIterator firstDictEntry,
-         DictionaryEntryForwardIterator lastDictEntry,
-         DataForwardIterator firstContentData,
-         DataForwardIterator lastContentData);
-
       private:
 
        /*
@@ -122,6 +125,7 @@ namespace qgl::content
 
       /*
        Object flags.
+       { 1: Is shared }
        */
       uint32_t m_flags;
 
@@ -131,5 +135,7 @@ namespace qgl::content
       CONTENT_METADATA_BUFFER m_info;
 
       static constexpr uint32_t DEFAULT_FLAGS = 0;
+
+      static constexpr uint32_t IS_SHARED_FLAG = (1 << 31);
    };
 }
