@@ -10,9 +10,8 @@ qgl::content::content_store_config_loader::operator()(const content_file& f)
    check_loader_and_resource<RESOURCE_TYPES::RESOURCE_TYPE_DESCRIPTION,
       CONTENT_LOADER_IDS::CONTENT_LOADER_ID_STORE_CONFIG>(headerInfo);
 
-   for (size_t i = 0; i < f.size(); i++)
+   for (const auto& entry : f)
    {
-      auto& entry = f.at(i);
       auto& info = entry.metadata();
       switch (info.resource_type())
       {

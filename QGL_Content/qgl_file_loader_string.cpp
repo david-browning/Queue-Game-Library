@@ -19,7 +19,7 @@ std::shared_ptr<std::string> qgl::content::string_file_loader::operator()(
    }
 
    static string_importer sImporter;
-   auto& entry = f.at(0);
+   auto& entry = f.front();
    check_loader_and_resource<RESOURCE_TYPES::RESOURCE_TYPE_STRING,
       CONTENT_LOADER_IDS::CONTENT_LOADER_ID_STRING>(entry.metadata());
 

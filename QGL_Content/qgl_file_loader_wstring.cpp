@@ -20,7 +20,7 @@ std::shared_ptr<std::wstring> qgl::content::wstring_file_loader::operator()(
 
    static wstring_importer wsImporter;
 
-   auto& entry = f.at(0);
+   auto& entry = f.front();
    check_loader_and_resource<RESOURCE_TYPES::RESOURCE_TYPE_STRING,
       CONTENT_LOADER_IDS::CONTENT_LOADER_ID_WSTRING>(entry.metadata());
 

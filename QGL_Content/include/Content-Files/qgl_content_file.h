@@ -20,25 +20,27 @@ namespace qgl::content
     N * CONTENT_DICTIONARY_ENTRY_BUFFER
     N * Buffers
     */
-   LIB_EXPORT class content_file
+   class LIB_EXPORT content_file
    {
       public:
-      using content_buffer_type = std::variant<content_data_buffer_t, 
+      using content_buffer_type = std::variant<content_data_buffer_t,
          shared_content_data_buffer_t>;
 
-      using value_type = std::pair<CONTENT_DICTIONARY_ENTRY_BUFFER,
-         content_buffer_type>;
-      
-      using data_container = std::vector<value_type>;
-      using iterator = data_container::iterator;
-      using const_iterator = data_container::const_iterator;
+      using dictionary_container = std::list<CONTENT_DICTIONARY_ENTRY_BUFFER>;
+      using content_container = std::list<content_buffer_type>;
+
+      using content_iterator = content_container::iterator;
+      using content_const_iterator = content_container::const_iterator;
+
+      using dictionary_iterator = dictionary_container::iterator;
+      using const_dictionary_iterator = dictionary_container::const_iterator;
 
       /*
        Opens a content file in read write mode.
        File path must be absolute.
        If the file does not exist, this creates a new one.
        If the file exists, the constructor checks if the file is valid. If the
-       file is not valid, this throws an exception.
+       file is not valid, this throws std::domain_error.
        */
       content_file(const winrt::hstring& filePath);
 
@@ -47,7 +49,7 @@ namespace qgl::content
        File path must be absolute.
        If the file does not exist, this creates a new one.
        If the file exists, the constructor checks if the file is valid. If the
-       file is not valid, this throws an exception.
+       file is not valid, this throws std::domain_error.
        */
       content_file(const winrt::Windows::Storage::StorageFile& f);
 
@@ -75,13 +77,29 @@ namespace qgl::content
        */
       void flush();
 
-      const CONTENT_DICTIONARY_ENTRY_BUFFER& at(size_t idx) const;
+      void push_back(const CONTENT_METADATA_BUFFER& meta,
+                     const content_data_buffer_t& buff);
 
       void push_back(const CONTENT_METADATA_BUFFER& meta,
-                        const content_data_buffer_t& buff);
+                     const shared_content_data_buffer_t& buff);
 
-      void push_back(const CONTENT_METADATA_BUFFER& meta,
-                        const shared_content_data_buffer_t& buff);
+      void pop_back();
+
+      const CONTENT_DICTIONARY_ENTRY_BUFFER& front() const;
+
+      const CONTENT_DICTIONARY_ENTRY_BUFFER& back() const;
+
+      dictionary_iterator begin();
+
+      const_dictionary_iterator begin() const;
+
+      const_dictionary_iterator cbegin() const;
+
+      dictionary_iterator end();
+
+      const_dictionary_iterator end() const;
+
+      const_dictionary_iterator cend() const;
 
       /*
        Returns a const reference to the file's header.
@@ -116,16 +134,22 @@ namespace qgl::content
        */
       CONTENT_FILE_HEADER_BUFFER m_header;
 
+      #pragma warning(push)
+      #pragma warning(disable: 4251)
       /*
        An array of pointers to data that is pending writes to the content file.
        This is only populated when the content file is in write mode.
        */
-      data_container m_entryDataToWrite;
+      content_container m_entryDataToWrite;
+
+      dictionary_container m_dict;
 
       /*
        File handle.
        */
       winrt::file_handle m_handle;
+
+      #pragma warning(pop)
 
       static constexpr size_t VARIANT_INDEX_BUFFER = 0;
       static constexpr size_t VARIANT_INDEX_PATH = 1;

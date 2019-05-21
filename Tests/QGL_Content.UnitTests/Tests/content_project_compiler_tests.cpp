@@ -78,11 +78,11 @@ namespace QGL_Content_UnitTests
          Assert::IsTrue(file.header().metadata() == projectMeta,
                         L"The metadata is not correct.");
 
-         Assert::IsTrue(file.at(0).metadata() == entry1Meta,
-                        L"Entry 1 meta is not correct.");
-
-         Assert::IsTrue(file.at(1).metadata() == entry1Meta,
-                        L"Entry 2 meta is not correct.");
+         for (auto& e : file)
+         {
+            Assert::IsTrue(e.metadata() == entry1Meta,
+                           L"Entry 1 meta is not correct.");
+         }
       }
    };
 }

@@ -7,7 +7,7 @@
 namespace qgl::content
 {
    using content_data_buffer_t = std::vector<uint8_t>;
-   using shared_content_data_buffer_t = winrt::hstring;
+   using shared_content_data_buffer_t = std::wstring;
 }
 
 namespace qgl::content::content_file_helpers
@@ -116,10 +116,13 @@ namespace qgl::content::content_file_helpers
       const CONTENT_FILE_HEADER_BUFFER& fileHeader,
       const CONTENT_DICTIONARY_METADATA_BUFFER& dictMeta);
 
+   /*
+    Gets the size of the buffer. The buffer is the size of an 8 byte integer 
+    and sizeof(wchar_t) * number of characters in the path.
+    */
+   extern LIB_EXPORT size_t shared_entry_data_size(
+      const shared_content_data_buffer_t& data);
+
    extern LIB_EXPORT bool valid_content_file_size(
       const winrt::file_handle& hndl);
-
-   extern LIB_EXPORT bool valid_content_file_magic_number(uint64_t magicNum);
-
-   extern LIB_EXPORT bool valid_content_file(const winrt::file_handle& hndl);
 }
