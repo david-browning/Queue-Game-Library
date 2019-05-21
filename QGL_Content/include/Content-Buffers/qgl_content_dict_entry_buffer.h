@@ -9,6 +9,8 @@ namespace qgl::content
      */
    struct LIB_EXPORT CONTENT_DICTIONARY_ENTRY_BUFFER
    {
+      friend class content_file;
+
       public:
       /*
        Default constructor.
@@ -113,7 +115,7 @@ namespace qgl::content
 
       private:
 
-       /*
+      /*
        Offset in the file (in bytes) to the object's data.
        */
       uint64_t m_offset;
