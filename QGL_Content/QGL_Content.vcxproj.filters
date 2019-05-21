@@ -103,9 +103,6 @@
     <ClCompile Include="qgl_content_store.cpp">
       <Filter>Source Files\Content-Store</Filter>
     </ClCompile>
-    <ClCompile Include="qgl_file_helpers.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="qgl_file_loader_wstring.cpp">
       <Filter>Source Files\File-Loaders</Filter>
     </ClCompile>
@@ -114,6 +111,12 @@
     </ClCompile>
     <ClCompile Include="qgl_file_loader_string.cpp">
       <Filter>Source Files\File-Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_file_helpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_content_file.cpp">
+      <Filter>Source Files\Content-Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -4,7 +4,7 @@
 #include "include/Content-Importers/qgl_importer_string.h"
 
 std::shared_ptr<std::string> qgl::content::string_file_loader::operator()(
-   const content_file_read& f)
+   const content_file& f)
 {
     //Make sure the string file has the correct loader.
    auto& headerInfo = f.header().metadata();

@@ -4,8 +4,7 @@
 #include "include/Content-Importers/qgl_importer_wstring.h"
 
 std::shared_ptr<qgl::content::content_store_config>
-qgl::content::content_store_config_loader::operator()(
-   const content_file_read& f)
+qgl::content::content_store_config_loader::operator()(const content_file& f)
 {
    auto& headerInfo = f.header().metadata();
    check_loader_and_resource<RESOURCE_TYPES::RESOURCE_TYPE_DESCRIPTION,

@@ -4,7 +4,7 @@
 #include "include/Content-Importers/qgl_importer_wstring.h"
 
 std::shared_ptr<std::wstring> qgl::content::wstring_file_loader::operator()(
-   const content_file_read& f)
+   const content_file& f)
 {
      //Make sure the wstring file has the correct loader.
    auto& headerInfo = f.header().metadata();

@@ -72,7 +72,7 @@ namespace QGL_Content_UnitTests
          auto contentF = co_await root.CreateFileAsync(
             L"CompiledContentProject.txt",
             CreationCollisionOption::OpenIfExists);
-         content_file<false> file(contentF);
+         content_file file(contentF);
 
          //Verify the header metadata is correct.
          Assert::IsTrue(file.header().metadata() == projectMeta,

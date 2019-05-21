@@ -29,7 +29,7 @@ namespace qgl::content::content_file_helpers
       return ret;
    }
 
-   std::vector<uint8_t> load_content_data(
+   content_data_buffer_t load_content_data(
       const winrt::file_handle& hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry)
    {
@@ -38,6 +38,13 @@ namespace qgl::content::content_file_helpers
       ret.resize(entrySize);
       read_file_sync(hndl, entrySize, entry.offset(), ret.data());
       return ret;
+   }
+
+   LIB_EXPORT shared_content_data_buffer_t load_shared_data_path(
+      const winrt::file_handle & hndl, 
+      const CONTENT_DICTIONARY_ENTRY_BUFFER & entry)
+   {
+	   return LIB_EXPORT shared_content_data_buffer_t();
    }
 
    void write_header(const winrt::file_handle& hndl,
@@ -63,10 +70,16 @@ namespace qgl::content::content_file_helpers
 
    void write_content_data(
       const winrt::file_handle& hndl,
-      CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
-      const void* contentData)
+      const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
+      const content_data_buffer_t& contentData)
    {
-      write_file_sync(hndl, entry.size(), entry.offset(), contentData);
+      write_file_sync(hndl, entry.size(), entry.offset(), contentData.data());
+   }
+
+   LIB_EXPORT void write_shared_data_path(const winrt::file_handle & hndl, 
+                                          const CONTENT_DICTIONARY_ENTRY_BUFFER& entry, const shared_content_data_buffer_t & path)
+   {
+      return LIB_EXPORT void();
    }
 
    size_t dictionary_data_offset(

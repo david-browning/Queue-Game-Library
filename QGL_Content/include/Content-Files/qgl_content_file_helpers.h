@@ -7,6 +7,7 @@
 namespace qgl::content
 {
    using content_data_buffer_t = std::vector<uint8_t>;
+   using shared_content_data_buffer_t = winrt::hstring;
 }
 
 namespace qgl::content::content_file_helpers
@@ -49,7 +50,18 @@ namespace qgl::content::content_file_helpers
     This does not validate the data read.
     Throws an exception if there is an error reading.
     */
-   extern LIB_EXPORT std::vector<uint8_t> load_content_data(
+   extern LIB_EXPORT content_data_buffer_t load_content_data(
+      const winrt::file_handle& hndl,
+      const CONTENT_DICTIONARY_ENTRY_BUFFER& entry);
+
+   /*
+    Reads the shared entry from a content file. The path is access using the
+    dictionary entry. Retuns the shared entry path.
+    The file must be opened with read permissions.
+    This does not validate the data read.
+    Throws an exception if there is an error reading.
+    */
+   extern LIB_EXPORT shared_content_data_buffer_t load_shared_data_path(
       const winrt::file_handle& hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry);
 
@@ -80,11 +92,21 @@ namespace qgl::content::content_file_helpers
 
    /*
     Writes the content data to the content file.
+    The file must be opened with write permissions.
     */
    extern LIB_EXPORT void write_content_data(
       const winrt::file_handle& hndl,
-      CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
-      const void* contentData);
+      const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
+      const content_data_buffer_t& contentData);
+
+   /*
+    Writes the shared content path to the content file.
+    The file must be opened with write permissions.
+    */
+   extern LIB_EXPORT void write_shared_data_path(
+      const winrt::file_handle& hndl,
+      const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
+      const shared_content_data_buffer_t& path);
 
    /*
     Returns the offset, in bytes, to where content data starts in a file.

@@ -186,6 +186,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="QGL_ContentRT.cpp" />
+    <ClCompile Include="qgl_content_file.cpp" />
     <ClCompile Include="qgl_content_file_helpers.cpp" />
     <ClCompile Include="qgl_content_project_compiler.cpp" />
     <ClCompile Include="qgl_content_project.cpp" />
