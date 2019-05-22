@@ -67,15 +67,13 @@ void content_file::flush()
       {
          write_shared_data_path(m_handle,
                                 *entryIt,
-                                //std::get<VARIANT_INDEX_PATH>(*contentIt));
-                                contentIt->m_sharedBuffer);
+                                contentIt->shared_buffer());
       }
       else
       {
          write_content_data(m_handle,
                             *entryIt,
-                            //std::get<VARIANT_INDEX_BUFFER>(*contentIt));
-                            contentIt->m_buffer);
+                            contentIt->buffer());
       }
 
       contentDataOffset += entryIt->size();
@@ -86,7 +84,7 @@ void content_file::flush()
 void content_file::push_back(const CONTENT_METADATA_BUFFER& meta,
                              const content_data_buffer_t& buff)
 {
-   content_buffer_type cont(buff);
+   content_data_entry cont(buff);
    CONTENT_DICTIONARY_ENTRY_BUFFER entry(buff.size(), meta);
    entry.shared(false);
 
@@ -97,7 +95,7 @@ void content_file::push_back(const CONTENT_METADATA_BUFFER& meta,
 void content_file::push_back(const CONTENT_METADATA_BUFFER& meta,
                              const shared_content_data_buffer_t& buff)
 {
-   content_buffer_type cont(buff);
+   content_data_entry cont(buff);
    CONTENT_DICTIONARY_ENTRY_BUFFER entry(shared_entry_data_size(buff),
                                          meta);
    entry.shared(true);
@@ -190,19 +188,19 @@ void content_file::read_in()
       auto dictEntry = load_dictionary_entry(m_handle, dictEntryOffset);
       m_dict.push_back(dictEntry);
 
-      content_buffer_type cbt;
       if (dictEntry.shared())
       {
          auto sharedContent = load_shared_data_path(m_handle, dictEntry);
-         cbt.m_sharedBuffer = sharedContent;
+         content_data_entry cbt(sharedContent);
+         m_entryDataToWrite.push_back(cbt);
       }
       else
       {
          auto content = load_content_data(m_handle, dictEntry);
-         cbt.m_buffer = content;
+         content_data_entry cbt(content);
+         m_entryDataToWrite.push_back(cbt);
       }
 
-      m_entryDataToWrite.push_back(cbt);
       dictEntryOffset += sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER);
    }
 }

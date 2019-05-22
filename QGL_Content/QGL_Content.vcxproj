@@ -159,6 +159,7 @@
     <ClInclude Include="include\Content-Buffers\qgl_content_file_header_buffer.h" />
     <ClInclude Include="include\Content-Buffers\qgl_content_metadata_buffer.h" />
     <ClInclude Include="include\Content-Dictionary\qgl_content_dictionary.h" />
+    <ClInclude Include="include\Content-Files\qgl_content_data_entry.h" />
     <ClInclude Include="include\Content-Files\qgl_content_file.h" />
     <ClInclude Include="include\Content-Files\qgl_content_file_helpers.h" />
     <ClInclude Include="include\Content-Importers\qgl_iimporter.h" />
@@ -186,6 +187,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="QGL_ContentRT.cpp" />
+    <ClCompile Include="qgl_content_data_entry.cpp" />
     <ClCompile Include="qgl_content_file.cpp" />
     <ClCompile Include="qgl_content_file_helpers.cpp" />
     <ClCompile Include="qgl_content_project_compiler.cpp" />

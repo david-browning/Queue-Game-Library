@@ -4,7 +4,7 @@
 #include "include/Content-Buffers/qgl_content_file_header_buffer.h"
 #include "include/Content-Files/qgl_content_file_helpers.h"
 #include "include/qgl_file_helpers.h"
-#include <variant>
+#include "include/Content-Files/qgl_content_data_entry.h"
 
 namespace qgl::content
 {
@@ -23,44 +23,8 @@ namespace qgl::content
    class LIB_EXPORT content_file
    {
       public:
-      struct content_buffer_type
-      {
-         content_buffer_type()
-         {
-
-         }
-
-         content_buffer_type(const content_data_buffer_t& b) :
-            m_buffer(b)
-         {
-
-         }
-         content_buffer_type(const shared_content_data_buffer_t& b) :
-            m_sharedBuffer(b)
-         {
-
-         }
-
-         content_buffer_type(const content_buffer_type&) = default;
-
-         content_buffer_type(content_buffer_type&&) = default;
-
-         ~content_buffer_type() noexcept = default;
-
-         bool shared() const noexcept
-         {
-            return m_sharedBuffer.size() != 0;
-         }
-
-         content_data_buffer_t m_buffer;
-         shared_content_data_buffer_t m_sharedBuffer;
-      };
-
-      //using content_buffer_type = std::variant<content_data_buffer_t,
-         //shared_content_data_buffer_t>;
-
       using dictionary_container = std::list<CONTENT_DICTIONARY_ENTRY_BUFFER>;
-      using content_container = std::list<content_buffer_type>;
+      using content_container = std::list<content_data_entry>;
 
       using content_iterator = content_container::iterator;
       using content_const_iterator = content_container::const_iterator;

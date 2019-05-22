@@ -2,13 +2,8 @@
 #include "include/qgl_content_include.h"
 #include "include/Content-Dictionary/qgl_content_dictionary.h"
 #include "include/Content-Buffers/qgl_content_file_header_buffer.h"
+#include "include/Content-Files/qgl_content_data_entry.h"
 #include <type_traits>
-
-namespace qgl::content
-{
-   using content_data_buffer_t = std::vector<uint8_t>;
-   using shared_content_data_buffer_t = std::wstring;
-}
 
 namespace qgl::content::content_file_helpers
 {
