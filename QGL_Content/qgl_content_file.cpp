@@ -60,24 +60,26 @@ void content_file::flush()
    for (; entryIt != m_dict.end() && contentIt != m_entryDataToWrite.end();
         ++entryIt, ++contentIt)
    {
-      write_dictionary_entry(m_handle, *entryIt, dictMetaOffset);
-      contentDataOffset += entryIt->size();
-
       entryIt->m_offset = contentDataOffset;
-      dictEntryOffset += dictMeta.entry_size();
+      write_dictionary_entry(m_handle, *entryIt, dictEntryOffset);
 
       if (entryIt->shared())
       {
          write_shared_data_path(m_handle,
                                 *entryIt,
-                                std::get<VARIANT_INDEX_PATH>(*contentIt));
+                                //std::get<VARIANT_INDEX_PATH>(*contentIt));
+                                contentIt->m_sharedBuffer);
       }
       else
       {
          write_content_data(m_handle,
                             *entryIt,
-                            std::get<VARIANT_INDEX_BUFFER>(*contentIt));
+                            //std::get<VARIANT_INDEX_BUFFER>(*contentIt));
+                            contentIt->m_buffer);
       }
+
+      contentDataOffset += entryIt->size();
+      dictEntryOffset += dictMeta.entry_size();
    }
 }
 
@@ -187,20 +189,20 @@ void content_file::read_in()
    {
       auto dictEntry = load_dictionary_entry(m_handle, dictEntryOffset);
       m_dict.push_back(dictEntry);
-      content_buffer_type toPush;
 
+      content_buffer_type cbt;
       if (dictEntry.shared())
       {
          auto sharedContent = load_shared_data_path(m_handle, dictEntry);
-         std::get<VARIANT_INDEX_PATH>(toPush) = sharedContent;
+         cbt.m_sharedBuffer = sharedContent;
       }
       else
       {
          auto content = load_content_data(m_handle, dictEntry);
-         std::get<VARIANT_INDEX_BUFFER>(toPush) = content;
+         cbt.m_buffer = content;
       }
 
-      m_entryDataToWrite.push_back(toPush);
+      m_entryDataToWrite.push_back(cbt);
       dictEntryOffset += sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER);
    }
 }

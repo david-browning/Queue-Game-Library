@@ -23,8 +23,41 @@ namespace qgl::content
    class LIB_EXPORT content_file
    {
       public:
-      using content_buffer_type = std::variant<content_data_buffer_t,
-         shared_content_data_buffer_t>;
+      struct content_buffer_type
+      {
+         content_buffer_type()
+         {
+
+         }
+
+         content_buffer_type(const content_data_buffer_t& b) :
+            m_buffer(b)
+         {
+
+         }
+         content_buffer_type(const shared_content_data_buffer_t& b) :
+            m_sharedBuffer(b)
+         {
+
+         }
+
+         content_buffer_type(const content_buffer_type&) = default;
+
+         content_buffer_type(content_buffer_type&&) = default;
+
+         ~content_buffer_type() noexcept = default;
+
+         bool shared() const noexcept
+         {
+            return m_sharedBuffer.size() != 0;
+         }
+
+         content_data_buffer_t m_buffer;
+         shared_content_data_buffer_t m_sharedBuffer;
+      };
+
+      //using content_buffer_type = std::variant<content_data_buffer_t,
+         //shared_content_data_buffer_t>;
 
       using dictionary_container = std::list<CONTENT_DICTIONARY_ENTRY_BUFFER>;
       using content_container = std::list<content_buffer_type>;
