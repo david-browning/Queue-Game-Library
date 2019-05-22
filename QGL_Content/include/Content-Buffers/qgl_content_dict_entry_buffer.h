@@ -62,7 +62,7 @@ namespace qgl::content
       /*
        Returns the data's flags.
        */
-      inline uint32_t flags() const noexcept
+      inline auto flags() const noexcept
       {
          return m_flags;
       }
