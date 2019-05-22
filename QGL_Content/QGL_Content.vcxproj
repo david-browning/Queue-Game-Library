@@ -162,6 +162,8 @@
     <ClInclude Include="include\Content-Files\qgl_content_data_entry.h" />
     <ClInclude Include="include\Content-Files\qgl_content_file.h" />
     <ClInclude Include="include\Content-Files\qgl_content_file_helpers.h" />
+    <ClInclude Include="include\Content-Files\qgl_data_content_entry.h" />
+    <ClInclude Include="include\Content-Files\qgl_shared_content_entry.h" />
     <ClInclude Include="include\Content-Importers\qgl_iimporter.h" />
     <ClInclude Include="include\Content-Importers\qgl_importer_string.h" />
     <ClInclude Include="include\Content-Importers\qgl_importer_struct.h" />
@@ -204,10 +206,12 @@
     <ClCompile Include="qgl_content_file_header_buffer.cpp" />
     <ClCompile Include="qgl_content_metadata_buffer.cpp" />
     <ClCompile Include="qgl_content_dict_entry_buffer.cpp" />
+    <ClCompile Include="qgl_data_content_entry.cpp" />
     <ClCompile Include="qgl_file_helpers.cpp" />
     <ClCompile Include="qgl_file_loader_content_store_config.cpp" />
     <ClCompile Include="qgl_file_loader_string.cpp" />
     <ClCompile Include="qgl_file_loader_wstring.cpp" />
+    <ClCompile Include="qgl_shared_content_entry.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
