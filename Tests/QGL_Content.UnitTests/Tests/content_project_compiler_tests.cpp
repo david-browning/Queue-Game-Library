@@ -12,11 +12,46 @@ namespace QGL_Content_UnitTests
       public:
       TEST_METHOD(CompileProjectStorageFile)
       {
-         //test_compile_project_storage_file();
+         test_compile_project_storage_file();
       }
 
       TEST_METHOD(CompileProjectFile)
       {
+         auto root = ApplicationData::Current().LocalFolder().Path();
+         winrt::hstring newFilePath(root + L"\\CompileProjectFile.txt");
+         DeleteFile(newFilePath.c_str());
+
+         winrt::hstring compiledPath(root + L"\\CompiledProjectFile.txt");
+         DeleteFile(compiledPath.c_str());
+
+         CONTENT_METADATA_BUFFER entry1Meta(RESOURCE_TYPE_INTEGER,
+                                            CONTENT_LOADER_ID_INT16,
+                                            L"Entry1");
+         winrt::hstring entry1Path(root + L"\\Int16.txt");
+         DeleteFile(entry1Path.c_str());
+         auto int16Handle = open_file_write(entry1Path);
+         int16_t int16Data = 0xFF'AA;
+         write_file_sync(int16Handle, sizeof(int16Data), 0, &int16Data);
+         int16Handle.close();
+
+         //Create a project.
+         {
+            content_project project(newFilePath);
+            project.emplace_back(entry1Meta, entry1Path);
+            project.flush();
+
+            //Compile the project file.
+            compile_content_project(project, compiledPath);
+         }
+       
+         //Open the compiled project file.
+         content_file compiledFile(compiledPath);
+
+         for (const auto& dictEntry : compiledFile)
+         {
+            Assert::IsTrue(dictEntry.metadata() == entry1Meta,
+                           L"The entry metadata is not correct.");
+         }
 
       }
 
@@ -34,12 +69,12 @@ namespace QGL_Content_UnitTests
                                             CONTENT_LOADER_ID_INT16,
                                             L"Entry1");
 
-         CONTENT_METADATA_BUFFER entry2Meta(RESOURCE_TYPE_LIGHT,
-                                            CONTENT_LOADER_ID_LIGHT,
-                                            L"Entry2");
-
-         winrt::hstring entry1Path(L"C:\\Int16.txt");
-         winrt::hstring entry2Path(L"C:\\Light.txt");
+         winrt::hstring entry1Path(root.Path() + L"\\StorageFileInt16.txt");
+         DeleteFile(entry1Path.c_str());
+         auto int16Handle = open_file_write(entry1Path);
+         int16_t int16Data = 0xFF'AA;
+         write_file_sync(int16Handle, sizeof(int16Data), 0, &int16Data);
+         int16Handle.close();
 
          //Create a project
          {
@@ -48,9 +83,9 @@ namespace QGL_Content_UnitTests
                CreationCollisionOption::ReplaceExisting);
 
             content_project project(projectF);
-
+            project.metadata() = projectMeta;
             project.emplace_back(entry1Meta, entry1Path);
-            project.emplace_back(entry2Meta, entry2Path);
+            project.emplace_back(entry1Meta, entry1Path);
             project.flush();
 
             //Compile it
