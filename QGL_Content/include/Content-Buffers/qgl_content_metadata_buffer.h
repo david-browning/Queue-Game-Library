@@ -217,7 +217,7 @@ namespace qgl::content
             r.m_reserved1 == l.m_reserved1 &&
             r.m_reserved2 == l.m_reserved2 &&
             r.m_reserved3 == l.m_reserved3 &&
-            r.m_reserved4 == l.m_reserved4;
+            r.m_reserved4 == l.m_reserved4 &&
             r.m_type == l.m_type;
       }
 
