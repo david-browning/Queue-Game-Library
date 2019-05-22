@@ -6,6 +6,8 @@ qgl::content::CONTENT_METADATA_BUFFER::CONTENT_METADATA_BUFFER() :
    m_flags1(DEFAULT_FLAGS),
    m_reserved1(0),
    m_reserved2(0),
+   m_reserved3(0),
+   m_reserved4(0),
    m_type(RESOURCE_TYPES::RESOURCE_TYPE_UNKNOWN),
    m_loaderID(CONTENT_LOADER_IDS::CONTENT_LOADER_ID_UNKNOWN),
    m_compilerVersion(qgl::QGL_VERSION_LATEST)
@@ -22,6 +24,8 @@ qgl::content::CONTENT_METADATA_BUFFER::CONTENT_METADATA_BUFFER(
    m_flags1(DEFAULT_FLAGS),
    m_reserved1(0),
    m_reserved2(0),
+   m_reserved3(0),
+   m_reserved4(0),
    m_type(type),
    m_loaderID(loaderID),
    m_compilerVersion(qgl::QGL_VERSION_LATEST)
@@ -53,6 +57,8 @@ qgl::content::CONTENT_METADATA_BUFFER::CONTENT_METADATA_BUFFER(
    m_flags1(r.m_flags1),
    m_reserved1(r.m_reserved1),
    m_reserved2(r.m_reserved2),
+   m_reserved3(r.m_reserved3),
+   m_reserved4(r.m_reserved4),
    m_type(r.m_type),
    m_loaderID(r.m_loaderID),
    m_compilerVersion(r.version())
@@ -66,6 +72,8 @@ qgl::content::CONTENT_METADATA_BUFFER::CONTENT_METADATA_BUFFER(
    m_flags1(r.m_flags1),
    m_reserved1(r.m_reserved1),
    m_reserved2(r.m_reserved2),
+   m_reserved3(r.m_reserved3),
+   m_reserved4(r.m_reserved4),
    m_type(r.m_type),
    m_loaderID(r.m_loaderID),
    m_compilerVersion(r.version())

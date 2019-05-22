@@ -95,6 +95,7 @@ namespace qgl::content
          swap(first.m_size, second.m_size);
          swap(first.m_flags, second.m_flags);
          swap(first.m_info, second.m_info);
+         swap(first.m_reserved1, second.m_reserved1);
       }
 
       CONTENT_DICTIONARY_ENTRY_BUFFER& operator=(
@@ -110,6 +111,7 @@ namespace qgl::content
          return r.m_offset == l.m_offset &&
             r.m_size == l.m_size &&
             r.m_flags == l.m_flags &&
+            r.m_reserved1 == l.m_reserved1 &&
             r.m_info == l.m_info;
       }
 
@@ -129,16 +131,18 @@ namespace qgl::content
        Object flags.
        { 1: Is shared }
        */
-      uint32_t m_flags;
+      uint64_t m_flags;
+
+      uint64_t m_reserved1;
 
       /*
        Information about the object that this dictionary entry points to.
        */
       CONTENT_METADATA_BUFFER m_info;
 
-      static constexpr uint32_t DEFAULT_FLAGS = 0;
+      static constexpr uint64_t DEFAULT_FLAGS = 0;
 
-      static constexpr uint32_t IS_SHARED_FLAG = 
-         static_cast<uint32_t>(1 << 31);
+      static constexpr uint64_t IS_SHARED_FLAG =
+         static_cast<uint64_t>(1 << 31);
    };
 }

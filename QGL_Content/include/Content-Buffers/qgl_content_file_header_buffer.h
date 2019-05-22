@@ -62,6 +62,9 @@ namespace qgl::content
       {
          using std::swap;
          swap(first.m_offset, second.m_offset);
+         swap(first.m_reserved1, second.m_reserved1);
+         swap(first.m_reserved2, second.m_reserved2);
+         swap(first.m_reserved3, second.m_reserved3);
          swap(first.m_metadata, second.m_metadata);
       }
 
@@ -76,11 +79,18 @@ namespace qgl::content
                              const CONTENT_FILE_HEADER_BUFFER& l) noexcept
       {
          return r.m_metadata == l.m_metadata &&
+            r.m_reserved1 == r.m_reserved1 &&
+            r.m_reserved2 == r.m_reserved2 &&
+            r.m_reserved3 == r.m_reserved3 &&
             r.m_offset == l.m_offset;
       }
 
       private:
       CONTENT_METADATA_BUFFER m_metadata;
+
+      uint64_t m_reserved1;
+      uint64_t m_reserved2;
+      uint64_t m_reserved3;
 
       //Offset to the dictionary.
       uint64_t m_offset;

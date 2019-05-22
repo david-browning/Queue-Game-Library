@@ -190,6 +190,8 @@ namespace qgl::content
          swap(first.m_flags1, second.m_flags1);
          swap(first.m_reserved1, second.m_reserved1);
          swap(first.m_reserved2, second.m_reserved2);
+         swap(first.m_reserved3, second.m_reserved3);
+         swap(first.m_reserved4, second.m_reserved4);
          swap(first.m_name, second.m_name);
          swap(first.m_compilerVersion, second.m_compilerVersion);
          swap(first.m_guid, second.m_guid);
@@ -214,6 +216,8 @@ namespace qgl::content
             wcscmp(r.m_name, l.m_name) == 0 &&
             r.m_reserved1 == l.m_reserved1 &&
             r.m_reserved2 == l.m_reserved2 &&
+            r.m_reserved3 == l.m_reserved3 &&
+            r.m_reserved4 == l.m_reserved4;
             r.m_type == l.m_type;
       }
 
@@ -246,6 +250,10 @@ namespace qgl::content
       uint8_t m_reserved1;
 
       uint16_t m_reserved2;
+
+      uint64_t m_reserved3;
+
+      uint64_t m_reserved4;
 
       /*
        Name of this content object.
