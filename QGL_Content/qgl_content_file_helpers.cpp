@@ -2,6 +2,8 @@
 #include "include/qgl_file_helpers.h"
 #include "include/Content-Files/qgl_content_file_helpers.h"
 
+using NumCharsType = uint16_t;
+
 namespace qgl::content::content_file_helpers
 {
    CONTENT_FILE_HEADER_BUFFER load_header(const winrt::file_handle& hndl)
@@ -46,11 +48,13 @@ namespace qgl::content::content_file_helpers
    {
       //First 8 bytes are the number of characters in the path.
       //Next bytes is the path. It is a wide string. Not null-terminated.
-      uint64_t numChars = 0;
+      NumCharsType numChars = 0;
       read_file_sync(hndl, sizeof(numChars), entry.offset(), &numChars);
 
       shared_content_data_buffer_t ret(numChars, L'\0');
-      read_file_sync(hndl, numChars * sizeof(wchar_t), entry.offset() + sizeof(numChars),
+      read_file_sync(hndl, 
+                     numChars * sizeof(wchar_t), 
+                     entry.offset() + sizeof(numChars),
                      ret.data());
       return ret;
    }
@@ -90,7 +94,7 @@ namespace qgl::content::content_file_helpers
    {
       //First 8 bytes are the number of characters in the path.
       //Next bytes is the path. It is a wide string. Not null-terminated.
-      uint64_t numChars = path.size();
+      NumCharsType numChars = path.size();
       write_file_sync(hndl, sizeof(numChars), entry.offset(), &numChars);
       write_file_sync(hndl, 
                       sizeof(wchar_t) * numChars, 
@@ -109,7 +113,7 @@ namespace qgl::content::content_file_helpers
    size_t shared_entry_data_size(
       const shared_content_data_buffer_t& data)
    {
-      return sizeof(uint64_t) + (sizeof(wchar_t) * data.size());
+      return sizeof(NumCharsType) + (sizeof(wchar_t) * data.size());
    }
 
    bool valid_content_file_size(const winrt::file_handle& hndl)
