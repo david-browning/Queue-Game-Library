@@ -6,6 +6,9 @@
 
 namespace qgl::content
 {
+   template class LIB_EXPORT std::shared_ptr<DATA_CONTENT_ENTRY>;
+   template class LIB_EXPORT std::shared_ptr<SHARED_CONTENT_ENTRY>;
+
    /*
     Content data can either be a buffer, baked into the file, or a shared
     entry that references an external file.
