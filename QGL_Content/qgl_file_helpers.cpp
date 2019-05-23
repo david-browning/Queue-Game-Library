@@ -132,6 +132,7 @@ file_handle qgl::content::open_file_readwrite(const winrt::hstring& filePath)
    {
       #ifdef DEBUG
       auto hr = GetLastError();
+      (hr);
       #endif
       winrt::throw_last_error();
    }

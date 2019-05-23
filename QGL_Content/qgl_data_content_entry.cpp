@@ -32,7 +32,7 @@ qgl::content::DATA_CONTENT_ENTRY::DATA_CONTENT_ENTRY(DATA_CONTENT_ENTRY&& m)
    m.m_buffer = nullptr;
 
    #ifdef DEBUG
-   m.m_buffSize = -1;
+   m.m_buffSize = static_cast<size_t>(-1);
    #endif
 }
 
