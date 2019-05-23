@@ -26,29 +26,29 @@ namespace qgl::content
       /*
        Copy Constructor.
        */
-      DATA_CONTENT_ENTRY(const DATA_CONTENT_ENTRY&) = default;
+      DATA_CONTENT_ENTRY(const DATA_CONTENT_ENTRY&);
 
       /*
        Move Constructor.
        */
-      DATA_CONTENT_ENTRY(DATA_CONTENT_ENTRY&&) = default;
+      DATA_CONTENT_ENTRY(DATA_CONTENT_ENTRY&&);
 
       /*
        Destructor.
        */
-      virtual ~DATA_CONTENT_ENTRY() noexcept = default;
+      virtual ~DATA_CONTENT_ENTRY() noexcept;
 
       /*
        Returns a pointer to the buffer. The destructor frees the buffer.
        Do not try to free this pointer.
        */
-      uint8_t* data() noexcept;
+      void* data() noexcept;
 
       /*
        Returns a const pointer to the buffer. The destructor frees the buffer.
        Do not try to free this pointer.
        */
-      const uint8_t* data() const noexcept;
+      const void* data() const noexcept;
 
       /*
        Returns the number of bytes in the buffer.
@@ -60,6 +60,7 @@ namespace qgl::content
       {
          using std::swap;
          swap(first.m_buffer, second.m_buffer);
+         swap(first.m_buffSize, second.m_buffSize);
       }
 
       /*
@@ -77,10 +78,11 @@ namespace qgl::content
       friend bool operator==(const DATA_CONTENT_ENTRY& r,
                              const DATA_CONTENT_ENTRY& l) noexcept
       {
-         return r.m_buffer == l.m_buffer;
+         return memcmp(r.m_buffer, l.m_buffer, r.m_buffSize) == 0;
       }
 
       private:
-      std::vector<uint8_t> m_buffer;
+      void* m_buffer;
+      size_t m_buffSize;
    };
 }
