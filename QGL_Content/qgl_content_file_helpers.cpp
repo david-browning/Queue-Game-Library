@@ -94,7 +94,7 @@ namespace qgl::content::content_file_helpers
    {
       //First 8 bytes are the number of characters in the path.
       //Next bytes is the path. It is a wide string. Not null-terminated.
-      NumCharsType numChars = path.size();
+      NumCharsType numChars = static_cast<NumCharsType>(path.size());
       write_file_sync(hndl, sizeof(numChars), entry.offset(), &numChars);
       write_file_sync(hndl, 
                       sizeof(wchar_t) * numChars, 
