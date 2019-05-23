@@ -17,32 +17,31 @@ namespace qgl::content
       /*
        Constructor.
        */
-      content_item(const std::wstring& name, 
+      content_item(const std::wstring& name,
                    const content_id& id,
-                   RESOURCE_TYPES rType, 
-                   CONTENT_LOADER_IDS loaderID) :
-         m_id(id),
-         m_name(name),
-         m_loaderID(loaderID),
-         m_rType(rType)
-      {
+                   RESOURCE_TYPES rType,
+                   CONTENT_LOADER_IDS loaderID);
 
-      }
+      content_item(const wchar_t* name,
+                   size_t len,
+                   const content_id& id,
+                   RESOURCE_TYPES rType,
+                   CONTENT_LOADER_IDS loaderID);
 
       /*
        Copy constructor.
        */
-      content_item(const content_item& r) = default;
+      content_item(const content_item& r);
 
       /*
        Move constructor.
        */
-      content_item(content_item&& r) = default;
+      content_item(content_item&& r);
 
       /*
        Destructor.
        */
-      virtual ~content_item() noexcept = default;
+      virtual ~content_item() noexcept;
 
       /*
        Returns this content's ID.
@@ -53,9 +52,9 @@ namespace qgl::content
       }
 
       /*
-       Returns a const reference to this content's name.
+       Returns a const pointer to this content's name.
        */
-      const std::wstring& name() const
+      const wchar_t* name() const
       {
          return m_name;
       }
@@ -76,24 +75,11 @@ namespace qgl::content
          return m_loaderID;
       }
 
-      content_item operator=(const content_item& r)
-      {
-         if (this != &r)
-         {
-            m_id = r.m_id;
-            m_name = r.m_name;
-            m_rType = r.m_rType;
-            m_loaderID = r.m_loaderID;
-         }
-
-         return *this;
-      }
-
       private:
       /*
        This content's name.
        */
-      std::wstring m_name;
+      wchar_t* m_name;
 
       /*
        This content's ID.

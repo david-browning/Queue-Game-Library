@@ -190,6 +190,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="QGL_ContentRT.cpp" />
+    <ClCompile Include="qgl_content_item.cpp" />
     <ClCompile Include="qgl_content_variant_entry.cpp" />
     <ClCompile Include="qgl_content_file.cpp" />
     <ClCompile Include="qgl_content_file_helpers.cpp" />
