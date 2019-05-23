@@ -2,7 +2,7 @@
 #include "include/qgl_content_include.h"
 #include "include/Content-Dictionary/qgl_content_dictionary.h"
 #include "include/Content-Buffers/qgl_content_file_header_buffer.h"
-#include "include/Content-Files/qgl_content_data_entry.h"
+#include "include/Content-Files/qgl_content_variant_entry.h"
 #include <type_traits>
 
 namespace qgl::content::content_file_helpers
@@ -45,7 +45,7 @@ namespace qgl::content::content_file_helpers
     This does not validate the data read.
     Throws an exception if there is an error reading.
     */
-   extern LIB_EXPORT content_data_buffer_t load_content_data(
+   extern LIB_EXPORT DATA_CONTENT_ENTRY load_content_data(
       const winrt::file_handle& hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry);
 
@@ -56,7 +56,7 @@ namespace qgl::content::content_file_helpers
     This does not validate the data read.
     Throws an exception if there is an error reading.
     */
-   extern LIB_EXPORT shared_content_data_buffer_t load_shared_data_path(
+   extern LIB_EXPORT SHARED_CONTENT_ENTRY load_shared_data_path(
       const winrt::file_handle& hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry);
 
@@ -92,7 +92,7 @@ namespace qgl::content::content_file_helpers
    extern LIB_EXPORT void write_content_data(
       const winrt::file_handle& hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
-      const content_data_buffer_t& contentData);
+      const DATA_CONTENT_ENTRY& contentData);
 
    /*
     Writes the shared content path to the content file.
@@ -101,7 +101,7 @@ namespace qgl::content::content_file_helpers
    extern LIB_EXPORT void write_shared_data_path(
       const winrt::file_handle& hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
-      const shared_content_data_buffer_t& path);
+      const SHARED_CONTENT_ENTRY& path);
 
    /*
     Returns the offset, in bytes, to where content data starts in a file.
@@ -116,7 +116,7 @@ namespace qgl::content::content_file_helpers
     and sizeof(wchar_t) * number of characters in the path.
     */
    extern LIB_EXPORT size_t shared_entry_data_size(
-      const shared_content_data_buffer_t& data);
+      const SHARED_CONTENT_ENTRY& data);
 
    extern LIB_EXPORT bool valid_content_file_size(
       const winrt::file_handle& hndl);

@@ -261,7 +261,7 @@ namespace QGL_Content_UnitTests
                         L"The new path for entry 1 is not correct.");
       }
 
-      TEST_METHOD(ContentProjectSize)
+   /*   TEST_METHOD(ContentProjectSize)
       {
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root +
@@ -279,7 +279,7 @@ namespace QGL_Content_UnitTests
          projectWrite.emplace_back(CONTENT_METADATA_BUFFER(), L"2");
          Assert::IsTrue(2 == projectWrite.size(),
                         L"The size should be 2.");
-      }
+      }*/
 
       /*
        Assume emplacing and index operator is correct.

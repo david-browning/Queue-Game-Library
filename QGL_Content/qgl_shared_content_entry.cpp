@@ -4,7 +4,8 @@
 using namespace qgl::content;
 static constexpr size_t VENDOR_METADATA_INDEX = 0;
 
-SHARED_CONTENT_ENTRY::SHARED_CONTENT_ENTRY(const std::wstring& str)
+SHARED_CONTENT_ENTRY::SHARED_CONTENT_ENTRY(const std::wstring& str) :
+   m_buffer(str)
 {
    auto colonIdx = str.find(L':');
    
@@ -13,9 +14,9 @@ SHARED_CONTENT_ENTRY::SHARED_CONTENT_ENTRY(const std::wstring& str)
       throw std::invalid_argument("The string is not in the correct form.");
    }
 
-   m_metadataStr = str.substr(0, colonIdx - 1);
+   m_metadataStr = str.substr(0, colonIdx);
    auto vendorChar = toupper(m_metadataStr[VENDOR_METADATA_INDEX]);
-   if (vendorChar != 'V' || vendorChar != 'Q')
+   if (vendorChar != 'V' && vendorChar != 'Q')
    {
       throw std::invalid_argument("The metadata string is not correct.");
    }

@@ -82,9 +82,9 @@ void content_file::flush()
 }
 
 void content_file::push_back(const CONTENT_METADATA_BUFFER& meta,
-                             const content_data_buffer_t& buff)
+                             const DATA_CONTENT_ENTRY& buff)
 {
-   content_data_entry cont(buff);
+   content_variant_entry cont(buff);
    CONTENT_DICTIONARY_ENTRY_BUFFER entry(buff.size(), meta);
    entry.shared(false);
 
@@ -93,9 +93,9 @@ void content_file::push_back(const CONTENT_METADATA_BUFFER& meta,
 }
 
 void content_file::push_back(const CONTENT_METADATA_BUFFER& meta,
-                             const shared_content_data_buffer_t& buff)
+                             const SHARED_CONTENT_ENTRY& buff)
 {
-   content_data_entry cont(buff);
+   content_variant_entry cont(buff);
    CONTENT_DICTIONARY_ENTRY_BUFFER entry(shared_entry_data_size(buff),
                                          meta);
    entry.shared(true);
@@ -191,13 +191,13 @@ void content_file::read_in()
       if (dictEntry.shared())
       {
          auto sharedContent = load_shared_data_path(m_handle, dictEntry);
-         content_data_entry cbt(sharedContent);
+         content_variant_entry cbt(sharedContent);
          m_entryDataToWrite.push_back(cbt);
       }
       else
       {
          auto content = load_content_data(m_handle, dictEntry);
-         content_data_entry cbt(content);
+         content_variant_entry cbt(content);
          m_entryDataToWrite.push_back(cbt);
       }
 

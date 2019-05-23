@@ -31,7 +31,7 @@ namespace qgl::content::content_file_helpers
       return ret;
    }
 
-   content_data_buffer_t load_content_data(
+   DATA_CONTENT_ENTRY load_content_data(
       const winrt::file_handle& hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry)
    {
@@ -42,7 +42,7 @@ namespace qgl::content::content_file_helpers
       return ret;
    }
 
-   shared_content_data_buffer_t load_shared_data_path(
+   SHARED_CONTENT_ENTRY load_shared_data_path(
       const winrt::file_handle& hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry)
    {
@@ -51,12 +51,12 @@ namespace qgl::content::content_file_helpers
       NumCharsType numChars = 0;
       read_file_sync(hndl, sizeof(numChars), entry.offset(), &numChars);
 
-      shared_content_data_buffer_t ret(numChars, L'\0');
+      std::wstring path(numChars, L'\0');
       read_file_sync(hndl, 
                      numChars * sizeof(wchar_t), 
                      entry.offset() + sizeof(numChars),
-                     ret.data());
-      return ret;
+                     path.data());
+      return SHARED_CONTENT_ENTRY(path);
    }
 
    void write_header(const winrt::file_handle& hndl,
@@ -83,14 +83,14 @@ namespace qgl::content::content_file_helpers
    void write_content_data(
       const winrt::file_handle& hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
-      const content_data_buffer_t& contentData)
+      const DATA_CONTENT_ENTRY& contentData)
    {
       write_file_sync(hndl, entry.size(), entry.offset(), contentData.data());
    }
 
    void write_shared_data_path(const winrt::file_handle& hndl,
                                const CONTENT_DICTIONARY_ENTRY_BUFFER& entry, 
-                               const shared_content_data_buffer_t& path)
+                               const SHARED_CONTENT_ENTRY& path)
    {
       //First 8 bytes are the number of characters in the path.
       //Next bytes is the path. It is a wide string. Not null-terminated.
@@ -99,7 +99,7 @@ namespace qgl::content::content_file_helpers
       write_file_sync(hndl, 
                       sizeof(wchar_t) * numChars, 
                       entry.offset() + sizeof(numChars),
-                      path.c_str());
+                      path.data());
    }
 
    size_t dictionary_data_offset(
@@ -111,7 +111,7 @@ namespace qgl::content::content_file_helpers
    }
 
    size_t shared_entry_data_size(
-      const shared_content_data_buffer_t& data)
+      const SHARED_CONTENT_ENTRY& data)
    {
       return sizeof(NumCharsType) + (sizeof(wchar_t) * data.size());
    }

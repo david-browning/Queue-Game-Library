@@ -20,7 +20,7 @@ namespace QGL_Content_UnitTests
                           e.offset(),
                           L"The offset is not correct.");
 
-         Assert::AreEqual(static_cast<uint32_t>(0),
+         Assert::AreEqual(static_cast<uint64_t>(0),
                           e.flags(),
                           L"The flags are not correct.");
          
@@ -65,7 +65,7 @@ namespace QGL_Content_UnitTests
                           e.offset(),
                           L"The offset is not correct.");
 
-         Assert::AreEqual(static_cast<uint32_t>(0),
+         Assert::AreEqual(static_cast<uint64_t>(0),
                           e.flags(),
                           L"The flags are not correct.");
       }
@@ -88,7 +88,7 @@ namespace QGL_Content_UnitTests
                           e.offset(),
                           L"The offset is not correct.");
 
-         Assert::AreEqual(static_cast<uint32_t>(0),
+         Assert::AreEqual(static_cast<uint64_t>(0),
                           e.flags(),
                           L"The flags are not correct.");
       }

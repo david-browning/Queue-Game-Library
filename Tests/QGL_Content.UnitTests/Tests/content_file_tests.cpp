@@ -64,11 +64,12 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER meta(RESOURCE_TYPE_BRUSH,
                                       CONTENT_LOADER_ID_BRUSH,
                                       L"Brush");
-         cf.push_back(meta, L"Shared Path");
+         cf.push_back(meta, std::wstring(L"Q:Shared Path"));
          Assert::AreEqual(static_cast<size_t>(1), cf.size(),
                           L"The size should be 1.");
 
-         content_data_buffer_t dataBuffer;
+         uint8_t buffData[8] = { 0 };
+         DATA_CONTENT_ENTRY dataBuffer(buffData, 8);
          cf.push_back(meta, dataBuffer);
          Assert::AreEqual(static_cast<size_t>(2), cf.size(),
                           L"The size should be 2.");
@@ -86,7 +87,8 @@ namespace QGL_Content_UnitTests
          Assert::IsTrue(cf.begin() == cf.end(),
                         L"The beginning and end iterators should be equal.");
 
-         content_data_buffer_t dataBuffer1;
+         uint8_t buffData[8] = { 0 };
+         DATA_CONTENT_ENTRY dataBuffer1(buffData, 8);
          CONTENT_METADATA_BUFFER meta(RESOURCE_TYPE_BRUSH,
                                       CONTENT_LOADER_ID_BRUSH,
                                       L"Brush");
@@ -105,10 +107,11 @@ namespace QGL_Content_UnitTests
          DeleteFile(newFilePath.c_str());
 
          content_file cf(newFilePath);
-         content_data_buffer_t dataBuffer1;
-         content_data_buffer_t dataBuffer2;
-         shared_content_data_buffer_t shared1(L"Shared Path 1");
-         shared_content_data_buffer_t shared2(L"Shared Path 2");
+         uint8_t buffData[8] = { 0 };
+         DATA_CONTENT_ENTRY dataBuffer1(buffData, 8);
+         DATA_CONTENT_ENTRY dataBuffer2(buffData, 8);
+         SHARED_CONTENT_ENTRY shared1(L"Q:Shared Path 1");
+         SHARED_CONTENT_ENTRY shared2(L"Q:Shared Path 2");
 
          CONTENT_METADATA_BUFFER meta1(RESOURCE_TYPE_BRUSH,
                                        CONTENT_LOADER_ID_BRUSH,
@@ -154,10 +157,11 @@ namespace QGL_Content_UnitTests
          DeleteFile(newFilePath.c_str());
 
          content_file cf(newFilePath);
-         content_data_buffer_t dataBuffer1;
-         content_data_buffer_t dataBuffer2;
-         shared_content_data_buffer_t shared1(L"Shared Path 1");
-         shared_content_data_buffer_t shared2(L"Shared Path 2");
+         uint8_t buffData[8] = { 0 };
+         DATA_CONTENT_ENTRY dataBuffer1(buffData, 8);
+         DATA_CONTENT_ENTRY dataBuffer2(buffData, 8);
+         SHARED_CONTENT_ENTRY shared1(L"Q:Shared Path 1");
+         SHARED_CONTENT_ENTRY shared2(L"V:Shared Path 2");
 
          CONTENT_METADATA_BUFFER meta1(RESOURCE_TYPE_BRUSH,
                                        CONTENT_LOADER_ID_BRUSH,
@@ -203,8 +207,8 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER meta2(RESOURCE_TYPE_FLOAT,
                                        CONTENT_LOADER_ID_STRING,
                                        L"Green Value");
-         shared_content_data_buffer_t shared1(L"Shared Path 1");
-         shared_content_data_buffer_t shared2(L"Shared Path 2");
+         SHARED_CONTENT_ENTRY shared1(L"Q:Shared Path 1");
+         SHARED_CONTENT_ENTRY shared2(L"Q:Shared Path 2");
 
          cf.push_back(meta1, shared1);
          cf.push_back(meta2, shared2);
@@ -251,8 +255,8 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER meta2(RESOURCE_TYPE_FLOAT,
                                        CONTENT_LOADER_ID_STRING,
                                        L"Green Value");
-         shared_content_data_buffer_t shared1(L"Shared Path 1");
-         shared_content_data_buffer_t shared2(L"Shared Path 2");
+         SHARED_CONTENT_ENTRY shared1(L"Q:Shared Path 1");
+         SHARED_CONTENT_ENTRY shared2(L"V:Shared Path 2");
 
          cf.push_back(meta1, shared1);
          cf.push_back(meta2, shared2);
@@ -300,8 +304,8 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER meta2(RESOURCE_TYPE_FLOAT,
                                        CONTENT_LOADER_ID_STRING,
                                        L"Green Value");
-         shared_content_data_buffer_t shared1(L"Shared Path 1");
-         shared_content_data_buffer_t shared2(L"Shared Path 2");
+         SHARED_CONTENT_ENTRY shared1(L"Q:Shared Path 1");
+         SHARED_CONTENT_ENTRY shared2(L"V:Shared Path 2");
 
          cf.push_back(meta1, shared1);
          cf.push_back(meta2, shared2);
@@ -312,7 +316,8 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER meta3(RESOURCE_TYPE_FLOAT,
                                        CONTENT_LOADER_ID_STRING,
                                        L"Blue Value");
-         content_data_buffer_t blueValue = { 0x00, 0x10, 0x20 };
+         std::vector<uint8_t> bluedata = { 0x00, 0x10, 0x20 };
+         DATA_CONTENT_ENTRY blueValue(bluedata);
 
          {
             content_file cfOpen(newFilePath);

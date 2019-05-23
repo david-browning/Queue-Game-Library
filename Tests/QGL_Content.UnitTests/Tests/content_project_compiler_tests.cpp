@@ -52,7 +52,6 @@ namespace QGL_Content_UnitTests
             Assert::IsTrue(dictEntry.metadata() == entry1Meta,
                            L"The entry metadata is not correct.");
          }
-
       }
 
       private:

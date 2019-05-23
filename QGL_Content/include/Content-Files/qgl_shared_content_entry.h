@@ -42,6 +42,19 @@ namespace qgl::content
       bool vendor_file() const noexcept;
 
       /*
+       Returns the number of characters.
+       */
+      size_t size() const noexcept
+      {
+         return m_metadataStr.size() + 1 + m_relativePath.size();
+      }
+
+      const void* data() const
+      {
+         return m_buffer.data();
+      }
+
+      /*
        Returns a const reference to the relative file path. This gets 
        processed by a content store.
        */
@@ -53,6 +66,7 @@ namespace qgl::content
          using std::swap;
          swap(first.m_metadataStr, second.m_metadataStr);
          swap(first.m_relativePath, second.m_relativePath);
+         swap(first.m_buffer, second.m_buffer);
       }
 
       /*
@@ -70,8 +84,7 @@ namespace qgl::content
       friend bool operator==(const SHARED_CONTENT_ENTRY& r,
                              const SHARED_CONTENT_ENTRY& l) noexcept
       {
-         return r.m_metadataStr == l.m_metadataStr &&
-            r.m_relativePath == l.m_relativePath;
+         return r.m_buffer == l.m_buffer;
       }
 
       private:
@@ -88,5 +101,7 @@ namespace qgl::content
        by QGL, the file's bytes are passed to an appropiate content importer.
        */
       std::wstring m_metadataStr;
+
+      std::wstring m_buffer;
    };
 }

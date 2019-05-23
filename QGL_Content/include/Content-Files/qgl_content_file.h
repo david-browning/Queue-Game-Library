@@ -4,7 +4,7 @@
 #include "include/Content-Buffers/qgl_content_file_header_buffer.h"
 #include "include/Content-Files/qgl_content_file_helpers.h"
 #include "include/qgl_file_helpers.h"
-#include "include/Content-Files/qgl_content_data_entry.h"
+#include "include/Content-Files/qgl_content_variant_entry.h"
 
 namespace qgl::content
 {
@@ -24,7 +24,7 @@ namespace qgl::content
    {
       public:
       using dictionary_container = std::list<CONTENT_DICTIONARY_ENTRY_BUFFER>;
-      using content_container = std::list<content_data_entry>;
+      using content_container = std::list<content_variant_entry>;
 
       using content_iterator = content_container::iterator;
       using content_const_iterator = content_container::const_iterator;
@@ -75,10 +75,10 @@ namespace qgl::content
       void flush();
 
       void push_back(const CONTENT_METADATA_BUFFER& meta,
-                     const content_data_buffer_t& buff);
+                     const DATA_CONTENT_ENTRY& buff);
 
       void push_back(const CONTENT_METADATA_BUFFER& meta,
-                     const shared_content_data_buffer_t& buff);
+                     const SHARED_CONTENT_ENTRY& buff);
 
       void pop_back();
 
