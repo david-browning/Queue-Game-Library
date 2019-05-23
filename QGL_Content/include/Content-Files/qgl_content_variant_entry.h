@@ -19,7 +19,7 @@ namespace qgl::content
    /*
     Stores either a content buffer, or information about an external file.
     */
-   class LIB_EXPORT content_variant_entry
+   class content_variant_entry
    {
       public:
       /*

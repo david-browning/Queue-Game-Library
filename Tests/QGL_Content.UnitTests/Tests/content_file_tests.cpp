@@ -110,8 +110,6 @@ namespace QGL_Content_UnitTests
          uint8_t buffData[8] = { 0 };
          DATA_CONTENT_ENTRY dataBuffer1(buffData, 8);
          DATA_CONTENT_ENTRY dataBuffer2(buffData, 8);
-         SHARED_CONTENT_ENTRY shared1(L"Q:Shared Path 1");
-         SHARED_CONTENT_ENTRY shared2(L"Q:Shared Path 2");
 
          CONTENT_METADATA_BUFFER meta1(RESOURCE_TYPE_BRUSH,
                                        CONTENT_LOADER_ID_BRUSH,
@@ -123,8 +121,8 @@ namespace QGL_Content_UnitTests
 
          cf.push_back(meta1, dataBuffer1);
          cf.push_back(meta2, dataBuffer2);
-         cf.push_back(meta1, shared1);
-         cf.push_back(meta2, shared2);
+         cf.push_back(meta1, std::wstring(L"Q:Shared Path 1"));
+         cf.push_back(meta2, std::wstring(L"Q:Shared Path 2"));
 
          int i = 0;
          for (auto& entry : cf)
@@ -157,11 +155,7 @@ namespace QGL_Content_UnitTests
          DeleteFile(newFilePath.c_str());
 
          content_file cf(newFilePath);
-         uint8_t buffData[8] = { 0 };
-         DATA_CONTENT_ENTRY dataBuffer1(buffData, 8);
-         DATA_CONTENT_ENTRY dataBuffer2(buffData, 8);
-         SHARED_CONTENT_ENTRY shared1(L"Q:Shared Path 1");
-         SHARED_CONTENT_ENTRY shared2(L"V:Shared Path 2");
+         std::vector<uint8_t> buffData = { 0 };
 
          CONTENT_METADATA_BUFFER meta1(RESOURCE_TYPE_BRUSH,
                                        CONTENT_LOADER_ID_BRUSH,
@@ -171,10 +165,10 @@ namespace QGL_Content_UnitTests
                                        CONTENT_LOADER_ID_CAMERA,
                                        L"Camera");
 
-         cf.push_back(meta1, dataBuffer1);
-         cf.push_back(meta2, dataBuffer2);
-         cf.push_back(meta1, shared1);
-         cf.push_back(meta2, shared2);
+         cf.push_back(meta1, buffData);
+         cf.push_back(meta2, buffData);
+         cf.push_back(meta1, std::wstring(L"Q:Shared Path 1"));
+         cf.push_back(meta2, std::wstring(L"V:Shared Path 2"));
 
          //This should not throw an exception.
          try
@@ -207,11 +201,9 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER meta2(RESOURCE_TYPE_FLOAT,
                                        CONTENT_LOADER_ID_STRING,
                                        L"Green Value");
-         SHARED_CONTENT_ENTRY shared1(L"Q:Shared Path 1");
-         SHARED_CONTENT_ENTRY shared2(L"Q:Shared Path 2");
 
-         cf.push_back(meta1, shared1);
-         cf.push_back(meta2, shared2);
+         cf.push_back(meta1, std::wstring(L"Q:Shared Path 1"));
+         cf.push_back(meta2, std::wstring(L"Q:Shared Path 2"));
 
          cf.flush();
 
@@ -255,11 +247,8 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER meta2(RESOURCE_TYPE_FLOAT,
                                        CONTENT_LOADER_ID_STRING,
                                        L"Green Value");
-         SHARED_CONTENT_ENTRY shared1(L"Q:Shared Path 1");
-         SHARED_CONTENT_ENTRY shared2(L"V:Shared Path 2");
-
-         cf.push_back(meta1, shared1);
-         cf.push_back(meta2, shared2);
+         cf.push_back(meta1, std::wstring(L"Q:Shared Path 1"));
+         cf.push_back(meta2, std::wstring(L"V:Shared Path 2"));
 
          cf.flush();
 
@@ -304,11 +293,8 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER meta2(RESOURCE_TYPE_FLOAT,
                                        CONTENT_LOADER_ID_STRING,
                                        L"Green Value");
-         SHARED_CONTENT_ENTRY shared1(L"Q:Shared Path 1");
-         SHARED_CONTENT_ENTRY shared2(L"V:Shared Path 2");
-
-         cf.push_back(meta1, shared1);
-         cf.push_back(meta2, shared2);
+         cf.push_back(meta1, std::wstring(L"Q:Shared Path 1"));
+         cf.push_back(meta2, std::wstring(L"V:Shared Path 2"));
 
          cf.flush();
 
@@ -317,11 +303,10 @@ namespace QGL_Content_UnitTests
                                        CONTENT_LOADER_ID_STRING,
                                        L"Blue Value");
          std::vector<uint8_t> bluedata = { 0x00, 0x10, 0x20 };
-         DATA_CONTENT_ENTRY blueValue(bluedata);
 
          {
             content_file cfOpen(newFilePath);
-            cfOpen.push_back(meta3, blueValue);
+            cfOpen.push_back(meta3, bluedata);
             cfOpen.flush();
          }
          
