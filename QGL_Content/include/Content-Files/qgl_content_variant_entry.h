@@ -12,6 +12,7 @@ namespace qgl::content
     */
    enum class CONTENT_DATA_USE_TYPES
    {
+      CONTENT_DATA_USE_TYPE_UNKNOWN,
       CONTENT_DATA_USE_TYPE_BUFFER,
       CONTENT_DATA_USE_TYPE_SHARED,
    };
@@ -19,9 +20,12 @@ namespace qgl::content
    /*
     Stores either a content buffer, or information about an external file.
     */
-   class content_variant_entry
+   class LIB_EXPORT content_variant_entry
    {
       public:
+
+      content_variant_entry();
+
       /*
        Sets the use type for this variant, but has not data backing it.
        */
@@ -57,13 +61,13 @@ namespace qgl::content
        */
       bool shared() const noexcept
       {
-         return m_useType == 
+         return m_useType ==
             CONTENT_DATA_USE_TYPES::CONTENT_DATA_USE_TYPE_SHARED;
       }
 
       /*
        Returns a const reference to the content buffer.
-       Throws std::bad_variant_access if the variant does not hold a content 
+       Throws std::bad_variant_access if the variant does not hold a content
        buffer.
        */
       const DATA_CONTENT_ENTRY& buffer() const
@@ -77,7 +81,7 @@ namespace qgl::content
       }
 
       /*
-       Returns a const reference to the shared file buffer. 
+       Returns a const reference to the shared file buffer.
        Throws std::bad_variant_access if the variant does not hold a reference
        to an external file.
        */
@@ -89,6 +93,30 @@ namespace qgl::content
          }
 
          return *m_sharedBuffer;
+      }
+
+      friend void swap(content_variant_entry& first,
+                       content_variant_entry& second) noexcept
+      {
+         using std::swap;
+         swap(first.m_useType, second.m_useType);
+         swap(first.m_buffer, second.m_buffer);
+         swap(first.m_sharedBuffer, second.m_sharedBuffer);
+         swap(first.m_loaded, second.m_loaded);
+      }
+
+      content_variant_entry& operator=(content_variant_entry r) noexcept
+      {
+         swap(*this, r);
+         return *this;
+      }
+
+      friend bool operator==(const content_variant_entry& r,
+                             const content_variant_entry& l) noexcept
+      {
+         return r.m_useType == l.m_useType &&
+            r.m_buffer == l.m_buffer &&
+            r.m_sharedBuffer == l.m_sharedBuffer;
       }
 
       private:

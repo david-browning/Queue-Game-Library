@@ -8,6 +8,11 @@
 
 namespace qgl::content
 {
+   template class LIB_EXPORT std::allocator<CONTENT_DICTIONARY_ENTRY_BUFFER>;
+   template class LIB_EXPORT std::allocator<content_variant_entry>;
+   template class LIB_EXPORT std::vector<CONTENT_DICTIONARY_ENTRY_BUFFER>;
+   template class LIB_EXPORT std::vector<content_variant_entry>;
+
    /*
     Representation of a content file. A content file contains metadata about
     the content and a collection of data defining the content. The content data
@@ -23,8 +28,8 @@ namespace qgl::content
    class LIB_EXPORT content_file
    {
       public:
-      using dictionary_container = std::list<CONTENT_DICTIONARY_ENTRY_BUFFER>;
-      using content_container = std::list<content_variant_entry>;
+      using dictionary_container = std::vector<CONTENT_DICTIONARY_ENTRY_BUFFER>;
+      using content_container = std::vector<content_variant_entry>;
 
       using content_iterator = content_container::iterator;
       using content_const_iterator = content_container::const_iterator;
