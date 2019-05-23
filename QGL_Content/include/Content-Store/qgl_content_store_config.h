@@ -15,28 +15,27 @@ namespace qgl::content
        */
       content_store_config(const winrt::hstring& storePath);
 
+      content_store_config(const wchar_t* storePath, size_t len);
+
       /*
        Copy constructor.
        */
-      content_store_config(const content_store_config&) = default;
+      content_store_config(const content_store_config&);
 
       /*
        Move constructor.
        */
-      content_store_config(content_store_config&&) = default;
+      content_store_config(content_store_config&&);
 
       /*
        Destructor.
        */
-      virtual ~content_store_config() noexcept = default;
+      virtual ~content_store_config() noexcept;
 
       /*
-       Returns a const reference to the store's root path.
+       Returns a const pointer to the store's root path.
        */
-      inline const winrt::hstring& path() const
-      {
-         return m_storePath;
-      }
+      const wchar_t* path() const;
 
       friend void swap(content_store_config& first, 
                        content_store_config& second) noexcept
@@ -53,8 +52,8 @@ namespace qgl::content
 
       private:
       /*
-       The store's root path.
+       The store's root path. This always ends with a backslash.
        */
-      winrt::hstring m_storePath;
+      wchar_t* m_storePath;
    };
 }
