@@ -4,10 +4,20 @@
 
 namespace qgl::content
 {
+   template class LIB_EXPORT std::shared_ptr<void>;
+
    template<typename IDT>
-   class content_accessor
+   class LIB_EXPORT content_accessor
    {
       public:
+      content_accessor() :
+         m_ptr(nullptr),
+         m_id(static_cast<IDT>(-1)),
+         m_metadata()
+      {
+
+      }
+
       template<class T>
       content_accessor(IDT id,
                        const CONTENT_METADATA_BUFFER& meta,

@@ -6,6 +6,21 @@
 
 namespace qgl::content
 {
+   template struct LIB_EXPORT std::atomic<uint64_t>;
+   template struct LIB_EXPORT std::atomic<uint32_t>;
+   template struct LIB_EXPORT std::atomic<uint16_t>;
+   template struct LIB_EXPORT std::atomic<uint8_t>;
+
+   template class LIB_EXPORT std::allocator<uint64_t>;
+   template class LIB_EXPORT std::allocator<size_t>;
+   template class LIB_EXPORT std::allocator<content_accessor<uint64_t>>;
+   
+   template class LIB_EXPORT std::vector<content_accessor<uint64_t>>;
+   template class LIB_EXPORT std::unordered_map<uint64_t, size_t>;
+
+   template struct LIB_EXPORT std::hash<winrt::hstring>;
+
+
    /*
     Provides the mechanism to import content from a repository. Tracks imports
     so content is not loaded from disk more than once.
