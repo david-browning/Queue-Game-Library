@@ -30,7 +30,7 @@ namespace QGL_Content_UnitTests
          winrt::hstring entry1Path(root + L"\\Int16.txt");
          DeleteFile(entry1Path.c_str());
          auto int16Handle = open_file_write(entry1Path);
-         int16_t int16Data = 0xFF'AA;
+         int16_t int16Data = int16_t(0xFF'AA);
          write_file_sync(int16Handle, sizeof(int16Data), 0, &int16Data);
          int16Handle.close();
 
@@ -71,7 +71,7 @@ namespace QGL_Content_UnitTests
          winrt::hstring entry1Path(root.Path() + L"\\StorageFileInt16.txt");
          DeleteFile(entry1Path.c_str());
          auto int16Handle = open_file_write(entry1Path);
-         int16_t int16Data = 0xFF'AA;
+         int16_t int16Data = int16_t(0xFF'AA);
          write_file_sync(int16Handle, sizeof(int16Data), 0, &int16Data);
          int16Handle.close();
 
