@@ -118,7 +118,7 @@ namespace qgl::content
        The file handle is valid as long as this is in scope. The destructor
        closes the handle.
        */
-      const winrt::file_handle& handle() const noexcept;
+      const file_handle& handle() const noexcept;
 
       private:
 
@@ -142,7 +142,7 @@ namespace qgl::content
       /*
        File handle.
        */
-      winrt::file_handle m_handle;
+      file_handle m_handle;
 
       static constexpr size_t VARIANT_INDEX_BUFFER = 0;
       static constexpr size_t VARIANT_INDEX_PATH = 1;

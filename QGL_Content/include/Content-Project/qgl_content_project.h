@@ -4,6 +4,7 @@
 #include "include/Content-Buffers/qgl_content_dictionary_metadata_buffer.h"
 #include "include/Content-Buffers/qgl_content_dict_entry_buffer.h"
 #include "include/Content-Buffers/qgl_content_file_header_buffer.h"
+#include "include/qgl_file_handle.h"
 
 namespace qgl::content
 {
@@ -235,7 +236,7 @@ namespace qgl::content
       /*
        File handle.
        */
-      winrt::file_handle m_handle;
+      file_handle m_handle;
 
       /*
        Content file header.

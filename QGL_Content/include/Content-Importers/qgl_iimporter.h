@@ -47,7 +47,7 @@ namespace qgl::content
        Returns the data loaded.
        */
       virtual LoadT load(
-         const winrt::file_handle& fileHandle,
+         const file_handle& fileHandle,
          const CONTENT_DICTIONARY_ENTRY_BUFFER& lookup) const = 0;
 
      /*

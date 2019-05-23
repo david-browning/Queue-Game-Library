@@ -26,7 +26,7 @@ namespace QGL_Content_UnitTests
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\OpenNewFileWrite.txt");
 
-         winrt::file_handle handle;
+         file_handle handle;
          try
          {
             handle = qgl::content::open_file_write(newFilePath);
@@ -69,7 +69,7 @@ namespace QGL_Content_UnitTests
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\OpenNewFileReadWrite.txt");
 
-         winrt::file_handle handle;
+         file_handle handle;
          try
          {
             handle = qgl::content::open_file_readwrite(newFilePath);
@@ -112,7 +112,7 @@ namespace QGL_Content_UnitTests
             L"StorageFile.txt",
             CreationCollisionOption::ReplaceExisting);
 
-         winrt::file_handle handle;
+         file_handle handle;
          try
          {
             handle = open_file_readwrite(f);

@@ -42,7 +42,7 @@ namespace QGL_Content_UnitTests
                         L"The data is not the same.");
       }
 
-          /*
+      /*
        Create a file, write some data to it, close the file, re-open it and
        read the first half of the data.
        */

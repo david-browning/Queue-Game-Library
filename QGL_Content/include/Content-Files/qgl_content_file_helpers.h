@@ -3,6 +3,7 @@
 #include "include/Content-Dictionary/qgl_content_dictionary.h"
 #include "include/Content-Buffers/qgl_content_file_header_buffer.h"
 #include "include/Content-Files/qgl_content_variant_entry.h"
+#include "include/qgl_file_handle.h"
 #include <type_traits>
 
 namespace qgl::content::content_file_helpers
@@ -14,7 +15,7 @@ namespace qgl::content::content_file_helpers
     Throws an exception if there is an error reading.
     */
    extern LIB_EXPORT CONTENT_FILE_HEADER_BUFFER load_header(
-      const winrt::file_handle& hndl);
+      const file_handle& hndl);
 
    /*
     Reads the dictionary metadata from a content file at the offset.
@@ -25,7 +26,7 @@ namespace qgl::content::content_file_helpers
     */
    extern LIB_EXPORT CONTENT_DICTIONARY_METADATA_BUFFER
       load_dictionary_metadata(
-         const winrt::file_handle& hndl,
+         const file_handle& hndl,
          size_t dictionaryOffset);
 
    /*
@@ -35,7 +36,7 @@ namespace qgl::content::content_file_helpers
     Throws an exception if there is an error reading.
     */
    extern LIB_EXPORT CONTENT_DICTIONARY_ENTRY_BUFFER load_dictionary_entry(
-      const winrt::file_handle& hndl,
+      const file_handle& hndl,
       size_t entryOffset);
 
    /*
@@ -46,7 +47,7 @@ namespace qgl::content::content_file_helpers
     Throws an exception if there is an error reading.
     */
    extern LIB_EXPORT DATA_CONTENT_ENTRY load_content_data(
-      const winrt::file_handle& hndl,
+      const file_handle& hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry);
 
    /*
@@ -57,14 +58,14 @@ namespace qgl::content::content_file_helpers
     Throws an exception if there is an error reading.
     */
    extern LIB_EXPORT SHARED_CONTENT_ENTRY load_shared_data_path(
-      const winrt::file_handle& hndl,
+      const file_handle& hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry);
 
    /*
     Writes a file header to a content file.
     The file must be opened with write permissions.
     */
-   extern LIB_EXPORT void write_header(const winrt::file_handle& hndl,
+   extern LIB_EXPORT void write_header(const file_handle& hndl,
                                        const CONTENT_FILE_HEADER_BUFFER& hdr);
 
    /*
@@ -72,7 +73,7 @@ namespace qgl::content::content_file_helpers
     The file must be opened with write permissions.
     */
    extern LIB_EXPORT void write_dictionary_metadata(
-      const winrt::file_handle& hndl,
+      const file_handle& hndl,
       const CONTENT_DICTIONARY_METADATA_BUFFER& meta,
       size_t offset);
 
@@ -81,7 +82,7 @@ namespace qgl::content::content_file_helpers
     The file must be opened with write permissions.
     */
    extern LIB_EXPORT void write_dictionary_entry(
-      const winrt::file_handle& hndl,
+      const file_handle& hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
       size_t offset);
 
@@ -90,7 +91,7 @@ namespace qgl::content::content_file_helpers
     The file must be opened with write permissions.
     */
    extern LIB_EXPORT void write_content_data(
-      const winrt::file_handle& hndl,
+      const file_handle& hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
       const DATA_CONTENT_ENTRY& contentData);
 
@@ -99,7 +100,7 @@ namespace qgl::content::content_file_helpers
     The file must be opened with write permissions.
     */
    extern LIB_EXPORT void write_shared_data_path(
-      const winrt::file_handle& hndl,
+      const file_handle& hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
       const SHARED_CONTENT_ENTRY& path);
 
@@ -119,5 +120,5 @@ namespace qgl::content::content_file_helpers
       const SHARED_CONTENT_ENTRY& data);
 
    extern LIB_EXPORT bool valid_content_file_size(
-      const winrt::file_handle& hndl);
+      const file_handle& hndl);
 }

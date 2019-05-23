@@ -127,6 +127,9 @@
     <ClCompile Include="qgl_content_variant_entry.cpp">
       <Filter>Source Files\Content-Files</Filter>
     </ClCompile>
+    <ClCompile Include="qgl_file_handle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLContent.h">
@@ -224,6 +227,9 @@
     </ClInclude>
     <ClInclude Include="include\Content-Files\qgl_content_variant_entry.h">
       <Filter>Header Files\Content-Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_file_handle.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

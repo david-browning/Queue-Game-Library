@@ -43,15 +43,15 @@ CREATEFILE2_EXTENDED_PARAMETERS make_default_open_file_params(
    return ret;
 }
 
-winrt::file_handle qgl::content::open_file_read(const winrt::hstring& filePath)
+file_handle qgl::content::open_file_read(const winrt::hstring& filePath)
 {
    auto sa = make_default_security_attributes();
    auto params = make_default_open_file_params(&sa);
-   auto h = winrt::file_handle(CreateFile2(filePath.c_str(),
-                                           GENERIC_READ,
-                                           DEFAULT_SHARE_MODE,
-                                           OPEN_EXISTING,
-                                           &params));
+   auto h = file_handle(CreateFile2(filePath.c_str(),
+                        GENERIC_READ,
+                        DEFAULT_SHARE_MODE,
+                        OPEN_EXISTING,
+                        &params));
    if (!h)
    {
       winrt::throw_last_error();
@@ -60,7 +60,7 @@ winrt::file_handle qgl::content::open_file_read(const winrt::hstring& filePath)
    return h;
 }
 
-LIB_EXPORT winrt::file_handle qgl::content::open_file_read(
+file_handle qgl::content::open_file_read(
    const winrt::Windows::Storage::StorageFile & f)
 {
    winrt::com_ptr<IStorageItemHandleAccess> handleAccess =
@@ -77,18 +77,19 @@ LIB_EXPORT winrt::file_handle qgl::content::open_file_read(
 
    winrt::check_hresult(hr);
 
-   return winrt::file_handle(hndl);
+   return file_handle(hndl);
 }
 
-winrt::file_handle qgl::content::open_file_write(const winrt::hstring& filePath)
+file_handle qgl::content::open_file_write(const winrt::hstring& filePath)
 {
    auto sa = make_default_security_attributes();
    auto params = make_default_open_file_params(&sa);
-   auto h = winrt::file_handle(CreateFile2(filePath.c_str(),
-                                           GENERIC_WRITE,
-                                           DEFAULT_SHARE_MODE,
-                                           CREATE_ALWAYS,
-                                           &params));
+   auto hndl = CreateFile2(filePath.c_str(),
+                           GENERIC_WRITE,
+                           DEFAULT_SHARE_MODE,
+                           CREATE_ALWAYS,
+                           &params);
+   auto h = file_handle(hndl);
    if (!h)
    {
       winrt::throw_last_error();
@@ -97,7 +98,7 @@ winrt::file_handle qgl::content::open_file_write(const winrt::hstring& filePath)
    return h;
 }
 
-winrt::file_handle qgl::content::open_file_write(
+file_handle qgl::content::open_file_write(
    const winrt::Windows::Storage::StorageFile & f)
 {
    winrt::com_ptr<IStorageItemHandleAccess> handleAccess =
@@ -114,18 +115,18 @@ winrt::file_handle qgl::content::open_file_write(
 
    winrt::check_hresult(hr);
 
-   return winrt::file_handle(hndl);
+   return file_handle(hndl);
 }
 
-winrt::file_handle qgl::content::open_file_readwrite(const winrt::hstring& filePath)
+file_handle qgl::content::open_file_readwrite(const winrt::hstring& filePath)
 {
    auto sa = make_default_security_attributes();
    auto params = make_default_open_file_params(&sa);
-   auto h = winrt::file_handle(CreateFile2(filePath.c_str(),
-                                           GENERIC_READ | GENERIC_WRITE,
-                                           DEFAULT_SHARE_MODE,
-                                           OPEN_ALWAYS,
-                                           &params));
+   auto h = file_handle(CreateFile2(filePath.c_str(),
+                                    GENERIC_READ | GENERIC_WRITE,
+                                    DEFAULT_SHARE_MODE,
+                                    OPEN_ALWAYS,
+                                    &params));
 
    if (!h)
    {
@@ -138,7 +139,7 @@ winrt::file_handle qgl::content::open_file_readwrite(const winrt::hstring& fileP
    return h;
 }
 
-winrt::file_handle qgl::content::open_file_readwrite(
+file_handle qgl::content::open_file_readwrite(
    const winrt::Windows::Storage::StorageFile& f)
 {
    winrt::com_ptr<IStorageItemHandleAccess> handleAccess =
@@ -156,10 +157,10 @@ winrt::file_handle qgl::content::open_file_readwrite(
 
    winrt::check_hresult(hr);
 
-   return winrt::file_handle(hndl);
+   return file_handle(hndl);
 }
 
-LIB_EXPORT void qgl::content::truncate_file(const winrt::file_handle& hdnl)
+void qgl::content::truncate_file(const file_handle& hdnl)
 {
    LARGE_INTEGER distance;
    distance.QuadPart = 0;
@@ -168,7 +169,7 @@ LIB_EXPORT void qgl::content::truncate_file(const winrt::file_handle& hdnl)
    winrt::check_bool(SetEndOfFile(hdnl.get()));
 }
 
-size_t qgl::content::file_size(const winrt::file_handle& hndl)
+size_t qgl::content::file_size(const file_handle& hndl)
 {
    //Get the file info and check the result.
    FILE_STANDARD_INFO fileInfo = {};
@@ -193,7 +194,7 @@ LIB_EXPORT size_t qgl::content::file_size(
    return file_size(hndl);
 }
 
-std::vector<uint8_t> qgl::content::file_data(const winrt::file_handle& hndl)
+std::vector<uint8_t> qgl::content::file_data(const file_handle& hndl)
 {
    auto fileSize = file_size(hndl);
    std::vector<uint8_t> ret(fileSize);

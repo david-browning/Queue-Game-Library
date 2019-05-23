@@ -165,7 +165,7 @@ size_t content_file::size() const noexcept
    return m_entryDataToWrite.size();
 }
 
-const winrt::file_handle& content_file::handle() const noexcept
+const file_handle& content_file::handle() const noexcept
 {
    return m_handle;
 }
