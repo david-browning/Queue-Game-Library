@@ -53,7 +53,7 @@ void qgl::graphics::texture::p_allocate()
       D3D12_RESOURCE_STATE_COPY_DEST,
       nullptr,
       IID_PPV_ARGS(m_resource.put())));
-   name_d3d(m_resource.get(), name().c_str());
+   name_d3d(m_resource.get(), name());
 
    p_createViewDesc();
 }
