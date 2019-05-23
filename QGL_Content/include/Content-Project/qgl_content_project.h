@@ -8,6 +8,11 @@
 
 namespace qgl::content
 {
+   using content_project_entry_pair = 
+      std::pair<CONTENT_METADATA_BUFFER, winrt::hstring>;
+   template class LIB_EXPORT std::allocator<content_project_entry_pair>;
+   template class LIB_EXPORT std::vector<content_project_entry_pair>;
+
    /*
     Representation of a content project file. A content project contains 
     metadata of the content and a list of addition files supporting the project.
@@ -30,7 +35,7 @@ namespace qgl::content
    class LIB_EXPORT content_project
    {
       public:
-      using entry_pair = std::pair<CONTENT_METADATA_BUFFER, winrt::hstring>;
+      using entry_pair = content_project_entry_pair;
       using container = std::vector<entry_pair>;
       using iterator = container::iterator;
       using const_iterator = container::const_iterator;
