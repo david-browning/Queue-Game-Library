@@ -131,8 +131,6 @@ namespace qgl::content
        */
       CONTENT_FILE_HEADER_BUFFER m_header;
 
-      #pragma warning(push)
-      #pragma warning(disable: 4251)
       /*
        An array of pointers to data that is pending writes to the content file.
        This is only populated when the content file is in write mode.
@@ -145,8 +143,6 @@ namespace qgl::content
        File handle.
        */
       winrt::file_handle m_handle;
-
-      #pragma warning(pop)
 
       static constexpr size_t VARIANT_INDEX_BUFFER = 0;
       static constexpr size_t VARIANT_INDEX_PATH = 1;

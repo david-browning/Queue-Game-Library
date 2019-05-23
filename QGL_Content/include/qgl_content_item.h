@@ -90,13 +90,10 @@ namespace qgl::content
       }
 
       private:
-      #pragma warning(push)
-      #pragma warning(disable: 4251)
       /*
        This content's name.
        */
       std::wstring m_name;
-      #pragma warning(pop)
 
       /*
        This content's ID.

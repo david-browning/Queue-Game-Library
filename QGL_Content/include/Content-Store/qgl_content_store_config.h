@@ -52,12 +52,9 @@ namespace qgl::content
       }
 
       private:
-      #pragma warning(push)
-      #pragma warning(disable: 4251)
       /*
        The store's root path.
        */
       winrt::hstring m_storePath;
-      #pragma warning(pop)
    };
 }

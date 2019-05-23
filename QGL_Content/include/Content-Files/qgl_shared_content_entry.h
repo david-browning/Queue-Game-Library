@@ -88,7 +88,7 @@ namespace qgl::content
       }
 
       private:
-
+      
       /*
        Use wide string because that is what Windows uses.
        */

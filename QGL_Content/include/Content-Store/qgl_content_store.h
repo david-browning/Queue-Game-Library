@@ -159,8 +159,6 @@ namespace qgl::content
        */
       content_store_config m_config;
 
-      #pragma warning(push)
-      #pragma warning(disable: 4251)
       /*
        Next ID to give to content.
        */
@@ -178,6 +176,5 @@ namespace qgl::content
       id_to_content_map_t m_IDContentMap;
 
       content_list_t m_contentList;
-      #pragma warning(pop)
    };
 }

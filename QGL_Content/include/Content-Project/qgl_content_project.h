@@ -227,8 +227,6 @@ namespace qgl::content
        */
       void read_in();
 
-      #pragma warning(push)
-      #pragma warning(disable: 4251)
       /*
        Collection of entries.
        */
@@ -238,8 +236,6 @@ namespace qgl::content
        File handle.
        */
       winrt::file_handle m_handle;
-
-      #pragma warning(pop)
 
       /*
        Content file header.
