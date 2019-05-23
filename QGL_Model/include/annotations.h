@@ -740,6 +740,24 @@ T* MemoryFind(_IN_POINTER_ const T* ptr,
          return ptr + i;
       }
    }
+
+   return nullptr;
+}
+
+template<typename T>
+size_t MemoryIndex(const T* const ptr,
+                   T val,
+                   size_t numElements)
+{
+   for (size_t i = 0; i < numElements; i++)
+   {
+      if (ptr[i] == val)
+      {
+         return i;
+      }
+   }
+
+   return static_cast<size_t>(-1);
 }
 
 /*

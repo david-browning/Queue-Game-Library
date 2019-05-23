@@ -19,20 +19,22 @@ namespace qgl::content
        */
       SHARED_CONTENT_ENTRY(const std::wstring& str);
 
+      SHARED_CONTENT_ENTRY(const wchar_t* str, size_t len);
+
       /*
        Copy Constructor.
        */
-      SHARED_CONTENT_ENTRY(const SHARED_CONTENT_ENTRY&) = default;
+      SHARED_CONTENT_ENTRY(const SHARED_CONTENT_ENTRY&);
 
       /*
        Move Constructor.
        */
-      SHARED_CONTENT_ENTRY(SHARED_CONTENT_ENTRY&&) = default;
+      SHARED_CONTENT_ENTRY(SHARED_CONTENT_ENTRY&&);
 
       /*
        Destructor.
        */
-      virtual ~SHARED_CONTENT_ENTRY() noexcept = default;
+      virtual ~SHARED_CONTENT_ENTRY() noexcept;
 
       /*
        Returns true if the shared file is a vendor specific file.
@@ -44,21 +46,15 @@ namespace qgl::content
       /*
        Returns the number of characters.
        */
-      size_t size() const noexcept
-      {
-         return m_metadataStr.size() + 1 + m_relativePath.size();
-      }
+      size_t size() const noexcept;
 
-      const void* data() const
-      {
-         return m_buffer.data();
-      }
+      const void* data() const;
 
       /*
        Returns a const reference to the relative file path. This gets 
        processed by a content store.
        */
-      const std::wstring& path() const noexcept;
+      const wchar_t* path() const noexcept;
 
       friend void swap(SHARED_CONTENT_ENTRY& first,
                        SHARED_CONTENT_ENTRY& second) noexcept
@@ -92,7 +88,7 @@ namespace qgl::content
       /*
        Use wide string because that is what Windows uses.
        */
-      std::wstring m_relativePath;
+      wchar_t* m_relativePath;
 
       /*
        The first character in the metadata is either a 'Q' or 'V'. 'Q'
@@ -100,8 +96,9 @@ namespace qgl::content
        shared file is vendor specified.When a vendor specified file is loaded
        by QGL, the file's bytes are passed to an appropiate content importer.
        */
-      std::wstring m_metadataStr;
+      wchar_t* m_metadataStr;
 
-      std::wstring m_buffer;
+      wchar_t* m_buffer;
+      size_t m_bufferSize;
    };
 }

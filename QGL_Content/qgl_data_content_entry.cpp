@@ -28,12 +28,12 @@ DATA_CONTENT_ENTRY::DATA_CONTENT_ENTRY(const DATA_CONTENT_ENTRY& c)
 qgl::content::DATA_CONTENT_ENTRY::DATA_CONTENT_ENTRY(DATA_CONTENT_ENTRY&& m)
 {
    m_buffSize = m.m_buffSize;
-   m_buffer = new uint8_t[m_buffSize];
-   memcpy(m_buffer, m.m_buffer, m_buffSize);
-
-   m.m_buffSize = 0;
-   delete[] m.m_buffer;
+   m_buffer = m.m_buffer;
    m.m_buffer = nullptr;
+
+   #ifdef DEBUG
+   m.m_buffSize = -1;
+   #endif
 }
 
 qgl::content::DATA_CONTENT_ENTRY::~DATA_CONTENT_ENTRY() noexcept
@@ -41,7 +41,7 @@ qgl::content::DATA_CONTENT_ENTRY::~DATA_CONTENT_ENTRY() noexcept
    delete[] m_buffer;
    #ifdef DEBUG
    m_buffer = nullptr;
-   m_buffSize = -1;
+   m_buffSize = static_cast<size_t>(-1);
    #endif
 }
 
