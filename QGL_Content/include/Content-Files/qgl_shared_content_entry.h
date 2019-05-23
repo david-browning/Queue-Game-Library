@@ -80,7 +80,8 @@ namespace qgl::content
       friend bool operator==(const SHARED_CONTENT_ENTRY& r,
                              const SHARED_CONTENT_ENTRY& l) noexcept
       {
-         return r.m_buffer == l.m_buffer;
+         return r.m_bufferSize == l.m_bufferSize &&
+            (memcmp(r.m_buffer, l.m_buffer, r.m_bufferSize) == 0);
       }
 
       private:
