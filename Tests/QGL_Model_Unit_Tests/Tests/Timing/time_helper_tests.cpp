@@ -43,7 +43,7 @@ namespace QGL_Model_Unit_Tests
             L"Whole seconds does not fall in the allowed tolerance.");
 
          uint64_t fractionTicks = 12'345'678;
-         float fractionSeconds = 1.2345678;
+         float fractionSeconds = 1.2345678f;
          Assert::IsTrue(
             approx_equal(fractionSeconds,
                          qgl::ticks_to_seconds<decltype(fractionSeconds),
