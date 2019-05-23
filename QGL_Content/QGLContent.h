@@ -3,6 +3,7 @@
 #include "include/qgl_content_item.h"
 
 #include "include/Content-Files/qgl_content_file.h"
+#include "include/Content-Files/qgl_content_file_helpers.h"
 #include "include/Content-Dictionary/qgl_content_dictionary.h"
 #include "include/qgl_file_helpers.h"
 

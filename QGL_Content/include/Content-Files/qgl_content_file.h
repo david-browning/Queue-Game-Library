@@ -1,17 +1,19 @@
 #pragma once
 #include "include/qgl_content_include.h"
-#include "include/Content-Dictionary/qgl_content_dictionary.h"
+#include "include/Content-Buffers/qgl_content_dict_entry_buffer.h"
 #include "include/Content-Buffers/qgl_content_file_header_buffer.h"
-#include "include/Content-Files/qgl_content_file_helpers.h"
-#include "include/qgl_file_helpers.h"
 #include "include/Content-Files/qgl_content_variant_entry.h"
+#include "include/qgl_file_handle.h"
 
 namespace qgl::content
 {
+   #ifndef CF_TEMPL_DEC
+   #define CF_TEMPL_DEC
    template class LIB_EXPORT std::allocator<CONTENT_DICTIONARY_ENTRY_BUFFER>;
    template class LIB_EXPORT std::allocator<content_variant_entry>;
    template class LIB_EXPORT std::vector<CONTENT_DICTIONARY_ENTRY_BUFFER>;
    template class LIB_EXPORT std::vector<content_variant_entry>;
+   #endif 
 
    /*
     Representation of a content file. A content file contains metadata about

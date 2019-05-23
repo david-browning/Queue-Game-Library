@@ -4,7 +4,6 @@
 #include "include/Content-Buffers/qgl_content_file_header_buffer.h"
 #include "include/Content-Files/qgl_content_variant_entry.h"
 #include "include/qgl_file_handle.h"
-#include <type_traits>
 
 namespace qgl::content::content_file_helpers
 {

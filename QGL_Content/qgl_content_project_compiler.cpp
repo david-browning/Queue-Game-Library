@@ -1,6 +1,8 @@
 #include "pch.h"
-#include "include\Content-Project\qgl_content_project_compiler.h"
+#include "include\Content-Project/qgl_content_project_compiler.h"
 #include "include/Content-Files/qgl_content_file.h"
+#include "include/qgl_file_helpers.h"
+
 
 namespace qgl::content
 {
