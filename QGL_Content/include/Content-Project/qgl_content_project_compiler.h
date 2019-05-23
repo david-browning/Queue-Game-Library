@@ -9,8 +9,9 @@ namespace qgl::content
     Compiles a content project into a content file and saves it.
     absPath: Path where to save the compiled project.
     */
-   extern LIB_EXPORT void compile_content_project(const content_project& proj,
-                                          const winrt::hstring& absPath);
+   extern LIB_EXPORT void compile_content_project(
+      const content_project& proj,
+      const winrt::hstring& absPath);
 
    /*
     Compiles a content project into a content file and saves it.
