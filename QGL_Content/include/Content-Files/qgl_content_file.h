@@ -7,14 +7,6 @@
 
 namespace qgl::content
 {
-   #ifndef CF_TEMPL_DEC
-   #define CF_TEMPL_DEC
-   template class LIB_EXPORT std::allocator<CONTENT_DICTIONARY_ENTRY_BUFFER>;
-   template class LIB_EXPORT std::allocator<content_variant_entry>;
-   template class LIB_EXPORT std::vector<CONTENT_DICTIONARY_ENTRY_BUFFER>;
-   template class LIB_EXPORT std::vector<content_variant_entry>;
-   #endif 
-
    /*
     Representation of a content file. A content file contains metadata about
     the content and a collection of data defining the content. The content data
@@ -65,14 +57,14 @@ namespace qgl::content
       /*
        Move constructor.
        */
-      content_file(content_file&&) = default;
+      content_file(content_file&&);
 
       /*
        The destructor does not flush the file but does close the file handle.
        If the file is not flushed and this goes out of scope, any changes to
        the file will be lost.
        */
-      virtual ~content_file() noexcept = default;
+      virtual ~content_file() noexcept;
 
       /*
        Flushes any changes to the content file to the disk.
@@ -86,24 +78,6 @@ namespace qgl::content
 
       void push_back(const CONTENT_METADATA_BUFFER& meta,
                      const SHARED_CONTENT_ENTRY& buff);
-
-      void pop_back();
-
-      const CONTENT_DICTIONARY_ENTRY_BUFFER& front() const;
-
-      const CONTENT_DICTIONARY_ENTRY_BUFFER& back() const;
-
-      dictionary_iterator begin();
-
-      const_dictionary_iterator begin() const;
-
-      const_dictionary_iterator cbegin() const;
-
-      dictionary_iterator end();
-
-      const_dictionary_iterator end() const;
-
-      const_dictionary_iterator cend() const;
 
       /*
        Returns a const reference to the file's header.
@@ -127,31 +101,14 @@ namespace qgl::content
        */
       const file_handle& handle() const noexcept;
 
+      CONTENT_DICTIONARY_ENTRY_BUFFER& operator[](size_t idx) noexcept;
+      
+      const CONTENT_DICTIONARY_ENTRY_BUFFER& operator[](size_t idx) 
+         const noexcept;
+
       private:
 
-      void read_in();
-
-      void check_and_throw_file_size();
-
-      /*
-       File header.
-       */
-      CONTENT_FILE_HEADER_BUFFER m_header;
-
-      /*
-       An array of pointers to data that is pending writes to the content file.
-       This is only populated when the content file is in write mode.
-       */
-      content_container m_entryDataToWrite;
-
-      dictionary_container m_dict;
-
-      /*
-       File handle.
-       */
-      file_handle m_handle;
-
-      static constexpr size_t VARIANT_INDEX_BUFFER = 0;
-      static constexpr size_t VARIANT_INDEX_PATH = 1;
+      class impl;
+      impl* m_impl_p;
    };
 }

@@ -84,7 +84,7 @@ namespace QGL_Content_UnitTests
 
          content_file cf(newFilePath);
 
-         Assert::IsTrue(cf.begin() == cf.end(),
+         Assert::AreEqual(static_cast<size_t>(0),cf.size(),
                         L"The beginning and end iterators should be equal.");
 
          uint8_t buffData[8] = { 0 };
@@ -95,7 +95,7 @@ namespace QGL_Content_UnitTests
 
          cf.push_back(meta, dataBuffer1);
 
-         Assert::IsTrue(cf.begin()->metadata() == meta,
+         Assert::IsTrue(cf[0].metadata() == meta,
                         L"The metadata should be equal.");
       }
 
@@ -124,9 +124,9 @@ namespace QGL_Content_UnitTests
          cf.push_back(meta1, std::wstring(L"Q:Shared Path 1"));
          cf.push_back(meta2, std::wstring(L"Q:Shared Path 2"));
 
-         int i = 0;
-         for (auto& entry : cf)
+         for(size_t i = 0; i < cf.size(); i++)
          {
+            auto& entry = cf[i];
             if (i & 1)
             {
                Assert::IsTrue(meta2 == entry.metadata(),
@@ -223,7 +223,7 @@ namespace QGL_Content_UnitTests
             load_dictionary_entry(hndl,
                                   readHdr.dictionary_offset() +
                                   sizeof(readDictMeta));
-         Assert::IsTrue(cf.front() == readDictEntry,
+         Assert::IsTrue(cf[0] == readDictEntry,
                         L"The dictionary entries are not equal.");
       }
 
@@ -260,17 +260,6 @@ namespace QGL_Content_UnitTests
          Assert::AreEqual(cf.size(), cfOpen.size(),
                           L"The content files do not have the same number of"
                           " entries.");
-
-         auto writeDictIt = cf.begin();
-         auto readDictIt = cfOpen.begin();
-
-         while (writeDictIt != cf.end() && readDictIt != cfOpen.end())
-         {
-            Assert::IsTrue(*writeDictIt == *readDictIt,
-                           L"The dictionary entries are not equal.");
-            writeDictIt++;
-            readDictIt++;
-         }
       }
 
       TEST_METHOD(ModifyExistingFile)
@@ -312,7 +301,7 @@ namespace QGL_Content_UnitTests
          
          {
             content_file cfOpen(newFilePath);
-            Assert::IsTrue(cfOpen.back().metadata() == meta3,
+            Assert::IsTrue(cfOpen[2].metadata() == meta3,
                            L"The last dictionary entry is not correct.");
          }
       }

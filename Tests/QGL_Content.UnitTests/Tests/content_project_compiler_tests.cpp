@@ -47,8 +47,9 @@ namespace QGL_Content_UnitTests
          //Open the compiled project file.
          content_file compiledFile(compiledPath);
 
-         for (const auto& dictEntry : compiledFile)
+         for(size_t i = 0; i < compiledFile.size(); i++)
          {
+            const auto& dictEntry = compiledFile[i];
             Assert::IsTrue(dictEntry.metadata() == entry1Meta,
                            L"The entry metadata is not correct.");
          }
@@ -112,9 +113,9 @@ namespace QGL_Content_UnitTests
          Assert::IsTrue(file.header().metadata() == projectMeta,
                         L"The metadata is not correct.");
 
-         for (auto& e : file)
+         for(size_t i = 0; i < file.size(); i++)
          {
-            Assert::IsTrue(e.metadata() == entry1Meta,
+            Assert::IsTrue(file[i].metadata() == entry1Meta,
                            L"Entry 1 meta is not correct.");
          }
       }
