@@ -49,7 +49,9 @@ static constexpr double PI_F = 3.14159265358979323846f;
 
 #endif
 
+#ifndef EXTERN_C
 #define EXTERN_C (extern "C")
+#endif
 
 typedef void* handle_t;
 

@@ -30,22 +30,22 @@ namespace qgl
    static constexpr uint8_t QGL_VERSION_8_BIT_MASK = 0xFF;
    ///////////////////////////////////////////////////////
 
-   inline uint8_t version_major(_IN_ qgl_version_t version)
+   inline uint8_t version_major(qgl_version_t version)
    {
       return (version >> 8) & QGL_VERSION_8_BIT_MASK;
    }
 
-   inline uint8_t version_minor(_IN_ qgl_version_t version)
+   inline uint8_t version_minor(qgl_version_t version)
    {
       return version & QGL_VERSION_8_BIT_MASK;
    }
 
-   inline uint16_t version_flags(_IN_ qgl_version_t version)
+   inline uint16_t version_flags(qgl_version_t version)
    {
       return (version >> 16) & QGL_VERSION_FLAGS_MASK;
    }
 
-   inline QGL_OS_VERSION_FLAGS version_os(_IN_ qgl_version_t version)
+   inline QGL_OS_VERSION_FLAGS version_os(qgl_version_t version)
    {
       return (QGL_OS_VERSION_FLAGS)((version >> 30) & QGL_VERSION_OS_FLAGS_MASK);
    }
