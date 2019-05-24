@@ -2,24 +2,15 @@
 #include "include/qgl_content_include.h"
 #include "include/Content-Store/qgl_content_store_config.h"
 #include "include/Content-Store/qgl_content_store_accessor.h"
-#include "include/Content-Store/qgl_content_iterator.h"
+#include "include/File-Loaders/qgl_file_loader_content_store_config.h"
 
 namespace qgl::content
 {
-   template struct LIB_EXPORT std::atomic<uint64_t>;
-   template struct LIB_EXPORT std::atomic<uint32_t>;
-   template struct LIB_EXPORT std::atomic<uint16_t>;
-   template struct LIB_EXPORT std::atomic<uint8_t>;
+   QGL_CONTENT_TEMPLATE template class QGL_CONTENT_API
+      std::allocator<content_accessor<uint64_t>>;
 
-   template class LIB_EXPORT std::allocator<uint64_t>;
-   template class LIB_EXPORT std::allocator<size_t>;
-   template class LIB_EXPORT std::allocator<content_accessor<uint64_t>>;
-   
-   template class LIB_EXPORT std::vector<content_accessor<uint64_t>>;
-   template class LIB_EXPORT std::unordered_map<uint64_t, size_t>;
-
-   template struct LIB_EXPORT std::hash<winrt::hstring>;
-
+   QGL_CONTENT_TEMPLATE template class QGL_CONTENT_API 
+      std::vector<content_accessor<uint64_t>>;
 
    /*
     Provides the mechanism to import content from a repository. Tracks imports
@@ -30,18 +21,11 @@ namespace qgl::content
    class QGL_CONTENT_API content_store
    {
       public:
-      using FileStringT = winrt::hstring;
       using id_t = uint64_t;
-      id_t INVALID_ID = static_cast<id_t>(-1);
-      using id_to_content_map_t = std::unordered_map<id_t, size_t>;
-
+      static constexpr id_t INVALID_ID = static_cast<id_t>(-1);
       using content_list_t = std::vector<content_accessor<id_t>>;
-
       using iterator = content_list_t::iterator;
       using const_iterator = content_list_t::const_iterator;
-
-      using iterator_ref = iterator::reference;
-      using const_iterator_ref = const_iterator::reference;
 
       /*
        Creates a content store using the configuration.
@@ -56,12 +40,12 @@ namespace qgl::content
       /*
        Move constructor.
        */
-      content_store(content_store&&) = default;
+      content_store(content_store&&);
 
       /*
        Destructor.
        */
-      virtual ~content_store() = default;
+      virtual ~content_store();
 
       /*
        Returns an ID for a content file. Use this to lookup a content's ID when
@@ -69,7 +53,13 @@ namespace qgl::content
        If the file has not been loaded into the store, this returns
        content_store::INVALID_ID.
        */
-      id_t file_id(const FileStringT& relativePath) const;
+      id_t file_id(const file_string& relativePath) const;
+
+      /*
+       Returns the absolute file path for a given path relative to the content
+       store.
+       */
+      file_string abs_path(const file_string& relativePath) const;
 
       /*
        Loads the content from the relative path and returns an ID that can be
@@ -79,7 +69,7 @@ namespace qgl::content
        example.
        */
       template<class LoadingUnaryPredicate>
-      id_t load(const FileStringT& relativePath, LoadingUnaryPredicate pred)
+      id_t load(const file_string& relativePath, LoadingUnaryPredicate pred)
       {
          //Check if the file already has an ID.
          auto fileID = file_id(relativePath);
@@ -90,22 +80,18 @@ namespace qgl::content
          }
 
          //Get and then increment the ID for the content we are loading.
-         id_t retID = m_nextID.fetch_add(1);
-
-         //Map the content path to the content's ID.
-         m_fileNameIDMap[relativePath] = retID;
-
+         id_t retID = p_nextID();
+         
          //Open the content file.
          //This loads the file's header and dictionary.
-         content_file_read f(abs_path(relativePath));
+         content_file f(abs_path(relativePath));
 
          //Use the loader predicate to load the file.
          //Store the shared_ptr in the map of ID->shared_ptr
          auto data = content_accessor<id_t>(retID,
                                             f.header().metadata(),
                                             pred(f));
-         m_contentList.push_back(data);
-         m_IDContentMap[retID] = m_contentList.size() - 1;
+         p_put(retID, relativePath, data);
 
          return retID;
       }
@@ -117,8 +103,7 @@ namespace qgl::content
       template<class T>
       std::shared_ptr<T> shared_get(id_t contentID)
       {
-         return std::reinterpret_pointer_cast<T, void>(
-            m_IDContentMap.at(contentID).shared_get());
+         return std::reinterpret_pointer_cast<T, void>(p_shared_get(contentID));
       }
 
       /*
@@ -128,20 +113,14 @@ namespace qgl::content
       template<class T>
       const T* get(id_t contentID)
       {
-         return static_cast<T*>(m_IDContentMap.at(contentID).get());
+         return static_cast<const T*>(p_get(contentID));
       }
-
-      /*
-       Returns the absolute file path for a given path relative to the content
-       store.
-       */
-      FileStringT abs_path(const FileStringT& relativePath) const;
 
       /*
        Returns an iterator to the begining of all loaded content.
        */
       iterator begin();
-
+           
       /*
        Returns an iterator to the end of all loaded content.
        */
@@ -169,27 +148,21 @@ namespace qgl::content
                          RESOURCE_TYPES type) const;
 
       private:
-      /*
-       Content store configuration.
-       */
-      content_store_config m_config;
+      struct impl;
+      impl* m_impl_p;
+
+      const void* p_get(id_t contentID);
+
+      std::shared_ptr<void> p_shared_get(id_t contentID);
 
       /*
-       Next ID to give to content.
+       Maps a content ID to the content path.
+       Maps a content ID to a content_accessor
        */
-      std::atomic<id_t> m_nextID;
+      void p_put(id_t contentID,
+                 const file_string& relativePath,
+                 const content_accessor<id_t>& accessor);
 
-      /*
-       Maps a relative file path to a content ID.
-       */
-      std::unordered_map<FileStringT, id_t> m_fileNameIDMap;
-
-      /*
-       Maps a content ID an index. The index is used to lookup the 
-       content_accessor from the content list.
-       */
-      id_to_content_map_t m_IDContentMap;
-
-      content_list_t m_contentList;
+      id_t p_nextID();
    };
 }
