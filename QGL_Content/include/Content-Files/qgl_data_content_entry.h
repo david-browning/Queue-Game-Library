@@ -8,7 +8,7 @@ namespace qgl::content
     The byte array is not interpreted by content files. Instead, it is the
     job of a content importer to derive meaning from the bytes.
     */
-   struct LIB_EXPORT DATA_CONTENT_ENTRY
+   struct QGL_CONTENT_API DATA_CONTENT_ENTRY
    {
       public:
       /*

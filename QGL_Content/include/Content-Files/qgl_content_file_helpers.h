@@ -13,7 +13,7 @@ namespace qgl::content::content_file_helpers
     This does not validate the data read.
     Throws an exception if there is an error reading.
     */
-   extern LIB_EXPORT CONTENT_FILE_HEADER_BUFFER load_header(
+   extern QGL_CONTENT_API CONTENT_FILE_HEADER_BUFFER load_header(
       const file_handle& hndl);
 
    /*
@@ -23,7 +23,7 @@ namespace qgl::content::content_file_helpers
     This does not validate the data read.
     Throws an exception if there is an error reading.
     */
-   extern LIB_EXPORT CONTENT_DICTIONARY_METADATA_BUFFER
+   extern QGL_CONTENT_API CONTENT_DICTIONARY_METADATA_BUFFER
       load_dictionary_metadata(
          const file_handle& hndl,
          size_t dictionaryOffset);
@@ -34,7 +34,7 @@ namespace qgl::content::content_file_helpers
     This does not validate the data read.
     Throws an exception if there is an error reading.
     */
-   extern LIB_EXPORT CONTENT_DICTIONARY_ENTRY_BUFFER load_dictionary_entry(
+   extern QGL_CONTENT_API CONTENT_DICTIONARY_ENTRY_BUFFER load_dictionary_entry(
       const file_handle& hndl,
       size_t entryOffset);
 
@@ -45,7 +45,7 @@ namespace qgl::content::content_file_helpers
     This does not validate the data read.
     Throws an exception if there is an error reading.
     */
-   extern LIB_EXPORT DATA_CONTENT_ENTRY load_content_data(
+   extern QGL_CONTENT_API DATA_CONTENT_ENTRY load_content_data(
       const file_handle& hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry);
 
@@ -56,7 +56,7 @@ namespace qgl::content::content_file_helpers
     This does not validate the data read.
     Throws an exception if there is an error reading.
     */
-   extern LIB_EXPORT SHARED_CONTENT_ENTRY load_shared_data_path(
+   extern QGL_CONTENT_API SHARED_CONTENT_ENTRY load_shared_data_path(
       const file_handle& hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry);
 
@@ -64,14 +64,14 @@ namespace qgl::content::content_file_helpers
     Writes a file header to a content file.
     The file must be opened with write permissions.
     */
-   extern LIB_EXPORT void write_header(const file_handle& hndl,
+   extern QGL_CONTENT_API void write_header(const file_handle& hndl,
                                        const CONTENT_FILE_HEADER_BUFFER& hdr);
 
    /*
     Writes the dictionary metadata to a content file.
     The file must be opened with write permissions.
     */
-   extern LIB_EXPORT void write_dictionary_metadata(
+   extern QGL_CONTENT_API void write_dictionary_metadata(
       const file_handle& hndl,
       const CONTENT_DICTIONARY_METADATA_BUFFER& meta,
       size_t offset);
@@ -80,7 +80,7 @@ namespace qgl::content::content_file_helpers
     Writes a dictionary entry to the content file.
     The file must be opened with write permissions.
     */
-   extern LIB_EXPORT void write_dictionary_entry(
+   extern QGL_CONTENT_API void write_dictionary_entry(
       const file_handle& hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
       size_t offset);
@@ -89,7 +89,7 @@ namespace qgl::content::content_file_helpers
     Writes the content data to the content file.
     The file must be opened with write permissions.
     */
-   extern LIB_EXPORT void write_content_data(
+   extern QGL_CONTENT_API void write_content_data(
       const file_handle& hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
       const DATA_CONTENT_ENTRY& contentData);
@@ -98,7 +98,7 @@ namespace qgl::content::content_file_helpers
     Writes the shared content path to the content file.
     The file must be opened with write permissions.
     */
-   extern LIB_EXPORT void write_shared_data_path(
+   extern QGL_CONTENT_API void write_shared_data_path(
       const file_handle& hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
       const SHARED_CONTENT_ENTRY& path);
@@ -107,7 +107,7 @@ namespace qgl::content::content_file_helpers
     Returns the offset, in bytes, to where content data starts in a file.
     Content data comes after the file header and dictionary.
     */
-   extern LIB_EXPORT size_t dictionary_data_offset(
+   extern QGL_CONTENT_API size_t dictionary_data_offset(
       const CONTENT_FILE_HEADER_BUFFER& fileHeader,
       const CONTENT_DICTIONARY_METADATA_BUFFER& dictMeta);
 
@@ -115,9 +115,9 @@ namespace qgl::content::content_file_helpers
     Gets the size of the buffer. The buffer is the size of an 8 byte integer 
     and sizeof(wchar_t) * number of characters in the path.
     */
-   extern LIB_EXPORT size_t shared_entry_data_size(
+   extern QGL_CONTENT_API size_t shared_entry_data_size(
       const SHARED_CONTENT_ENTRY& data);
 
-   extern LIB_EXPORT bool valid_content_file_size(
+   extern QGL_CONTENT_API bool valid_content_file_size(
       const file_handle& hndl);
 }

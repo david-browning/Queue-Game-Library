@@ -9,7 +9,7 @@ namespace qgl::content
     relative path, separated by a colon.
     The shared path must be converted to a content file using a content store.
     */
-   struct LIB_EXPORT SHARED_CONTENT_ENTRY
+   struct QGL_CONTENT_API SHARED_CONTENT_ENTRY
    {
       public:
       /*

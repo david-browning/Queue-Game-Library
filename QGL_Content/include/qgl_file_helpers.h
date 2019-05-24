@@ -9,7 +9,7 @@ namespace qgl::content
     Populates an OVERLAPPED so it can be used to read and write a file using
     an offset.
     */
-   extern LIB_EXPORT void make_overlapped(size_t offsetBytes,
+   extern QGL_CONTENT_API void make_overlapped(size_t offsetBytes,
                                           OVERLAPPED* over_p);
 
   /*
@@ -73,13 +73,14 @@ namespace qgl::content
     Creates the file if it does not exist.
     Throws an exception on error.
     */
-   extern LIB_EXPORT file_handle open_file_read(const winrt::hstring& filePath);
+   extern QGL_CONTENT_API file_handle open_file_read(
+      const winrt::hstring& filePath);
 
    /*
     Opens a storage file for read access.
     Throws an exception on error
     */
-   extern LIB_EXPORT file_handle open_file_read(
+   extern QGL_CONTENT_API file_handle open_file_read(
       const winrt::Windows::Storage::StorageFile& f);
 
   /*
@@ -87,14 +88,14 @@ namespace qgl::content
    Creates the file if it does not exist.
    Throws an exception on error.
    */
-   extern LIB_EXPORT file_handle open_file_write(
+   extern QGL_CONTENT_API file_handle open_file_write(
       const winrt::hstring& filePath);
 
    /*
     Opens a file for write access.
     Throws an exception on error.
     */
-   extern LIB_EXPORT file_handle open_file_write(
+   extern QGL_CONTENT_API file_handle open_file_write(
       const winrt::Windows::Storage::StorageFile& f);
 
   /*
@@ -102,7 +103,7 @@ namespace qgl::content
    Creates the file if it does not exist.
    Throws an exception on error.
    */
-   extern LIB_EXPORT file_handle open_file_readwrite(
+   extern QGL_CONTENT_API file_handle open_file_readwrite(
       const winrt::hstring& filePath);
 
    /*
@@ -111,7 +112,7 @@ namespace qgl::content
     scope.
     Throws an exception on error.
     */
-   extern LIB_EXPORT file_handle open_file_readwrite(
+   extern QGL_CONTENT_API file_handle open_file_readwrite(
       const winrt::Windows::Storage::StorageFile& f);
 
   /*
@@ -120,23 +121,24 @@ namespace qgl::content
    The file handle must have been opened with write access.
    Throws an exception on error.
    */
-   extern LIB_EXPORT void truncate_file(const file_handle& hdnl);
+   extern QGL_CONTENT_API void truncate_file(const file_handle& hdnl);
 
    /*
    Returns how many bytes large the file is.
    The file handle must have been opened with read permissions.
    Throws an exception on error.
    */
-   extern LIB_EXPORT size_t file_size(const file_handle& hndl);
+   extern QGL_CONTENT_API size_t file_size(const file_handle& hndl);
 
-   extern LIB_EXPORT size_t file_size(
+   extern QGL_CONTENT_API size_t file_size(
       const winrt::Windows::Storage::StorageFile& f);
 
    /*
     Loads the entire file into memory
     Returns a vector of bytes.
     */
-   extern LIB_EXPORT std::vector<uint8_t> file_data(const file_handle& hndl);
+   extern QGL_CONTENT_API std::vector<uint8_t> file_data(
+      const file_handle& hndl);
 
   /*
    Returns true if a file or folder contains the given attribute.

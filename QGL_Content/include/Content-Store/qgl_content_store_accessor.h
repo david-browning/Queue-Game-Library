@@ -4,10 +4,10 @@
 
 namespace qgl::content
 {
-   template class LIB_EXPORT std::shared_ptr<void>;
+   template class QGL_CONTENT_API std::shared_ptr<void>;
 
    template<typename IDT>
-   class LIB_EXPORT content_accessor
+   class QGL_CONTENT_API content_accessor
    {
       public:
       content_accessor() :

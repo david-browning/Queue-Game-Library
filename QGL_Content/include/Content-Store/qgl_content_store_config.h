@@ -6,7 +6,7 @@ namespace qgl::content
    /*
     Contains configuration data for a content store.
     */
-   class LIB_EXPORT content_store_config
+   class QGL_CONTENT_API content_store_config
    {
       public:
       

@@ -10,7 +10,7 @@ namespace qgl::content
     In-engine objects that need to retain content metadata should inherit this.
     Examples include a texture or geometry loaded from a file.
     */
-   class LIB_EXPORT content_item
+   class QGL_CONTENT_API content_item
    {
       public:
 

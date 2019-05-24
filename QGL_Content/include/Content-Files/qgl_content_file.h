@@ -19,7 +19,7 @@ namespace qgl::content
     N * CONTENT_DICTIONARY_ENTRY_BUFFER
     N * Buffers
     */
-   class LIB_EXPORT content_file
+   class QGL_CONTENT_API content_file
    {
       public:
       using dictionary_container = std::vector<CONTENT_DICTIONARY_ENTRY_BUFFER>;

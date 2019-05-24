@@ -8,7 +8,7 @@ namespace qgl::content
     Compiles a content project into a content file and saves it.
     absPath: Path where to save the compiled project.
     */
-   extern LIB_EXPORT void compile_content_project(
+   extern QGL_CONTENT_API void compile_content_project(
       const content_project& proj,
       const winrt::hstring& absPath);
 
@@ -17,7 +17,7 @@ namespace qgl::content
     Storage file must have write permissions.
     Storage file permissions should be brokered by the storage file provider.
     */
-   extern LIB_EXPORT void compile_content_project(
+   extern QGL_CONTENT_API void compile_content_project(
       const content_project& proj,
       const winrt::Windows::Storage::StorageFile& f);
 }

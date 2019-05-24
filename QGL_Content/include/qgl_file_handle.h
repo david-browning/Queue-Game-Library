@@ -7,7 +7,7 @@ namespace qgl::content
     Abstraction of a file handle. This is meant to abstract file access across
     any OS and be safe crossing API boundaries.
     */
-   class LIB_EXPORT file_handle
+   class QGL_CONTENT_API file_handle
    {
       public:
       file_handle() noexcept;

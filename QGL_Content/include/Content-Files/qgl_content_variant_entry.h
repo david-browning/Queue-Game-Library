@@ -6,8 +6,8 @@
 
 namespace qgl::content
 {
-   template class LIB_EXPORT std::shared_ptr<DATA_CONTENT_ENTRY>;
-   template class LIB_EXPORT std::shared_ptr<SHARED_CONTENT_ENTRY>;
+   template class QGL_CONTENT_API std::shared_ptr<DATA_CONTENT_ENTRY>;
+   template class QGL_CONTENT_API std::shared_ptr<SHARED_CONTENT_ENTRY>;
 
    /*
     Content data can either be a buffer, baked into the file, or a shared
@@ -23,7 +23,7 @@ namespace qgl::content
    /*
     Stores either a content buffer, or information about an external file.
     */
-   class LIB_EXPORT content_variant_entry
+   class QGL_CONTENT_API content_variant_entry
    {
       public:
 
