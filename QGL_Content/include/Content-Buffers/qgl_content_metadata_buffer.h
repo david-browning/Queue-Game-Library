@@ -264,6 +264,11 @@ namespace qgl::content
        Content is visible.
        */
       static constexpr uint8_t DEFAULT_FLAGS = 0b00001000;
-
    };
+
+   #ifndef QGL_CONTENT_METADATA_BUFFER_EXPORT
+   #define QGL_CONTENT_METADATA_BUFFER_EXPORT
+   QGL_CONTENT_TEMPLATE template class QGL_CONTENT_API
+      std::allocator<CONTENT_METADATA_BUFFER>;
+   #endif
 }

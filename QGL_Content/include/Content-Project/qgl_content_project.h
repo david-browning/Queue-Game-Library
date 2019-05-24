@@ -11,8 +11,12 @@ namespace qgl::content
    using content_project_entry_pair =
       std::pair<CONTENT_METADATA_BUFFER, file_string>;
 
+   QGL_CONTENT_TEMPLATE template class QGL_CONTENT_API
+      std::allocator<content_project_entry_pair>;
+
    QGL_CONTENT_TEMPLATE template class QGL_CONTENT_API 
-      std::vector<content_project_entry_pair>;
+      std::vector<content_project_entry_pair, 
+      std::allocator<content_project_entry_pair>>;
 
    /*
     Representation of a content project file. A content project contains 

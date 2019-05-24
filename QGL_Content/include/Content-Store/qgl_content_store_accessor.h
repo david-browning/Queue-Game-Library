@@ -7,7 +7,7 @@ namespace qgl::content
    template class QGL_CONTENT_API std::shared_ptr<void>;
 
    template<typename IDT>
-   class QGL_CONTENT_API content_accessor
+   class content_accessor
    {
       public:
       content_accessor() :
@@ -96,4 +96,7 @@ namespace qgl::content
 
       CONTENT_METADATA_BUFFER m_metadata;
    };
+
+   QGL_CONTENT_TEMPLATE template class QGL_CONTENT_API 
+      std::allocator<content_accessor<uint64_t>>;
 }

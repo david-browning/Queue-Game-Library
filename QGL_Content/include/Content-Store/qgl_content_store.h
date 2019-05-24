@@ -6,11 +6,9 @@
 
 namespace qgl::content
 {
-   QGL_CONTENT_TEMPLATE template class QGL_CONTENT_API
-      std::allocator<content_accessor<uint64_t>>;
-
    QGL_CONTENT_TEMPLATE template class QGL_CONTENT_API 
-      std::vector<content_accessor<uint64_t>>;
+      std::vector<content_accessor<uint64_t>, 
+      std::allocator<content_accessor<uint64_t>>>;
 
    /*
     Provides the mechanism to import content from a repository. Tracks imports

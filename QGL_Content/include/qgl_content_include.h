@@ -24,3 +24,5 @@ using file_string = winrt::hstring;
 #else
 using file_string = std::string;
 #endif
+
+QGL_CONTENT_TEMPLATE template class QGL_CONTENT_API std::allocator<file_string>;
