@@ -76,6 +76,9 @@
     <ClInclude Include="include\Memory\qgl_mem_tmpl.h">
       <Filter>Header Files\Memory</Filter>
     </ClInclude>
+    <ClInclude Include="include\qgl_platform_abstraction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="QGL_Model.def">

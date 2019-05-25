@@ -149,6 +149,7 @@
     <ClInclude Include="include\Observer-Observable\qgl_subject.h" />
     <ClInclude Include="include\qgl_icomponent.h" />
     <ClInclude Include="include\qgl_model_include.h" />
+    <ClInclude Include="include\qgl_platform_abstraction.h" />
     <ClInclude Include="include\qgl_version.h" />
     <ClInclude Include="include\Timing\qgl_timer.h" />
     <ClInclude Include="include\Timing\qgl_time_helpers.h" />

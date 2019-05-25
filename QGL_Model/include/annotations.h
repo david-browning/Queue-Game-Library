@@ -9,57 +9,17 @@
    Author:				David Browning
 */
 #pragma once
-
-#define _CRT_SECURE_NO_WARNINGS
-#define _USE_MATH_DEFINES
-
 #include <cstdio>
 #include <cstdint>
 #include <cstring>
 #include <cmath>
-#include <algorithm>
-#include <string>
-#include <iostream>
-#include <fstream>
-#include <list>
-#include <queue>
-#include <forward_list>
-#include <functional>
-#include <vector>
-#include <iomanip>
 #include <memory>
-#include <mutex>
 #include <stdexcept>
-#include <sstream>
-#include <atomic>
 
 static constexpr double PI_D = 3.14159265358979323846;
 static constexpr double PI_F = 3.14159265358979323846f;
 
-#if !defined(NDEBUG) || defined(_DEBUG) || defined(DEBUG)
-
-#ifndef _DEBUG
-#define _DEBUG
-#endif
-
-#ifndef DEBUG
-#define DEBUG
-#endif
-
-#endif
-
-typedef void* handle_t;
-
 #ifdef _WIN32
-
-typedef void* file_handle_t;
-const file_handle_t NO_FILE = NULL;
-
-#ifdef UNICODE
-typedef wchar_t sys_char;
-#else
-typedef char sys_char;
-#endif
 
 //The target is exported when compiling a library.
 #define LIB_EXPORT __declspec(dllexport)
@@ -73,31 +33,15 @@ typedef char sys_char;
 
 #define MIC_FUNC __declspec(target(mic))
 
-static const std::string LIB_EXPORT_STR = "__declspec(dllexport)";
-
-inline std::string HrToString(unsigned long hr)
-{
-   char s_str[64] = {};
-   sprintf_s(s_str, "HRESULT of 0x%08X", static_cast<unsigned long>(hr));
-   return std::string(s_str);
-}
-
 #else
-
-typedef int file_handle_t;
-const file_handle_t NO_FILE = -1;
-typedef char sys_char;
 
 //The target is exported when compiling a library.
 #define LIB_EXPORT __attribute__((__visibility__("default")))
 #define LIB_IMPORT LIB_EXPORT
 #define MIC_FUN __attribute__(mic)
 
-static const std::string LIB_EXPORT_STR = "__attribute__((__visibility__(\"default\")))";
-
 #endif
 
-typedef std::basic_string<sys_char> sys_str;
 
 #define _DEV_SET_
 #define _DEV_DO_NOT_SET_
