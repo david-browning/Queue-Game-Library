@@ -48,7 +48,7 @@ namespace qgl::content
             return m_fileNameIDMap.at(relativePath);
          }
 
-         return content_store::INVALID_ID;
+         return INVALID_ID;
       }
 
       file_string abs_path(const file_string& relativePath) const
@@ -71,7 +71,7 @@ namespace qgl::content
 
       void put(id_t contentID,
                const file_string& relativePath,
-               const content_accessor<id_t>& accessor)
+               const content_accessor& accessor)
       {
          m_fileNameIDMap[relativePath] = contentID;
          m_contentList.push_back(accessor);
@@ -158,7 +158,7 @@ namespace qgl::content
       delete m_impl_p;
    }
 
-   content_store::id_t content_store::file_id(
+   id_t content_store::file_id(
       const file_string& relativePath) const
    {
       return m_impl_p->file_id(relativePath);
@@ -208,12 +208,12 @@ namespace qgl::content
 
    void content_store::p_put(id_t contentID, 
                              const file_string& relativePath,
-                             const content_accessor<id_t>& accessor)
+                             const content_accessor& accessor)
    {
       m_impl_p->put(contentID, relativePath, accessor);
    }
 
-   content_store::id_t content_store::p_nextID()
+   id_t content_store::p_nextID()
    {
       return m_impl_p->next_id();
    }

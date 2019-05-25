@@ -7,8 +7,8 @@
 namespace qgl::content
 {
    QGL_CONTENT_TEMPLATE template class QGL_CONTENT_API 
-      std::vector<content_accessor<uint64_t>, 
-      std::allocator<content_accessor<uint64_t>>>;
+      std::vector<content_accessor, 
+      std::allocator<content_accessor>>;
 
    /*
     Provides the mechanism to import content from a repository. Tracks imports
@@ -19,9 +19,8 @@ namespace qgl::content
    class QGL_CONTENT_API content_store
    {
       public:
-      using id_t = uint64_t;
-      static constexpr id_t INVALID_ID = static_cast<id_t>(-1);
-      using content_list_t = std::vector<content_accessor<id_t>>;
+      //using id_t = uint64_t;
+      using content_list_t = std::vector<content_accessor>;
       using iterator = content_list_t::iterator;
       using const_iterator = content_list_t::const_iterator;
 
@@ -159,7 +158,7 @@ namespace qgl::content
        */
       void p_put(id_t contentID,
                  const file_string& relativePath,
-                 const content_accessor<id_t>& accessor);
+                 const content_accessor& accessor);
 
       id_t p_nextID();
    };

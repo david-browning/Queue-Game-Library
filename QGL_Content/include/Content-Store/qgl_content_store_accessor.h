@@ -5,21 +5,23 @@
 namespace qgl::content
 {
    template class QGL_CONTENT_API std::shared_ptr<void>;
+   using id_t = uint64_t;
+   static constexpr id_t INVALID_ID = static_cast<id_t>(-1);
 
-   template<typename IDT>
    class content_accessor
    {
       public:
+
       content_accessor() :
          m_ptr(nullptr),
-         m_id(static_cast<IDT>(-1)),
+         m_id(INVALID_ID),
          m_metadata()
       {
 
       }
 
       template<class T>
-      content_accessor(IDT id,
+      content_accessor(id_t id,
                        const CONTENT_METADATA_BUFFER& meta,
                        std::shared_ptr<T>& ptr) :
          m_id(id),
@@ -47,7 +49,7 @@ namespace qgl::content
       /*
        Returns this content's ID.
        */
-      IDT id() const
+      id_t id() const
       {
          return m_id;
       }
@@ -67,8 +69,8 @@ namespace qgl::content
          return m_metadata;
       }
 
-      friend void swap(content_accessor<IDT>& first,
-                       content_accessor<IDT>& second)
+      friend void swap(content_accessor& first,
+                       content_accessor& second)
       {
          using std::swap;
          swap(first.m_id, second.m_id);
@@ -76,7 +78,7 @@ namespace qgl::content
          swap(first.m_metadata, second.m_metadata);
       }
 
-      content_accessor<IDT>& operator=(content_accessor<IDT> other)
+      content_accessor& operator=(content_accessor other)
       {
          swap(*this, other);
          return *this;
@@ -87,7 +89,7 @@ namespace qgl::content
       /*
        Content ID
        */
-      IDT m_id;
+      id_t m_id;
 
       /*
        Shared pointer to content
@@ -98,5 +100,5 @@ namespace qgl::content
    };
 
    QGL_CONTENT_TEMPLATE template class QGL_CONTENT_API 
-      std::allocator<content_accessor<uint64_t>>;
+      std::allocator<content_accessor>;
 }
