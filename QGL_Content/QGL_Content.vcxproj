@@ -94,7 +94,7 @@
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
       <WarningLevel>Level4</WarningLevel>
       <AdditionalOptions>%(AdditionalOptions) /bigobj</AdditionalOptions>
       <DisableSpecificWarnings>28204;4251</DisableSpecificWarnings>
@@ -197,7 +197,7 @@
     <ClCompile Include="qgl_content_project.cpp" />
     <ClCompile Include="qgl_content_store.cpp" />
     <ClCompile Include="qgl_content_store_config.cpp" />
-    <ClCompile Include="pch.h" />
+    <ClInclude Include="pch.h" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
