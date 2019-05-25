@@ -5,6 +5,7 @@
 #endif
 
 #include "include/annotations.h"
+#include "include/Memory/qgl_mem.h"
 #include <Windows.h>
 #include <winrt/base.h>
 #include <winrt/Windows.Foundation.h>

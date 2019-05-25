@@ -26,6 +26,9 @@
     <Filter Include="Header Files\Observer Observable">
       <UniqueIdentifier>{da0dbba1-24ee-440d-ab49-303fb19411e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Memory">
+      <UniqueIdentifier>{9675b492-4eee-4393-b547-f01aa5aca065}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLModel.h">
@@ -66,6 +69,12 @@
     </ClInclude>
     <ClInclude Include="include\Timing\qgl_timer.h">
       <Filter>Header Files\Timing</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Memory\qgl_mem.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Memory\qgl_mem_tmpl.h">
+      <Filter>Header Files\Memory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

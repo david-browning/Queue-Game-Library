@@ -1,5 +1,5 @@
 #pragma once
-
+#include "include/Memory/qgl_mem.h"
 #include "include/qgl_version.h"
 #include "include/qgl_icomponent.h"
 
