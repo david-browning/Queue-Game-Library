@@ -297,28 +297,28 @@ namespace qgl::content
       return m_impl_p->size();
    }
 
-   void content_project::emplace_back(const content_project_entry_pair::first_type& entry,
+   void content_project::emplace_back(const cpep::first_type& entry,
                                       const file_string& absPath)
    {
       m_impl_p->emplace_back(entry, absPath);
    }
 
-   content_project_entry_pair& content_project::at(size_t idx)
+   content_project::cpep& content_project::at(size_t idx)
    {
       return m_impl_p->at(idx);
    }
 
-   const content_project_entry_pair& content_project::at(size_t idx) const
+   const content_project::cpep& content_project::at(size_t idx) const
    {
       return m_impl_p->at(idx);
    }
 
-   content_project_entry_pair& content_project::operator[](size_t idx) noexcept
+   content_project::cpep& content_project::operator[](size_t idx) noexcept
    {
       return (*m_impl_p)[idx];
    }
 
-   const content_project_entry_pair& content_project::operator[](
+   const content_project::cpep& content_project::operator[](
       size_t idx) const noexcept
    {
       return (*m_impl_p)[idx];

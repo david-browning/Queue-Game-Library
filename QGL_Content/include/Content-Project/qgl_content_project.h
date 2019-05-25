@@ -5,19 +5,6 @@
 
 namespace qgl::content
 {
-   QGL_CONTENT_TEMPLATE template struct QGL_CONTENT_API 
-      std::pair<CONTENT_METADATA_BUFFER, file_string>;
-
-   using content_project_entry_pair =
-      std::pair<CONTENT_METADATA_BUFFER, file_string>;
-
-   QGL_CONTENT_TEMPLATE template class QGL_CONTENT_API
-      std::allocator<content_project_entry_pair>;
-
-   QGL_CONTENT_TEMPLATE template class QGL_CONTENT_API 
-      std::vector<content_project_entry_pair, 
-      std::allocator<content_project_entry_pair>>;
-
    /*
     Representation of a content project file. A content project contains 
     metadata of the content and a list of addition files supporting the project.
@@ -37,9 +24,12 @@ namespace qgl::content
          WString Path
       }
     */
-   class LIB_EXPORT content_project
+   class QGL_CONTENT_API content_project
    {
       public:
+      using content_project_entry_pair =
+         std::pair<CONTENT_METADATA_BUFFER, file_string>;
+      using cpep = content_project_entry_pair;
       using container = std::vector<content_project_entry_pair>;
       using iterator = container::iterator;
       using const_iterator = container::const_iterator;

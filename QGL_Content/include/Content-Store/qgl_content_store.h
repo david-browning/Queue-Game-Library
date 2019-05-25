@@ -6,12 +6,6 @@
 
 namespace qgl::content
 {
-   QGL_CONTENT_TEMPLATE template class QGL_CONTENT_API
-      std::allocator<content_accessor>;
-
-   QGL_CONTENT_TEMPLATE template class QGL_CONTENT_API 
-      std::vector<content_accessor>;
-
    /*
     Provides the mechanism to import content from a repository. Tracks imports
     so content is not loaded from disk more than once.
