@@ -67,9 +67,6 @@
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
       <Filter>win_rt</Filter>
     </ClCompile>
-    <ClCompile Include="pch.h">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -133,6 +130,9 @@
     <ClCompile Include="qgl_content_item.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="qgl_content_accessor.cpp">
+      <Filter>Source Files\Content-Store</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLContent.h">
@@ -178,9 +178,6 @@
       <Filter>Header Files\Content-Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Content-Store\qgl_content_store.h">
-      <Filter>Header Files\Content Store</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Content-Store\qgl_content_store_accessor.h">
       <Filter>Header Files\Content Store</Filter>
     </ClInclude>
     <ClInclude Include="include\Content-Store\qgl_content_store_config.h">
@@ -230,6 +227,10 @@
     </ClInclude>
     <ClInclude Include="include\qgl_file_handle.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="include\Content-Store\qgl_content_accessor.h">
+      <Filter>Header Files\Content Store</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

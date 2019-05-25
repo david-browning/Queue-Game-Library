@@ -1,14 +1,16 @@
 #pragma once
 #include "include/qgl_content_include.h"
 #include "include/Content-Store/qgl_content_store_config.h"
-#include "include/Content-Store/qgl_content_store_accessor.h"
+#include "include/Content-Store/qgl_content_accessor.h"
 #include "include/File-Loaders/qgl_file_loader_content_store_config.h"
 
 namespace qgl::content
 {
+   QGL_CONTENT_TEMPLATE template class QGL_CONTENT_API
+      std::allocator<content_accessor>;
+
    QGL_CONTENT_TEMPLATE template class QGL_CONTENT_API 
-      std::vector<content_accessor, 
-      std::allocator<content_accessor>>;
+      std::vector<content_accessor>;
 
    /*
     Provides the mechanism to import content from a repository. Tracks imports
@@ -19,7 +21,6 @@ namespace qgl::content
    class QGL_CONTENT_API content_store
    {
       public:
-      //using id_t = uint64_t;
       using content_list_t = std::vector<content_accessor>;
       using iterator = content_list_t::iterator;
       using const_iterator = content_list_t::const_iterator;
@@ -48,7 +49,7 @@ namespace qgl::content
        Returns an ID for a content file. Use this to lookup a content's ID when
        you have the content's relative file path.
        If the file has not been loaded into the store, this returns
-       content_store::INVALID_ID.
+       content_store::INVALID_CONTENT_ID.
        */
       id_t file_id(const file_string& relativePath) const;
 
@@ -70,7 +71,7 @@ namespace qgl::content
       {
          //Check if the file already has an ID.
          auto fileID = file_id(relativePath);
-         if (fileID != INVALID_ID)
+         if (fileID != INVALID_CONTENT_ID)
          {
             //Return the ID if the path is already in the store.
             return fileID;

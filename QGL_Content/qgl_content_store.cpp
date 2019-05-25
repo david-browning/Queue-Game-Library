@@ -48,7 +48,7 @@ namespace qgl::content
             return m_fileNameIDMap.at(relativePath);
          }
 
-         return INVALID_ID;
+         return INVALID_CONTENT_ID;
       }
 
       file_string abs_path(const file_string& relativePath) const
