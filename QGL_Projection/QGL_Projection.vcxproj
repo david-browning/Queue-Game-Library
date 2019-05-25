@@ -139,6 +139,8 @@
     <ClInclude Include="include\CompilerVersion.h" />
     <ClInclude Include="include\ContentLoader.h" />
     <ClInclude Include="include\ContentMetadata.h" />
+    <ClInclude Include="include\ContentProject.h" />
+    <ClInclude Include="include\ContentProjectEntry.h" />
     <ClInclude Include="include\ResourceType.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
@@ -147,10 +149,12 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
-    <ClCompile Include="src\Projections\Content\Content-Metadata\ContentLoader.cpp" />
-    <ClCompile Include="src\Projections\Content\Content-Metadata\ContentMetadata.cpp" />
-    <ClCompile Include="src\Projections\Content\Content-Metadata\ResourceType.cpp" />
-    <ClCompile Include="src\Projections\Model\Versioning\CompilerVersion.cpp" />
+    <ClCompile Include="src\CompilerVersion.cpp" />
+    <ClCompile Include="src\ContentLoader.cpp" />
+    <ClCompile Include="src\ContentMetadata.cpp" />
+    <ClCompile Include="src\ContentProject.cpp" />
+    <ClCompile Include="src\ContentProjectEntry.cpp" />
+    <ClCompile Include="src\ResourceType.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -165,10 +169,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="src\Projections\Content\Content-Metadata\ContentLoader.idl" />
-    <Midl Include="src\Projections\Content\Content-Metadata\ContentMetadata.idl" />
-    <Midl Include="src\Projections\Content\Content-Metadata\ResourceType.idl" />
-    <Midl Include="src\Projections\Model\Versioning\CompilerVersion.idl" />
+    <Midl Include="projections\CompilerVersion.idl" />
+    <Midl Include="projections\ContentLoader.idl" />
+    <Midl Include="projections\ContentMetadata.idl" />
+    <Midl Include="projections\ContentProject.idl" />
+    <Midl Include="projections\ContentProjectEntry.idl" />
+    <Midl Include="projections\ResourceType.idl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

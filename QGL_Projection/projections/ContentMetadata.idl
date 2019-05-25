@@ -1,12 +1,14 @@
-import "src\Projections\Content\Content-Metadata\ContentLoader.idl";
-import "src\Projections\Content\Content-Metadata\ResourceType.idl";
-import "src\Projections\Model\Versioning\CompilerVersion.idl";
+import "projections\ContentLoader.idl";
+import "projections\ResourceType.idl";
+import "projections\CompilerVersion.idl";
 
 namespace QGL_Projection
 {
    [default_interface]
    runtimeclass ContentMetadata : Windows.UI.Xaml.Data.INotifyPropertyChanged
    {
+      ContentMetadata();
+
       Boolean ContentVisible;
       Boolean ContentObeyPhysics;
       String ContentName;

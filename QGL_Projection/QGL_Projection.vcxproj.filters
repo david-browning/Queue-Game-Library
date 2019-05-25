@@ -3,32 +3,44 @@
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
-    <ClCompile Include="src\Projections\Model\Versioning\CompilerVersion.cpp">
-      <Filter>Source Files\Projections\Model\Versioning</Filter>
+    <ClCompile Include="src\CompilerVersion.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Projections\Content\Content-Metadata\ContentLoader.cpp">
-      <Filter>Source Files\Projections\Content\Content-Metadata</Filter>
+    <ClCompile Include="src\ContentLoader.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Projections\Content\Content-Metadata\ResourceType.cpp">
-      <Filter>Source Files\Projections\Content\Content-Metadata</Filter>
+    <ClCompile Include="src\ResourceType.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Projections\Content\Content-Metadata\ContentMetadata.cpp">
-      <Filter>Source Files\Projections\Content\Content-Metadata</Filter>
+    <ClCompile Include="src\ContentProjectEntry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ContentProject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ContentMetadata.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="include\CompilerVersion.h">
-      <Filter>Header Files\Projections\Model\Versioning</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\ContentLoader.h">
-      <Filter>Header Files\Projections\Content\Content-Metadata</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\ResourceType.h">
-      <Filter>Header Files\Projections\Content\Content-Metadata</Filter>
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ContentProjectEntry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ContentProject.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\ContentMetadata.h">
-      <Filter>Header Files\Projections\Content\Content-Metadata</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -42,58 +54,28 @@
     <Filter Include="Source Files">
       <UniqueIdentifier>{ad3ccbe2-5c91-4adf-8b5e-93532f5f0f9d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Projections">
-      <UniqueIdentifier>{dfbf1e70-292a-4aaa-b482-6b3340adda34}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Projections\Content">
-      <UniqueIdentifier>{b2dbe3bd-e8d5-4544-a271-1e124e0e0657}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Projections\Content\Content-Extensions">
-      <UniqueIdentifier>{8d0c8989-f238-48b1-bfef-a4366e42d1e3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Projections\Content\Content-File">
-      <UniqueIdentifier>{216fab2c-3d97-4e4b-b068-37e1fa5fe604}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Projections\Content\Content-Project">
-      <UniqueIdentifier>{0b2b10a7-3e42-4599-abe5-0bf76bcbe958}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Projections\Content\Content-Metadata">
-      <UniqueIdentifier>{e12946fc-f3cf-4c0c-9614-27f195fd6249}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Projections\Model">
-      <UniqueIdentifier>{d0db0429-e4d9-47d0-affc-1f62abc6ad74}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Projections\Model\Versioning">
-      <UniqueIdentifier>{0e13124f-8682-43ab-a73f-2bca66816039}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Projections">
-      <UniqueIdentifier>{7e8c3a74-3049-438f-87a2-32ffdcb5aa28}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Projections\Content">
-      <UniqueIdentifier>{3b70e68d-a3f5-4e0f-b726-0ae69aa52149}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Projections\Content\Content-Metadata">
-      <UniqueIdentifier>{01803f0f-5c02-4c3c-9e57-6ce6112465e2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Projections\Model">
-      <UniqueIdentifier>{fe595e6f-c1d6-4955-8f32-bd7759f918f7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Projections\Model\Versioning">
-      <UniqueIdentifier>{07c2fd79-6eca-4ad3-a740-fa128c5872b6}</UniqueIdentifier>
+    <Filter Include="Projections">
+      <UniqueIdentifier>{bdb9e2c5-f0f0-4018-a2cf-585ab676d4f7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="src\Projections\Model\Versioning\CompilerVersion.idl">
-      <Filter>Source Files\Projections\Model\Versioning</Filter>
+    <Midl Include="projections\CompilerVersion.idl">
+      <Filter>Projections</Filter>
     </Midl>
-    <Midl Include="src\Projections\Content\Content-Metadata\ContentLoader.idl">
-      <Filter>Source Files\Projections\Content\Content-Metadata</Filter>
+    <Midl Include="projections\ContentLoader.idl">
+      <Filter>Projections</Filter>
     </Midl>
-    <Midl Include="src\Projections\Content\Content-Metadata\ResourceType.idl">
-      <Filter>Source Files\Projections\Content\Content-Metadata</Filter>
+    <Midl Include="projections\ContentMetadata.idl">
+      <Filter>Projections</Filter>
     </Midl>
-    <Midl Include="src\Projections\Content\Content-Metadata\ContentMetadata.idl">
-      <Filter>Source Files\Projections\Content\Content-Metadata</Filter>
+    <Midl Include="projections\ResourceType.idl">
+      <Filter>Projections</Filter>
+    </Midl>
+    <Midl Include="projections\ContentProject.idl">
+      <Filter>Projections</Filter>
+    </Midl>
+    <Midl Include="projections\ContentProjectEntry.idl">
+      <Filter>Projections</Filter>
     </Midl>
   </ItemGroup>
 </Project>

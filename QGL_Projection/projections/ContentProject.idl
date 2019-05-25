@@ -1,0 +1,18 @@
+import "projections\ContentMetadata.idl";
+import "projections\ContentProjectEntry.idl";
+
+namespace QGL_Projection
+{
+   [default_interface]
+   runtimeclass ContentProject : Windows.UI.Xaml.Data.INotifyPropertyChanged
+   {
+      ContentProject();
+
+      Windows.Foundation.IAsyncOperation<Boolean> LoadFromFileAsync(
+         Windows.Storage.StorageFile f);
+
+      QGL_Projection.ContentMetadata Metadata;
+   
+      Windows.Foundation.Collections.IObservableVector<IInspectable> Entries;
+   }
+}

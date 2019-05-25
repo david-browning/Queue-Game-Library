@@ -1,0 +1,16 @@
+import "projections\ContentMetadata.idl";
+
+namespace QGL_Projection
+{
+   [default_interface]
+   runtimeclass ContentProjectEntry : 
+      Windows.UI.Xaml.Data.INotifyPropertyChanged, 
+      Windows.Foundation.IStringable
+   {
+      ContentProjectEntry(String filePath,
+                          QGL_Projection.ContentMetadata meta);
+
+      QGL_Projection.ContentMetadata Metadata;
+      String FilePath;
+   }
+}

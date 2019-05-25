@@ -13,7 +13,7 @@ namespace winrt::QGL_Projection::implementation
       if (m_metadata.content_visible() != value)
       {
          m_metadata.content_visible(value);
-         m_propertyChanged(*this, 
+         m_propertyChanged(*this,
                            PropertyChangedEventArgs{ L"ContentVisible" });
       }
    }
@@ -28,7 +28,7 @@ namespace winrt::QGL_Projection::implementation
       if (m_metadata.obey_physics() != value)
       {
          m_metadata.obey_physics(value);
-         m_propertyChanged(*this, 
+         m_propertyChanged(*this,
                            PropertyChangedEventArgs{ L"ContentObeyPhysics" });
       }
    }
@@ -43,7 +43,7 @@ namespace winrt::QGL_Projection::implementation
       if (m_metadata.name() != value)
       {
          m_metadata.name(value);
-         m_propertyChanged(*this, 
+         m_propertyChanged(*this,
                            PropertyChangedEventArgs{ L"ContentName" });
       }
    }
