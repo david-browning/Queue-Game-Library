@@ -48,6 +48,7 @@ namespace QGL_Content_UnitTests
                                            CONTENT_LOADER_ID_BRUSH,
                                            L"Brush");
          projectWrite.emplace_back(entryMeta, L"C:\\SomeFile.txt");
+         projectWrite.emplace_back(entryMeta, L"C:\\SomeFile.txt");
 
          projectWrite.flush();
 
@@ -152,7 +153,7 @@ namespace QGL_Content_UnitTests
             Assert::AreEqual(QGL_CONTENT_PROJECT_ENTRY_SEPERATOR_MAGIC_NUMBER,
                              magicSeperator,
                              L"The separator value is not correct.");
-            offset += sizeof(magicSeperator);
+            offset += (sizeof(magicSeperator) * 2);
 
             CONTENT_METADATA_BUFFER readEntryMeta;
             read_file_sync(hndl, sizeof(readEntryMeta), offset,

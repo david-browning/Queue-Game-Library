@@ -64,6 +64,11 @@ namespace qgl::content
                             &QGL_CONTENT_PROJECT_ENTRY_SEPERATOR_MAGIC_NUMBER);
             offset += sizeof(QGL_CONTENT_PROJECT_ENTRY_SEPERATOR_MAGIC_NUMBER);
 
+            //Pad the magic number to 16 bytes by writing an addition 8 bytes.
+            static constexpr uint64_t EXTRA_PAD = 0xEEEEEEEEEEEEEEEE;
+            write_file_sync(m_handle, sizeof(EXTRA_PAD), offset, &EXTRA_PAD);
+            offset += sizeof(EXTRA_PAD);
+
             //Write the metadata
             write_file_sync(m_handle, 
                             sizeof(entry.first), 
@@ -206,7 +211,7 @@ namespace qgl::content
             //Read the magic number and check it.
             read_file_sync(m_handle, sizeof(readMagicNumber), offset,
                            &readMagicNumber);
-            offset += sizeof(readMagicNumber);
+            offset += (sizeof(readMagicNumber) * 2);
             if (readMagicNumber != QGL_CONTENT_PROJECT_ENTRY_SEPERATOR_MAGIC_NUMBER)
             {
                #ifdef DEBUG
@@ -232,11 +237,10 @@ namespace qgl::content
 
             //Read the path wstring. Need to read as a wstring because hstring does
             //not support resize.
-            std::wstring path;
-            path.resize(numChars);
+            std::wstring path(numChars, L'\0');
             read_file_sync(m_handle, numChars * sizeof(wchar_t),
                            offset, path.data());
-            offset += sizeof(numChars * sizeof(wchar_t));
+            offset += numChars * sizeof(wchar_t);
 
             //Emplace back a new entry.
             emplace_back(meta, winrt::hstring(path));
