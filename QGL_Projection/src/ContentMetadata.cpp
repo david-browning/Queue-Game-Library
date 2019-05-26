@@ -98,6 +98,15 @@ namespace winrt::QGL_Projection::implementation
       return m_metadata.guid();
    }
 
+   bool ContentMetadata::Equals(QGL_Projection::ContentMetadata const& m)
+   {
+      //Get the implementation pointer.
+      auto metaImpl =
+         winrt::get_self<QGL_Projection::implementation::ContentMetadata>(
+            m);
+      return m_metadata == metaImpl->m_metadata;
+   }
+
    winrt::event_token ContentMetadata::PropertyChanged(PropertyChangedEventHandler const& handler)
    {
       return m_propertyChanged.add(handler);

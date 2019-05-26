@@ -17,5 +17,7 @@ namespace QGL_Projection
       UInt32 CompilerVersion;
 
       GUID Guid();
+
+      Boolean Equals(QGL_Projection.ContentMetadata m);
    }
 }

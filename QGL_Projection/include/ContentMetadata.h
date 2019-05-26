@@ -28,6 +28,8 @@ namespace winrt::QGL_Projection::implementation
       winrt::event_token PropertyChanged(Windows::UI::Xaml::Data::PropertyChangedEventHandler const& handler);
       void PropertyChanged(winrt::event_token const& token) noexcept;
 
+      bool Equals(QGL_Projection::ContentMetadata const& m);
+
       void FromBuffer(qgl::content::CONTENT_METADATA_BUFFER const& b)
       {
          m_metadata = b;
