@@ -209,7 +209,15 @@ namespace qgl::content
             offset += sizeof(readMagicNumber);
             if (readMagicNumber != QGL_CONTENT_PROJECT_ENTRY_SEPERATOR_MAGIC_NUMBER)
             {
-               throw std::exception("The entry's magic number is not correct.");
+               #ifdef DEBUG
+               char exceptionMessage[128];
+               sprintf_s(exceptionMessage, "The entry's magic number is %llX",
+                       readMagicNumber);
+               #else
+               const char* exceptionMessage = 
+                  "The entry's magic number is not correct.";
+               #endif
+               throw std::exception(exceptionMessage);
             }
 
             //Read the metadata
