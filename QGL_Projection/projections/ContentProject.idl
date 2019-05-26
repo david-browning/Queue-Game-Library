@@ -8,9 +8,9 @@ namespace QGL_Projection
    {
       ContentProject();
 
-      Boolean LoadFromFileAsync(Windows.Storage.StorageFile f);
+      void LoadFromFileAsync(Windows.Storage.StorageFile f);
 
-      Boolean SaveProjectFile(Windows.Storage.StorageFile f);
+      void SaveProjectFile(Windows.Storage.StorageFile f);
 
       QGL_Projection.ContentMetadata Metadata;
    

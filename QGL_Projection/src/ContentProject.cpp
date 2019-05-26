@@ -17,7 +17,7 @@ namespace winrt::QGL_Projection::implementation
       Entries(winrt::single_threaded_observable_vector<IInspectable>());
    }
 
-   bool ContentProject::LoadFromFileAsync(StorageFile const& f)
+   void ContentProject::LoadFromFileAsync(StorageFile const& f)
    {
       //Load the project
       qgl::content::content_project p(f);
@@ -51,11 +51,9 @@ namespace winrt::QGL_Projection::implementation
          //Append it to the end of the observable entries.
          m_observableEntries.Append(winrt::box_value(toPush));
       }
-
-      return true;
    }
 
-   bool ContentProject::SaveProjectFile(StorageFile const& f)
+   void ContentProject::SaveProjectFile(StorageFile const& f)
    {
       auto metaImpl = 
          winrt::get_self<QGL_Projection::implementation::ContentMetadata>(
@@ -84,8 +82,6 @@ namespace winrt::QGL_Projection::implementation
 
       //Flush
       p.flush();
-
-      return false;
    }
 
    QGL_Projection::ContentMetadata ContentProject::Metadata()
