@@ -12,7 +12,9 @@ namespace winrt::QGL_Projection::implementation
    {
       ContentProject();
 
-      IAsyncOperation<bool> LoadFromFileAsync(Windows::Storage::StorageFile f);
+      bool LoadFromFileAsync(Windows::Storage::StorageFile const& f);
+
+      bool SaveProjectFile(Windows::Storage::StorageFile const& f);
 
       QGL_Projection::ContentMetadata Metadata();
 
