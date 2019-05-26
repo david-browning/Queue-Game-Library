@@ -41,9 +41,9 @@ namespace QGL_Projection.UnitTests.Tests.Content.Content_Metadata
         }
 
         [TestMethod]
-        public void Copy()
+        public async Task Copy()
         {
-            dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+            await dispatcher.RunAsync(CoreDispatcherPriority.Normal,
                 () =>
                 {
                     ContentMetadata metadata = new ContentMetadata();
@@ -56,9 +56,9 @@ namespace QGL_Projection.UnitTests.Tests.Content.Content_Metadata
         }
 
         [TestMethod]
-        public void VisibleGetSet()
+        public async Task VisibleGetSet()
         {
-            dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+            await dispatcher.RunAsync(CoreDispatcherPriority.Normal,
             () =>
             {
                 ContentMetadata m = new ContentMetadata();
@@ -74,9 +74,9 @@ namespace QGL_Projection.UnitTests.Tests.Content.Content_Metadata
         }
 
         [TestMethod]
-        public void ObeyPhysicsGetSet()
+        public async Task ObeyPhysicsGetSet()
         {
-            dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+            await dispatcher.RunAsync(CoreDispatcherPriority.Normal,
             () =>
             {
                 ContentMetadata m = new ContentMetadata();
@@ -91,9 +91,9 @@ namespace QGL_Projection.UnitTests.Tests.Content.Content_Metadata
         }
 
         [TestMethod]
-        public void NameGetSet()
+        public async Task NameGetSet()
         {
-            dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+            await dispatcher.RunAsync(CoreDispatcherPriority.Normal,
             () =>
             {
                 ContentMetadata m = new ContentMetadata();
@@ -104,22 +104,22 @@ namespace QGL_Projection.UnitTests.Tests.Content.Content_Metadata
         }
 
         [TestMethod]
-        public void LoaderIDGetSet()
+        public async Task LoaderIDGetSet()
         {
-            dispatcher.RunAsync(CoreDispatcherPriority.Normal,
-            () =>
-            {
-                ContentMetadata m = new ContentMetadata();
-                m.ContentLoader = 65535;
-                Assert.AreEqual(65535, m.ContentLoader,
-                    "The loader ID is not correct.");
-            });
+            await dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+             () =>
+             {
+                 ContentMetadata m = new ContentMetadata();
+                 m.ContentLoader = 65535;
+                 Assert.AreEqual(65535, m.ContentLoader,
+                     "The loader ID is not correct.");
+             });
         }
 
         [TestMethod]
-        public void ResourceTypeGetSet()
+        public async Task ResourceTypeGetSet()
         {
-            dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+            await dispatcher.RunAsync(CoreDispatcherPriority.Normal,
             () =>
             {
                 ContentMetadata m = new ContentMetadata();
@@ -130,9 +130,9 @@ namespace QGL_Projection.UnitTests.Tests.Content.Content_Metadata
         }
 
         [TestMethod]
-        public void VersionGetSet()
+        public async Task VersionGetSet()
         {
-            dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+            await dispatcher.RunAsync(CoreDispatcherPriority.Normal,
             () =>
             {
                 ContentMetadata m = new ContentMetadata();
