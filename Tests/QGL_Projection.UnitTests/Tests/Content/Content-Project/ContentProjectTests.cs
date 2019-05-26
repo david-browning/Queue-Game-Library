@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QGL_Projection;
 using Windows.UI.Core;
 using Windows.Storage;
+using Windows.Foundation;
 
 namespace QGL_Projection.UnitTests.Tests.Content.Content_Project
 {
@@ -48,16 +49,16 @@ namespace QGL_Projection.UnitTests.Tests.Content.Content_Project
             () =>
             {
                 //Create a new project.
-                QGL_Projection.ContentProject contentProject =
+                QGL_Projection.ContentProject writeProject =
                     new ContentProject();
 
                 ContentMetadata newProjectMeta = new ContentMetadata();
                 newProjectMeta.ContentName = "New Project";
-                newProjectMeta.CompilerVersion = 
+                newProjectMeta.CompilerVersion =
                     CompilerVersion.VersionLatest.Value;
                 newProjectMeta.ContentLoader = 1;
                 newProjectMeta.ResourceType = 2;
-                contentProject.Metadata = newProjectMeta;
+                writeProject.Metadata = newProjectMeta;
 
                 ContentMetadata blueMetadata = new ContentMetadata();
                 blueMetadata.ContentName = "Blue Float";
@@ -77,20 +78,35 @@ namespace QGL_Projection.UnitTests.Tests.Content.Content_Project
                     storageFolder.Path + "\\projectedGreen.txt",
                     greenMetadata);
 
-                contentProject.Entries.Add(redEntry);
-                contentProject.Entries.Add(greenEntry);
-                contentProject.Entries.Add(blueEntry);
+                writeProject.Entries.Add(redEntry);
+                writeProject.Entries.Add(greenEntry);
+                writeProject.Entries.Add(blueEntry);
 
-                contentProject.SaveProjectFile(storageFile);
+                writeProject.SaveProjectFile(storageFile);
 
                 ContentProject readProject = new ContentProject();
                 readProject.LoadFromFileAsync(storageFile);
+
+                Assert.IsTrue(newProjectMeta.Equals(readProject.Metadata),
+                    "The metadata is not correct.");
+
+                for (int i = 0; i < writeProject.Entries.Count; i++)
+                {
+                    var eEntry = (ContentProjectEntry)writeProject.Entries[i];
+                    var aEntry = (ContentProjectEntry)readProject.Entries[i];
+
+                    Assert.AreEqual(eEntry.FilePath,
+                        aEntry.FilePath,
+                        "The paths are not equal.");
+
+                    Assert.IsTrue(eEntry.Metadata.Equals(
+                        aEntry.Metadata),
+                        "The meta data entries are not equal.");
+                }
             });
         }
 
         private Windows.UI.Core.CoreDispatcher dispatcher =
             Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher;
     }
-
-   
 }
