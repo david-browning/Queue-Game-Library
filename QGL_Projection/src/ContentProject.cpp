@@ -12,8 +12,11 @@ namespace winrt::QGL_Projection::implementation
 {
    ContentProject::ContentProject()
    {
+      //Default metadata
       Metadata(
          winrt::make<QGL_Projection::implementation::ContentMetadata>());
+
+      //Empty list of entries.
       Entries(winrt::single_threaded_observable_vector<IInspectable>());
    }
 
@@ -55,6 +58,8 @@ namespace winrt::QGL_Projection::implementation
 
    void ContentProject::SaveProjectFile(StorageFile const& f)
    {
+      //Need a pointer to the metadata's implementation so we can get the 
+      //raw buffer.
       auto metaImpl = 
          winrt::get_self<QGL_Projection::implementation::ContentMetadata>(
             m_metadata);
@@ -63,8 +68,7 @@ namespace winrt::QGL_Projection::implementation
       qgl::content::content_project p(f);
 
       //Set the metadata.
-      auto metadataBuffer = metaImpl->ToBuffer();
-      p.metadata() = metadataBuffer;
+      p.metadata() = metaImpl->ToBuffer();
 
       //Add all the project entries in this to the project.
       for (auto& inspec : m_observableEntries)
@@ -73,6 +77,7 @@ namespace winrt::QGL_Projection::implementation
          auto entry = 
             winrt::unbox_value<QGL_Projection::ContentProjectEntry>(inspec);
 
+         //Get its metadata implementation pointer.
          auto entryMetaImpl =
             winrt::get_self<QGL_Projection::implementation::ContentMetadata>(
                entry.Metadata());
@@ -94,6 +99,7 @@ namespace winrt::QGL_Projection::implementation
    {
       if (m_metadata != value)
       {
+         assert(value != nullptr);
          m_metadata = value;
          m_propertyChanged(*this, PropertyChangedEventArgs{ L"Metadata" });
       }
@@ -109,6 +115,7 @@ namespace winrt::QGL_Projection::implementation
    {
       if (m_observableEntries != value)
       {
+         assert(value != nullptr);
          m_observableEntries = value;
          m_propertyChanged(*this, PropertyChangedEventArgs{ L"Entries" });
       }
