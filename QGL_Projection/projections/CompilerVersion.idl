@@ -12,6 +12,8 @@ namespace QGL_Projection
       static CompilerVersion Version_0_1 { get; };
 
       static CompilerVersion Version_0_2 { get; };
+
+      static CompilerVersion VersionLatest{ get; };
       
       static Windows.Foundation.Collections.IVector<CompilerVersion> 
          CompilerVersions{ get; };

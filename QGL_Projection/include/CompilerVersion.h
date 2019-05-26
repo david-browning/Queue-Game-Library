@@ -19,6 +19,8 @@ namespace winrt::QGL_Projection::implementation
       static QGL_Projection::CompilerVersion Version_0_1();
 
       static QGL_Projection::CompilerVersion Version_0_2();
+
+      static QGL_Projection::CompilerVersion VersionLatest();
       
       static IVector<QGL_Projection::CompilerVersion> CompilerVersions();
 

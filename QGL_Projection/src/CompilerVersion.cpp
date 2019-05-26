@@ -32,6 +32,11 @@ namespace winrt::QGL_Projection::implementation
                                              L"0.2");
    }
 
+   QGL_Projection::CompilerVersion CompilerVersion::VersionLatest()
+   {
+      return QGL_Projection::CompilerVersion::Version_0_2();
+   }
+
    IVector<QGL_Projection::CompilerVersion> CompilerVersion::CompilerVersions()
    {
       return winrt::single_threaded_vector<QGL_Projection::CompilerVersion>(
