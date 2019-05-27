@@ -4,13 +4,10 @@ namespace QGL_Projection
    runtimeclass ResourceType : Windows.Foundation.IStringable
    {
       //Constructor.
-      ResourceType(UInt16 enumValue, String name,
-                   UInt16[] supportedLoaders);
+      ResourceType(UInt16 enumValue, String name);
 
       //Returns the value of the resouce type.
       //This maps to the C++ enum qgl::content::RESOURCE_TYPES
       UInt16 Value{ get; };
-
-      UInt16[] SupportedLoaderIDs { get; };
    }
 }

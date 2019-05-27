@@ -12,19 +12,15 @@ namespace winrt::QGL_Projection::implementation
       ResourceType() = delete;
 
       ResourceType(uint16_t enumValue,
-                   hstring const& name,
-                   array_view<uint16_t const> supportedLoaders);
+                   hstring const& name);
 
       uint16_t Value();
-
-      com_array<uint16_t> SupportedLoaderIDs();
 
       hstring ToString();
 
       private:
       winrt::hstring m_name;
       qgl::content::RESOURCE_TYPES m_type;
-      std::vector<uint16_t> m_supportedLoaderIDs;
    };
 }
 namespace winrt::QGL_Projection::factory_implementation
