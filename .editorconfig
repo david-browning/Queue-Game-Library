@@ -13,6 +13,7 @@ indent_size = 3
 
 # Xml files
 [*.xml]
+[*.xaml]
 indent_size = 2
 
 # MIDL files

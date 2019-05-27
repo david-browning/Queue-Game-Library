@@ -119,10 +119,26 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\NavigationHelpers.cs" />
+    <Compile Include="Helpers\XamlConverters\InverseBooleanConverter.cs" />
+    <Compile Include="Helpers\XamlConverters\InverseBooleanToVisibilityConverter.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\EditorPage.xaml.cs">
+      <DependentUpon>EditorPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\HomePage.xaml.cs">
+      <DependentUpon>HomePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\ContentExtensionProvider.cs" />
+    <Compile Include="Providers\FilePickerProvider.cs" />
+    <Compile Include="Providers\RecentFileProvider.cs" />
+    <Compile Include="ViewModels\ContentProjectEntryViewModel.cs" />
+    <Compile Include="ViewModels\EditorPageViewModel.cs" />
+    <Compile Include="ViewModels\HomePageViewModel.cs" />
+    <Compile Include="ViewModels\RecentProjectViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -149,6 +165,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Pages\EditorPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\HomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
@@ -164,10 +188,6 @@
   <ItemGroup>
     <Folder Include="ContentExtensions\" />
     <Folder Include="Controls\Dialogs\" />
-    <Folder Include="Helpers\XamlConverters\" />
-    <Folder Include="Pages\" />
-    <Folder Include="Providers\" />
-    <Folder Include="ViewModels\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

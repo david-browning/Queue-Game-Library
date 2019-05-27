@@ -7,8 +7,45 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
-    <Grid>
-
-    </Grid>
+  <NavigationView x:Name="_navView" IsPaneOpen="True"
+                  PaneDisplayMode="Auto"
+                  ItemInvoked="_navView_ItemInvoked">
+    <VisualStateManager.VisualStateGroups>
+      <VisualStateGroup>
+        <VisualState x:Name="_narrowWindowState">
+          <VisualState.StateTriggers>
+            <AdaptiveTrigger
+              MinWindowWidth="{StaticResource MinWindowSnapPoint}"/>
+          </VisualState.StateTriggers>
+          <VisualState.Setters>
+          </VisualState.Setters>
+        </VisualState>
+        <VisualState x:Name="_mediumWindowState">
+          <VisualState.StateTriggers>
+          </VisualState.StateTriggers>
+          <VisualState.Setters>
+          </VisualState.Setters>
+        </VisualState>
+        <VisualState x:Name="_wideWindowState">
+          <VisualState.StateTriggers>
+            <AdaptiveTrigger
+              MinWindowWidth="{StaticResource LargeWindowSnapPoint}"/>
+          </VisualState.StateTriggers>
+          <VisualState.Setters>
+          </VisualState.Setters>
+        </VisualState>
+      </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
+    <NavigationView.MenuItems>
+      <NavigationViewItem Content="Home" Icon="Home" Tag="HomePage"/>
+      <NavigationViewItem Content="Editor" Icon="Edit" Tag="EditorPage"
+                          IsEnabled="{x:Bind EnableProjectEditorNavigation, Mode=OneWay}"/>
+      <NavigationViewItem Content="Compile" Icon="Share" 
+                          Tag="CompilerPage"/>
+      <NavigationViewItem Content="Extensions" Icon="Upload" 
+                          Tag="ExtensionsPage"/>
+    </NavigationView.MenuItems>
+    <Frame x:Name="_contentFrame" Navigating="_contentFrame_Navigating"
+           CacheSize="2"/>
+  </NavigationView>
 </Page>
