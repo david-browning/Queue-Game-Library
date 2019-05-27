@@ -77,5 +77,8 @@
     <Midl Include="projections\ContentProjectEntry.idl">
       <Filter>Projections</Filter>
     </Midl>
+    <Midl Include="projections\IContentExtension.idl">
+      <Filter>Projections</Filter>
+    </Midl>
   </ItemGroup>
 </Project>

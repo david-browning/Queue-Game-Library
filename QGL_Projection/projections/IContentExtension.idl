@@ -1,0 +1,14 @@
+import "projections\ResourceType.idl";
+import "projections\ContentLoader.idl";
+
+namespace QGL_Projection
+{
+   [version(1)]
+   [uuid(89C864C9-9F56-4350-9DE0-C0530354C3E7)]
+   interface IContentExtension : IInspectable
+   {
+      QGL_Projection.ContentLoader Loader { get; };
+      QGL_Projection.ResourceType Type { get; };
+      String ContentFileExtension { get; };
+   }
+}
