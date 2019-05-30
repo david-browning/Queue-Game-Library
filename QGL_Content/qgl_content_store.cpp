@@ -29,8 +29,8 @@ namespace qgl::content
    struct content_store::impl
    {
       public:
-      impl(const content_store_config& storeConfig) :
-         m_config(storeConfig)
+      impl(const content_store_config* storeConfig) :
+         m_config(*storeConfig)
       {
 
       }
@@ -142,7 +142,7 @@ namespace qgl::content
       content_list_t m_contentList;
    };
 
-   content_store::content_store(const content_store_config& storeConfig) :
+   content_store::content_store(const content_store_config* storeConfig) :
       m_impl_p(new impl(storeConfig))
    {
    }
@@ -158,15 +158,14 @@ namespace qgl::content
       delete m_impl_p;
    }
 
-   id_t content_store::file_id(
-      const file_string& relativePath) const
+   id_t content_store::file_id(const wchar_t* relativePath) const
    {
-      return m_impl_p->file_id(relativePath);
+      return m_impl_p->file_id(file_string(relativePath));
    }
 
-   file_string content_store::abs_path(const file_string& relativePath) const
+   file_string content_store::abs_path(const wchar_t* relativePath) const
    {
-      return m_impl_p->abs_path(relativePath);
+      return m_impl_p->abs_path(file_string(relativePath));
    }
 
    content_store::iterator content_store::begin()

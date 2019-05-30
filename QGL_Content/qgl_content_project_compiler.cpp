@@ -26,20 +26,20 @@ namespace qgl::content
    }
 }
 
-void qgl::content::compile_content_project(const content_project& proj,
+void qgl::content::compile_content_project(const content_project* proj,
                                            const wchar_t* absPath)
 {
    //Create a content file in write mode.
    content_file cf(absPath);
-   compile_content_project(proj, cf);
+   compile_content_project(*proj, cf);
 }
 
 
 void qgl::content::compile_content_project(
-   const content_project& proj,
+   const content_project* proj,
    const winrt::Windows::Storage::StorageFile& f)
 {
    //Create a content file in write mode.
    content_file cf(f);
-   compile_content_project(proj, cf);
+   compile_content_project(*proj, cf);
 }

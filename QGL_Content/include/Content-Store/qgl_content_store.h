@@ -22,7 +22,7 @@ namespace qgl::content
       /*
        Creates a content store using the configuration.
        */
-      content_store(const content_store_config& storeConfig);
+      content_store(const content_store_config* storeConfig);
 
       /*
        Cannot copy a content store.
@@ -45,13 +45,13 @@ namespace qgl::content
        If the file has not been loaded into the store, this returns
        content_store::INVALID_CONTENT_ID.
        */
-      id_t file_id(const file_string& relativePath) const;
+      id_t file_id(const wchar_t* relativePath) const;
 
       /*
        Returns the absolute file path for a given path relative to the content
        store.
        */
-      file_string abs_path(const file_string& relativePath) const;
+      file_string abs_path(const wchar_t* relativePath) const;
 
       /*
        Loads the content from the relative path and returns an ID that can be

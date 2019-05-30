@@ -42,7 +42,7 @@ namespace QGL_Content_UnitTests
             project.flush();
 
             //Compile the project file.
-            compile_content_project(project, compiledPath.c_str());
+            compile_content_project(&project, compiledPath.c_str());
          }
        
          //Open the compiled project file.
@@ -97,7 +97,7 @@ namespace QGL_Content_UnitTests
 
             try
             {
-               compile_content_project(project, contentF);
+               compile_content_project(&project, contentF);
             }
             catch (winrt::hresult_error&)
             {

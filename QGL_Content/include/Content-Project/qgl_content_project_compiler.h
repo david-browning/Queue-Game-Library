@@ -9,7 +9,7 @@ namespace qgl::content
     absPath: Path where to save the compiled project.
     */
    extern QGL_CONTENT_API void compile_content_project(
-      const content_project& proj,
+      const content_project* proj,
       const wchar_t* absPath);
 
    /*
@@ -18,6 +18,6 @@ namespace qgl::content
     Storage file permissions should be brokered by the storage file provider.
     */
    extern QGL_CONTENT_API void compile_content_project(
-      const content_project& proj,
+      const content_project* proj,
       const winrt::Windows::Storage::StorageFile& f);
 }

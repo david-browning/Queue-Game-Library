@@ -9,13 +9,10 @@ namespace qgl::content
    class QGL_CONTENT_API content_store_config
    {
       public:
-      
       /*
        Constructor.
        */
-      content_store_config(const winrt::hstring& storePath);
-
-      content_store_config(const wchar_t* storePath, size_t len);
+      content_store_config(const wchar_t* storePath);
 
       /*
        Copy constructor.

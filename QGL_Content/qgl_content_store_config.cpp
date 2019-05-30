@@ -4,15 +4,9 @@
 
 namespace qgl::content
 {
-   content_store_config::content_store_config(const winrt::hstring& storePath) :
-      content_store_config(storePath.c_str(),
-                           storePath.size())
+   content_store_config::content_store_config(const wchar_t* storePath)
    {
-   }
-
-   content_store_config::content_store_config(const wchar_t* storePath, 
-                                              size_t len)
-   {
+      auto len = MemoryLength(storePath);
       m_storePath = new wchar_t[len + 1];
       MemoryCopy(m_storePath, storePath, len);
       m_storePath[len] = L'\0';
