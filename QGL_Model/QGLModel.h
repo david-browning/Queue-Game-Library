@@ -10,3 +10,5 @@
 #include "include/Observer-Observable/qgl_subject.h"
 #include "include/Observer-Observable/qgl_iobserver.h"
 #include "include/Observer-Observable/qgl_callback_observer.h"
+
+#include "include/qgl_rational.h"

@@ -150,6 +150,7 @@
     <ClInclude Include="include\qgl_icomponent.h" />
     <ClInclude Include="include\qgl_model_include.h" />
     <ClInclude Include="include\qgl_platform_abstraction.h" />
+    <ClInclude Include="include\qgl_rational.h" />
     <ClInclude Include="include\qgl_version.h" />
     <ClInclude Include="include\Timing\qgl_timer.h" />
     <ClInclude Include="include\Timing\qgl_time_helpers.h" />
@@ -164,6 +165,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="QGL_ModelRT.cpp" />
+    <ClCompile Include="qgl_rational.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

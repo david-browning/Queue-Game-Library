@@ -79,6 +79,9 @@
     <ClInclude Include="include\qgl_platform_abstraction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\qgl_rational.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="QGL_Model.def">
@@ -95,6 +98,9 @@
     </ClCompile>
     <ClCompile Include="QGL_ModelRT.cpp">
       <Filter>win_rt</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_rational.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
