@@ -17,14 +17,8 @@ namespace qgl::content
       /*
        Constructor.
        */
-      content_item(const std::wstring& name,
-                   const content_id& id,
-                   RESOURCE_TYPES rType,
-                   CONTENT_LOADER_IDS loaderID);
-
       content_item(const wchar_t* name,
-                   size_t len,
-                   const content_id& id,
+                   content_id id,
                    RESOURCE_TYPES rType,
                    CONTENT_LOADER_IDS loaderID);
 
@@ -46,34 +40,22 @@ namespace qgl::content
       /*
        Returns this content's ID.
        */
-      content_id id() const
-      {
-         return  m_id;
-      }
+      content_id id() const;
 
       /*
        Returns a const pointer to this content's name.
        */
-      const wchar_t* name() const
-      {
-         return m_name;
-      }
+      const wchar_t* name() const;
 
       /*
        Returns this content's type of resource.
        */
-      RESOURCE_TYPES resource_type() const
-      {
-         return m_rType;
-      }
+      RESOURCE_TYPES resource_type() const;
 
       /*
        Returns the loader ID this content uses.
        */
-      CONTENT_LOADER_IDS loader_id() const
-      {
-         return m_loaderID;
-      }
+      CONTENT_LOADER_IDS loader_id() const;
 
       private:
       /*

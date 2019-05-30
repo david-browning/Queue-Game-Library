@@ -3,24 +3,15 @@
 
 namespace qgl::content
 {
-   content_item::content_item(const std::wstring& name,
-                              const content_id& id, 
-                              RESOURCE_TYPES rType, 
-                              CONTENT_LOADER_IDS loaderID) :
-      content_item(name.c_str(), name.size(), 
-                   id, rType, loaderID)
-   {
-   }
-
    content_item::content_item(const wchar_t* name, 
-                              size_t len, 
-                              const content_id& id,
+                              content_id id,
                               RESOURCE_TYPES rType, 
                               CONTENT_LOADER_IDS loaderID) :
       m_id(id),
       m_rType(rType),
       m_loaderID(loaderID)
    {
+      auto len = wcslen(name);
       m_name = new wchar_t[len + 1];
       MemoryCopy(m_name, name, len);
       m_name[len] = L'\0';
@@ -50,6 +41,26 @@ namespace qgl::content
    content_item::~content_item() noexcept
    {
       delete[] m_name;
+   }
+
+   content_id content_item::id() const
+   {
+      return m_id;
+   }
+
+   const wchar_t* content_item::name() const
+   {
+      return m_name;
+   }
+
+   RESOURCE_TYPES content_item::resource_type() const
+   {
+      return m_rType;
+   }
+
+   CONTENT_LOADER_IDS content_item::loader_id() const
+   {
+      return m_loaderID;
    }
 
 }
