@@ -61,9 +61,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="qgl_content_dictionary.cpp">
-      <Filter>Source Files\Content-Dictionary</Filter>
-    </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
       <Filter>win_rt</Filter>
     </ClCompile>
@@ -194,9 +191,6 @@
     </ClInclude>
     <ClInclude Include="include\File-Loaders\qgl_file_loaders.h">
       <Filter>Header Files\File-Loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Content-Dictionary\qgl_content_dictionary.h">
-      <Filter>Header Files\Content-Dictionary</Filter>
     </ClInclude>
     <ClInclude Include="include\Content-Project\qgl_content_project.h">
       <Filter>Header Files\Content-Project</Filter>

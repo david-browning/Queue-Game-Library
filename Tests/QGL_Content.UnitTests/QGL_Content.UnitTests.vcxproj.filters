@@ -51,9 +51,6 @@
     <ClCompile Include="Tests\dict_metadata_buffer_tests.cpp">
       <Filter>Tests\Dictionary</Filter>
     </ClCompile>
-    <ClCompile Include="Tests\content_dictionary_test.cpp">
-      <Filter>Tests\Dictionary</Filter>
-    </ClCompile>
     <ClCompile Include="Tests\content_metadata_buffer_tests.cpp">
       <Filter>Tests\Buffers</Filter>
     </ClCompile>

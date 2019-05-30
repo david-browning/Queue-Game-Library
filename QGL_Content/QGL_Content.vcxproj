@@ -158,7 +158,6 @@
     <ClInclude Include="include\Content-Buffers\qgl_content_dict_entry_buffer.h" />
     <ClInclude Include="include\Content-Buffers\qgl_content_file_header_buffer.h" />
     <ClInclude Include="include\Content-Buffers\qgl_content_metadata_buffer.h" />
-    <ClInclude Include="include\Content-Dictionary\qgl_content_dictionary.h" />
     <ClInclude Include="include\Content-Files\qgl_content_variant_entry.h" />
     <ClInclude Include="include\Content-Files\qgl_content_file.h" />
     <ClInclude Include="include\Content-Files\qgl_content_file_helpers.h" />
@@ -203,7 +202,6 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
-    <ClCompile Include="qgl_content_dictionary.cpp" />
     <ClCompile Include="qgl_content_dictionary_metadata_buffer.cpp" />
     <ClCompile Include="qgl_content_file_header_buffer.cpp" />
     <ClCompile Include="qgl_content_metadata_buffer.cpp" />

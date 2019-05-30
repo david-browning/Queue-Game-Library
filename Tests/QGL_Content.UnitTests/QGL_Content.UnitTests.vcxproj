@@ -276,7 +276,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tests\additional_helper_tests.cpp" />
-    <ClCompile Include="Tests\content_dictionary_test.cpp" />
     <ClCompile Include="Tests\content_file_tests.cpp" />
     <ClCompile Include="Tests\content_metadata_buffer_tests.cpp" />
     <ClCompile Include="Tests\content_project_compiler_tests.cpp" />
