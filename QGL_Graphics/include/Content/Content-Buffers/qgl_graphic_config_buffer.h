@@ -8,10 +8,19 @@ namespace qgl::graphics::content::buffers
       public:
       GRAPHICS_CONFIG_BUFFER();
 
+      /*
+       Copy constructor.
+       */
       GRAPHICS_CONFIG_BUFFER(const GRAPHICS_CONFIG_BUFFER&) = default;
 
+      /* 
+       Move constructor.
+       */
       GRAPHICS_CONFIG_BUFFER(GRAPHICS_CONFIG_BUFFER&&) = default;
 
+      /*
+       Destructor. Do not mark as virtual.
+       */
       ~GRAPHICS_CONFIG_BUFFER() noexcept = default;
 
       /*
@@ -56,7 +65,8 @@ namespace qgl::graphics::content::buffers
 
       const UINT& adapter_devID() const;
 
-      friend void swap(GRAPHICS_CONFIG_BUFFER& first, GRAPHICS_CONFIG_BUFFER& second) noexcept
+      friend void swap(GRAPHICS_CONFIG_BUFFER& first, 
+                       GRAPHICS_CONFIG_BUFFER& second) noexcept
       {
          using std::swap;
          swap(first.m_flags, second.m_flags);

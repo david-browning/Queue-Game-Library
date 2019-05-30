@@ -115,19 +115,22 @@
       <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">d3dcompiler.lib;d2d1.lib;dwrite.lib;d3d11.lib;d3d12.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Link>
-      <DelayLoadDLLs Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">d3d12.dll</DelayLoadDLLs>
+      <DelayLoadDLLs Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+      </DelayLoadDLLs>
     </Link>
     <Link>
       <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">d3dcompiler.lib;d2d1.lib;dwrite.lib;d3d11.lib;d3d12.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Link>
-      <DelayLoadDLLs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">d3d12.dll</DelayLoadDLLs>
+      <DelayLoadDLLs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </DelayLoadDLLs>
     </Link>
     <Link>
       <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">d3dcompiler.lib;d2d1.lib;dwrite.lib;d3d11.lib;d3d12.lib;dxgi.lib;QGL_Model.lib;QGL_Content.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Link>
-      <DelayLoadDLLs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">d3d12.dll</DelayLoadDLLs>
+      <DelayLoadDLLs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </DelayLoadDLLs>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
@@ -138,19 +141,22 @@
       <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">d3dcompiler.lib;d2d1.lib;dwrite.lib;d3d11.lib;d3d12.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Link>
-      <DelayLoadDLLs Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">d3d12.dll</DelayLoadDLLs>
+      <DelayLoadDLLs Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+      </DelayLoadDLLs>
     </Link>
     <Link>
       <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">d3dcompiler.lib;d2d1.lib;dwrite.lib;d3d11.lib;d3d12.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Link>
-      <DelayLoadDLLs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">d3d12.dll</DelayLoadDLLs>
+      <DelayLoadDLLs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </DelayLoadDLLs>
     </Link>
     <Link>
       <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">d3dcompiler.lib;d2d1.lib;dwrite.lib;d3d11.lib;d3d12.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Link>
-      <DelayLoadDLLs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">d3d12.dll</DelayLoadDLLs>
+      <DelayLoadDLLs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </DelayLoadDLLs>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -164,7 +170,6 @@
     <ClInclude Include="include\Content\Content-Buffers\qgl_rasterizer_buffer.h" />
     <ClInclude Include="include\Content\Content-Buffers\qgl_sampler_buffer.h" />
     <ClInclude Include="include\Content\Content-Buffers\qgl_text_format_buffer.h" />
-    <ClInclude Include="include\Engines\qgl_iengine.h" />
     <ClInclude Include="include\Helpers\d3dx12.h" />
     <ClInclude Include="include\qgl_graphics_include.h" />
     <ClInclude Include="include\qgl_window.h" />
@@ -173,17 +178,22 @@
     <ClInclude Include="QGL_GraphicsRT.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="qgl_blender_buffer.cpp" />
-    <ClCompile Include="qgl_blender_desc_buffer.cpp" />
-    <ClCompile Include="qgl_brush_buffer.cpp" />
-    <ClCompile Include="qgl_camera_buffer.cpp" />
-    <ClCompile Include="qgl_depth_stencil_buffer.cpp" />
     <ClCompile Include="QGL_GraphicsRT.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
-    <ClCompile Include="qgl_window.cpp" />
+    <ClCompile Include="src\Content\Content-Buffers\qgl_blender_buffer.cpp" />
+    <ClCompile Include="src\Content\Content-Buffers\qgl_blender_desc_buffer.cpp" />
+    <ClCompile Include="src\Content\Content-Buffers\qgl_brush_buffer.cpp" />
+    <ClCompile Include="src\Content\Content-Buffers\qgl_camera_buffer.cpp" />
+    <ClCompile Include="src\Content\Content-Buffers\qgl_depth_stencil_buffer.cpp" />
+    <ClCompile Include="src\Content\Content-Buffers\qgl_graphic_config_buffer.cpp" />
+    <ClCompile Include="src\Content\Content-Buffers\qgl_light_buffer.cpp" />
+    <ClCompile Include="src\Content\Content-Buffers\qgl_rasterizer_buffer.cpp" />
+    <ClCompile Include="src\Content\Content-Buffers\qgl_sampler_buffer.cpp" />
+    <ClCompile Include="src\Content\Content-Buffers\qgl_text_format_buffer.cpp" />
+    <ClCompile Include="src\qgl_window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

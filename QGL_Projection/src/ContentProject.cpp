@@ -71,7 +71,7 @@ namespace winrt::QGL_Projection::implementation
       p.metadata() = metaImpl->ToBuffer();
 
       //Add all the project entries in this to the project.
-      for (auto& inspec : m_observableEntries)
+      for (auto inspec : m_observableEntries)
       {
          //Cast the IInspectable to a ContentProjectEntry
          auto entry = 

@@ -55,18 +55,23 @@ namespace qgl::graphics::content::buffers
        Swaps the contents of first with the contents of second.
        */
       friend void swap(BLENDER_BUFFER& first,
-                       BLENDER_BUFFER& second) noexcept;
+                       BLENDER_BUFFER& second) noexcept
+      {
+         using std::swap;
+         swap(first.m_flags, second.m_flags);
+         swap(first.m_blend_descs, second.m_blend_descs);
+         swap(first.m_isAlphaToCoverage, second.m_isAlphaToCoverage);
+         swap(first.m_isIndependentBlend, second.m_isIndependentBlend);
+      }
 
       /*
        Assignment operator.
        */
-      BLENDER_BUFFER& operator=(BLENDER_BUFFER r) noexcept;
-
-      /*
-       Equality operator.
-       */
-      friend bool operator==(const BLENDER_BUFFER& r,
-                             const BLENDER_BUFFER& l) noexcept;
+      BLENDER_BUFFER& operator=(BLENDER_BUFFER r) noexcept
+      {
+         swap(*this, r);
+         return *this;
+      }
 
       private:
 

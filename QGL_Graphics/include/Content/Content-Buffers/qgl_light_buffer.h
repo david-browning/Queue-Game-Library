@@ -6,43 +6,53 @@ namespace qgl::graphics::content::buffers
    struct QGL_GRAPHICS_API LIGHT_BUFFER
    {
       public:
+      /*
+       Default Constructor
+       */
       LIGHT_BUFFER();
 
-      LIGHT_BUFFER(const LIGHT_BUFFER& r);
+      /*
+       Copy constructor.
+       */
+      LIGHT_BUFFER(const LIGHT_BUFFER&) = default;
 
-      LIGHT_BUFFER(LIGHT_BUFFER&& r);
+      /*
+       Move constructor.
+       */
+      LIGHT_BUFFER(LIGHT_BUFFER&&) = default;
 
-      ~LIGHT_BUFFER() noexcept;
+      /*
+       Destructor. Do not mark as virtual.
+       */
+      ~LIGHT_BUFFER() noexcept = default;
 
-      const float* color() const
-      {
-         return m_color;
-      }
+      /*
+       Returns a pointer to an array of 4 floats. Each float represents the
+       R, G, B, and A color values. Values must be between 0 and 1.0.
+       */
+      const float* color() const;
 
-      const float* look_at() const
-      {
-         return m_lookAt;
-      }
+      /*
+       Returns a pointer to an array of 4 floats. Each float represents the 
+       X, Y, and Z components. The last value is unused.
+       */
+      const float* look_at() const;
 
-      const float* position() const
-      {
-         return m_position;
-      }
+      /*
+       Returns a pointer to an array of 4 floats. Each float represents the 
+       X, Y, and Z components. The last value is unused.
+       */
+      const float* position() const;
 
-      float intensity() const
-      {
-         return m_intensity;
-      }
+      /*
+       Returns the light intensity. Value must be between 0 and 1.0;
+       */
+      float& intensity();
 
-      uint16_t flags1() const
-      {
-         return m_flags1;
-      }
+      friend void swap(LIGHT_BUFFER& l,
+                       LIGHT_BUFFER& r) noexcept;
 
-      uint8_t flags2() const
-      {
-         return m_flags2;
-      }
+      LIGHT_BUFFER& operator=(LIGHT_BUFFER r) noexcept;
 
       private:
       float m_color[4];

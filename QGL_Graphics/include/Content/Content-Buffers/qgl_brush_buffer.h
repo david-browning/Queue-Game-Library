@@ -82,7 +82,7 @@ namespace qgl::graphics::content::buffers
       {
          using std::swap;
          swap(l.m_properties, r.m_properties);
-         swap(l.m_reserved1, r.m_properties);
+         swap(l.m_reserved1, r.m_reserved1);
          swap(l.m_stopCount, r.m_stopCount);
          swap(l.m_stops, r.m_stops);
          swap(l.m_style, r.m_style);
@@ -95,25 +95,6 @@ namespace qgl::graphics::content::buffers
       {
          swap(*this, r);
          return *this;
-      }
-
-      /*
-       Equality operator.
-       */
-      friend bool operator==(const BRUSH_BUFFER& l,
-                             const BRUSH_BUFFER& r) noexcept
-      {
-         bool intTypesEqual = (l.m_reserved1 == r.m_reserved1 &&
-                               l.m_stopCount == r.m_stopCount &&
-                               l.m_style == l.m_style);
-
-         return intTypesEqual &&
-            (0 == MemoryCompare(l.m_stops, 
-                                r.m_stops, 
-                                l.size())) &&
-            (0 == MemoryCompare(l.m_properties, 
-                                r.m_properties, 
-                                BRUSH_FORMAT_BUFFER_MAX_PROPRTY_SIZE));
       }
 
       private:

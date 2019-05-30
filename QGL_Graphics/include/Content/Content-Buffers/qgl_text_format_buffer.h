@@ -12,71 +12,40 @@ namespace qgl::graphics::content::buffers
       public:
       TEXT_FORMAT_BUFFER();
 
-      TEXT_FORMAT_BUFFER(const TEXT_FORMAT_BUFFER&);
+      TEXT_FORMAT_BUFFER(const TEXT_FORMAT_BUFFER&) = default;
 
-      TEXT_FORMAT_BUFFER(TEXT_FORMAT_BUFFER&&);
+      TEXT_FORMAT_BUFFER(TEXT_FORMAT_BUFFER&&) = default;
 
       ~TEXT_FORMAT_BUFFER() noexcept = default;
 
-      DWRITE_FONT_WEIGHT weight() const
-      {
-         return static_cast<DWRITE_FONT_WEIGHT>(m_fontWeight);
-      }
+      DWRITE_FONT_WEIGHT weight() const;
 
-      DWRITE_FONT_STYLE style() const
-      {
-         return static_cast<DWRITE_FONT_STYLE>(m_style);
-      }
+      DWRITE_FONT_STYLE style() const;
 
-      DWRITE_FONT_STRETCH stretch() const
-      {
-         return static_cast<DWRITE_FONT_STRETCH>(m_stretch);
-      }
+      DWRITE_FONT_STRETCH stretch() const;
 
-      float size() const
-      {
-         return m_fontSize;
-      }
+      float size() const;
 
-      const wchar_t* locale() const
-      {
-         return m_fontLocaleName;
-      }
+      const wchar_t* locale() const;
 
-      const wchar_t* family() const
-      {
-         return m_fontFamilyName;
-      }
+      const wchar_t* family() const;
 
-      DWRITE_FLOW_DIRECTION flow_direction() const
-      {
-         return static_cast<DWRITE_FLOW_DIRECTION>(m_flowDirection);
-      }
+      DWRITE_FLOW_DIRECTION flow_direction() const;
 
-      float tab_stop() const
-      {
-         return m_tabStop;
-      }
+      float tab_stop() const;
 
-      DWRITE_PARAGRAPH_ALIGNMENT paragraph_alignment() const
-      {
-         return static_cast<DWRITE_PARAGRAPH_ALIGNMENT>(m_paragraphAlignment);
-      }
+      DWRITE_PARAGRAPH_ALIGNMENT paragraph_alignment() const;
 
-      DWRITE_READING_DIRECTION reading_direction() const
-      {
-         return static_cast<DWRITE_READING_DIRECTION>(m_readingDirection);
-      }
+      DWRITE_READING_DIRECTION reading_direction() const;
 
-      DWRITE_TEXT_ALIGNMENT text_alignment() const
-      {
-         return static_cast<DWRITE_TEXT_ALIGNMENT>(m_textAlignment);
-      }
+      DWRITE_TEXT_ALIGNMENT text_alignment() const;
 
-      DWRITE_WORD_WRAPPING wrapping() const
-      {
-         return static_cast<DWRITE_WORD_WRAPPING>(m_wrapping);
-      }
+      DWRITE_WORD_WRAPPING wrapping() const;
+
+      friend void swap(TEXT_FORMAT_BUFFER& l,
+                       TEXT_FORMAT_BUFFER& r) noexcept;
+
+      TEXT_FORMAT_BUFFER& operator=(TEXT_FORMAT_BUFFER r) noexcept;
 
       private:
       wchar_t m_fontFamilyName[MAX_FONT_CHARS];

@@ -8,64 +8,38 @@ namespace qgl::graphics::content::buffers
       public:
       RASTERIZER_BUFFER();
 
-      RASTERIZER_BUFFER(const RASTERIZER_BUFFER& r);
+      RASTERIZER_BUFFER(const RASTERIZER_BUFFER&) = default;
 
-      RASTERIZER_BUFFER(RASTERIZER_BUFFER&& r);
+      RASTERIZER_BUFFER(RASTERIZER_BUFFER&&) = default;
 
-      inline D3D12_FILL_MODE fill_mode() const
-      {
-         return static_cast<D3D12_FILL_MODE>(m_fill_mode);
-      }
+      ~RASTERIZER_BUFFER() noexcept = default;
 
-      inline D3D12_CULL_MODE cull_mode() const
-      {
-         return static_cast<D3D12_CULL_MODE>(m_cull_mode);
-      }
+      D3D12_FILL_MODE fill_mode() const;
 
-      inline BOOL front_counter_clockwise() const
-      {
-         return m_isFrontCounterClockwise;
-      }
+      D3D12_CULL_MODE cull_mode() const;
 
-      inline INT depth_bias() const
-      {
-         return m_depthBias;
-      }
+      BOOL front_counter_clockwise() const;
 
-      inline FLOAT depth_bias_clamp() const
-      {
-         return m_depthBiasClamp;
-      }
+      INT depth_bias() const;
 
-      inline FLOAT slope_scaled_depth_bias() const
-      {
-         return m_slopeScaledDepthBias;
-      }
+      FLOAT depth_bias_clamp() const;
 
-      inline BOOL depth_clip() const
-      {
-         return m_isDepthClip;
-      }
+      FLOAT slope_scaled_depth_bias() const;
 
-      inline BOOL multisample() const
-      {
-         return m_isMultisample;
-      }
+      BOOL depth_clip() const;
 
-      inline BOOL antialiased_lines() const
-      {
-         return m_isAntialiasedLine;
-      }
+      BOOL multisample() const;
 
-      inline UINT forced_sample_counit() const
-      {
-         return m_forcedSampleCount;
-      }
+      BOOL antialiased_lines() const;
 
-      inline D3D12_CONSERVATIVE_RASTERIZATION_MODE conservative_rasterization_mode() const
-      {
-         return static_cast<D3D12_CONSERVATIVE_RASTERIZATION_MODE>(m_conservativeRaster);
-      }
+      UINT forced_sample_counit() const;
+
+      D3D12_CONSERVATIVE_RASTERIZATION_MODE conservative_rasterization_mode() const;
+
+      friend void swap(RASTERIZER_BUFFER& l,
+                       RASTERIZER_BUFFER& r) noexcept;
+
+      RASTERIZER_BUFFER& operator=(RASTERIZER_BUFFER r) noexcept;
 
       private:
       float m_depthBiasClamp;

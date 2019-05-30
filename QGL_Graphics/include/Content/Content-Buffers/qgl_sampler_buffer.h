@@ -8,61 +8,36 @@ namespace qgl::graphics::content::buffers
       public:
       SAMPLER_BUFFER();
 
-      SAMPLER_BUFFER(const SAMPLER_BUFFER& r);
+      SAMPLER_BUFFER(const SAMPLER_BUFFER&) = default;
 
-      SAMPLER_BUFFER(SAMPLER_BUFFER&& r);
+      SAMPLER_BUFFER(SAMPLER_BUFFER&&) = default;
 
-      ~SAMPLER_BUFFER() noexcept;
+      ~SAMPLER_BUFFER() noexcept = default;
 
-      D3D12_FILTER filter() const
-      {
-         return static_cast<D3D12_FILTER>(m_filter);
-      }
+      D3D12_FILTER filter() const;
 
-      D3D12_TEXTURE_ADDRESS_MODE address_u() const
-      {
-         return static_cast<D3D12_TEXTURE_ADDRESS_MODE>(m_addressU);
-      }
+      D3D12_TEXTURE_ADDRESS_MODE address_u() const;
 
-      D3D12_TEXTURE_ADDRESS_MODE address_v() const
-      {
-         return static_cast<D3D12_TEXTURE_ADDRESS_MODE>(m_addressV);
-      }
+      D3D12_TEXTURE_ADDRESS_MODE address_v() const;
 
-      D3D12_TEXTURE_ADDRESS_MODE address_w() const
-      {
-         return static_cast<D3D12_TEXTURE_ADDRESS_MODE>(m_addressW);
-      }
+      D3D12_TEXTURE_ADDRESS_MODE address_w() const;
 
-      float mip_lod_bias() const
-      {
-         return m_mipLODBias;
-      }
+      float mip_lod_bias() const;
 
-      D3D12_COMPARISON_FUNC comparision() const
-      {
-         return static_cast<D3D12_COMPARISON_FUNC>(m_comparisonFunction);
-      }
+      D3D12_COMPARISON_FUNC comparision() const;
 
-      const float* border_color() const
-      {
-         return m_borderColor;
-      }
+      const float* border_color() const;
 
-      float min_lod() const
-      {
-         return m_minLOD;
-      }
+      float min_lod() const;
 
-      float max_lod() const
-      {
-         return m_maxLOD;
-      }
+      float max_lod() const;
 
-      uint32_t max_anisotropy() const
-      {
-         return m_maxAnisotropy;
-      }
+      uint32_t max_anisotropy() const;
+
+      friend void swap(SAMPLER_BUFFER& l,
+                       SAMPLER_BUFFER& r) noexcept;
+
+      SAMPLER_BUFFER& operator=(SAMPLER_BUFFER r) noexcept;
 
       private:
       float m_borderColor[4];
