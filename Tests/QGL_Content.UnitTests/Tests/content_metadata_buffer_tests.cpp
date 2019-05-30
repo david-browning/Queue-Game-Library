@@ -41,8 +41,7 @@ namespace QGL_Content_UnitTests
       {
          CONTENT_METADATA_BUFFER m(RESOURCE_TYPES::RESOURCE_TYPE_BRUSH,
                                    CONTENT_LOADER_IDS::CONTENT_LOADER_ID_BRUSH,
-                                   L"Name",
-                                   4);
+                                   L"Name");
 
          Assert::IsTrue(RESOURCE_TYPES::RESOURCE_TYPE_BRUSH ==
                         static_cast<RESOURCE_TYPES>(m.resource_type()),
@@ -232,7 +231,7 @@ namespace QGL_Content_UnitTests
                                    CONTENT_LOADER_IDS::CONTENT_LOADER_ID_BRUSH,
                                    L"Name");
 
-         Assert::IsTrue(m.name() == L"Name",
+         Assert::AreEqual(0, wcscmp(m.name(), L"Name"),
                         L"The name is not correct.");
       }
 
@@ -245,7 +244,7 @@ namespace QGL_Content_UnitTests
                                    CONTENT_LOADER_IDS::CONTENT_LOADER_ID_BRUSH,
                                    L"Name");
          m.name(L"NewName");
-         Assert::IsTrue(m.name() == L"NewName",
+         Assert::AreEqual(0, wcscmp(m.name(), L"NewName"),
                         L"The name is not correct.");
       }
 
@@ -267,7 +266,7 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER m(RESOURCE_TYPES::RESOURCE_TYPE_BRUSH,
                                    CONTENT_LOADER_IDS::CONTENT_LOADER_ID_BRUSH,
                                    L"Name");
-         m.resource_type() = RESOURCE_TYPES::RESOURCE_TYPE_CAMERA;
+         m.resource_type(RESOURCE_TYPES::RESOURCE_TYPE_CAMERA);
 
          Assert::IsTrue(RESOURCE_TYPES::RESOURCE_TYPE_CAMERA ==
                         m.resource_type(),
@@ -292,7 +291,7 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER m(RESOURCE_TYPES::RESOURCE_TYPE_BRUSH,
                                    CONTENT_LOADER_IDS::CONTENT_LOADER_ID_BRUSH,
                                    L"Name");
-         m.loader_id() = CONTENT_LOADER_IDS::CONTENT_LOADER_ID_CAMERA;
+         m.loader_id(CONTENT_LOADER_IDS::CONTENT_LOADER_ID_CAMERA);
 
          Assert::IsTrue(CONTENT_LOADER_IDS::CONTENT_LOADER_ID_CAMERA ==
                         m.loader_id(),

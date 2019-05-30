@@ -83,12 +83,12 @@ namespace qgl::content
       /*
        Returns a reference to the content project's metadata.
        */
-      CONTENT_METADATA_BUFFER& metadata() noexcept;
+      CONTENT_METADATA_BUFFER* metadata() noexcept;
 
       /*
        Returns a const reference to the content project's metadata.
        */
-      const CONTENT_METADATA_BUFFER& metadata() const noexcept;
+      const CONTENT_METADATA_BUFFER* metadata() const noexcept;
 
       /*
        Returns the number of entries in the project.
@@ -98,15 +98,8 @@ namespace qgl::content
       /*
        Constructs and places a project entry at the end.
        */
-      void emplace_back(const content_project_entry_pair::first_type& entry,
-                        const file_string& absPath);
-
-      /*
-       Constructs and places a project entry at the given position.
-       */
-      void emplace(const_iterator position,
-                   const content_project_entry_pair::first_type& entry,
-                   const file_string& absPath);
+      void emplace_back(const content_project_entry_pair::first_type* entry,
+                        const wchar_t* absPath);
 
       /*
        Returns a reference to the idx'th project entry.

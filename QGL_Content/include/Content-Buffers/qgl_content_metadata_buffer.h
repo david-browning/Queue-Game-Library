@@ -25,15 +25,6 @@ namespace qgl::content
       CONTENT_METADATA_BUFFER();
 
       /*
-        The content is visible and does not obey physics.
-        Sets the compiler version to latest.
-       */
-      CONTENT_METADATA_BUFFER(RESOURCE_TYPES type,
-                              CONTENT_LOADER_IDS loaderID,
-                              const wchar_t* name,
-                              size_t nameLength);
-
-      /*
        The content is visible and does not obey physics.
        Sets the compiler version to latest.
        Creates a new GUID.
@@ -42,7 +33,7 @@ namespace qgl::content
        */
       CONTENT_METADATA_BUFFER(RESOURCE_TYPES type,
                               CONTENT_LOADER_IDS loaderID,
-                              const winrt::hstring& name);
+                              const wchar_t* name);
 
       /*
        Copy constructor.
@@ -62,118 +53,65 @@ namespace qgl::content
       /*
        Returns true if the content is supposed to be visible.
        */
-      inline bool content_visible() const
-      {
-         return (m_flags1 & 0x08) != 0;
-      }
+      bool content_visible() const noexcept;
 
       /*
        Changes the visibility state.
        */
-      inline void content_visible(bool isVisible)
-      {
-         if (isVisible)
-         {
-            m_flags1 |= 0x08;
-         }
-         else
-         {
-            m_flags1 &= ~0x08;
-         }
-      }
+      void content_visible(bool isVisible) noexcept;
 
       /*
        Returns true if the content should obey physics.
        */
-      inline bool obey_physics() const
-      {
-         return (m_flags1 & 0x04) != 0;
-      }
+      bool obey_physics() const noexcept;
 
       /*
        Changes whether the content should obey physics.
        */
-      inline void obey_physics(bool obey)
-      {
-         if (obey)
-         {
-            m_flags1 |= 0x04;
-         }
-         else
-         {
-            m_flags1 &= ~0x04;
-         }
-      }
+      void obey_physics(bool obey) noexcept;
 
       /*
        Returns the content's name.
        */
-      winrt::hstring name() const
-      {
-         return winrt::hstring(m_name);
-      }
+      const wchar_t* name() const noexcept;
 
       /*
        Sets the content's name.
        Throws if the name is too long.
        */
-      void name(const winrt::hstring& n);
+      void name(const wchar_t* const n);
 
       /*
        Returns the type of content this is.
        */
-      inline RESOURCE_TYPES resource_type() const
-      {
-         return static_cast<RESOURCE_TYPES>(m_type);
-      }
+      RESOURCE_TYPES resource_type() const noexcept;
 
-      /*
-       Returns a reference to the resource type.
-       */
-      auto& resource_type()
-      {
-         return m_type;
-      }
+      void resource_type(RESOURCE_TYPES t) noexcept;
 
       /*
        Returns the loader ID this content uses.
        */
-      inline CONTENT_LOADER_IDS loader_id() const
-      {
-         return static_cast<CONTENT_LOADER_IDS>(m_loaderID);
-      }
+      CONTENT_LOADER_IDS loader_id() const noexcept;
 
       /*
        Returns a reference to the loader ID.
        */
-      auto& loader_id()
-      {
-         return m_loaderID;
-      }
+      void loader_id(CONTENT_LOADER_IDS l) noexcept;
 
       /*
        Returns the compiler version this content was compiled for.
        */
-      inline qgl::qgl_version_t version() const
-      {
-         return m_compilerVersion;
-      }
+      qgl::qgl_version_t version() const noexcept;
             
       /*
        Returns the compiler version this content was compiled for.
        */
-      inline qgl::qgl_version_t& version()
-      {
-         return m_compilerVersion;
-      }
+      void version(qgl::qgl_version_t v) noexcept;
 
       /*
        Returns a const reference to the content's GUID.
        */
-      inline const GUID& guid() const
-      {
-         return m_guid;
-      }
+      const GUID* guid() const noexcept;
 
       /*
        Returns the content's GUID as a string.

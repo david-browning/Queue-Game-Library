@@ -25,6 +25,7 @@ namespace QGL_Content_UnitTests
       {
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\OpenNewFileWrite.txt");
+         DeleteFile(newFilePath.c_str());
 
          file_handle handle;
          try
@@ -59,15 +60,13 @@ namespace QGL_Content_UnitTests
                         L" be ACCESS_DENIED.");
 
          handle.close();
-
-         DeleteFile(newFilePath.c_str());
-
       }
 
       TEST_METHOD(OpenNewFileReadWrite)
       {
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\OpenNewFileReadWrite.txt");
+         DeleteFile(newFilePath.c_str());
 
          file_handle handle;
          try
@@ -95,8 +94,6 @@ namespace QGL_Content_UnitTests
          Assert::IsTrue(result != 0, L"Failed to read the file.");
 
          handle.close();
-
-         DeleteFile(newFilePath.c_str());
       }
 
       TEST_METHOD(OpenStorageFileReadWrite)
@@ -115,7 +112,6 @@ namespace QGL_Content_UnitTests
          file_handle handle;
          try
          {
-            file_handle handle;
             open_file_readwrite(f, &handle);
          }
          catch (winrt::hresult_error&)
@@ -134,7 +130,9 @@ namespace QGL_Content_UnitTests
          Assert::IsTrue(result > 0, L"Failed to write to the file.");
 
          char readBack[4];
-         result = ReadFile(handle.get(), readBack, 4, &written, nullptr);
+         OVERLAPPED ovr;
+         make_overlapped(0, &ovr);
+         result = ReadFile(handle.get(), readBack, 4, &written, &ovr);
 
          Assert::IsTrue(result != 0, L"Failed to read the file.");
 

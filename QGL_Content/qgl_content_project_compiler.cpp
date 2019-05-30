@@ -10,15 +10,16 @@ namespace qgl::content
                                 content_file& cf)
    {
       CONTENT_FILE_HEADER_BUFFER hdr(proj.metadata());
-      cf.header() = hdr;
+      (*cf.header()) = hdr;
 
       //Fill the dictionary and 
       for (const auto& entry : proj)
       {
          file_handle bufferHandle;
          open_file_read(entry.second.c_str(), &bufferHandle);
-         auto buffer = file_data(&bufferHandle);
-         cf.push_back(entry.first, buffer);
+         auto rawBuffer = file_data(&bufferHandle);
+         DATA_CONTENT_ENTRY buffer(rawBuffer.data(), rawBuffer.size());
+         cf.push_back(&entry.first, &buffer);
       }
 
       cf.flush();

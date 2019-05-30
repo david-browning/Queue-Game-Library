@@ -6,15 +6,15 @@
 std::shared_ptr<qgl::content::content_store_config>
 qgl::content::content_store_config_loader::operator()(const content_file& f)
 {
-   auto& headerInfo = f.header().metadata();
+   auto headerInfo = f.header()->metadata();
    check_loader_and_resource<RESOURCE_TYPES::RESOURCE_TYPE_DESCRIPTION,
       CONTENT_LOADER_IDS::CONTENT_LOADER_ID_STORE_CONFIG>(headerInfo);
 
    for(size_t i = 0; i <f.size(); i++)
    {
       const auto& entry = f[i];
-      auto& info = entry.metadata();
-      switch (info.resource_type())
+      auto info = entry.metadata();
+      switch (info->resource_type())
       {
          case RESOURCE_TYPES::RESOURCE_TYPE_STRING:
          {

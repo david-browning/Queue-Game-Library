@@ -9,14 +9,14 @@ namespace qgl::content
     Throws a runtime_error if the metadata loader ID is not the expected ID.
     */
    template<CONTENT_LOADER_IDS expected>
-   void check_loader_id(const CONTENT_METADATA_BUFFER& info)
+   void check_loader_id(const CONTENT_METADATA_BUFFER* info)
    {
-      if (info.loader_id() != expected)
+      if (info->loader_id() != expected)
       {
          #ifdef DEBUG
          std::wstringstream errorStream;
          errorStream << "Incorrect content loader ID. Expected " <<
-            expected << ". Actual: " << info.loader_id() << std::endl;
+            expected << ". Actual: " << info->loader_id() << std::endl;
          OutputDebugString(errorStream.str().c_str());
          #endif
          throw std::runtime_error("The content loader ID is not correct.");
@@ -30,14 +30,14 @@ namespace qgl::content
     resource type.
     */
    template<RESOURCE_TYPES expected>
-   void check_resource_type(const CONTENT_METADATA_BUFFER& info)
+   void check_resource_type(const CONTENT_METADATA_BUFFER* info)
    {
-      if (info.resource_type() != expected)
+      if (info->resource_type() != expected)
       {
          #ifdef DEBUG
          std::wstringstream errorStream;
          errorStream << "Incorrect resource type. Expected " << expected <<
-            ". Actual: " << info.resource_type() << std::endl;
+            ". Actual: " << info->resource_type() << std::endl;
          OutputDebugString(errorStream.str().c_str());
          #endif
          throw std::runtime_error("The resource type is not correct.");
@@ -49,17 +49,17 @@ namespace qgl::content
     expected resource type and loader ID.
     */
    template<RESOURCE_TYPES expectedResource, CONTENT_LOADER_IDS expectedLoader>
-   void check_loader_and_resource(const CONTENT_METADATA_BUFFER& info)
+   void check_loader_and_resource(const CONTENT_METADATA_BUFFER* info)
    {
-      if (info.resource_type() != expectedResource ||
-          info.loader_id() != expectedLoader)
+      if (info->resource_type() != expectedResource ||
+          info->loader_id() != expectedLoader)
       {
          #ifdef DEBUG
          std::wstringstream errorStream;
          errorStream << "Incorrect content loader ID or resource ID.\n"
             "Expected resource: " << expectedResource << ". Actual: " <<
-            info.resource_type() << "\nExpected loader id: " <<
-            expectedLoader << ". Actual: " << info.loader_id() << std::endl;
+            info->resource_type() << "\nExpected loader id: " <<
+            expectedLoader << ". Actual: " << info->loader_id() << std::endl;
          OutputDebugString(errorStream.str().c_str());
          #endif
          throw std::runtime_error(

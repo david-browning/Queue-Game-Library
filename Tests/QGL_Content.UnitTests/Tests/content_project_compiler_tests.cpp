@@ -38,7 +38,7 @@ namespace QGL_Content_UnitTests
          //Create a project.
          {
             content_project project(newFilePath.c_str());
-            project.emplace_back(entry1Meta, entry1Path);
+            project.emplace_back(&entry1Meta, entry1Path.c_str());
             project.flush();
 
             //Compile the project file.
@@ -51,7 +51,7 @@ namespace QGL_Content_UnitTests
          for(size_t i = 0; i < compiledFile.size(); i++)
          {
             const auto& dictEntry = compiledFile[i];
-            Assert::IsTrue(dictEntry.metadata() == entry1Meta,
+            Assert::IsTrue(*dictEntry.metadata() == entry1Meta,
                            L"The entry metadata is not correct.");
          }
       }
@@ -85,9 +85,9 @@ namespace QGL_Content_UnitTests
                CreationCollisionOption::ReplaceExisting);
 
             content_project project(projectF);
-            project.metadata() = projectMeta;
-            project.emplace_back(entry1Meta, entry1Path);
-            project.emplace_back(entry1Meta, entry1Path);
+            *project.metadata() = projectMeta;
+            project.emplace_back(&entry1Meta, entry1Path.c_str());
+            project.emplace_back(&entry1Meta, entry1Path.c_str());
             project.flush();
 
             //Compile it
@@ -112,12 +112,12 @@ namespace QGL_Content_UnitTests
          content_file file(contentF);
 
          //Verify the header metadata is correct.
-         Assert::IsTrue(file.header().metadata() == projectMeta,
+         Assert::IsTrue(*file.header()->metadata() == projectMeta,
                         L"The metadata is not correct.");
 
          for(size_t i = 0; i < file.size(); i++)
          {
-            Assert::IsTrue(file[i].metadata() == entry1Meta,
+            Assert::IsTrue(*file[i].metadata() == entry1Meta,
                            L"Entry 1 meta is not correct.");
          }
       }

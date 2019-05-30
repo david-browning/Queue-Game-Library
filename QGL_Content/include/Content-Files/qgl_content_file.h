@@ -73,21 +73,21 @@ namespace qgl::content
        */
       void flush();
 
-      void push_back(const CONTENT_METADATA_BUFFER& meta,
-                     const DATA_CONTENT_ENTRY& buff);
+      void push_back(const CONTENT_METADATA_BUFFER* meta,
+                     const DATA_CONTENT_ENTRY* buff);
 
-      void push_back(const CONTENT_METADATA_BUFFER& meta,
-                     const SHARED_CONTENT_ENTRY& buff);
+      void push_back(const CONTENT_METADATA_BUFFER* meta,
+                     const SHARED_CONTENT_ENTRY* buff);
 
       /*
        Returns a const reference to the file's header.
        */
-      const CONTENT_FILE_HEADER_BUFFER& header() const noexcept;
+      const CONTENT_FILE_HEADER_BUFFER* header() const noexcept;
 
       /*
        Returns a reference to the file's header.
        */
-      CONTENT_FILE_HEADER_BUFFER& header();
+      CONTENT_FILE_HEADER_BUFFER* header();
 
       /*
        Returns the number of items in the dictionary.

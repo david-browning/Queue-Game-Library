@@ -2,113 +2,181 @@
 #include "include/Content-Buffers/qgl_content_metadata_buffer.h"
 #include <objbase.h>
 
-qgl::content::CONTENT_METADATA_BUFFER::CONTENT_METADATA_BUFFER() :
-   m_flags1(DEFAULT_FLAGS),
-   m_reserved1(0),
-   m_reserved2(0),
-   m_reserved3(0),
-   m_reserved4(0),
-   m_type(RESOURCE_TYPES::RESOURCE_TYPE_UNKNOWN),
-   m_loaderID(CONTENT_LOADER_IDS::CONTENT_LOADER_ID_UNKNOWN),
-   m_compilerVersion(qgl::QGL_VERSION_LATEST)
+namespace qgl::content
 {
-   MemorySet(m_name, L'\0', CONTENT_MAX_NAME_LEN);
-   winrt::check_hresult(CoCreateGuid(&m_guid));
-}
-
-qgl::content::CONTENT_METADATA_BUFFER::CONTENT_METADATA_BUFFER(
-   RESOURCE_TYPES type,
-   CONTENT_LOADER_IDS loaderID,
-   const wchar_t* name,
-   size_t nameLength) :
-   m_flags1(DEFAULT_FLAGS),
-   m_reserved1(0),
-   m_reserved2(0),
-   m_reserved3(0),
-   m_reserved4(0),
-   m_type(type),
-   m_loaderID(loaderID),
-   m_compilerVersion(qgl::QGL_VERSION_LATEST)
-{
-   if (nameLength <= CONTENT_MAX_NAME_LEN)
+   CONTENT_METADATA_BUFFER::CONTENT_METADATA_BUFFER() :
+      m_flags1(DEFAULT_FLAGS),
+      m_reserved1(0),
+      m_reserved2(0),
+      m_reserved3(0),
+      m_reserved4(0),
+      m_type(RESOURCE_TYPES::RESOURCE_TYPE_UNKNOWN),
+      m_loaderID(CONTENT_LOADER_IDS::CONTENT_LOADER_ID_UNKNOWN),
+      m_compilerVersion(qgl::QGL_VERSION_LATEST)
    {
-      MemoryCopy(m_name, name, nameLength);
-      m_name[nameLength] = L'\0';
-   }
-   else
-   {
-      throw std::domain_error("The name is too long.");
+      MemorySet(m_name, L'\0', CONTENT_MAX_NAME_LEN);
+      winrt::check_hresult(CoCreateGuid(&m_guid));
    }
 
-   winrt::check_hresult(CoCreateGuid(&m_guid));
-}
-
-qgl::content::CONTENT_METADATA_BUFFER::CONTENT_METADATA_BUFFER(
-   RESOURCE_TYPES type,
-   CONTENT_LOADER_IDS loaderID,
-   const winrt::hstring& name) :
-   CONTENT_METADATA_BUFFER(type, loaderID, name.c_str(), name.size())
-{
-
-}
-
-qgl::content::CONTENT_METADATA_BUFFER::CONTENT_METADATA_BUFFER(
-   const CONTENT_METADATA_BUFFER& r) :
-   m_flags1(r.m_flags1),
-   m_reserved1(r.m_reserved1),
-   m_reserved2(r.m_reserved2),
-   m_reserved3(r.m_reserved3),
-   m_reserved4(r.m_reserved4),
-   m_type(r.m_type),
-   m_loaderID(r.m_loaderID),
-   m_compilerVersion(r.version())
-{
-   MemoryCopy<wchar_t>(m_name, r.m_name, CONTENT_MAX_NAME_LEN);
-   MemoryCopy<GUID>(&m_guid, &r.m_guid, 1);
-}
-
-qgl::content::CONTENT_METADATA_BUFFER::CONTENT_METADATA_BUFFER(
-   CONTENT_METADATA_BUFFER&& r) :
-   m_flags1(r.m_flags1),
-   m_reserved1(r.m_reserved1),
-   m_reserved2(r.m_reserved2),
-   m_reserved3(r.m_reserved3),
-   m_reserved4(r.m_reserved4),
-   m_type(r.m_type),
-   m_loaderID(r.m_loaderID),
-   m_compilerVersion(r.version())
-{
-   MemoryCopy<wchar_t>(m_name, r.m_name, CONTENT_MAX_NAME_LEN);
-   MemoryCopy<GUID>(&m_guid, &r.m_guid, 1);
-}
-
-void qgl::content::CONTENT_METADATA_BUFFER::name(const winrt::hstring& n)
-{
-   auto len = n.size();
-   if (len <= CONTENT_MAX_NAME_LEN)
+   CONTENT_METADATA_BUFFER::CONTENT_METADATA_BUFFER(
+      RESOURCE_TYPES type,
+      CONTENT_LOADER_IDS loaderID,
+      const wchar_t* name) :
+      m_flags1(DEFAULT_FLAGS),
+      m_reserved1(0),
+      m_reserved2(0),
+      m_reserved3(0),
+      m_reserved4(0),
+      m_type(type),
+      m_loaderID(loaderID),
+      m_compilerVersion(qgl::QGL_VERSION_LATEST)
    {
-      MemoryCopy<wchar_t>(m_name, n.c_str(), len);
-      m_name[len] = L'\0';
+      auto nameLength = MemoryLength(name, L'\0');
+      if (nameLength <= CONTENT_MAX_NAME_LEN)
+      {
+         MemoryCopy(m_name, name, nameLength);
+         m_name[nameLength] = L'\0';
+      }
+      else
+      {
+         throw std::domain_error("The name is too long.");
+      }
+
+      winrt::check_hresult(CoCreateGuid(&m_guid));
    }
-   else
-   {
-      throw std::domain_error("The name is too long.");
-   }
-}
 
-winrt::hstring qgl::content::CONTENT_METADATA_BUFFER::guid_str() const
-{
-   OLECHAR* guidStr = nullptr;
-   auto hr = StringFromCLSID(m_guid, &guidStr);
-   if (SUCCEEDED(hr))
+   CONTENT_METADATA_BUFFER::CONTENT_METADATA_BUFFER(
+      const CONTENT_METADATA_BUFFER& r) :
+      m_flags1(r.m_flags1),
+      m_reserved1(r.m_reserved1),
+      m_reserved2(r.m_reserved2),
+      m_reserved3(r.m_reserved3),
+      m_reserved4(r.m_reserved4),
+      m_type(r.m_type),
+      m_loaderID(r.m_loaderID),
+      m_compilerVersion(r.version())
    {
-      winrt::hstring ret{ guidStr };
-      CoTaskMemFree(guidStr);
-      return ret;
+      MemoryCopy<wchar_t>(m_name, r.m_name, CONTENT_MAX_NAME_LEN);
+      MemoryCopy<GUID>(&m_guid, &r.m_guid, 1);
    }
-   else
+
+   CONTENT_METADATA_BUFFER::CONTENT_METADATA_BUFFER(
+      CONTENT_METADATA_BUFFER&& r) :
+      m_flags1(r.m_flags1),
+      m_reserved1(r.m_reserved1),
+      m_reserved2(r.m_reserved2),
+      m_reserved3(r.m_reserved3),
+      m_reserved4(r.m_reserved4),
+      m_type(r.m_type),
+      m_loaderID(r.m_loaderID),
+      m_compilerVersion(r.version())
    {
-      CoTaskMemFree(guidStr);
-      winrt::throw_hresult(hr);
+      MemoryCopy<wchar_t>(m_name, r.m_name, CONTENT_MAX_NAME_LEN);
+      MemoryCopy<GUID>(&m_guid, &r.m_guid, 1);
+   }
+
+   bool CONTENT_METADATA_BUFFER::content_visible() const noexcept
+   {
+      return (m_flags1 & 0x08) != 0;
+   }
+
+   void CONTENT_METADATA_BUFFER::content_visible(bool isVisible) noexcept
+   {
+      if (isVisible)
+      {
+         m_flags1 |= 0x08;
+      }
+      else
+      {
+         m_flags1 &= ~0x08;
+      }
+   }
+
+   bool CONTENT_METADATA_BUFFER::obey_physics() const noexcept
+   {
+      return (m_flags1 & 0x04) != 0;
+   }
+
+   void CONTENT_METADATA_BUFFER::obey_physics(bool obey) noexcept
+   {
+      if (obey)
+      {
+         m_flags1 |= 0x04;
+      }
+      else
+      {
+         m_flags1 &= ~0x04;
+      }
+   }
+
+   const wchar_t* CONTENT_METADATA_BUFFER::name() const noexcept
+   {
+      return m_name;
+   }
+
+   void CONTENT_METADATA_BUFFER::name(const wchar_t* const n)
+   {
+      auto len = wcslen(n);
+      if (len <= CONTENT_MAX_NAME_LEN)
+      {
+         MemoryCopy<wchar_t>(m_name, n, len);
+         m_name[len] = L'\0';
+      }
+      else
+      {
+         throw std::domain_error("The name is too long.");
+      }
+   }
+
+   RESOURCE_TYPES CONTENT_METADATA_BUFFER::resource_type() const noexcept
+   {
+      return static_cast<RESOURCE_TYPES>(m_type);
+   }
+
+   void CONTENT_METADATA_BUFFER::resource_type(RESOURCE_TYPES t) noexcept
+   {
+      m_type = t;
+   }
+
+   CONTENT_LOADER_IDS CONTENT_METADATA_BUFFER::loader_id() const noexcept
+   {
+      return static_cast<CONTENT_LOADER_IDS>(m_loaderID);
+   }
+
+   void CONTENT_METADATA_BUFFER::loader_id(CONTENT_LOADER_IDS l) noexcept
+   {
+      m_loaderID = l;
+   }
+
+   qgl::qgl_version_t CONTENT_METADATA_BUFFER::version() const noexcept
+   {
+      return m_compilerVersion;
+   }
+
+   void CONTENT_METADATA_BUFFER::version(qgl::qgl_version_t v) noexcept
+   {
+      m_compilerVersion = v;
+   }
+
+   const GUID* CONTENT_METADATA_BUFFER::guid() const noexcept
+   {
+      return &m_guid;
+   }
+
+   winrt::hstring CONTENT_METADATA_BUFFER::guid_str() const
+   {
+      OLECHAR* guidStr = nullptr;
+      auto hr = StringFromCLSID(m_guid, &guidStr);
+      if (SUCCEEDED(hr))
+      {
+         winrt::hstring ret{ guidStr };
+         CoTaskMemFree(guidStr);
+         return ret;
+      }
+      else
+      {
+         CoTaskMemFree(guidStr);
+         winrt::throw_hresult(hr);
+      }
    }
 }

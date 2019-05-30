@@ -45,19 +45,19 @@ namespace qgl::content
 
       ~impl() noexcept = default;
 
-      void push_back(const CONTENT_METADATA_BUFFER& meta,
-                     const DATA_CONTENT_ENTRY& buff)
+      void push_back(const CONTENT_METADATA_BUFFER* meta,
+                     const DATA_CONTENT_ENTRY* buff)
       {
          content_variant_entry cont(buff);
-         CONTENT_DICTIONARY_ENTRY_BUFFER entry(buff.size(), meta);
+         CONTENT_DICTIONARY_ENTRY_BUFFER entry(buff->size(), meta);
          entry.shared(false);
 
          m_entryDataToWrite.push_back(std::move(cont));
          m_dict.push_back(std::move(entry));
       }
 
-      void push_back(const CONTENT_METADATA_BUFFER& meta,
-                     const SHARED_CONTENT_ENTRY& buff)
+      void push_back(const CONTENT_METADATA_BUFFER* meta,
+                     const SHARED_CONTENT_ENTRY* buff)
       {
          content_variant_entry cont(buff);
          CONTENT_DICTIONARY_ENTRY_BUFFER entry(shared_entry_data_size(buff),
@@ -74,14 +74,14 @@ namespace qgl::content
          m_entryDataToWrite.pop_back();
       }
 
-      const CONTENT_FILE_HEADER_BUFFER& header() const noexcept
+      const CONTENT_FILE_HEADER_BUFFER* header() const noexcept
       {
-         return m_header;
+         return &m_header;
       }
 
-      CONTENT_FILE_HEADER_BUFFER& header()
+      CONTENT_FILE_HEADER_BUFFER* header()
       {
-         return m_header;
+         return &m_header;
       }
 
       size_t size() const noexcept
@@ -181,13 +181,13 @@ namespace qgl::content
             if (dictEntry.shared())
             {
                auto sharedContent = load_shared_data_path(&m_handle, dictEntry);
-               content_variant_entry cbt(sharedContent);
+               content_variant_entry cbt(&sharedContent);
                m_entryDataToWrite.push_back(cbt);
             }
             else
             {
                auto content = load_content_data(&m_handle, dictEntry);
-               content_variant_entry cbt(content);
+               content_variant_entry cbt(&content);
                m_entryDataToWrite.push_back(cbt);
             }
 
@@ -251,24 +251,24 @@ namespace qgl::content
       m_impl_p->flush();
    }
 
-   void content_file::push_back(const CONTENT_METADATA_BUFFER& meta,
-                                const DATA_CONTENT_ENTRY& buff)
+   void content_file::push_back(const CONTENT_METADATA_BUFFER* meta,
+                                const DATA_CONTENT_ENTRY* buff)
    {
       m_impl_p->push_back(meta, buff);
    }
 
-   void content_file::push_back(const CONTENT_METADATA_BUFFER& meta,
-                                const SHARED_CONTENT_ENTRY& buff)
+   void content_file::push_back(const CONTENT_METADATA_BUFFER* meta,
+                                const SHARED_CONTENT_ENTRY* buff)
    {
       m_impl_p->push_back(meta, buff);
    }
 
-   const CONTENT_FILE_HEADER_BUFFER& content_file::header() const noexcept
+   const CONTENT_FILE_HEADER_BUFFER* content_file::header() const noexcept
    {
       return m_impl_p->header();
    }
 
-   CONTENT_FILE_HEADER_BUFFER& content_file::header()
+   CONTENT_FILE_HEADER_BUFFER* content_file::header()
    {
       return m_impl_p->header();
    }

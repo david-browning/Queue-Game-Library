@@ -17,9 +17,7 @@ namespace qgl::content
        storage. 
        Throws std::invalid_argument is the string is not the correct form.
        */
-      SHARED_CONTENT_ENTRY(const std::wstring& str);
-
-      SHARED_CONTENT_ENTRY(const wchar_t* str, size_t len);
+      SHARED_CONTENT_ENTRY(const wchar_t* str);
 
       /*
        Copy Constructor.

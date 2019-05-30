@@ -72,6 +72,11 @@ namespace qgl::content
          return *this;
       }
 
+      DATA_CONTENT_ENTRY operator=(const std::vector<uint8_t>& r)
+      {
+         return DATA_CONTENT_ENTRY(r.data(), r.size());
+      }
+
       /*
        Equality Operator.
        */

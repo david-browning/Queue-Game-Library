@@ -22,18 +22,17 @@ namespace qgl::content
       /*
        Creates a file header using the given metadata.
        */
-      CONTENT_FILE_HEADER_BUFFER(const CONTENT_METADATA_BUFFER& metadata);
+      CONTENT_FILE_HEADER_BUFFER(const CONTENT_METADATA_BUFFER* metadata);
 
       /*
        Copy constructor.
        */
-      CONTENT_FILE_HEADER_BUFFER(
-          const CONTENT_FILE_HEADER_BUFFER& r) = default;
+      CONTENT_FILE_HEADER_BUFFER(const CONTENT_FILE_HEADER_BUFFER&) = default;
 
       /*
        Move constructor.
        */
-      CONTENT_FILE_HEADER_BUFFER(CONTENT_FILE_HEADER_BUFFER&& r) = default;
+      CONTENT_FILE_HEADER_BUFFER(CONTENT_FILE_HEADER_BUFFER&&) = default;
 
       /*
        Destructor. Do not make virtual.
@@ -43,19 +42,13 @@ namespace qgl::content
       /*
        Returns a const reference to the metadata.
        */
-      inline const CONTENT_METADATA_BUFFER& metadata() const
-      {
-         return m_metadata;
-      }
+      const CONTENT_METADATA_BUFFER* metadata() const noexcept;
 
       /*
        The dictionary always comes after the file header. This should always
        be sizeof(*this)
        */
-      auto dictionary_offset() const
-      {
-         return m_offset;
-      }
+      uint64_t dictionary_offset() const noexcept;
 
       friend void swap(CONTENT_FILE_HEADER_BUFFER& first,
                        CONTENT_FILE_HEADER_BUFFER& second) noexcept

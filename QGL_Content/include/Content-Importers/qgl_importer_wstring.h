@@ -45,11 +45,13 @@ namespace qgl::content
          static constexpr RESOURCE_TYPES rType =
             RESOURCE_TYPES::RESOURCE_TYPE_STRING;
 
-         static CONTENT_METADATA_BUFFER info(rType, this->id(), objName);
+         static CONTENT_METADATA_BUFFER info(rType, 
+                                             this->id(), 
+                                             objName.c_str());
 
          return
             CONTENT_DICTIONARY_ENTRY_BUFFER(data.size() * sizeof(wchar_t),
-                                            info,
+                                            &info,
                                             offset);
       }
    };

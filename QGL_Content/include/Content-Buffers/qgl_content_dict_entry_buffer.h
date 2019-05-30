@@ -21,9 +21,10 @@ namespace qgl::content
 
       /*
        Flags are set to default.
+       Copies the metadata buffer to internal storage.
        */
       CONTENT_DICTIONARY_ENTRY_BUFFER(size_t entrySize,
-                                      const CONTENT_METADATA_BUFFER& entryInfo,
+                                      const CONTENT_METADATA_BUFFER* entryInfo,
                                       size_t entryOffset = -1);
 
       /*
@@ -46,46 +47,26 @@ namespace qgl::content
       /*
        Returns the offset, in bytes, to the entry's data.
        */
-      inline size_t offset() const noexcept
-      {
-         return static_cast<size_t>(m_offset);
-      }
+      size_t offset() const noexcept;
 
       /*
        Returns the size, in bytes, of the entry's data.
        */
-      inline size_t size() const noexcept
-      {
-         return static_cast<size_t>(m_size);
-      }
+      size_t size() const noexcept;
 
       /*
        Returns the data's flags.
        */
-      inline auto flags() const noexcept
-      {
-         return m_flags;
-      }
+      uint64_t flags() const noexcept;
 
-      inline bool shared() const noexcept
-      {
-         return (m_flags & IS_SHARED_FLAG) != 0;
-      }
+      bool shared() const noexcept;
 
-      void shared(bool value) noexcept
-      {
-         auto bit = static_cast<uint32_t>(value ? 1 : 0);
-         auto oldFlags = m_flags & ~IS_SHARED_FLAG;
-         m_flags = oldFlags | (bit << 31);
-      }
+      void shared(bool value) noexcept;
 
       /*
        Returns a reference to the content's metadata.
        */
-      inline const CONTENT_METADATA_BUFFER& metadata() const noexcept
-      {
-         return m_info;
-      }
+      const CONTENT_METADATA_BUFFER* metadata() const noexcept;
 
       friend void swap(CONTENT_DICTIONARY_ENTRY_BUFFER& first,
                        CONTENT_DICTIONARY_ENTRY_BUFFER& second) noexcept

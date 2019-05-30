@@ -42,7 +42,7 @@ namespace winrt::QGL_Projection::implementation
    {
       if (m_metadata.name() != value)
       {
-         m_metadata.name(value);
+         m_metadata.name(value.c_str());
          m_propertyChanged(*this,
                            PropertyChangedEventArgs{ L"ContentName" });
       }
@@ -57,7 +57,8 @@ namespace winrt::QGL_Projection::implementation
    {
       if (m_metadata.resource_type() != value)
       {
-         m_metadata.resource_type() = value;
+         m_metadata.resource_type(
+            static_cast<qgl::content::RESOURCE_TYPES>(value));
          m_propertyChanged(*this,
                            PropertyChangedEventArgs{ L"ResourceType" });
       }
@@ -72,7 +73,8 @@ namespace winrt::QGL_Projection::implementation
    {
       if (m_metadata.loader_id() != value)
       {
-         m_metadata.loader_id() = value;
+         m_metadata.loader_id(
+            static_cast<qgl::content::CONTENT_LOADER_IDS>(value));
          m_propertyChanged(*this,
                            PropertyChangedEventArgs{ L"ContentLoader" });
       }
@@ -87,7 +89,7 @@ namespace winrt::QGL_Projection::implementation
    {
       if (m_metadata.version() != value)
       {
-         m_metadata.version() = value;
+         m_metadata.version(value);
          m_propertyChanged(*this,
                            PropertyChangedEventArgs{ L"CompilerVersion" });
       }
@@ -95,7 +97,7 @@ namespace winrt::QGL_Projection::implementation
 
    winrt::guid ContentMetadata::Guid()
    {
-      return m_metadata.guid();
+      return *m_metadata.guid();
    }
 
    bool ContentMetadata::Equals(QGL_Projection::ContentMetadata const& m)

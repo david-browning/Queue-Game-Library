@@ -31,26 +31,17 @@ namespace qgl::content
      /*
       Returns the number of items in the dictionary.
       */
-      inline size_t count() const noexcept
-      {
-         return static_cast<size_t>(m_count);
-      }
+      size_t count() const noexcept;
 
       /*
        Returns the size, in bytes, of a dictionary entry.
        */
-      inline size_t entry_size() const noexcept
-      {
-         return static_cast<size_t>(m_entrySize);
-      }
+      size_t entry_size() const noexcept;
 
       /*
        Returns the dictionary flags.
        */
-      inline auto flags() const noexcept
-      {
-         return m_flags;
-      }
+      uint64_t flags() const noexcept;
 
       friend void swap(CONTENT_DICTIONARY_METADATA_BUFFER& first,
                        CONTENT_DICTIONARY_METADATA_BUFFER& second) noexcept

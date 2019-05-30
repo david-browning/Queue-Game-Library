@@ -12,23 +12,23 @@ namespace QGL_Content_UnitTests
       TEST_METHOD(DefaultConstructor)
       {
          CONTENT_FILE_HEADER_BUFFER hdr;
-         const auto& m = hdr.metadata();
+         const auto m = hdr.metadata();
 
          Assert::IsTrue(CONTENT_LOADER_IDS::CONTENT_LOADER_ID_UNKNOWN ==
-                        static_cast<CONTENT_LOADER_IDS>(m.loader_id()),
+                        static_cast<CONTENT_LOADER_IDS>(m->loader_id()),
                         L"The loader should be unknown.");
 
-         Assert::IsTrue(winrt::hstring() == m.name(),
+         Assert::IsTrue(winrt::hstring() == m->name(),
                         L"The name should be empty.");
 
          Assert::AreEqual(qgl::QGL_VERSION_LATEST,
-                          m.version(),
+                          m->version(),
                           L"The version is not correct.");
 
-         Assert::IsTrue(m.content_visible(),
+         Assert::IsTrue(m->content_visible(),
                         L"The content should be visible.");
 
-         Assert::IsFalse(m.obey_physics(),
+         Assert::IsFalse(m->obey_physics(),
                          L"The content should not obey physics.");
 
 
@@ -42,9 +42,9 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER m(RESOURCE_TYPES::RESOURCE_TYPE_BRUSH,
                                    CONTENT_LOADER_IDS::CONTENT_LOADER_ID_BRUSH,
                                    L"Name");
-         CONTENT_FILE_HEADER_BUFFER hdr(m);
+         CONTENT_FILE_HEADER_BUFFER hdr(&m);
 
-         Assert::IsTrue(m == hdr.metadata(),
+         Assert::IsTrue(m == *hdr.metadata(),
                         L"The metadata is not default.");
 
          Assert::AreEqual(sizeof(CONTENT_FILE_HEADER_BUFFER),
@@ -57,10 +57,10 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER m(RESOURCE_TYPES::RESOURCE_TYPE_BRUSH,
                                    CONTENT_LOADER_IDS::CONTENT_LOADER_ID_BRUSH,
                                    L"Name");
-         CONTENT_FILE_HEADER_BUFFER hdr(m);
+         CONTENT_FILE_HEADER_BUFFER hdr(&m);
          CONTENT_FILE_HEADER_BUFFER hdrCopy(hdr);
 
-         Assert::IsTrue(hdr.metadata() == hdrCopy.metadata(),
+         Assert::IsTrue(*hdr.metadata() == *hdrCopy.metadata(),
                         L"The metadatas are not equal.");
 
          Assert::AreEqual(hdr.dictionary_offset(), hdrCopy.dictionary_offset(),
@@ -75,11 +75,11 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER m(RESOURCE_TYPES::RESOURCE_TYPE_BRUSH,
                                    CONTENT_LOADER_IDS::CONTENT_LOADER_ID_BRUSH,
                                    L"Name");
-         CONTENT_FILE_HEADER_BUFFER hdr(m);
+         CONTENT_FILE_HEADER_BUFFER hdr(&m);
          CONTENT_FILE_HEADER_BUFFER hdrCopy(hdr);
          CONTENT_FILE_HEADER_BUFFER hdrMove(std::move(hdrCopy));
 
-         Assert::IsTrue(hdr.metadata() == hdrMove.metadata(),
+         Assert::IsTrue(*hdr.metadata() == *hdrMove.metadata(),
                         L"The metadatas are not equal.");
 
          Assert::AreEqual(hdr.dictionary_offset(), hdrMove.dictionary_offset(),
@@ -104,7 +104,7 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER m(RESOURCE_TYPES::RESOURCE_TYPE_BRUSH,
                                    CONTENT_LOADER_IDS::CONTENT_LOADER_ID_BRUSH,
                                    L"Name");
-         CONTENT_FILE_HEADER_BUFFER hdr(m);
+         CONTENT_FILE_HEADER_BUFFER hdr(&m);
          CONTENT_FILE_HEADER_BUFFER hdrCopy(hdr);
 
          Assert::IsTrue(hdr == hdrCopy,
@@ -113,7 +113,7 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER m2(RESOURCE_TYPES::RESOURCE_TYPE_BRUSH,
                                     CONTENT_LOADER_IDS::CONTENT_LOADER_ID_BRUSH,
                                     L"Name");
-         CONTENT_FILE_HEADER_BUFFER hdrNotEqual(m2);
+         CONTENT_FILE_HEADER_BUFFER hdrNotEqual(&m2);
 
          Assert::IsFalse(hdr == hdrNotEqual,
                          L"The headers should not be equal.");
@@ -127,7 +127,7 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER m(RESOURCE_TYPES::RESOURCE_TYPE_BRUSH,
                                    CONTENT_LOADER_IDS::CONTENT_LOADER_ID_BRUSH,
                                    L"Name");
-         CONTENT_FILE_HEADER_BUFFER hdr(m);
+         CONTENT_FILE_HEADER_BUFFER hdr(&m);
          CONTENT_FILE_HEADER_BUFFER hdrCopy = hdr;
 
          Assert::IsTrue(hdr == hdrCopy,

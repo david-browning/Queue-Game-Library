@@ -22,6 +22,7 @@ namespace QGL_Content_UnitTests
          //Create a file.
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\TruncateExistingFile.txt");
+         DeleteFile(newFilePath.c_str());
 
          file_handle handle;
          qgl::content::open_file_write(newFilePath.c_str(), &handle);

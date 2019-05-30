@@ -5,14 +5,9 @@ namespace qgl::content
 {
    static constexpr size_t VENDOR_METADATA_INDEX = 0;
 
-   SHARED_CONTENT_ENTRY::SHARED_CONTENT_ENTRY(const std::wstring& str) :
-      SHARED_CONTENT_ENTRY(str.data(), str.size())
+   SHARED_CONTENT_ENTRY::SHARED_CONTENT_ENTRY(const wchar_t* str)
    {
-   }
-
-   SHARED_CONTENT_ENTRY::SHARED_CONTENT_ENTRY(const wchar_t* str, size_t len)
-   {
-      m_bufferSize = len;
+      m_bufferSize = wcslen(str);
       m_buffer = new wchar_t[m_bufferSize + 1];
       MemoryCopy(m_buffer, str, m_bufferSize);
       m_buffer[m_bufferSize] = L'\0';

@@ -56,7 +56,7 @@ namespace qgl::content::content_file_helpers
                      numChars * sizeof(wchar_t),
                      entry.offset() + sizeof(numChars),
                      path.data());
-      return SHARED_CONTENT_ENTRY(path);
+      return SHARED_CONTENT_ENTRY(path.c_str());
    }
 
    void write_header(const file_handle* hndl,
@@ -110,9 +110,9 @@ namespace qgl::content::content_file_helpers
    }
 
    size_t shared_entry_data_size(
-      const SHARED_CONTENT_ENTRY& data)
+      const SHARED_CONTENT_ENTRY* data)
    {
-      return sizeof(NumCharsType) + (sizeof(wchar_t) * data.size());
+      return sizeof(NumCharsType) + (sizeof(wchar_t) * data->size());
    }
 
    bool valid_content_file_size(const file_handle* hndl)

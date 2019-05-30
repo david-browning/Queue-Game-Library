@@ -39,13 +39,12 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER meta(RESOURCE_TYPE_BRUSH,
                                       CONTENT_LOADER_ID_BRUSH,
                                       L"Brush");
-         CONTENT_FILE_HEADER_BUFFER newHeader(meta);
+         CONTENT_FILE_HEADER_BUFFER newHeader(&meta);
 
-         cf.header() = newHeader;
+         *cf.header() = newHeader;
 
-         Assert::IsTrue(cf.header() == newHeader,
+         Assert::IsTrue(*cf.header() == newHeader,
                         L"The headers should be equal.");
-
       }
 
       TEST_METHOD(GetSize)
@@ -63,13 +62,14 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER meta(RESOURCE_TYPE_BRUSH,
                                       CONTENT_LOADER_ID_BRUSH,
                                       L"Brush");
-         cf.push_back(meta, std::wstring(L"Q:Shared Path"));
+         SHARED_CONTENT_ENTRY sharedPathEntry(L"Q:Shared Path");
+         cf.push_back(&meta, &sharedPathEntry);
          Assert::AreEqual(static_cast<size_t>(1), cf.size(),
                           L"The size should be 1.");
 
          uint8_t buffData[8] = { 0 };
          DATA_CONTENT_ENTRY dataBuffer(buffData, 8);
-         cf.push_back(meta, dataBuffer);
+         cf.push_back(&meta, &dataBuffer);
          Assert::AreEqual(static_cast<size_t>(2), cf.size(),
                           L"The size should be 2.");
       }
@@ -92,9 +92,9 @@ namespace QGL_Content_UnitTests
                                       CONTENT_LOADER_ID_BRUSH,
                                       L"Brush");
 
-         cf.push_back(meta, dataBuffer1);
+         cf.push_back(&meta, &dataBuffer1);
 
-         Assert::IsTrue(cf[0].metadata() == meta,
+         Assert::IsTrue(*(cf[0].metadata()) == meta,
                         L"The metadata should be equal.");
       }
 
@@ -106,9 +106,9 @@ namespace QGL_Content_UnitTests
          DeleteFile(newFilePath.c_str());
 
          content_file cf(newFilePath.c_str());
-         uint8_t buffData[8] = { 0 };
-         DATA_CONTENT_ENTRY dataBuffer1(buffData, 8);
-         DATA_CONTENT_ENTRY dataBuffer2(buffData, 8);
+         uint8_t rawBuffData[8] = { 0 };
+         DATA_CONTENT_ENTRY dataBuffer1(rawBuffData, 8);
+         DATA_CONTENT_ENTRY dataBuffer2(rawBuffData, 8);
 
          CONTENT_METADATA_BUFFER meta1(RESOURCE_TYPE_BRUSH,
                                        CONTENT_LOADER_ID_BRUSH,
@@ -118,22 +118,24 @@ namespace QGL_Content_UnitTests
                                        CONTENT_LOADER_ID_CAMERA,
                                        L"Camera");
 
-         cf.push_back(meta1, dataBuffer1);
-         cf.push_back(meta2, dataBuffer2);
-         cf.push_back(meta1, std::wstring(L"Q:Shared Path 1"));
-         cf.push_back(meta2, std::wstring(L"Q:Shared Path 2"));
+         cf.push_back(&meta1, &dataBuffer1);
+         cf.push_back(&meta2, &dataBuffer2);
+         SHARED_CONTENT_ENTRY sharedPath1(L"Q:Shared Path 1");
+         SHARED_CONTENT_ENTRY sharedPath2(L"V:Shared Path 2");
+         cf.push_back(&meta1, &sharedPath1);
+         cf.push_back(&meta2, &sharedPath2);
 
          for(size_t i = 0; i < cf.size(); i++)
          {
             auto& entry = cf[i];
             if (i & 1)
             {
-               Assert::IsTrue(meta2 == entry.metadata(),
+               Assert::IsTrue(meta2 == *entry.metadata(),
                               L"Entry should be meta2.");
             }
             else
             {
-               Assert::IsTrue(meta1 == entry.metadata(),
+               Assert::IsTrue(meta1 == *entry.metadata(),
                               L"Entry should be meta1.");
             }
             if (i > 1)
@@ -154,7 +156,8 @@ namespace QGL_Content_UnitTests
          DeleteFile(newFilePath.c_str());
 
          content_file cf(newFilePath.c_str());
-         std::vector<uint8_t> buffData = { 0 };
+         std::vector<uint8_t> rawBuffData = { 0 };
+         DATA_CONTENT_ENTRY buffData(rawBuffData);
 
          CONTENT_METADATA_BUFFER meta1(RESOURCE_TYPE_BRUSH,
                                        CONTENT_LOADER_ID_BRUSH,
@@ -164,10 +167,12 @@ namespace QGL_Content_UnitTests
                                        CONTENT_LOADER_ID_CAMERA,
                                        L"Camera");
 
-         cf.push_back(meta1, buffData);
-         cf.push_back(meta2, buffData);
-         cf.push_back(meta1, std::wstring(L"Q:Shared Path 1"));
-         cf.push_back(meta2, std::wstring(L"V:Shared Path 2"));
+         cf.push_back(&meta1, &buffData);
+         cf.push_back(&meta2, &buffData);
+         SHARED_CONTENT_ENTRY sharedPath1(L"Q:Shared Path 1");
+         SHARED_CONTENT_ENTRY sharedPath2(L"V:Shared Path 2");
+         cf.push_back(&meta1, &sharedPath1);
+         cf.push_back(&meta2, &sharedPath2);
 
          //This should not throw an exception.
          try
@@ -192,7 +197,7 @@ namespace QGL_Content_UnitTests
                                             L"Brush");
 
          content_file cf(newFilePath.c_str());
-         cf.header() = CONTENT_FILE_HEADER_BUFFER(headerMeta);
+         *cf.header() = CONTENT_FILE_HEADER_BUFFER(&headerMeta);
 
          CONTENT_METADATA_BUFFER meta1(RESOURCE_TYPE_FLOAT,
                                        CONTENT_LOADER_ID_STRING,
@@ -200,14 +205,16 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER meta2(RESOURCE_TYPE_FLOAT,
                                        CONTENT_LOADER_ID_STRING,
                                        L"Green Value");
-         cf.push_back(meta1, std::wstring(L"Q:Shared Path 1"));
-         cf.push_back(meta2, std::wstring(L"V:Shared Path 2"));
+         SHARED_CONTENT_ENTRY sharedPath1(L"Q:Shared Path 1");
+         SHARED_CONTENT_ENTRY sharedPath2(L"V:Shared Path 2");
+         cf.push_back(&meta1, &sharedPath1);
+         cf.push_back(&meta2, &sharedPath2);
 
          cf.flush();
 
          content_file cfOpen(newFilePath.c_str());
 
-         Assert::IsTrue(cf.header() == cfOpen.header(),
+         Assert::IsTrue(*cf.header() == *cfOpen.header(),
                         L"The headers are not equal.");
 
          Assert::AreEqual(cf.size(), cfOpen.size(),
@@ -227,7 +234,7 @@ namespace QGL_Content_UnitTests
                                             L"Brush");
 
          content_file cf(newFilePath.c_str());
-         cf.header() = CONTENT_FILE_HEADER_BUFFER(headerMeta);
+         *cf.header() = CONTENT_FILE_HEADER_BUFFER(&headerMeta);
 
          CONTENT_METADATA_BUFFER meta1(RESOURCE_TYPE_FLOAT,
                                        CONTENT_LOADER_ID_STRING,
@@ -235,8 +242,11 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER meta2(RESOURCE_TYPE_FLOAT,
                                        CONTENT_LOADER_ID_STRING,
                                        L"Green Value");
-         cf.push_back(meta1, std::wstring(L"Q:Shared Path 1"));
-         cf.push_back(meta2, std::wstring(L"V:Shared Path 2"));
+         SHARED_CONTENT_ENTRY sharedPath1(L"Q:Shared Path 1");
+         SHARED_CONTENT_ENTRY sharedPath2(L"V:Shared Path 2");
+
+         cf.push_back(&meta1, &sharedPath1);
+         cf.push_back(&meta2, &sharedPath2);
 
          cf.flush();
 
@@ -244,17 +254,18 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER meta3(RESOURCE_TYPE_FLOAT,
                                        CONTENT_LOADER_ID_STRING,
                                        L"Blue Value");
-         std::vector<uint8_t> bluedata = { 0x00, 0x10, 0x20 };
+         std::vector<uint8_t> rawbluedata = { 0x00, 0x10, 0x20 };
+         DATA_CONTENT_ENTRY bluedata(rawbluedata);
 
          {
             content_file cfOpen(newFilePath.c_str());
-            cfOpen.push_back(meta3, bluedata);
+            cfOpen.push_back(&meta3, &bluedata);
             cfOpen.flush();
          }
          
          {
             content_file cfOpen(newFilePath.c_str());
-            Assert::IsTrue(cfOpen[2].metadata() == meta3,
+            Assert::IsTrue(*(cfOpen[2].metadata()) == meta3,
                            L"The last dictionary entry is not correct.");
          }
       }

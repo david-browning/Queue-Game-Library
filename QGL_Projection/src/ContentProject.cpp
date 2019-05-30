@@ -31,7 +31,7 @@ namespace winrt::QGL_Projection::implementation
          winrt::get_self<QGL_Projection::implementation::ContentMetadata>(
             m_metadata);
       //Overwrite this's metadata
-      metaImpl->FromBuffer(p.metadata());
+      metaImpl->FromBuffer(*p.metadata());
 
       //Create projected content project entries and add them to this's
       //list of observable entries.
@@ -68,7 +68,7 @@ namespace winrt::QGL_Projection::implementation
       qgl::content::content_project p(f);
 
       //Set the metadata.
-      p.metadata() = metaImpl->ToBuffer();
+      *p.metadata() = metaImpl->ToBuffer();
 
       //Add all the project entries in this to the project.
       for (auto inspec : m_observableEntries)
@@ -82,7 +82,8 @@ namespace winrt::QGL_Projection::implementation
             winrt::get_self<QGL_Projection::implementation::ContentMetadata>(
                entry.Metadata());
 
-         p.emplace_back(entryMetaImpl->ToBuffer(), entry.FilePath());
+         auto metaData = entryMetaImpl->ToBuffer();
+         p.emplace_back(&metaData, entry.FilePath().c_str());
       }
 
       //Flush

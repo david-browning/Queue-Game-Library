@@ -36,28 +36,30 @@ namespace qgl::content
 
       /*
        Constructs the variant so it holds a content buffer.
+       Copies the buffer to internal storage.
        */
-      content_variant_entry(const DATA_CONTENT_ENTRY& b);
+      content_variant_entry(const DATA_CONTENT_ENTRY* b);
 
       /*
        Constructs the variant so it references an external content file.
+       Copies the buffer to internal storage.
        */
-      content_variant_entry(const SHARED_CONTENT_ENTRY& b);
+      content_variant_entry(const SHARED_CONTENT_ENTRY* b);
 
       /*
        Copy constructor.
        */
-      content_variant_entry(const content_variant_entry&) = default;
+      content_variant_entry(const content_variant_entry&);
 
       /*
        Move constructor.
        */
-      content_variant_entry(content_variant_entry&&) = default;
+      content_variant_entry(content_variant_entry&&);
 
       /*
        Destructor.
        */
-      ~content_variant_entry() noexcept = default;
+      ~content_variant_entry() noexcept;
 
       /*
        Returns true if the variant references an external file.
@@ -124,8 +126,8 @@ namespace qgl::content
 
       private:
       CONTENT_DATA_USE_TYPES m_useType;
-      std::shared_ptr<DATA_CONTENT_ENTRY> m_buffer;
-      std::shared_ptr<SHARED_CONTENT_ENTRY> m_sharedBuffer;
+      DATA_CONTENT_ENTRY* m_buffer;
+      SHARED_CONTENT_ENTRY* m_sharedBuffer;
       bool m_loaded;
    };
 }

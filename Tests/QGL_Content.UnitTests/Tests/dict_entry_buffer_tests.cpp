@@ -27,23 +27,23 @@ namespace QGL_Content_UnitTests
          Assert::IsFalse(e.shared(),
                          L"The entry should not be shared.");
 
-         const auto& m = e.metadata();
+         const auto m = e.metadata();
 
          Assert::IsTrue(CONTENT_LOADER_IDS::CONTENT_LOADER_ID_UNKNOWN ==
-                        static_cast<CONTENT_LOADER_IDS>(m.loader_id()),
+                        static_cast<CONTENT_LOADER_IDS>(m->loader_id()),
                         L"The loader should be unknown.");
 
-         Assert::IsTrue(winrt::hstring() == m.name(),
+         Assert::IsTrue(winrt::hstring() == m->name(),
                         L"The name should be empty.");
 
          Assert::AreEqual(qgl::QGL_VERSION_LATEST,
-                          m.version(),
+                          m->version(),
                           L"The version is not correct.");
 
-         Assert::IsTrue(m.content_visible(),
+         Assert::IsTrue(m->content_visible(),
                         L"The content should be visible.");
 
-         Assert::IsFalse(m.obey_physics(),
+         Assert::IsFalse(m->obey_physics(),
                          L"The content should not obey physics.");
 
       }
@@ -55,7 +55,7 @@ namespace QGL_Content_UnitTests
                                    L"Name");
 
          CONTENT_DICTIONARY_ENTRY_BUFFER e(8,
-                                           m);
+                                           &m);
 
          Assert::AreEqual(static_cast<size_t>(8),
                           e.size(),
@@ -77,7 +77,7 @@ namespace QGL_Content_UnitTests
                                    L"Name");
 
          CONTENT_DICTIONARY_ENTRY_BUFFER e(8,
-                                           m,
+                                           &m,
                                            16);
 
          Assert::AreEqual(static_cast<size_t>(8),
@@ -100,7 +100,7 @@ namespace QGL_Content_UnitTests
                                    L"Name");
 
          CONTENT_DICTIONARY_ENTRY_BUFFER e(8,
-                                           m,
+                                           &m,
                                            16);
 
          CONTENT_DICTIONARY_ENTRY_BUFFER eCopy(e);
@@ -114,7 +114,7 @@ namespace QGL_Content_UnitTests
          Assert::AreEqual(e.size(), eCopy.size(),
                           L"The data size is not correct.");
 
-         Assert::IsTrue(e.metadata() == eCopy.metadata(),
+         Assert::IsTrue(*e.metadata() == *eCopy.metadata(),
                         L"The metadata is not correct.");
       }
 
@@ -125,7 +125,7 @@ namespace QGL_Content_UnitTests
                                    L"Name");
 
          CONTENT_DICTIONARY_ENTRY_BUFFER e(8,
-                                           m,
+                                           &m,
                                            16);
 
          CONTENT_DICTIONARY_ENTRY_BUFFER eCopy(e);
@@ -140,7 +140,7 @@ namespace QGL_Content_UnitTests
          Assert::AreEqual(e.size(), eMove.size(),
                           L"The data size is not correct.");
 
-         Assert::IsTrue(e.metadata() == eMove.metadata(),
+         Assert::IsTrue(*e.metadata() == *eMove.metadata(),
                         L"The metadata is not correct.");
       }
 
@@ -178,10 +178,10 @@ namespace QGL_Content_UnitTests
                                    L"Name");
 
          CONTENT_DICTIONARY_ENTRY_BUFFER e(8,
-                                           m,
+                                           &m,
                                            16);
 
-         Assert::IsTrue(m == e.metadata(),
+         Assert::IsTrue(m == *e.metadata(),
                         L"The metadata is not correct.");
       }
 
@@ -192,7 +192,7 @@ namespace QGL_Content_UnitTests
                                    L"Name");
 
          CONTENT_DICTIONARY_ENTRY_BUFFER e(8,
-                                           m,
+                                           &m,
                                            16);
 
          CONTENT_DICTIONARY_ENTRY_BUFFER eCopy = e;
@@ -206,7 +206,7 @@ namespace QGL_Content_UnitTests
          Assert::AreEqual(e.size(), eCopy.size(),
                           L"The data size is not correct.");
 
-         Assert::IsTrue(e.metadata() == eCopy.metadata(),
+         Assert::IsTrue(*e.metadata() == *eCopy.metadata(),
                         L"The metadata is not correct.");
       }
 
@@ -217,7 +217,7 @@ namespace QGL_Content_UnitTests
                                    L"Name");
 
          CONTENT_DICTIONARY_ENTRY_BUFFER e(8,
-                                           m,
+                                           &m,
                                            16);
 
          CONTENT_DICTIONARY_ENTRY_BUFFER eCopy = e;

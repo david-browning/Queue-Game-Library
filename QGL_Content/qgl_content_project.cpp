@@ -94,14 +94,14 @@ namespace qgl::content
          }
       }
 
-      CONTENT_METADATA_BUFFER& metadata() noexcept
+      CONTENT_METADATA_BUFFER* metadata() noexcept
       {
-         return m_hdr;
+         return &m_hdr;
       }
 
-      const CONTENT_METADATA_BUFFER& metadata() const noexcept
+      const CONTENT_METADATA_BUFFER* metadata() const noexcept
       {
-         return m_hdr;
+         return &m_hdr;
       }
 
       size_t size() const noexcept
@@ -109,17 +109,10 @@ namespace qgl::content
          return m_entries.size();
       }
 
-      void emplace_back(const content_project_entry_pair::first_type& entry,
-                        const file_string& absPath)
+      void emplace_back(const content_project_entry_pair::first_type* entry,
+                        const wchar_t* absPath)
       {
-         m_entries.emplace_back(entry, absPath);
-      }
-
-      void emplace(const_iterator position,
-                   const content_project_entry_pair::first_type& entry,
-                   const file_string& absPath)
-      {
-         m_entries.emplace(position, entry, absPath);
+         m_entries.emplace_back(*entry, winrt::to_hstring(absPath));
       }
 
       content_project_entry_pair& at(size_t idx)
@@ -253,7 +246,7 @@ namespace qgl::content
             offset += numChars * sizeof(wchar_t);
 
             //Emplace back a new entry.
-            emplace_back(meta, winrt::hstring(path));
+            emplace_back(&meta, path.c_str());
 
             numEntries--;
          }
@@ -304,12 +297,12 @@ namespace qgl::content
       m_impl_p->flush();
    }
 
-   CONTENT_METADATA_BUFFER& content_project::metadata() noexcept
+   CONTENT_METADATA_BUFFER* content_project::metadata() noexcept
    {
       return m_impl_p->metadata();
    }
 
-   const CONTENT_METADATA_BUFFER& content_project::metadata() const noexcept
+   const CONTENT_METADATA_BUFFER* content_project::metadata() const noexcept
    {
       return m_impl_p->metadata();
    }
@@ -319,8 +312,8 @@ namespace qgl::content
       return m_impl_p->size();
    }
 
-   void content_project::emplace_back(const cpep::first_type& entry,
-                                      const file_string& absPath)
+   void content_project::emplace_back(const cpep::first_type* entry,
+                                      const wchar_t* absPath)
    {
       m_impl_p->emplace_back(entry, absPath);
    }
