@@ -20,7 +20,7 @@ namespace qgl::content
 
       }
 
-      virtual LoadT load(const file_handle& fileHandle,
+      virtual LoadT load(const file_handle* fileHandle,
                          const CONTENT_DICTIONARY_ENTRY_BUFFER& lookup) const
       {
          const size_t numChars = lookup.size() / sizeof(wchar_t);

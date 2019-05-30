@@ -23,20 +23,21 @@ namespace QGL_Content_UnitTests
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\TruncateExistingFile.txt");
 
-         auto handle = qgl::content::open_file_write(newFilePath);
+         file_handle handle;
+         qgl::content::open_file_write(newFilePath.c_str(), &handle);
 
          //Write to it.
          std::string buffer("Test");
-         write_file_sync(handle, buffer.size(), 0, buffer.c_str());
+         write_file_sync(&handle, buffer.size(), 0, buffer.c_str());
        
          //Get file size.
-         auto fileSize = file_size(handle);
+         auto fileSize = file_size(&handle);
 
          //Truncate file
-         truncate_file(handle);
+         truncate_file(&handle);
 
          //Get file size.
-         auto truncatedSize = file_size(handle);
+         auto truncatedSize = file_size(&handle);
 
          Assert::AreEqual(static_cast<size_t>(0), truncatedSize,
                           L"The file size should be 0.");

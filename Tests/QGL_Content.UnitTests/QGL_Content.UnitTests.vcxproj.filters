@@ -45,32 +45,14 @@
   <ItemGroup>
     <ClCompile Include="UnitTestApp.xaml.cpp" />
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="Tests\dict_write_tests.cpp">
-      <Filter>Tests\Dictionary</Filter>
-    </ClCompile>
     <ClCompile Include="Tests\dict_entry_buffer_tests.cpp">
-      <Filter>Tests\Dictionary</Filter>
-    </ClCompile>
-    <ClCompile Include="Tests\dict_meta_read_tests.cpp">
-      <Filter>Tests\Dictionary</Filter>
-    </ClCompile>
-    <ClCompile Include="Tests\dict_meta_write_tests.cpp">
       <Filter>Tests\Dictionary</Filter>
     </ClCompile>
     <ClCompile Include="Tests\dict_metadata_buffer_tests.cpp">
       <Filter>Tests\Dictionary</Filter>
     </ClCompile>
-    <ClCompile Include="Tests\dict_read_tests.cpp">
-      <Filter>Tests\Dictionary</Filter>
-    </ClCompile>
     <ClCompile Include="Tests\content_dictionary_test.cpp">
       <Filter>Tests\Dictionary</Filter>
-    </ClCompile>
-    <ClCompile Include="Tests\content_file_header_read_tests.cpp">
-      <Filter>Tests\Content-File</Filter>
-    </ClCompile>
-    <ClCompile Include="Tests\content_file_header_write_tests.cpp">
-      <Filter>Tests\Content-File</Filter>
     </ClCompile>
     <ClCompile Include="Tests\content_metadata_buffer_tests.cpp">
       <Filter>Tests\Buffers</Filter>

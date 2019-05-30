@@ -44,7 +44,7 @@ namespace qgl::content
        If the file exists, the constructor checks if the file is valid. If the 
        file is not valid, this throws an exception.
        */
-      content_project(const file_string& filePath);
+      content_project(const wchar_t* filePath);
 
       /*
        Opens a content project file in read-write mode. The storage file must

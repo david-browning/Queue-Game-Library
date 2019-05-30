@@ -10,7 +10,7 @@ namespace qgl::content
     */
    extern QGL_CONTENT_API void compile_content_project(
       const content_project& proj,
-      const winrt::hstring& absPath);
+      const wchar_t* absPath);
 
    /*
     Compiles a content project into a content file and saves it.

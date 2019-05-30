@@ -15,8 +15,9 @@ namespace qgl::content
       //Fill the dictionary and 
       for (const auto& entry : proj)
       {
-         auto bufferHandle = open_file_read(entry.second);
-         auto buffer = file_data(bufferHandle);
+         file_handle bufferHandle;
+         open_file_read(entry.second.c_str(), &bufferHandle);
+         auto buffer = file_data(&bufferHandle);
          cf.push_back(entry.first, buffer);
       }
 
@@ -25,7 +26,7 @@ namespace qgl::content
 }
 
 void qgl::content::compile_content_project(const content_project& proj,
-                                           const winrt::hstring& absPath)
+                                           const wchar_t* absPath)
 {
    //Create a content file in write mode.
    content_file cf(absPath);

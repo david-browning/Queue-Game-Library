@@ -17,7 +17,7 @@ namespace QGL_Content_UnitTests
          auto installDir = winrt::Windows::ApplicationModel::
             Package::Current().InstalledLocation().Path();
 
-         Assert::IsTrue(qgl::content::dir_exists(installDir),
+         Assert::IsTrue(qgl::content::dir_exists(installDir.c_str()),
                         L"The install directory should exist.");
       }
 
@@ -30,7 +30,8 @@ namespace QGL_Content_UnitTests
          auto installDir = winrt::Windows::ApplicationModel::
             Package::Current().InstalledLocation().Path();
 
-         Assert::IsFalse(qgl::content::dir_exists(installDir + L"\\NO_DIR"),
+         auto dirPath = installDir + L"\\NO_DIR";
+         Assert::IsFalse(qgl::content::dir_exists(dirPath.c_str()),
                          L"The directory should not exist.");
       }
 
@@ -44,7 +45,7 @@ namespace QGL_Content_UnitTests
 
          auto fileToCheck = installDir + L"\\Tests\\Test-Files\\CheckMe.txt";
 
-         Assert::IsFalse(qgl::content::dir_exists(fileToCheck),
+         Assert::IsFalse(qgl::content::dir_exists(fileToCheck.c_str()),
                          L"This is not a directory.");
       }
 
@@ -56,7 +57,7 @@ namespace QGL_Content_UnitTests
          auto fileToCheck = winrt::Windows::ApplicationModel::Package::
             Current().InstalledLocation().Path() + 
             L"\\Tests\\Test-Files\\CheckMe.txt";
-         Assert::IsTrue(qgl::content::file_exists(fileToCheck),
+         Assert::IsTrue(qgl::content::file_exists(fileToCheck.c_str()),
                         L"The file in the install path should exist.");
 
 
@@ -64,10 +65,11 @@ namespace QGL_Content_UnitTests
             LocalFolder().Path();
 
          fileToCheck = rootPath + L"\\FileExistsTrue.txt";
-         auto handle = qgl::content::open_file_write(fileToCheck);
+         qgl::content::file_handle handle;
+         qgl::content::open_file_write(fileToCheck.c_str(), &handle);
          handle.close();
 
-         Assert::IsTrue(qgl::content::file_exists(fileToCheck),
+         Assert::IsTrue(qgl::content::file_exists(fileToCheck.c_str()),
                         L"The file should exist.");
       }
 
@@ -80,7 +82,7 @@ namespace QGL_Content_UnitTests
             Package::Current().InstalledLocation().Path();
 
          auto fileToCheck = installDir + L"NO-FILE.txt";
-         Assert::IsFalse(qgl::content::file_exists(fileToCheck),
+         Assert::IsFalse(qgl::content::file_exists(fileToCheck.c_str()),
                          L"The file should not exist.");
       }
 
@@ -92,7 +94,7 @@ namespace QGL_Content_UnitTests
          auto installDir = winrt::Windows::ApplicationModel::
             Package::Current().InstalledLocation().Path();
 
-         Assert::IsFalse(qgl::content::file_exists(installDir),
+         Assert::IsFalse(qgl::content::file_exists(installDir.c_str()),
                          L"This is not a file.");
       }
    };

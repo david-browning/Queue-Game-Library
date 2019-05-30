@@ -50,19 +50,20 @@ namespace QGL_Content_UnitTests
          winrt::hstring newFilePath(root + L"\\FileSize.txt");
 
          //Open a file for writing.
-         auto handle = open_file_write(newFilePath);
+         file_handle handle;
+         open_file_write(newFilePath.c_str(), &handle);
 
          //Write data to the file.
-         write_file_sync(handle, bufferSize, 0, buffer);
+         write_file_sync(&handle, bufferSize, 0, buffer);
 
          //Close the file.
          handle.close();
 
          //Open the file with read permissions.
-         handle = open_file_read(newFilePath);
+         open_file_read(newFilePath.c_str(), &handle);
 
          //Get file size.
-         auto fileSize = file_size(handle);
+         auto fileSize = file_size(&handle);
 
          Assert::AreEqual(bufferSize, fileSize,
                           L"The file size is not correct.");

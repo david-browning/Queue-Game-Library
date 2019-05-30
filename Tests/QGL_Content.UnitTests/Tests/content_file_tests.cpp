@@ -4,7 +4,6 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace winrt::Windows::Storage;
 using namespace qgl::content;
-using namespace qgl::content::content_file_helpers;
 
 namespace QGL_Content_UnitTests
 {
@@ -18,7 +17,7 @@ namespace QGL_Content_UnitTests
             L"\\ContentFileCreateNew.txt";
          DeleteFile(newFilePath.c_str());
 
-         auto cf = new content_file(newFilePath);
+         auto cf = new content_file(newFilePath.c_str());
          delete cf;
          Assert::IsTrue(true, L"The test should pass.");
       }
@@ -35,7 +34,7 @@ namespace QGL_Content_UnitTests
             L"\\ContentFileGetSetHeader.txt";
          DeleteFile(newFilePath.c_str());
 
-         content_file cf(newFilePath);
+         content_file cf(newFilePath.c_str());
 
          CONTENT_METADATA_BUFFER meta(RESOURCE_TYPE_BRUSH,
                                       CONTENT_LOADER_ID_BRUSH,
@@ -56,7 +55,7 @@ namespace QGL_Content_UnitTests
             L"\\ContentFileGetSize.txt";
          DeleteFile(newFilePath.c_str());
 
-         content_file cf(newFilePath);
+         content_file cf(newFilePath.c_str());
 
          Assert::AreEqual(static_cast<size_t>(0), cf.size(),
                           L"The size should be 0.");
@@ -82,7 +81,7 @@ namespace QGL_Content_UnitTests
             L"\\ContentFileSinglePushBack.txt";
          DeleteFile(newFilePath.c_str());
 
-         content_file cf(newFilePath);
+         content_file cf(newFilePath.c_str());
 
          Assert::AreEqual(static_cast<size_t>(0),cf.size(),
                         L"The beginning and end iterators should be equal.");
@@ -106,7 +105,7 @@ namespace QGL_Content_UnitTests
             L"\\ContentFileMultiPushBack.txt";
          DeleteFile(newFilePath.c_str());
 
-         content_file cf(newFilePath);
+         content_file cf(newFilePath.c_str());
          uint8_t buffData[8] = { 0 };
          DATA_CONTENT_ENTRY dataBuffer1(buffData, 8);
          DATA_CONTENT_ENTRY dataBuffer2(buffData, 8);
@@ -154,7 +153,7 @@ namespace QGL_Content_UnitTests
             L"\\ContentFileFlush.txt";
          DeleteFile(newFilePath.c_str());
 
-         content_file cf(newFilePath);
+         content_file cf(newFilePath.c_str());
          std::vector<uint8_t> buffData = { 0 };
 
          CONTENT_METADATA_BUFFER meta1(RESOURCE_TYPE_BRUSH,
@@ -181,52 +180,6 @@ namespace QGL_Content_UnitTests
          }
       }
 
-      TEST_METHOD(FlushAndVerify)
-      {
-         auto root = ApplicationData::Current().LocalFolder();
-         winrt::hstring newFilePath = root.Path() +
-            L"\\ContentFileFlushAndVerify.hex";
-         DeleteFile(newFilePath.c_str());
-
-         CONTENT_METADATA_BUFFER headerMeta(RESOURCE_TYPE_BRUSH,
-                                            CONTENT_LOADER_ID_BRUSH,
-                                            L"Brush");
-
-         content_file cf(newFilePath);
-         cf.header() = CONTENT_FILE_HEADER_BUFFER(headerMeta);
-
-         CONTENT_METADATA_BUFFER meta1(RESOURCE_TYPE_FLOAT,
-                                       CONTENT_LOADER_ID_STRING,
-                                       L"Red Value");
-         CONTENT_METADATA_BUFFER meta2(RESOURCE_TYPE_FLOAT,
-                                       CONTENT_LOADER_ID_STRING,
-                                       L"Green Value");
-
-         cf.push_back(meta1, std::wstring(L"Q:Shared Path 1"));
-         cf.push_back(meta2, std::wstring(L"Q:Shared Path 2"));
-
-         cf.flush();
-
-         auto hndl = open_file_read(newFilePath);
-         auto readHdr = content_file_helpers::load_header(hndl);
-         Assert::IsTrue(readHdr == cf.header(),
-                        L"The header is not correct.");
-
-         auto readDictMeta =
-            load_dictionary_metadata(hndl,
-                                     readHdr.dictionary_offset());
-         Assert::AreEqual(cf.size(), readDictMeta.count(),
-                          L"The dictionary does not have the correct number"
-                          " of entries.");
-
-         auto readDictEntry =
-            load_dictionary_entry(hndl,
-                                  readHdr.dictionary_offset() +
-                                  sizeof(readDictMeta));
-         Assert::IsTrue(cf[0] == readDictEntry,
-                        L"The dictionary entries are not equal.");
-      }
-
       TEST_METHOD(OpenExistingFile)
       {
          auto root = ApplicationData::Current().LocalFolder();
@@ -238,7 +191,7 @@ namespace QGL_Content_UnitTests
                                             CONTENT_LOADER_ID_BRUSH,
                                             L"Brush");
 
-         content_file cf(newFilePath);
+         content_file cf(newFilePath.c_str());
          cf.header() = CONTENT_FILE_HEADER_BUFFER(headerMeta);
 
          CONTENT_METADATA_BUFFER meta1(RESOURCE_TYPE_FLOAT,
@@ -252,7 +205,7 @@ namespace QGL_Content_UnitTests
 
          cf.flush();
 
-         content_file cfOpen(newFilePath);
+         content_file cfOpen(newFilePath.c_str());
 
          Assert::IsTrue(cf.header() == cfOpen.header(),
                         L"The headers are not equal.");
@@ -273,7 +226,7 @@ namespace QGL_Content_UnitTests
                                             CONTENT_LOADER_ID_BRUSH,
                                             L"Brush");
 
-         content_file cf(newFilePath);
+         content_file cf(newFilePath.c_str());
          cf.header() = CONTENT_FILE_HEADER_BUFFER(headerMeta);
 
          CONTENT_METADATA_BUFFER meta1(RESOURCE_TYPE_FLOAT,
@@ -294,13 +247,13 @@ namespace QGL_Content_UnitTests
          std::vector<uint8_t> bluedata = { 0x00, 0x10, 0x20 };
 
          {
-            content_file cfOpen(newFilePath);
+            content_file cfOpen(newFilePath.c_str());
             cfOpen.push_back(meta3, bluedata);
             cfOpen.flush();
          }
          
          {
-            content_file cfOpen(newFilePath);
+            content_file cfOpen(newFilePath.c_str());
             Assert::IsTrue(cfOpen[2].metadata() == meta3,
                            L"The last dictionary entry is not correct.");
          }

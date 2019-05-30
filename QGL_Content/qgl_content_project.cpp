@@ -8,10 +8,10 @@ namespace qgl::content
    struct content_project::impl
    {
       public:
-      impl(const file_string& filePath)
+      impl(const wchar_t* filePath)
       {
          auto exists = file_exists(filePath);
-         m_handle = open_file_readwrite(filePath);
+         open_file_readwrite(filePath, &m_handle);
          if (exists)
          {
             read_in();
@@ -23,7 +23,7 @@ namespace qgl::content
          //The storage file already exists, so to check if it is an old file, 
          //check if it is greater than 0 bytes.
          auto exists = file_size(f) > 0;
-         m_handle = open_file_readwrite(f);
+         open_file_readwrite(f, &m_handle);
          if (exists)
          {
             read_in();
@@ -41,24 +41,27 @@ namespace qgl::content
          size_t offset = 0;
 
          //Write the magic number
-         write_file_sync(m_handle, sizeof(QGL_CONTENT_PROJECT_MAGIC_NUMBER),
+         write_file_sync(&m_handle, 
+                         sizeof(QGL_CONTENT_PROJECT_MAGIC_NUMBER),
                          offset, &QGL_CONTENT_PROJECT_MAGIC_NUMBER);
          offset += sizeof(QGL_CONTENT_PROJECT_MAGIC_NUMBER);
 
          //Write the metadata
-         write_file_sync(m_handle, sizeof(m_hdr), offset, &m_hdr);
+         write_file_sync(&m_handle, 
+                         sizeof(m_hdr), offset, &m_hdr);
          offset += sizeof(m_hdr);
 
          //Write the number of entries.
          uint64_t numEntries = static_cast<uint64_t>(size());
-         write_file_sync(m_handle, sizeof(numEntries), offset, &numEntries);
+         write_file_sync(&m_handle, 
+                         sizeof(numEntries), offset, &numEntries);
          offset += sizeof(numEntries);
 
          //For each entry:
          for (const auto& entry : *this)
          {
             //Write the separator.
-            write_file_sync(m_handle,
+            write_file_sync(&m_handle,
                             sizeof(QGL_CONTENT_PROJECT_ENTRY_SEPERATOR_MAGIC_NUMBER),
                             offset,
                             &QGL_CONTENT_PROJECT_ENTRY_SEPERATOR_MAGIC_NUMBER);
@@ -66,11 +69,12 @@ namespace qgl::content
 
             //Pad the magic number to 16 bytes by writing an addition 8 bytes.
             static constexpr uint64_t EXTRA_PAD = 0xEEEEEEEEEEEEEEEE;
-            write_file_sync(m_handle, sizeof(EXTRA_PAD), offset, &EXTRA_PAD);
+            write_file_sync(&m_handle, 
+                            sizeof(EXTRA_PAD), offset, &EXTRA_PAD);
             offset += sizeof(EXTRA_PAD);
 
             //Write the metadata
-            write_file_sync(m_handle, 
+            write_file_sync(&m_handle, 
                             sizeof(entry.first), 
                             offset,
                             &entry.first);
@@ -78,11 +82,13 @@ namespace qgl::content
 
             //Write the number of charcters in the path.
             uint64_t numChars = static_cast<uint64_t>(entry.second.size());
-            write_file_sync(m_handle, numChars, offset, &numChars);
+            write_file_sync(&m_handle, numChars, offset, &numChars);
             offset += sizeof(numChars);
 
             //Write the path. Each character in the path is 2 bytes.
-            write_file_sync(m_handle, numChars * sizeof(wchar_t), offset,
+            write_file_sync(&m_handle, 
+                            numChars * sizeof(wchar_t),
+                            offset,
                             entry.second.c_str());
             offset += sizeof(wchar_t) * numChars;
          }
@@ -189,7 +195,10 @@ namespace qgl::content
 
          //Read the magic number and check it.
          uint64_t readMagicNumber = 0;
-         read_file_sync(m_handle, sizeof(readMagicNumber), offset, &readMagicNumber);
+         read_file_sync(&m_handle, 
+                        sizeof(readMagicNumber), 
+                        offset, 
+                        &readMagicNumber);
          offset += sizeof(readMagicNumber);
          if (readMagicNumber != QGL_CONTENT_PROJECT_MAGIC_NUMBER)
          {
@@ -197,19 +206,19 @@ namespace qgl::content
          }
 
          //Read the metadata
-         read_file_sync(m_handle, sizeof(m_hdr), offset, &m_hdr);
+         read_file_sync(&m_handle, sizeof(m_hdr), offset, &m_hdr);
          offset += sizeof(m_hdr);
 
          //Read the number of entries. 8 bytes.
          uint64_t numEntries = 0;
-         read_file_sync(m_handle, sizeof(numEntries), offset, &numEntries);
+         read_file_sync(&m_handle, sizeof(numEntries), offset, &numEntries);
          offset += sizeof(numEntries);
 
          //For each entry to read:
          while (numEntries > 0)
          {
             //Read the magic number and check it.
-            read_file_sync(m_handle, sizeof(readMagicNumber), offset,
+            read_file_sync(&m_handle, sizeof(readMagicNumber), offset,
                            &readMagicNumber);
             offset += (sizeof(readMagicNumber) * 2);
             if (readMagicNumber != QGL_CONTENT_PROJECT_ENTRY_SEPERATOR_MAGIC_NUMBER)
@@ -227,18 +236,19 @@ namespace qgl::content
 
             //Read the metadata
             CONTENT_METADATA_BUFFER meta;
-            read_file_sync(m_handle, sizeof(meta), offset, &meta);
+            read_file_sync(&m_handle, sizeof(meta), offset, &meta);
             offset += sizeof(meta);
 
             //Read the number of characters
             uint64_t numChars = 0;
-            read_file_sync(m_handle, sizeof(numChars), offset, &numChars);
+            read_file_sync(&m_handle, sizeof(numChars), offset, &numChars);
             offset += sizeof(numChars);
 
-            //Read the path wstring. Need to read as a wstring because hstring does
+            //Read the path wstring. Need to read as a wstring because 
+            //hstring does
             //not support resize.
             std::wstring path(numChars, L'\0');
-            read_file_sync(m_handle, numChars * sizeof(wchar_t),
+            read_file_sync(&m_handle, numChars * sizeof(wchar_t),
                            offset, path.data());
             offset += numChars * sizeof(wchar_t);
 
@@ -265,7 +275,7 @@ namespace qgl::content
       CONTENT_METADATA_BUFFER m_hdr;
    };
 
-   content_project::content_project(const file_string& filePath) :
+   content_project::content_project(const wchar_t* filePath) :
       m_impl_p(new impl(filePath))
    {
 

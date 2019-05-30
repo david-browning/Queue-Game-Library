@@ -29,7 +29,7 @@ namespace QGL_Content_UnitTests
          file_handle handle;
          try
          {
-            handle = qgl::content::open_file_write(newFilePath);
+            qgl::content::open_file_write(newFilePath.c_str(), &handle);
 
          }
          catch (winrt::hresult_error&)
@@ -72,7 +72,7 @@ namespace QGL_Content_UnitTests
          file_handle handle;
          try
          {
-            handle = qgl::content::open_file_readwrite(newFilePath);
+            qgl::content::open_file_readwrite(newFilePath.c_str(), &handle);
          }
          catch (winrt::hresult_error&)
          {
@@ -115,7 +115,8 @@ namespace QGL_Content_UnitTests
          file_handle handle;
          try
          {
-            handle = open_file_readwrite(f);
+            file_handle handle;
+            open_file_readwrite(f, &handle);
          }
          catch (winrt::hresult_error&)
          {

@@ -38,7 +38,7 @@ namespace qgl::content
        If the file exists, the constructor checks if the file is valid. If the
        file is not valid, this throws std::domain_error.
        */
-      content_file(const winrt::hstring& filePath);
+      content_file(const wchar_t* filePath);
 
       /*
        Opens a content file in read write mode.
@@ -99,7 +99,7 @@ namespace qgl::content
        The file handle is valid as long as this is in scope. The destructor
        closes the handle.
        */
-      const file_handle& handle() const noexcept;
+      const file_handle* handle() const noexcept;
 
       CONTENT_DICTIONARY_ENTRY_BUFFER& operator[](size_t idx) noexcept;
       

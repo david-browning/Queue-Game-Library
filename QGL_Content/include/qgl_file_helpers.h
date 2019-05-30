@@ -10,16 +10,16 @@ namespace qgl::content
     an offset.
     */
    extern QGL_CONTENT_API void make_overlapped(size_t offsetBytes,
-                                          OVERLAPPED* over_p);
+                                               OVERLAPPED* over_p);
 
-  /*
-   Reads bytesToRead bytes from a file and stores it in buffer_p.
-   Specify the offset into the file using offsetBytes.
-   File handle must be open with read permissions.
-   Throws an exception on error.
-   */
+   /*
+    Reads bytesToRead bytes from a file and stores it in buffer_p.
+    Specify the offset into the file using offsetBytes.
+    File handle must be open with read permissions.
+    Throws an exception on error.
+    */
    template<typename T>
-   void read_file_sync(const file_handle& fileHandle,
+   void read_file_sync(const file_handle* hdnl_p,
                        size_t bytesToRead,
                        size_t offsetBytes,
                        T* const buffer_p)
@@ -28,7 +28,7 @@ namespace qgl::content
       OVERLAPPED overlapped;
       make_overlapped(offsetBytes, &overlapped);
 
-      auto result = ReadFile(fileHandle.get(), (void*)buffer_p,
+      auto result = ReadFile(hdnl_p->get(), (void*)buffer_p,
          (DWORD)bytesToRead, &bytesRead, &overlapped);
       if (result != TRUE || bytesRead != bytesToRead)
       {
@@ -47,7 +47,7 @@ namespace qgl::content
     Throws an exception on error.
     */
    template<typename T>
-   void write_file_sync(const file_handle& fileHandle,
+   void write_file_sync(const file_handle* hdnl_p,
                         size_t bytesToWrite,
                         size_t offsetBytes,
                         const T* const buffer_p)
@@ -56,7 +56,7 @@ namespace qgl::content
       OVERLAPPED overlapped;
       make_overlapped(offsetBytes, &overlapped);
 
-      auto result = WriteFile(fileHandle.get(), (void*)buffer_p,
+      auto result = WriteFile(hdnl_p->get(), (void*)buffer_p,
          (DWORD)bytesToWrite, &bytesWritten, &overlapped);
       if (result != TRUE || bytesWritten != bytesToWrite)
       {
@@ -73,38 +73,40 @@ namespace qgl::content
     Creates the file if it does not exist.
     Throws an exception on error.
     */
-   extern QGL_CONTENT_API file_handle open_file_read(
-      const winrt::hstring& filePath);
+   extern QGL_CONTENT_API void open_file_read(const wchar_t* filePath,
+                                              file_handle* out_p);
 
    /*
     Opens a storage file for read access.
     Throws an exception on error
     */
-   extern QGL_CONTENT_API file_handle open_file_read(
-      const winrt::Windows::Storage::StorageFile& f);
+   extern QGL_CONTENT_API void open_file_read(
+      const winrt::Windows::Storage::StorageFile& f,
+      file_handle* out_p);
 
   /*
    Opens a file for write access.
    Creates the file if it does not exist.
    Throws an exception on error.
    */
-   extern QGL_CONTENT_API file_handle open_file_write(
-      const winrt::hstring& filePath);
+   extern QGL_CONTENT_API void open_file_write(const wchar_t* filePath,
+                                               file_handle* out_p);
 
    /*
     Opens a file for write access.
     Throws an exception on error.
     */
-   extern QGL_CONTENT_API file_handle open_file_write(
-      const winrt::Windows::Storage::StorageFile& f);
+   extern QGL_CONTENT_API void open_file_write(
+      const winrt::Windows::Storage::StorageFile& f,
+      file_handle* out_p);
 
   /*
    Opens a file for read and write access.
    Creates the file if it does not exist.
    Throws an exception on error.
    */
-   extern QGL_CONTENT_API file_handle open_file_readwrite(
-      const winrt::hstring& filePath);
+   extern QGL_CONTENT_API void open_file_readwrite(const wchar_t* filePath,
+                                                   file_handle* out_p);
 
    /*
     Opens a storage file for read and write access.
@@ -112,8 +114,9 @@ namespace qgl::content
     scope.
     Throws an exception on error.
     */
-   extern QGL_CONTENT_API file_handle open_file_readwrite(
-      const winrt::Windows::Storage::StorageFile& f);
+   extern QGL_CONTENT_API void open_file_readwrite(
+      const winrt::Windows::Storage::StorageFile& f,
+      file_handle* out_p);
 
   /*
    Sets a handle's file pointer to zero and marks it as the end of the file.
@@ -121,15 +124,18 @@ namespace qgl::content
    The file handle must have been opened with write access.
    Throws an exception on error.
    */
-   extern QGL_CONTENT_API void truncate_file(const file_handle& hdnl);
+   extern QGL_CONTENT_API void truncate_file(const file_handle* hdnl_p);
 
    /*
    Returns how many bytes large the file is.
    The file handle must have been opened with read permissions.
    Throws an exception on error.
    */
-   extern QGL_CONTENT_API size_t file_size(const file_handle& hndl);
+   extern QGL_CONTENT_API size_t file_size(const file_handle* hdnl_p);
 
+   /*
+    Returns the size in bytes of the file.
+    */
    extern QGL_CONTENT_API size_t file_size(
       const winrt::Windows::Storage::StorageFile& f);
 
@@ -138,7 +144,7 @@ namespace qgl::content
     Returns a vector of bytes.
     */
    extern QGL_CONTENT_API std::vector<uint8_t> file_data(
-      const file_handle& hndl);
+      const file_handle* hdnl_p);
 
   /*
    Returns true if a file or folder contains the given attribute.
@@ -147,9 +153,9 @@ namespace qgl::content
    https://docs.microsoft.com/en-us/windows/desktop/FileIO/file-attribute-constants
    */
    template<DWORD Attribute>
-   bool attribute_exists(const winrt::hstring& absPath)
+   bool attribute_exists(const wchar_t* absPath)
    {
-      auto attr = GetFileAttributes(absPath.c_str());
+      auto attr = GetFileAttributes(absPath);
       if (attr != INVALID_FILE_ATTRIBUTES)
       {
          return attr & Attribute;
@@ -166,10 +172,7 @@ namespace qgl::content
     to a directory.
     The directory path must be absolute.
     */
-   inline bool dir_exists(const winrt::hstring& absPath)
-   {
-      return attribute_exists<FILE_ATTRIBUTE_DIRECTORY>(absPath);
-   }
+   bool QGL_CONTENT_API dir_exists(const wchar_t* absPath);
 
    /*
     Returns true if the file exists.
@@ -177,11 +180,5 @@ namespace qgl::content
     file.
     The file path must be an absolute path.
     */
-   inline bool file_exists(const winrt::hstring& absPath)
-   {
-      auto attr = GetFileAttributes(absPath.c_str());
-      return attr != INVALID_FILE_ATTRIBUTES &&
-         !(attr & FILE_ATTRIBUTE_DIRECTORY);
-   }
-
+   bool QGL_CONTENT_API file_exists(const wchar_t* absPath);
 }

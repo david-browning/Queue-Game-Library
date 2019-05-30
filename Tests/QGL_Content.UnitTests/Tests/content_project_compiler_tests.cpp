@@ -29,23 +29,24 @@ namespace QGL_Content_UnitTests
                                             L"Entry1");
          winrt::hstring entry1Path(root + L"\\Int16.txt");
          DeleteFile(entry1Path.c_str());
-         auto int16Handle = open_file_write(entry1Path);
+         file_handle int16Handle;
+         open_file_write(entry1Path.c_str(), &int16Handle);
          int16_t int16Data = int16_t(0xFF'AA);
-         write_file_sync(int16Handle, sizeof(int16Data), 0, &int16Data);
+         write_file_sync(&int16Handle, sizeof(int16Data), 0, &int16Data);
          int16Handle.close();
 
          //Create a project.
          {
-            content_project project(newFilePath);
+            content_project project(newFilePath.c_str());
             project.emplace_back(entry1Meta, entry1Path);
             project.flush();
 
             //Compile the project file.
-            compile_content_project(project, compiledPath);
+            compile_content_project(project, compiledPath.c_str());
          }
        
          //Open the compiled project file.
-         content_file compiledFile(compiledPath);
+         content_file compiledFile(compiledPath.c_str());
 
          for(size_t i = 0; i < compiledFile.size(); i++)
          {
@@ -71,9 +72,10 @@ namespace QGL_Content_UnitTests
 
          winrt::hstring entry1Path(root.Path() + L"\\StorageFileInt16.txt");
          DeleteFile(entry1Path.c_str());
-         auto int16Handle = open_file_write(entry1Path);
+         file_handle int16Handle;
+         open_file_write(entry1Path.c_str(), &int16Handle);
          int16_t int16Data = int16_t(0xFF'AA);
-         write_file_sync(int16Handle, sizeof(int16Data), 0, &int16Data);
+         write_file_sync(&int16Handle, sizeof(int16Data), 0, &int16Data);
          int16Handle.close();
 
          //Create a project

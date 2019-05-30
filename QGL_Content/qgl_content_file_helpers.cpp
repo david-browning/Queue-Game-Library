@@ -6,7 +6,7 @@ using NumCharsType = uint16_t;
 
 namespace qgl::content::content_file_helpers
 {
-   CONTENT_FILE_HEADER_BUFFER load_header(const file_handle& hndl)
+   CONTENT_FILE_HEADER_BUFFER load_header(const file_handle* hndl)
    {
       CONTENT_FILE_HEADER_BUFFER ret;
       read_file_sync(hndl, sizeof(ret), 0, &ret);
@@ -14,7 +14,7 @@ namespace qgl::content::content_file_helpers
    }
 
    CONTENT_DICTIONARY_METADATA_BUFFER load_dictionary_metadata(
-      const file_handle& hndl,
+      const file_handle* hndl,
       size_t dictionaryOffset)
    {
       CONTENT_DICTIONARY_METADATA_BUFFER ret;
@@ -23,7 +23,7 @@ namespace qgl::content::content_file_helpers
    }
 
    CONTENT_DICTIONARY_ENTRY_BUFFER load_dictionary_entry(
-      const file_handle& hndl,
+      const file_handle* hndl,
       size_t entryOffset)
    {
       CONTENT_DICTIONARY_ENTRY_BUFFER ret;
@@ -32,7 +32,7 @@ namespace qgl::content::content_file_helpers
    }
 
    DATA_CONTENT_ENTRY load_content_data(
-      const file_handle& hndl,
+      const file_handle* hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry)
    {
       auto entrySize = entry.size();
@@ -43,7 +43,7 @@ namespace qgl::content::content_file_helpers
    }
 
    SHARED_CONTENT_ENTRY load_shared_data_path(
-      const file_handle& hndl,
+      const file_handle* hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry)
    {
       //First 8 bytes are the number of characters in the path.
@@ -59,36 +59,35 @@ namespace qgl::content::content_file_helpers
       return SHARED_CONTENT_ENTRY(path);
    }
 
-   void write_header(const file_handle& hndl,
+   void write_header(const file_handle* hndl,
                      const CONTENT_FILE_HEADER_BUFFER& hdr)
    {
       write_file_sync(hndl, sizeof(hdr), 0, &hdr);
    }
 
    void write_dictionary_metadata(
-      const file_handle& hndl,
+      const file_handle* hndl,
       const CONTENT_DICTIONARY_METADATA_BUFFER& meta,
       size_t offset)
    {
       write_file_sync(hndl, sizeof(meta), offset, &meta);
    }
 
-   void write_dictionary_entry(const file_handle& hndl,
+   void write_dictionary_entry(const file_handle* hndl,
                                const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
                                size_t offset)
    {
       write_file_sync(hndl, sizeof(entry), offset, &entry);
    }
 
-   void write_content_data(
-      const file_handle& hndl,
-      const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
-      const DATA_CONTENT_ENTRY& contentData)
+   void write_content_data(const file_handle* hndl,
+                           const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
+                           const DATA_CONTENT_ENTRY& contentData)
    {
       write_file_sync(hndl, entry.size(), entry.offset(), contentData.data());
    }
 
-   void write_shared_data_path(const file_handle& hndl,
+   void write_shared_data_path(const file_handle* hndl,
                                const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
                                const SHARED_CONTENT_ENTRY& path)
    {
@@ -116,7 +115,7 @@ namespace qgl::content::content_file_helpers
       return sizeof(NumCharsType) + (sizeof(wchar_t) * data.size());
    }
 
-   bool valid_content_file_size(const file_handle& hndl)
+   bool valid_content_file_size(const file_handle* hndl)
    {
       //Get the file size
       auto sz = file_size(hndl);

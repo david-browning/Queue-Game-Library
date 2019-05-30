@@ -15,10 +15,10 @@ namespace qgl::content
          std::vector<CONTENT_DICTIONARY_ENTRY_BUFFER>;
       using content_container_t = std::vector<content_variant_entry>;
 
-      impl(const winrt::hstring& filePath)
+      impl(const wchar_t* filePath)
       {
          bool existingFile = file_exists(filePath);
-         m_handle = open_file_readwrite(filePath);
+         open_file_readwrite(filePath, &m_handle);
 
          if (existingFile)
          {
@@ -30,7 +30,7 @@ namespace qgl::content
       impl(const winrt::Windows::Storage::StorageFile& f)
       {
          bool existingFile = file_size(f) > 0;
-         m_handle = open_file_readwrite(f);
+         open_file_readwrite(f, &m_handle);
 
          if (existingFile)
          {
@@ -97,7 +97,7 @@ namespace qgl::content
       void flush()
       {
           //Write the header.
-         content_file_helpers::write_header(m_handle, m_header);
+         content_file_helpers::write_header(&m_handle, m_header);
 
          //Create a dictionary metadata buffer;
          CONTENT_DICTIONARY_METADATA_BUFFER dictMeta(
@@ -106,7 +106,7 @@ namespace qgl::content
 
          //Write the dictionary metadata
          size_t dictMetaOffset = m_header.dictionary_offset();
-         write_dictionary_metadata(m_handle, dictMeta, dictMetaOffset);
+         write_dictionary_metadata(&m_handle, dictMeta, dictMetaOffset);
 
          //Offset to where to put the next dictionary entry.
          size_t dictEntryOffset = dictMetaOffset +
@@ -128,17 +128,17 @@ namespace qgl::content
               ++entryIt, ++contentIt)
          {
             entryIt->m_offset = contentDataOffset;
-            write_dictionary_entry(m_handle, *entryIt, dictEntryOffset);
+            write_dictionary_entry(&m_handle, *entryIt, dictEntryOffset);
 
             if (entryIt->shared())
             {
-               write_shared_data_path(m_handle,
+               write_shared_data_path(&m_handle,
                                       *entryIt,
                                       contentIt->shared_buffer());
             }
             else
             {
-               write_content_data(m_handle,
+               write_content_data(&m_handle,
                                   *entryIt,
                                   contentIt->buffer());
             }
@@ -163,10 +163,10 @@ namespace qgl::content
       void read_in()
       {
          //Read the header
-         m_header = load_header(m_handle);
+         m_header = load_header(&m_handle);
 
          //Read the dictionary metadata
-         auto dictMeta = load_dictionary_metadata(m_handle,
+         auto dictMeta = load_dictionary_metadata(&m_handle,
                                                   m_header.dictionary_offset());
 
          size_t dictEntryOffset = m_header.dictionary_offset() +
@@ -175,18 +175,18 @@ namespace qgl::content
          //For each entry in the dictionary:
          for (size_t i = 0; i < dictMeta.count(); i++)
          {
-            auto dictEntry = load_dictionary_entry(m_handle, dictEntryOffset);
+            auto dictEntry = load_dictionary_entry(&m_handle, dictEntryOffset);
             m_dict.push_back(dictEntry);
 
             if (dictEntry.shared())
             {
-               auto sharedContent = load_shared_data_path(m_handle, dictEntry);
+               auto sharedContent = load_shared_data_path(&m_handle, dictEntry);
                content_variant_entry cbt(sharedContent);
                m_entryDataToWrite.push_back(cbt);
             }
             else
             {
-               auto content = load_content_data(m_handle, dictEntry);
+               auto content = load_content_data(&m_handle, dictEntry);
                content_variant_entry cbt(content);
                m_entryDataToWrite.push_back(cbt);
             }
@@ -197,7 +197,7 @@ namespace qgl::content
 
       void check_and_throw_file_size()
       {
-         if (!valid_content_file_size(m_handle))
+         if (!valid_content_file_size(&m_handle))
          {
             throw std::domain_error("The file is too small to be valid.");
          }
@@ -223,7 +223,7 @@ namespace qgl::content
    };
    #pragma endregion
 
-   content_file::content_file(const winrt::hstring& filePath) :
+   content_file::content_file(const wchar_t* filePath) :
       m_impl_p(new impl(filePath))
    {
 
@@ -278,9 +278,9 @@ namespace qgl::content
       return m_impl_p->size();
    }
 
-   const file_handle& content_file::handle() const noexcept
+   const file_handle* content_file::handle() const noexcept
    {
-      return m_impl_p->handle();
+      return &m_impl_p->handle();
    }
 
    CONTENT_DICTIONARY_ENTRY_BUFFER& content_file::operator[](

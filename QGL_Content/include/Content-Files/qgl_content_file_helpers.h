@@ -13,8 +13,7 @@ namespace qgl::content::content_file_helpers
     This does not validate the data read.
     Throws an exception if there is an error reading.
     */
-   extern QGL_CONTENT_API CONTENT_FILE_HEADER_BUFFER load_header(
-      const file_handle& hndl);
+   extern CONTENT_FILE_HEADER_BUFFER load_header(const file_handle* hndl);
 
    /*
     Reads the dictionary metadata from a content file at the offset.
@@ -23,10 +22,9 @@ namespace qgl::content::content_file_helpers
     This does not validate the data read.
     Throws an exception if there is an error reading.
     */
-   extern QGL_CONTENT_API CONTENT_DICTIONARY_METADATA_BUFFER
-      load_dictionary_metadata(
-         const file_handle& hndl,
-         size_t dictionaryOffset);
+   extern CONTENT_DICTIONARY_METADATA_BUFFER load_dictionary_metadata(
+      const file_handle* hndl,
+      size_t dictionaryOffset);
 
    /*
     Reads a dictionary entry from a content file and returns it.
@@ -34,8 +32,8 @@ namespace qgl::content::content_file_helpers
     This does not validate the data read.
     Throws an exception if there is an error reading.
     */
-   extern QGL_CONTENT_API CONTENT_DICTIONARY_ENTRY_BUFFER load_dictionary_entry(
-      const file_handle& hndl,
+   extern CONTENT_DICTIONARY_ENTRY_BUFFER load_dictionary_entry(
+      const file_handle* hndl,
       size_t entryOffset);
 
    /*
@@ -45,8 +43,8 @@ namespace qgl::content::content_file_helpers
     This does not validate the data read.
     Throws an exception if there is an error reading.
     */
-   extern QGL_CONTENT_API DATA_CONTENT_ENTRY load_content_data(
-      const file_handle& hndl,
+   extern DATA_CONTENT_ENTRY load_content_data(
+      const file_handle* hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry);
 
    /*
@@ -56,23 +54,23 @@ namespace qgl::content::content_file_helpers
     This does not validate the data read.
     Throws an exception if there is an error reading.
     */
-   extern QGL_CONTENT_API SHARED_CONTENT_ENTRY load_shared_data_path(
-      const file_handle& hndl,
+   extern SHARED_CONTENT_ENTRY load_shared_data_path(
+      const file_handle* hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry);
 
    /*
     Writes a file header to a content file.
     The file must be opened with write permissions.
     */
-   extern QGL_CONTENT_API void write_header(const file_handle& hndl,
-                                       const CONTENT_FILE_HEADER_BUFFER& hdr);
+   extern void write_header(const file_handle* hndl,
+                            const CONTENT_FILE_HEADER_BUFFER& hdr);
 
    /*
     Writes the dictionary metadata to a content file.
     The file must be opened with write permissions.
     */
-   extern QGL_CONTENT_API void write_dictionary_metadata(
-      const file_handle& hndl,
+   extern void write_dictionary_metadata(
+      const file_handle* hndl,
       const CONTENT_DICTIONARY_METADATA_BUFFER& meta,
       size_t offset);
 
@@ -80,8 +78,8 @@ namespace qgl::content::content_file_helpers
     Writes a dictionary entry to the content file.
     The file must be opened with write permissions.
     */
-   extern QGL_CONTENT_API void write_dictionary_entry(
-      const file_handle& hndl,
+   extern void write_dictionary_entry(
+      const file_handle* hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
       size_t offset);
 
@@ -89,8 +87,8 @@ namespace qgl::content::content_file_helpers
     Writes the content data to the content file.
     The file must be opened with write permissions.
     */
-   extern QGL_CONTENT_API void write_content_data(
-      const file_handle& hndl,
+   extern void write_content_data(
+      const file_handle* hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
       const DATA_CONTENT_ENTRY& contentData);
 
@@ -98,8 +96,8 @@ namespace qgl::content::content_file_helpers
     Writes the shared content path to the content file.
     The file must be opened with write permissions.
     */
-   extern QGL_CONTENT_API void write_shared_data_path(
-      const file_handle& hndl,
+   extern void write_shared_data_path(
+      const file_handle* hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
       const SHARED_CONTENT_ENTRY& path);
 
@@ -107,17 +105,15 @@ namespace qgl::content::content_file_helpers
     Returns the offset, in bytes, to where content data starts in a file.
     Content data comes after the file header and dictionary.
     */
-   extern QGL_CONTENT_API size_t dictionary_data_offset(
+   extern size_t dictionary_data_offset(
       const CONTENT_FILE_HEADER_BUFFER& fileHeader,
       const CONTENT_DICTIONARY_METADATA_BUFFER& dictMeta);
 
    /*
-    Gets the size of the buffer. The buffer is the size of an 8 byte integer 
+    Gets the size of the buffer. The buffer is the size of an 8 byte integer
     and sizeof(wchar_t) * number of characters in the path.
     */
-   extern QGL_CONTENT_API size_t shared_entry_data_size(
-      const SHARED_CONTENT_ENTRY& data);
+   extern size_t shared_entry_data_size(const SHARED_CONTENT_ENTRY& data);
 
-   extern QGL_CONTENT_API bool valid_content_file_size(
-      const file_handle& hndl);
+   extern bool valid_content_file_size(const file_handle* hndl);
 }
