@@ -109,7 +109,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
     <ClCompile>
-      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>QGL_GRAPHICS_EXPORTS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">d3dcompiler.lib;d2d1.lib;dwrite.lib;d3d11.lib;d3d12.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -132,7 +132,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
     <ClCompile>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>QGL_GRAPHICS_EXPORTS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">d3dcompiler.lib;d2d1.lib;dwrite.lib;d3d11.lib;d3d12.lib;dxgi.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -154,136 +154,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\d3dx12.h" />
-    <ClInclude Include="include\qgl_blender.h" />
-    <ClInclude Include="include\qgl_blender_buffer.h" />
-    <ClInclude Include="include\qgl_brush.h" />
-    <ClInclude Include="include\qgl_brush_buffer.h" />
-    <ClInclude Include="include\qgl_buffer_allocator.h" />
-    <ClInclude Include="include\qgl_camera.h" />
-    <ClInclude Include="include\qgl_camera_buffer.h" />
-    <ClInclude Include="include\qgl_cbv_descriptor_heap.h" />
-    <ClInclude Include="include\qgl_cmd_bundle.h" />
-    <ClInclude Include="include\qgl_constant_buffer.h" />
-    <ClInclude Include="include\qgl_cpy_cmd_list.h" />
-    <ClInclude Include="include\qgl_cpy_engine.h" />
-    <ClInclude Include="include\qgl_d3d_conversions.h" />
-    <ClInclude Include="include\qgl_d3d_device.h" />
-    <ClInclude Include="include\qgl_dds.h" />
-    <ClInclude Include="include\qgl_depth_stencil.h" />
-    <ClInclude Include="include\qgl_depth_stencil_buffer.h" />
-    <ClInclude Include="include\qgl_descriptor_heap.h" />
-    <ClInclude Include="include\qgl_descriptor_range.h" />
-    <ClInclude Include="include\qgl_descriptor_table.h" />
-    <ClInclude Include="include\qgl_dsv_descriptor_heap.h" />
-    <ClInclude Include="include\qgl_fence.h" />
-    <ClInclude Include="include\qgl_frame.h" />
-    <ClInclude Include="include\qgl_gdev_helpers.h" />
-    <ClInclude Include="include\qgl_graphics_cmd_list.h" />
+    <ClInclude Include="include\Content\Content-Buffers\qgl_blender_buffer.h" />
+    <ClInclude Include="include\Content\Content-Buffers\qgl_blender_desc_buffer.h" />
+    <ClInclude Include="include\Content\Content-Buffers\qgl_brush_buffer.h" />
+    <ClInclude Include="include\Content\Content-Buffers\qgl_camera_buffer.h" />
+    <ClInclude Include="include\Content\Content-Buffers\qgl_depth_stencil_buffer.h" />
+    <ClInclude Include="include\Content\Content-Buffers\qgl_graphic_config_buffer.h" />
+    <ClInclude Include="include\Content\Content-Buffers\qgl_light_buffer.h" />
+    <ClInclude Include="include\Content\Content-Buffers\qgl_rasterizer_buffer.h" />
+    <ClInclude Include="include\Content\Content-Buffers\qgl_sampler_buffer.h" />
+    <ClInclude Include="include\Content\Content-Buffers\qgl_text_format_buffer.h" />
+    <ClInclude Include="include\Engines\qgl_iengine.h" />
+    <ClInclude Include="include\Helpers\d3dx12.h" />
     <ClInclude Include="include\qgl_graphics_include.h" />
-    <ClInclude Include="include\qgl_graphic_config_buffer.h" />
-    <ClInclude Include="include\qgl_graphic_options.h" />
-    <ClInclude Include="include\qgl_ibindable.h" />
-    <ClInclude Include="include\qgl_icmd_list.h" />
-    <ClInclude Include="include\qgl_iengine.h" />
-    <ClInclude Include="include\qgl_igpu_buffer.h" />
-    <ClInclude Include="include\qgl_imappable.h" />
-    <ClInclude Include="include\qgl_imem_allocator.h" />
-    <ClInclude Include="include\qgl_importer_brush.h" />
-    <ClInclude Include="include\qgl_importer_camera.h" />
-    <ClInclude Include="include\qgl_importer_dds.h" />
-    <ClInclude Include="include\qgl_importer_depth_stencil.h" />
-    <ClInclude Include="include\qgl_importer_graphics_config.h" />
-    <ClInclude Include="include\qgl_importer_light.h" />
-    <ClInclude Include="include\qgl_importer_sampler.h" />
-    <ClInclude Include="include\qgl_importer_text_format.h" />
-    <ClInclude Include="include\qgl_index_buffer.h" />
-    <ClInclude Include="include\qgl_input_element_description.h" />
-    <ClInclude Include="include\qgl_input_element_description_buffer.h" />
-    <ClInclude Include="include\qgl_iresident.h" />
-    <ClInclude Include="include\qgl_iresident_metric.h" />
-    <ClInclude Include="include\qgl_ishader.h" />
-    <ClInclude Include="include\qgl_light.h" />
-    <ClInclude Include="include\qgl_light_buffer.h" />
-    <ClInclude Include="include\qgl_memory.h" />
-    <ClInclude Include="include\qgl_pso.h" />
-    <ClInclude Include="include\qgl_rasterizer.h" />
-    <ClInclude Include="include\qgl_rasterizer_buffer.h" />
-    <ClInclude Include="include\qgl_render_engine.h" />
-    <ClInclude Include="include\qgl_render_target.h" />
-    <ClInclude Include="include\qgl_root_signature.h" />
-    <ClInclude Include="include\qgl_rtv_descriptor_heap.h" />
-    <ClInclude Include="include\qgl_sampler.h" />
-    <ClInclude Include="include\qgl_sampler_buffer.h" />
-    <ClInclude Include="include\qgl_sampler_descriptor_heap.h" />
-    <ClInclude Include="include\qgl_scissor.h" />
-    <ClInclude Include="include\qgl_shader_meta.h" />
-    <ClInclude Include="include\qgl_srv_descriptor_heap.h" />
-    <ClInclude Include="include\qgl_sub_allocator.h" />
-    <ClInclude Include="include\qgl_sync_object.h" />
-    <ClInclude Include="include\qgl_texture.h" />
-    <ClInclude Include="include\qgl_texture_buffer.h" />
-    <ClInclude Include="include\qgl_text_format.h" />
-    <ClInclude Include="include\qgl_text_format_buffer.h" />
-    <ClInclude Include="include\qgl_text_render_component.h" />
-    <ClInclude Include="include\qgl_uav_descriptor_heap.h" />
-    <ClInclude Include="include\qgl_vertex_buffer.h" />
-    <ClInclude Include="include\qgl_viewport.h" />
     <ClInclude Include="include\qgl_window.h" />
-    <ClInclude Include="include\qgl_window_helpers.h" />
-    <ClInclude Include="include\qgl_wtext.h" />
-    <ClInclude Include="include\std_ring.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="QGLGraphics.h" />
     <ClInclude Include="QGL_GraphicsRT.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="QGL_GraphicsRT.cpp" />
-    <ClCompile Include="qgl_graphic_options.cpp" />
-    <ClCompile Include="qgl_scissor.cpp" />
-    <ClCompile Include="qgl_viewport.cpp" />
-    <ClCompile Include="qgl_blender.cpp" />
     <ClCompile Include="qgl_blender_buffer.cpp" />
-    <ClCompile Include="qgl_descriptor_table.cpp" />
-    <ClCompile Include="qgl_frame.cpp" />
-    <ClCompile Include="qgl_rasterizer.cpp" />
-    <ClCompile Include="qgl_rasterizer_buffer.cpp" />
+    <ClCompile Include="qgl_blender_desc_buffer.cpp" />
+    <ClCompile Include="qgl_brush_buffer.cpp" />
+    <ClCompile Include="qgl_camera_buffer.cpp" />
+    <ClCompile Include="qgl_depth_stencil_buffer.cpp" />
+    <ClCompile Include="QGL_GraphicsRT.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
-    <ClCompile Include="qgl_brush.cpp" />
-    <ClCompile Include="qgl_brush_buffer.cpp" />
-    <ClCompile Include="qgl_camera_buffer.cpp" />
-    <ClCompile Include="qgl_cbv_descriptor_heap.cpp" />
-    <ClCompile Include="qgl_cpy_cmd_list.cpp" />
-    <ClCompile Include="qgl_d3d_device.cpp" />
-    <ClCompile Include="qgl_dds.cpp" />
-    <ClCompile Include="qgl_depth_stencil.cpp" />
-    <ClCompile Include="qgl_depth_stencil_buffer.cpp" />
-    <ClCompile Include="qgl_dsv_descriptor_heap.cpp" />
-    <ClCompile Include="qgl_gdev_helpers.cpp" />
-    <ClCompile Include="qgl_graphics_cmd_list.cpp" />
-    <ClCompile Include="qgl_graphic_config_buffer.cpp" />
-    <ClCompile Include="qgl_light.cpp" />
-    <ClCompile Include="qgl_light_buffer.cpp" />
-    <ClCompile Include="qgl_pso.cpp" />
-    <ClCompile Include="qgl_render_target.cpp" />
-    <ClCompile Include="qgl_root_signature.cpp" />
-    <ClCompile Include="qgl_rtv_descriptor_heap.cpp" />
-    <ClCompile Include="qgl_sampler.cpp" />
-    <ClCompile Include="qgl_sampler_buffer.cpp" />
-    <ClCompile Include="qgl_sampler_descriptor_heap.cpp" />
-    <ClCompile Include="qgl_srv_descriptor_heap.cpp" />
-    <ClCompile Include="qgl_text_render_component.cpp" />
-    <ClCompile Include="qgl_uav_descriptor_heap.cpp" />
-    <ClCompile Include="qgl_wtext.cpp" />
-    <ClCompile Include="qgl_texture.cpp" />
-    <ClCompile Include="qgl_texture_buffer.cpp" />
-    <ClCompile Include="qgl_text_format.cpp" />
-    <ClCompile Include="qgl_text_format_buffer.cpp" />
     <ClCompile Include="qgl_window.cpp" />
-    <ClCompile Include="qgl_window_helpers.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

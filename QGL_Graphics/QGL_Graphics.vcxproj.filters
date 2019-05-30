@@ -14,231 +14,69 @@
     <Filter Include="Source Files">
       <UniqueIdentifier>{2d996fde-968a-4868-b214-92f277fef954}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Engines">
-      <UniqueIdentifier>{09323465-3f25-4f78-8062-4a52d9b2bce0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Synchronization">
-      <UniqueIdentifier>{c01ef21d-cc72-4b65-bb3a-726d46d34754}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Components">
-      <UniqueIdentifier>{6a73a1b8-18b2-47c8-bdca-e6d4da18fc5a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Descriptors">
-      <UniqueIdentifier>{52c57cee-e331-49d4-a32b-33922cb95334}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Commands">
-      <UniqueIdentifier>{fac44922-faff-49cd-8d7c-2c287e92dfa2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Content Buffers">
-      <UniqueIdentifier>{431fe184-a874-4bc0-8960-484f8d6126a5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Content Importers">
-      <UniqueIdentifier>{fb95aa75-0871-41b7-880f-2ba3f12dc201}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Graphics Buffers">
-      <UniqueIdentifier>{cd738989-3284-4a76-be75-042affea61cc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Window">
-      <UniqueIdentifier>{26c44452-cc86-4819-88f9-b8699d6b3c2d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Content">
-      <UniqueIdentifier>{325f76d9-cc9e-47cd-a0ed-ab869e5bd88b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Helpers">
-      <UniqueIdentifier>{2a582bac-468a-4aa7-8f14-e46b9af2c62d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Root Signature">
-      <UniqueIdentifier>{f784ad35-836b-49af-af9b-1675f2ff6fb1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Engines">
-      <UniqueIdentifier>{a04ae3ff-4ce5-4f74-8c00-ee88f382ebae}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Components">
-      <UniqueIdentifier>{f53e54b1-fcc5-4d4a-b28a-4b8d2e991d05}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Descriptors">
-      <UniqueIdentifier>{959ed08c-4997-4526-ba19-c914f671f097}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Commands">
-      <UniqueIdentifier>{a429a9a7-8632-4fcc-8a2b-61151f744ce3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Content Buffers">
-      <UniqueIdentifier>{3976edb4-1eeb-4d6e-b4ef-bd2d15118168}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Content Importers">
-      <UniqueIdentifier>{f1616577-2e3a-48c5-9f16-ed310d2dd28b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Graphics Buffers">
-      <UniqueIdentifier>{00d31350-25f1-4e87-a2fd-0e7b11cba888}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Content">
-      <UniqueIdentifier>{f9f41c49-b1d8-4cf6-bee1-375d752e29fe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Helpers">
-      <UniqueIdentifier>{82815d25-6530-4a36-a96f-18f5cb1fa9cb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Root Signature">
-      <UniqueIdentifier>{61d2c089-9ea4-405e-830e-2327a977bc14}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Window">
-      <UniqueIdentifier>{048bc687-e6ea-48bb-80fd-966929dbba44}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Synchronization">
-      <UniqueIdentifier>{2dcbc5af-bea4-4d15-a52b-89077c0115fe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Memory">
-      <UniqueIdentifier>{cfe94b09-6d5a-440c-800f-8ebccf668a92}</UniqueIdentifier>
-    </Filter>
     <Filter Include="win_rt">
       <UniqueIdentifier>{17081e90-b01b-49c8-8632-13a13609c17c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Files">
-      <UniqueIdentifier>{b7285ef6-64c8-43b7-81b5-bd5a52f1825e}</UniqueIdentifier>
+    <Filter Include="Header Files\Helpers">
+      <UniqueIdentifier>{76e60fe7-2c7b-4cb3-866d-2e3eccbcc2ee}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Pipeline State">
-      <UniqueIdentifier>{2d14f0a1-2591-4661-82fd-ddc7ec670896}</UniqueIdentifier>
+    <Filter Include="Header Files\Content">
+      <UniqueIdentifier>{831623e7-89c6-4d93-8698-5216925e345a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Pipeline State">
-      <UniqueIdentifier>{cb513f2e-bb35-4931-a3fb-5f66d14d3183}</UniqueIdentifier>
+    <Filter Include="Header Files\Content\Content-Buffers">
+      <UniqueIdentifier>{4c1707e8-142e-4686-8db7-c8ccb9e405bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Engines">
+      <UniqueIdentifier>{a60964c3-5e42-48ca-828c-d51033be252a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Content\Content-Loaders">
+      <UniqueIdentifier>{3527204b-a434-487b-83f0-de812c3e6666}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Content\File-Loaders">
+      <UniqueIdentifier>{1b5efaf4-4000-42c5-95e4-e32d07d819aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Content">
+      <UniqueIdentifier>{7d598187-607d-481e-a019-a47f4732ec36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Content\Content-Buffers">
+      <UniqueIdentifier>{17be2d06-502c-45d4-bfe9-110fc6fd6a02}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="qgl_window_helpers.cpp">
-      <Filter>Source Files\Window</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_window.cpp">
-      <Filter>Source Files\Window</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_root_signature.cpp">
-      <Filter>Source Files\Root Signature</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_dds.cpp">
-      <Filter>Source Files\Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_graphics_cmd_list.cpp">
-      <Filter>Source Files\Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_depth_stencil.cpp">
-      <Filter>Source Files\Graphics Buffers</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_render_target.cpp">
-      <Filter>Source Files\Graphics Buffers</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_sampler.cpp">
-      <Filter>Source Files\Graphics Buffers</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_light_buffer.cpp">
-      <Filter>Source Files\Content Buffers</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_light.cpp">
-      <Filter>Source Files\Content</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_sampler_buffer.cpp">
-      <Filter>Source Files\Content Buffers</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_depth_stencil_buffer.cpp">
-      <Filter>Source Files\Content Buffers</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_camera_buffer.cpp">
-      <Filter>Source Files\Content Buffers</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_text_format_buffer.cpp">
-      <Filter>Source Files\Content Buffers</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_text_format.cpp">
-      <Filter>Source Files\Content</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_brush.cpp">
-      <Filter>Source Files\Content</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_brush_buffer.cpp">
-      <Filter>Source Files\Content Buffers</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_texture_buffer.cpp">
-      <Filter>Source Files\Content Buffers</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_wtext.cpp">
-      <Filter>Source Files\Content</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_texture.cpp">
-      <Filter>Source Files\Content</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_graphic_config_buffer.cpp">
-      <Filter>Source Files\Content Buffers</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_gdev_helpers.cpp">
-      <Filter>Source Files\Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_text_render_component.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_cpy_cmd_list.cpp">
-      <Filter>Source Files\Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_cbv_descriptor_heap.cpp">
-      <Filter>Source Files\Descriptors</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_dsv_descriptor_heap.cpp">
-      <Filter>Source Files\Descriptors</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_rtv_descriptor_heap.cpp">
-      <Filter>Source Files\Descriptors</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_sampler_descriptor_heap.cpp">
-      <Filter>Source Files\Descriptors</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_srv_descriptor_heap.cpp">
-      <Filter>Source Files\Descriptors</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_uav_descriptor_heap.cpp">
-      <Filter>Source Files\Descriptors</Filter>
-    </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
       <Filter>win_rt</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="qgl_pso.cpp">
-      <Filter>Source Files\Pipeline State</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_d3d_device.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_frame.cpp">
-      <Filter>Source Files\Graphics Buffers</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_descriptor_table.cpp">
-      <Filter>Source Files\Descriptors</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_blender_buffer.cpp">
-      <Filter>Source Files\Content Buffers</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_blender.cpp">
-      <Filter>Source Files\Pipeline State</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_rasterizer.cpp">
-      <Filter>Source Files\Pipeline State</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_rasterizer_buffer.cpp">
-      <Filter>Source Files\Content Buffers</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_scissor.cpp">
-      <Filter>Source Files\Graphics Buffers</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_viewport.cpp">
-      <Filter>Source Files\Graphics Buffers</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_graphic_options.cpp">
-      <Filter>Source Files\Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="QGL_GraphicsRT.cpp">
       <Filter>win_rt</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_blender_buffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_blender_desc_buffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_brush_buffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_camera_buffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_depth_stencil_buffer.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLGraphics.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QGL_GraphicsRT.h">
+      <Filter>win_rt</Filter>
     </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
@@ -246,242 +84,44 @@
     <ClInclude Include="include\qgl_graphics_include.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\d3dx12.h">
+    <ClInclude Include="include\Helpers\d3dx12.h">
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_camera_buffer.h">
-      <Filter>Header Files\Content Buffers</Filter>
+    <ClInclude Include="include\Content\Content-Buffers\qgl_blender_buffer.h">
+      <Filter>Header Files\Content\Content-Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_brush_buffer.h">
-      <Filter>Header Files\Content Buffers</Filter>
+    <ClInclude Include="include\Content\Content-Buffers\qgl_brush_buffer.h">
+      <Filter>Header Files\Content\Content-Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_depth_stencil_buffer.h">
-      <Filter>Header Files\Content Buffers</Filter>
+    <ClInclude Include="include\Content\Content-Buffers\qgl_camera_buffer.h">
+      <Filter>Header Files\Content\Content-Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_graphic_config_buffer.h">
-      <Filter>Header Files\Content Buffers</Filter>
+    <ClInclude Include="include\Content\Content-Buffers\qgl_depth_stencil_buffer.h">
+      <Filter>Header Files\Content\Content-Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_dds.h">
-      <Filter>Header Files\Helpers</Filter>
+    <ClInclude Include="include\Content\Content-Buffers\qgl_graphic_config_buffer.h">
+      <Filter>Header Files\Content\Content-Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_fence.h">
-      <Filter>Header Files\Synchronization</Filter>
+    <ClInclude Include="include\Content\Content-Buffers\qgl_light_buffer.h">
+      <Filter>Header Files\Content\Content-Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_gdev_helpers.h">
-      <Filter>Header Files\Helpers</Filter>
+    <ClInclude Include="include\Content\Content-Buffers\qgl_rasterizer_buffer.h">
+      <Filter>Header Files\Content\Content-Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_iengine.h">
-      <Filter>Header Files\Engines</Filter>
+    <ClInclude Include="include\Content\Content-Buffers\qgl_sampler_buffer.h">
+      <Filter>Header Files\Content\Content-Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_cpy_engine.h">
-      <Filter>Header Files\Engines</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_render_engine.h">
-      <Filter>Header Files\Engines</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_icmd_list.h">
-      <Filter>Header Files\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_cmd_bundle.h">
-      <Filter>Header Files\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_cpy_cmd_list.h">
-      <Filter>Header Files\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_graphics_cmd_list.h">
-      <Filter>Header Files\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_importer_dds.h">
-      <Filter>Header Files\Content Importers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_importer_camera.h">
-      <Filter>Header Files\Content Importers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_importer_brush.h">
-      <Filter>Header Files\Content Importers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_importer_depth_stencil.h">
-      <Filter>Header Files\Content Importers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_importer_graphics_config.h">
-      <Filter>Header Files\Content Importers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_importer_light.h">
-      <Filter>Header Files\Content Importers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_importer_sampler.h">
-      <Filter>Header Files\Content Importers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_importer_text_format.h">
-      <Filter>Header Files\Content Importers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_texture_buffer.h">
-      <Filter>Header Files\Content Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_light_buffer.h">
-      <Filter>Header Files\Content Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_descriptor_heap.h">
-      <Filter>Header Files\Descriptors</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_descriptor_range.h">
-      <Filter>Header Files\Descriptors</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_descriptor_table.h">
-      <Filter>Header Files\Descriptors</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_dsv_descriptor_heap.h">
-      <Filter>Header Files\Descriptors</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_cbv_descriptor_heap.h">
-      <Filter>Header Files\Descriptors</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_uav_descriptor_heap.h">
-      <Filter>Header Files\Descriptors</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_srv_descriptor_heap.h">
-      <Filter>Header Files\Descriptors</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_rtv_descriptor_heap.h">
-      <Filter>Header Files\Descriptors</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_buffer_allocator.h">
-      <Filter>Header Files\Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_imem_allocator.h">
-      <Filter>Header Files\Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_memory.h">
-      <Filter>Header Files\Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_igpu_buffer.h">
-      <Filter>Header Files\Graphics Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_render_target.h">
-      <Filter>Header Files\Graphics Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_sub_allocator.h">
-      <Filter>Header Files\Memory</Filter>
+    <ClInclude Include="include\Content\Content-Buffers\qgl_text_format_buffer.h">
+      <Filter>Header Files\Content\Content-Buffers</Filter>
     </ClInclude>
     <ClInclude Include="include\qgl_window.h">
-      <Filter>Header Files\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_window_helpers.h">
-      <Filter>Header Files\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_vertex_buffer.h">
-      <Filter>Header Files\Graphics Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_index_buffer.h">
-      <Filter>Header Files\Graphics Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_sync_object.h">
-      <Filter>Header Files\Synchronization</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_sampler_buffer.h">
-      <Filter>Header Files\Content Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_text_format_buffer.h">
-      <Filter>Header Files\Content Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_wtext.h">
-      <Filter>Header Files\Content</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_light.h">
-      <Filter>Header Files\Content</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_camera.h">
-      <Filter>Header Files\Content</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_brush.h">
-      <Filter>Header Files\Content</Filter>
-    </ClInclude>
-    <ClInclude Include="include\std_ring.h">
-      <Filter>Header Files\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_text_format.h">
-      <Filter>Header Files\Content</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_constant_buffer.h">
-      <Filter>Header Files\Graphics Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_ibindable.h">
-      <Filter>Header Files\Root Signature</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_root_signature.h">
-      <Filter>Header Files\Root Signature</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_sampler_descriptor_heap.h">
-      <Filter>Header Files\Descriptors</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_iresident.h">
-      <Filter>Header Files\Graphics Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_iresident_metric.h">
-      <Filter>Header Files\Graphics Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_imappable.h">
-      <Filter>Header Files\Graphics Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_text_render_component.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_sampler.h">
-      <Filter>Header Files\Graphics Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_depth_stencil.h">
-      <Filter>Header Files\Graphics Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_texture.h">
-      <Filter>Header Files\Graphics Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_blender_buffer.h">
-      <Filter>Header Files\Content Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_rasterizer_buffer.h">
-      <Filter>Header Files\Content Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_blender.h">
-      <Filter>Header Files\Pipeline State</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_pso.h">
-      <Filter>Header Files\Pipeline State</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_rasterizer.h">
-      <Filter>Header Files\Pipeline State</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_ishader.h">
-      <Filter>Header Files\Pipeline State</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_shader_meta.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_d3d_device.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\Content\Content-Buffers\qgl_blender_desc_buffer.h">
+      <Filter>Header Files\Content\Content-Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_d3d_conversions.h">
-      <Filter>Header Files\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_input_element_description.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_input_element_description_buffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_frame.h">
-      <Filter>Header Files\Graphics Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_viewport.h">
-      <Filter>Header Files\Graphics Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_scissor.h">
-      <Filter>Header Files\Graphics Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_graphic_options.h">
-      <Filter>Header Files\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="QGL_GraphicsRT.h">
-      <Filter>win_rt</Filter>
+    <ClInclude Include="include\Engines\qgl_iengine.h">
+      <Filter>Header Files\Engines</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

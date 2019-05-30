@@ -1,46 +1,50 @@
 #include "pch.h"
-#include "include/qgl_camera_buffer.h"
+#include "include/Content/Content-Buffers/qgl_camera_buffer.h"
 
-static constexpr float DEFAULT_CAMERA_LOOK_AT[4] =
+namespace qgl::graphics::content::buffers
 {
-   1.0f, 1.0f, 1.0f, 1.0f
-};
+   CAMERA_BUFFER::CAMERA_BUFFER() :
+      m_reserved1(0),
+      m_reserved2(0),
+      m_nearPlane(0.01f),
+      m_farPlane(100.0f),
+      m_fov(1)
+   {
+      for (int i = 0; i < 4; i++)
+      {
+         m_position[i] = 0.0f;
+         m_up[i] = 0.0f;
+         m_lookAt[0] = 0.0f;
+      }
+   }
 
-static constexpr float DEFAULT_CAMERA_POSITION[4] =
-{
-   0.0f, 0.0f, 0.0f, 0.0f
-};
+   const float* CAMERA_BUFFER::position() const
+   {
+      return m_position;
+   }
 
-qgl::graphics::CAMERA_BUFFER::CAMERA_BUFFER() :
-   m_fov(1.0f),
-   m_farPlane(10000.0f),
-   m_nearPlane(1.0f)
-{
-   MemoryCopy<float>(m_position, DEFAULT_CAMERA_POSITION, 4);
-   MemoryCopy<float>(m_lookAt, DEFAULT_CAMERA_LOOK_AT, 4);
-   MemoryCopy<float>(m_up, DEFAULT_CAMERA_LOOK_AT, 4);
-}
+   const float* CAMERA_BUFFER::up() const
+   {
+      return m_up;
+   }
 
-qgl::graphics::CAMERA_BUFFER::CAMERA_BUFFER(const CAMERA_BUFFER& r) :
-   m_fov(r.fov()),
-   m_farPlane(r.far_plane()),
-   m_nearPlane(r.near_plane())
-{
-   MemoryCopy<float>(m_position, r.position(), 4);
-   MemoryCopy<float>(m_lookAt, r.look_at(), 4);
-   MemoryCopy<float>(m_up, r.up(), 4);
-}
+   const float* CAMERA_BUFFER::look_at() const
+   {
+      return m_lookAt;
+   }
 
-qgl::graphics::CAMERA_BUFFER::CAMERA_BUFFER(CAMERA_BUFFER&& r) :
-   m_fov(r.fov()),
-   m_farPlane(r.far_plane()),
-   m_nearPlane(r.near_plane())
-{
-   MemoryCopy<float>(m_position, r.position(), 4);
-   MemoryCopy<float>(m_lookAt, r.look_at(), 4);
-   MemoryCopy<float>(m_up, r.up(), 4);
-}
+   float CAMERA_BUFFER::near_plane() const
+   {
+      return m_nearPlane;
+   }
 
-qgl::graphics::CAMERA_BUFFER::~CAMERA_BUFFER() noexcept
-{
+   float CAMERA_BUFFER::far_plane() const
+   {
+      return m_farPlane;
+   }
+
+   float CAMERA_BUFFER::fov() const
+   {
+      return  m_fov;
+   }
 }

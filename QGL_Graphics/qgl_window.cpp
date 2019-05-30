@@ -2,84 +2,186 @@
 #include "include/qgl_window.h"
 #include <winrt/Windows.Graphics.Display.h>
 
-/*
- Converts device-independent pixels to physical pixels.
- */
-constexpr auto ConvertToPixels(float dip, float dpi)
+using namespace winrt::Windows::UI;
+
+namespace qgl::graphics
 {
-   return static_cast<int>(dip * dpi / 96.0f + 0.5f);
-}
+   /*
+    Converts device-independent pixels to physical pixels.
+    */
+   constexpr UINT ConvertToPixels(float dip, float dpi)
+   {
+      return static_cast<UINT>(dip * dpi / 96.0f + 0.5f);
+   }
 
-qgl::graphics::window::window(const appview_pt& appView_p,
-                              const corewin_pt& coreWindow_p) :
-   m_appView_p(appView_p),
-   m_coreWin_p(coreWindow_p)
-{
-   p_update_dimmensions();
-   m_coreWin_p->SizeChanged({ this, &window::p_resize_completed });
-}
+   struct window::impl
+   {
+      public:
 
-qgl::graphics::window::window(window && r) :
-   m_appView_p(std::move(r.m_appView_p)),
-   m_coreWin_p(std::move(r.m_coreWin_p))
-{
-   p_update_dimmensions();
-   m_coreWin_p->SizeChanged({ this, &window::p_resize_completed });
-}
+      impl(std::shared_ptr<ViewManagement::ApplicationView> appView,
+           std::shared_ptr<Core::CoreWindow> coreWin) :
+         m_appView(appView),
+         m_coreWindow(coreWin)
+      {
+         update_dimmensions();
+         m_coreWindow->SizeChanged({ this, &impl::resize_completed });
+      }
 
-bool qgl::graphics::window::full_screen() const
-{
-   return m_appView_p->IsFullScreenMode();
-}
+      impl(impl&) = delete;
 
-void qgl::graphics::window::toggle_full_screen()
-{
-   window_helpers::toggle_full_screen(*m_appView_p);
-}
+      impl(impl&& m) = default;
 
-void qgl::graphics::window::enter_full_screen()
-{
-   window_helpers::enter_full_screen(*m_appView_p);
-}
+      virtual ~impl() noexcept = default;
 
-void qgl::graphics::window::exit_full_screen()
-{
-   window_helpers::exit_full_screen(*m_appView_p);
-}
+      bool full_screen() const
+      {
+         return m_appView->IsFullScreen();
+      }
 
-void qgl::graphics::window::title(const winrt::param::hstring str)
-{
-   m_appView_p->Title(str);
-}
+      bool toggle_full_screen()
+      {
+         if (full_screen())
+         {
+            m_appView->ExitFullScreenMode();
+            return false;
+         }
+         else
+         {
+            return m_appView->TryEnterFullScreenMode();
+         }
+      }
 
-winrt::hstring qgl::graphics::window::title() const
-{
-   return m_appView_p->Title();
-}
+      bool enter_full_screen()
+      {
+         return m_appView->TryEnterFullScreenMode();
+      }
 
-IUnknown* qgl::graphics::window::unknown()
-{
-   return winrt::get_unknown(*m_coreWin_p);
-}
+      bool exit_full_screen()
+      {
+         m_appView->ExitFullScreenMode();
+         return true;
+      }
 
-void qgl::graphics::window::p_update_dimmensions()
-{
-   //Get the window bounds which are measured in device-independent pixels.
-   const auto& bnds = m_coreWin_p->Bounds();
+      void title(const winrt::param::hstring str)
+      {
+         m_appView->Title(str);
+      }
 
-   //Get the DPI of the screen.
-   auto dpInfo = winrt::Windows::Graphics::Display::DisplayInformation::GetForCurrentView();
-   float dpi = dpInfo.LogicalDpi();
+      winrt::hstring title() const
+      {
+         return m_appView->Title();
+      }
 
-   //Convert the device-independent pixels into physical pixels.
-   auto h = static_cast<UINT>(ConvertToPixels(bnds.Height, dpi));
-   auto w = static_cast<UINT>(ConvertToPixels(bnds.Width, dpi));
-   m_width = w;
-   m_height = h;
+      IUnknown* unknown()
+      {
+         return winrt::get_unknown(*m_coreWindow);
+      }
 
-   #ifdef DEBUG
-   std::wstringstream ws;
-   ws << "H: " << h << " W: " << w;
-   title(ws.str());
-   #endif;
+      UINT m_widthPixels;
+      UINT m_heightPixels;
+
+      private:
+
+      void update_dimmensions()
+      {
+          //Get the window bounds which are measured in device-independent pixels.
+         const auto& bnds = m_coreWindow->Bounds();
+
+         //Get the DPI of the screen.
+         auto dpInfo = winrt::Windows::Graphics::Display::DisplayInformation::GetForCurrentView();
+         float dpi = dpInfo.LogicalDpi();
+
+         //Convert the device-independent pixels into physical pixels.
+         auto h = ConvertToPixels(bnds.Height, dpi);
+         auto w = ConvertToPixels(bnds.Width, dpi);
+         m_widthPixels = w;
+         m_heightPixels = h;
+
+         #ifdef _DEBUG
+         std::wstringstream ws;
+         ws << "H: " << h << " W: " << w;
+         title(ws.str());
+         #endif;
+      }
+
+      void resize_completed(
+         winrt::Windows::Foundation::IInspectable const&,
+         winrt::Windows::UI::Core::WindowSizeChangedEventArgs const&)
+      {
+         update_dimmensions();
+      }
+
+      std::shared_ptr<ViewManagement::ApplicationView> m_appView;
+      std::shared_ptr<Core::CoreWindow> m_coreWindow;
+   };
+
+
+   window::window(winrt::Windows::Foundation::IInspectable coreWindow, 
+                  winrt::Windows::Foundation::IInspectable appView)
+   {
+      auto win = std::make_shared<Core::CoreWindow>(
+         winrt::unbox_value<Core::CoreWindow>(coreWindow));
+      
+      auto vew = std::make_shared<ViewManagement::ApplicationView>(
+         winrt::unbox_value<ViewManagement::ApplicationView>(appView));
+
+      m_impl_p = new impl(vew, win);
+   }
+
+   window::window(window&& r)
+   {
+      m_impl_p = r.m_impl_p;
+      r.m_impl_p = nullptr;
+   }
+
+   window::~window() noexcept
+   {
+      delete m_impl_p;
+      m_impl_p = nullptr;
+   }
+
+   bool window::full_screen() const
+   {
+      return m_impl_p->full_screen();
+   }
+
+   bool window::toggle_full_screen()
+   {
+      return m_impl_p->toggle_full_screen();
+   }
+
+   bool window::enter_full_screen()
+   {
+      return m_impl_p->enter_full_screen();
+   }
+
+   bool window::exit_full_screen()
+   {
+      return m_impl_p->exit_full_screen();
+   }
+
+   void window::title(const winrt::param::hstring str)
+   {
+      m_impl_p->title(winrt::to_hstring(str));
+   }
+
+   winrt::hstring window::title() const
+   {
+      return m_impl_p->title();
+   }
+
+   UINT window::width() const noexcept
+   {
+      return m_impl_p->m_widthPixels;
+   }
+
+   UINT window::height() const noexcept
+   {
+      return m_impl_p->m_heightPixels;
+   }
+
+   IUnknown* window::unknown()
+   {
+      return m_impl_p->unknown();
+   }
 }

@@ -1,57 +1,67 @@
 #include "pch.h"
-#include "include/qgl_brush_buffer.h"
-#include <variant>
+#include "include/Content/Content-Buffers/qgl_brush_buffer.h"
 
-qgl::graphics::BRUSH_BUFFER::BRUSH_BUFFER() :
-   m_style(static_cast<uint8_t>(TEXT_BRUSH_STYLE::TEXT_BRUSH_STYLE_SOLID)),
-   m_reserved1(0),
-   m_stopCount(0)
+namespace qgl::graphics::content::buffers
 {
-   m_stops[0].color.r = 1.0f;
-   m_stops[0].color.g = 1.0f;
-   m_stops[0].color.b = 1.0f;
-   m_stops[0].color.a = 1.0f;
-}
-
-qgl::graphics::BRUSH_BUFFER::BRUSH_BUFFER(const BRUSH_BUFFER& r) :
-   m_style(r.m_style),
-   m_reserved1(r.m_reserved1),
-   m_stopCount(r.m_stopCount)
-{
-   MemoryCopy(m_properties, r.m_properties, BRUSH_FORMAT_BUFFER_MAX_PROPRTY_SIZE);
-   MemoryCopy(m_stops, r.m_stops, BRUSH_FORMAT_BUFFER_MAX_GRADIANT_STOPS);
-}
-
-qgl::graphics::BRUSH_BUFFER::BRUSH_BUFFER(BRUSH_BUFFER&& r) :
-   m_style(r.m_style),
-   m_reserved1(r.m_reserved1),
-   m_stopCount(r.m_stopCount)
-{
-   MemoryCopy(m_properties, r.m_properties, BRUSH_FORMAT_BUFFER_MAX_PROPRTY_SIZE);
-   MemoryCopy(m_stops, r.m_stops, BRUSH_FORMAT_BUFFER_MAX_GRADIANT_STOPS);
-}
-
-
-const D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES& qgl::graphics::BRUSH_BUFFER::linear_properties()
-{
-   if (style() == TEXT_BRUSH_STYLE::TEXT_BRUSH_STYLE_GRADIENT_LINEAR)
+   BRUSH_BUFFER::BRUSH_BUFFER() :
+      m_style(static_cast<uint8_t>(TEXT_BRUSH_STYLE::TEXT_BRUSH_STYLE_SOLID)),
+      m_reserved1(0),
+      m_stopCount(1)
    {
-      return *reinterpret_cast<D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES*>(&m_properties);
+      m_stops[0].color.r = 1.0f;
+      m_stops[0].color.g = 1.0f;
+      m_stops[0].color.b = 1.0f;
+      m_stops[0].color.a = 1.0f;
    }
-   else
-   {
-      throw std::bad_variant_access();
-   }
-}
 
-const D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES& qgl::graphics::BRUSH_BUFFER::radial_properties()
-{
-   if (style() == TEXT_BRUSH_STYLE::TEXT_BRUSH_STYLE_GRADIENT_RADIAL)
+   size_t BRUSH_BUFFER::size() const
    {
-      return *reinterpret_cast<D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES*>(&m_properties);
+      return static_cast<size_t>(m_stopCount);
    }
-   else
+
+   TEXT_BRUSH_STYLE BRUSH_BUFFER::style() const
    {
-      throw std::bad_variant_access();
+      return static_cast<TEXT_BRUSH_STYLE>(m_style);
+   }
+
+   const D2D1_GRADIENT_STOP* BRUSH_BUFFER::stop(size_t idx) const
+   {
+      if (idx >= BRUSH_FORMAT_BUFFER_MAX_GRADIANT_STOPS)
+      {
+         throw std::out_of_range("idx is out of range.");
+      }
+
+      return m_stops + idx;
+   }
+
+   inline const D2D1_GRADIENT_STOP* BRUSH_BUFFER::stops() const noexcept
+   {
+      return nullptr;
+   }
+
+   const D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES* BRUSH_BUFFER::linear_properties() const
+   {
+      if (style() == TEXT_BRUSH_STYLE::TEXT_BRUSH_STYLE_GRADIENT_LINEAR)
+      {
+         return reinterpret_cast<const D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES*>(
+            &m_properties);
+      }
+      else
+      {
+         throw std::bad_variant_access();
+      }
+   }
+
+   const D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES* BRUSH_BUFFER::radial_properties() const
+   {
+      if (style() == TEXT_BRUSH_STYLE::TEXT_BRUSH_STYLE_GRADIENT_RADIAL)
+      {
+         return reinterpret_cast<const D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES*>(
+            &m_properties);
+      }
+      else
+      {
+         throw std::bad_variant_access();
+      }
    }
 }

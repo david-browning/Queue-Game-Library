@@ -16,8 +16,7 @@
 #include <dwrite_3.h>
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
-
-#include "d3dx12.h"
+#include "include/Helpers/d3dx12.h"
 
 #include <winrt/base.h>
 #include "winrt/Windows.ApplicationModel.Core.h"
@@ -33,9 +32,17 @@
 #define D3DCOMPILE_DEBUG 1
 #endif
 
+#ifdef QGL_GRAPHICS_EXPORTS
+#define QGL_GRAPHICS_API __declspec(dllexport)
+#define QGL_GRAPHICS_TEMPLATE
+#else
+#define QGL_GRAPHICS_API __declspec(dllimport)
+#define QGL_GRAPHICS_TEMPLATE extern
+#endif
+
 namespace qgl::graphics
 {
-// Assign a name to the object to aid with debugging.
+   //Assign a name to the object to aid with debugging.
    #if defined(_DEBUG) || defined(DBG)
    inline void name_d3d(ID3D12Object* pObject, LPCWSTR name)
    {
