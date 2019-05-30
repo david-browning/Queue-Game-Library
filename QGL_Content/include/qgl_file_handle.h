@@ -71,7 +71,8 @@ namespace qgl::content
 
       friend void swap(file_handle& first, file_handle& second) noexcept
       {
-         std::swap(first.m_handle, second.m_handle);
+         using std::swap;
+         swap(first.m_handle, second.m_handle);
       }
 
       private:
