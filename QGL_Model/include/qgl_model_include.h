@@ -9,3 +9,11 @@
 #else
 #define QGL_MODEL_API __declspec(dllimport)
 #endif
+
+#ifndef QGL_CC
+#define QGL_CC __fastcall
+#endif
+
+#ifndef QGL_VCC
+#define QGL_VCC __vectorcall
+#endif
