@@ -170,6 +170,8 @@
     <ClInclude Include="include\Content\Content-Buffers\qgl_rasterizer_buffer.h" />
     <ClInclude Include="include\Content\Content-Buffers\qgl_sampler_buffer.h" />
     <ClInclude Include="include\Content\Content-Buffers\qgl_text_format_buffer.h" />
+    <ClInclude Include="include\GPU\qgl_graphics_device.h" />
+    <ClInclude Include="include\GPU\qgl_graphics_device_helpers.h" />
     <ClInclude Include="include\Helpers\d3dx12.h" />
     <ClInclude Include="include\qgl_graphics_include.h" />
     <ClInclude Include="include\qgl_window.h" />
@@ -178,22 +180,24 @@
     <ClInclude Include="QGL_GraphicsRT.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="qgl_blender_buffer.cpp" />
+    <ClCompile Include="qgl_blender_desc_buffer.cpp" />
+    <ClCompile Include="qgl_brush_buffer.cpp" />
+    <ClCompile Include="qgl_camera_buffer.cpp" />
+    <ClCompile Include="qgl_depth_stencil_buffer.cpp" />
     <ClCompile Include="QGL_GraphicsRT.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
-    <ClCompile Include="src\Content\Content-Buffers\qgl_blender_buffer.cpp" />
-    <ClCompile Include="src\Content\Content-Buffers\qgl_blender_desc_buffer.cpp" />
-    <ClCompile Include="src\Content\Content-Buffers\qgl_brush_buffer.cpp" />
-    <ClCompile Include="src\Content\Content-Buffers\qgl_camera_buffer.cpp" />
-    <ClCompile Include="src\Content\Content-Buffers\qgl_depth_stencil_buffer.cpp" />
-    <ClCompile Include="src\Content\Content-Buffers\qgl_graphic_config_buffer.cpp" />
-    <ClCompile Include="src\Content\Content-Buffers\qgl_light_buffer.cpp" />
-    <ClCompile Include="src\Content\Content-Buffers\qgl_rasterizer_buffer.cpp" />
-    <ClCompile Include="src\Content\Content-Buffers\qgl_sampler_buffer.cpp" />
-    <ClCompile Include="src\Content\Content-Buffers\qgl_text_format_buffer.cpp" />
-    <ClCompile Include="src\qgl_window.cpp" />
+    <ClCompile Include="qgl_graphics_device.cpp" />
+    <ClCompile Include="qgl_graphics_device_helpers.cpp" />
+    <ClCompile Include="qgl_graphic_config_buffer.cpp" />
+    <ClCompile Include="qgl_light_buffer.cpp" />
+    <ClCompile Include="qgl_rasterizer_buffer.cpp" />
+    <ClCompile Include="qgl_sampler_buffer.cpp" />
+    <ClCompile Include="qgl_text_format_buffer.cpp" />
+    <ClCompile Include="qgl_window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

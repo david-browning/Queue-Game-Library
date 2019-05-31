@@ -75,6 +75,7 @@ namespace qgl::graphics
       UINT height() const noexcept;
 
       private:
+      friend class graphics_device;
       /*
          Returns an IUnknown pointer to the core window.
        */

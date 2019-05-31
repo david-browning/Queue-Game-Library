@@ -26,44 +26,44 @@ namespace qgl::graphics::content::buffers
       /*
        Returns the horizontal resolution in pixels.
       */
-      const UINT& width() const;
+      UINT width() const noexcept;
 
       /*
        Returns the vertical resolution in pixels.
        */
-      const UINT& height() const;
+      UINT height() const noexcept;
 
       /*
        Returns the monitor refresh rate in hertz.
        */
-      const UINT& refresh() const;
+      UINT refresh() const noexcept;
 
       /*
        Returns the number of render target back buffers the engine will use.
        */
-      const UINT& buffers() const;
+      UINT buffers() const noexcept;
 
       /*
        Returns true if the engine should be in full screen.
        */
-      const bool& full_screen() const;
+      bool full_screen() const noexcept;
       /*
        Returns true if the engine should allow an uncapped frame rate.
        */
-      const bool tearing() const;
+      bool tearing() const noexcept;
 
       /*
        Returns true if the engine uses high resolution rendering.
        */
-      const bool& high_resolution() const;
+      bool high_resolution() const noexcept;
 
-      const bool& stereo() const;
+      bool stereo() const noexcept;
 
-      const bool& hdr() const;
+      bool hdr() const noexcept;
 
-      const bool& interlacing() const;
+      bool interlacing() const noexcept;
 
-      const UINT& adapter_devID() const;
+      UINT adapter_devID() const noexcept;
 
       friend void swap(GRAPHICS_CONFIG_BUFFER& first, 
                        GRAPHICS_CONFIG_BUFFER& second) noexcept
