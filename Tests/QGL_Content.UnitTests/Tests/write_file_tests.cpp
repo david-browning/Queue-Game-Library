@@ -19,28 +19,29 @@ namespace QGL_Content_UnitTests
        Create a file, write some data to it, close the file, re-open it and
        read the data.
        */
-      TEST_METHOD(WriteEntireFileAndVerify)
-      {
-         auto root = ApplicationData::Current().LocalFolder().Path();
-         winrt::hstring newFilePath(root + L"\\WriteEntireFileAndVerify.txt");
+      //TEST_METHOD(WriteEntireFileAndVerify)
+      //{
+      //   auto root = ApplicationData::Current().LocalFolder().Path();
+      //   winrt::hstring newFilePath(root + L"\\WriteEntireFileAndVerify.txt");
+      //   DeleteFile(newFilePath.c_str());
 
-         file_handle handle;
-         open_file_write(newFilePath.c_str(), &handle);
+      //   file_handle handle;
+      //   open_file_write(newFilePath.c_str(), &handle);
 
-         write_file_sync(&handle, data_size, 0, data_to_rw);
-         handle.close();
+      //   write_file_sync(&handle, data_size, 0, data_to_rw);
+      //   handle.close();
 
-         open_file_read(newFilePath.c_str(), &handle);
+      //   open_file_read(newFilePath.c_str(), &handle);
 
-         char* readBuffer[data_size];
-         DWORD bytesRead = 0;
-         auto result = ReadFile(handle.get(), readBuffer, data_size,
-                                &bytesRead, nullptr);
-         Assert::IsTrue(result != 0, L"Could not read the file.");
+      //   char* readBuffer[data_size];
+      //   DWORD bytesRead = 0;
+      //   auto result = ReadFile(handle.get(), readBuffer, data_size,
+      //                          &bytesRead, nullptr);
+      //   Assert::IsTrue(result != 0, L"Could not read the file.");
 
-         Assert::IsTrue(memcmp(readBuffer, data_to_rw, data_size) == 0,
-                        L"The data is not the same.");
-      }
+      //   Assert::IsTrue(memcmp(readBuffer, data_to_rw, data_size) == 0,
+      //                  L"The data is not the same.");
+      //}
 
       /*
        Create a file, write some data to it, close the file, re-open it and
@@ -50,6 +51,7 @@ namespace QGL_Content_UnitTests
       {
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\WriteFirstPartAndVerify.txt");
+         DeleteFile(newFilePath.c_str());
 
          file_handle handle;
          open_file_write(newFilePath.c_str(), &handle);
@@ -76,6 +78,7 @@ namespace QGL_Content_UnitTests
       {
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\WriteSecondPartAndVerify.txt");
+         DeleteFile(newFilePath.c_str());
 
          file_handle handle;
          open_file_write(newFilePath.c_str(), &handle);
