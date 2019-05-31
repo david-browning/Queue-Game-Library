@@ -59,6 +59,12 @@
     <Filter Include="Source Files\File-Loaders">
       <UniqueIdentifier>{7d2fd789-cc43-44b5-bb2e-0abe2cc650f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Content-Items">
+      <UniqueIdentifier>{4df47e7b-aeb2-42ee-9611-cbb7edf51fce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Content-Items">
+      <UniqueIdentifier>{403a4da7-d985-44d8-9ea4-eec6be865513}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
@@ -124,11 +130,17 @@
     <ClCompile Include="qgl_file_handle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="qgl_content_item.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="qgl_content_accessor.cpp">
       <Filter>Source Files\Content-Store</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_content_item.cpp">
+      <Filter>Source Files\Content-Items</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_wstring_item.cpp">
+      <Filter>Source Files\Content-Items</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_string_item.cpp">
+      <Filter>Source Files\Content-Items</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -204,9 +216,6 @@
     <ClInclude Include="include\qgl_file_helpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_content_item.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Content-Importers\qgl_import_helpers.h">
       <Filter>Header Files\Content-Importers</Filter>
     </ClInclude>
@@ -225,6 +234,15 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="include\Content-Store\qgl_content_accessor.h">
       <Filter>Header Files\Content Store</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content-Items\qgl_content_item.h">
+      <Filter>Header Files\Content-Items</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content-Items\qgl_string_item.h">
+      <Filter>Header Files\Content-Items</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content-Items\qgl_wstring_item.h">
+      <Filter>Header Files\Content-Items</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

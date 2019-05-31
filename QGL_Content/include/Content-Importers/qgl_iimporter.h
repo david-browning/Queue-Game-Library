@@ -1,6 +1,6 @@
 #pragma once
 #include "include/qgl_content_include.h"
-#include "include/qgl_content_item.h"
+#include "include/Content-Items/qgl_content_item.h"
 #include "include/qgl_content_types.h"
 #include "include/Content-Buffers/qgl_content_dict_entry_buffer.h"
 

@@ -1,6 +1,8 @@
 #pragma once
 #include "include/qgl_content_types.h"
-#include "include/qgl_content_item.h"
+#include "include/Content-Items/qgl_content_item.h"
+#include "include/Content-Items/qgl_string_item.h"
+#include "include/Content-Items/qgl_wstring_item.h"
 
 #include "include/Content-Files/qgl_content_file.h"
 #include "include/Content-Files/qgl_content_file_helpers.h"

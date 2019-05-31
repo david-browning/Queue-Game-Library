@@ -38,6 +38,9 @@
     <Filter Include="Tests\Content-Project">
       <UniqueIdentifier>{67831c04-2799-4849-b570-bc6c98c25cad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\Content-Items">
+      <UniqueIdentifier>{55dfe1a4-63a4-4de8-af52-dfe9bbff6f7e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="UnitTestApp.xaml" />
@@ -101,6 +104,12 @@
     </ClCompile>
     <ClCompile Include="Tests\content_file_tests.cpp">
       <Filter>Tests\Content-File</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\string_item_tests.cpp">
+      <Filter>Tests\Content-Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\wstring_item_tests.cpp">
+      <Filter>Tests\Content-Items</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -57,6 +57,15 @@ namespace qgl::content
        */
       CONTENT_LOADER_IDS loader_id() const;
 
+      friend bool operator==(const content_item& l,
+                             const content_item& r) noexcept
+      {
+         return l.m_id == r.m_id &&
+            l.m_loaderID == r.m_loaderID &&
+            l.m_rType == r.m_rType &&
+            (wcscmp(r.name(), l.name()) == 0);
+      }
+
       private:
       /*
        This content's name.

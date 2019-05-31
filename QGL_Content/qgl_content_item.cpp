@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "include/qgl_content_item.h"
+#include "include/Content-Items/qgl_content_item.h"
 
 namespace qgl::content
 {
@@ -33,7 +33,7 @@ namespace qgl::content
       m_name = r.m_name;
       m_id = r.m_id;
       m_rType = r.m_rType;
-      r.m_loaderID = r.m_loaderID;
+      m_loaderID = r.m_loaderID;
 
       r.m_name = nullptr;
    }
@@ -62,5 +62,4 @@ namespace qgl::content
    {
       return m_loaderID;
    }
-
 }
