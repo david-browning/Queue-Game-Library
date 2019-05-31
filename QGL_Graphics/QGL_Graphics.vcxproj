@@ -172,6 +172,10 @@
     <ClInclude Include="include\Content\Content-Buffers\qgl_text_format_buffer.h" />
     <ClInclude Include="include\GPU\qgl_graphics_device.h" />
     <ClInclude Include="include\GPU\qgl_graphics_device_helpers.h" />
+    <ClInclude Include="include\GPU\Stages\qgl_scissor.h" />
+    <ClInclude Include="include\GPU\Stages\qgl_viewport.h" />
+    <ClInclude Include="include\GPU\Synchronization\qgl_fence.h" />
+    <ClInclude Include="include\GPU\Synchronization\qgl_sync_object.h" />
     <ClInclude Include="include\Helpers\d3dx12.h" />
     <ClInclude Include="include\qgl_graphics_include.h" />
     <ClInclude Include="include\qgl_window.h" />
@@ -196,7 +200,9 @@
     <ClCompile Include="qgl_light_buffer.cpp" />
     <ClCompile Include="qgl_rasterizer_buffer.cpp" />
     <ClCompile Include="qgl_sampler_buffer.cpp" />
+    <ClCompile Include="qgl_scissor.cpp" />
     <ClCompile Include="qgl_text_format_buffer.cpp" />
+    <ClCompile Include="qgl_viewport.cpp" />
     <ClCompile Include="qgl_window.cpp" />
   </ItemGroup>
   <ItemGroup>

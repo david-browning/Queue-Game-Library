@@ -47,6 +47,18 @@
     <Filter Include="Source Files\GPU">
       <UniqueIdentifier>{9df4f3b1-9f3a-47b8-814b-36b2e1c986a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="IDL">
+      <UniqueIdentifier>{f420ff9a-f965-44a6-a851-ec65654cc563}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GPU\Synchronization">
+      <UniqueIdentifier>{b9a01ef2-0ebe-437d-81f1-1a9a8ea46889}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GPU\Stages">
+      <UniqueIdentifier>{bcf956b8-0070-4856-98b9-de7947a507e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GPU\Stages">
+      <UniqueIdentifier>{8df4cdbd-49db-44c1-baa4-67899abc44f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
@@ -96,6 +108,12 @@
     </ClCompile>
     <ClCompile Include="qgl_graphics_device_helpers.cpp">
       <Filter>Source Files\GPU</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_scissor.cpp">
+      <Filter>Source Files\GPU\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_viewport.cpp">
+      <Filter>Source Files\GPU\Stages</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -152,6 +170,18 @@
     </ClInclude>
     <ClInclude Include="include\GPU\qgl_graphics_device_helpers.h">
       <Filter>Header Files\GPU</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Synchronization\qgl_fence.h">
+      <Filter>Header Files\GPU\Synchronization</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Synchronization\qgl_sync_object.h">
+      <Filter>Header Files\GPU\Synchronization</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Stages\qgl_scissor.h">
+      <Filter>Header Files\GPU\Stages</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Stages\qgl_viewport.h">
+      <Filter>Header Files\GPU\Stages</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

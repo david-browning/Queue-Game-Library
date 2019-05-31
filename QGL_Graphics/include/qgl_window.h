@@ -77,7 +77,7 @@ namespace qgl::graphics
       private:
       friend class graphics_device;
       /*
-         Returns an IUnknown pointer to the core window.
+       Returns an IUnknown pointer to the core window.
        */
       IUnknown* unknown();
 

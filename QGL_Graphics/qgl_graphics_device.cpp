@@ -10,10 +10,11 @@ namespace qgl::graphics
 {
    struct graphics_device::impl
    {
-      impl(const content::buffers::GRAPHICS_CONFIG_BUFFER* config) :
+      impl(const content::buffers::GRAPHICS_CONFIG_BUFFER* config,
+           const std::shared_ptr<window>& wnd_p) :
          m_config(*config),
          m_wasFullScreen(false),
-         m_window_p()
+         m_window_p(wnd_p)
       {
          construct();
       }
