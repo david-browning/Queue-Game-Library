@@ -4,25 +4,25 @@
 namespace qgl::graphics::content::buffers
 {
    BLENDER_BUFFER::BLENDER_BUFFER() :
-      m_flags(DEFAULT_FLAGS),
-      m_isAlphaToCoverage(FALSE),
-      m_isIndependentBlend(FALSE)
+      Flags(DEFAULT_FLAGS),
+      IsAlphaToCoverage(FALSE),
+      IsIndependentBlend(FALSE)
    {
       //Array items are default constructed.
    }
 
    bool BLENDER_BUFFER::alpha_coverage() const
    {
-      return static_cast<bool>(m_isAlphaToCoverage);
+      return static_cast<bool>(IsAlphaToCoverage);
    }
 
    bool BLENDER_BUFFER::independent_blend() const
    {
-      return static_cast<bool>(m_isIndependentBlend);
+      return static_cast<bool>(IsIndependentBlend);
    }
 
    const BLEND_DESC* BLENDER_BUFFER::blend_descs() const
    {
-      return m_blend_descs;
+      return BlendDescriptions;
    }
 }

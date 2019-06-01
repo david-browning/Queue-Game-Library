@@ -4,24 +4,24 @@
 namespace qgl::graphics::content::buffers
 {
    BRUSH_BUFFER::BRUSH_BUFFER() :
-      m_style(static_cast<uint8_t>(TEXT_BRUSH_STYLE::TEXT_BRUSH_STYLE_SOLID)),
-      m_reserved1(0),
-      m_stopCount(1)
+      Style(static_cast<uint8_t>(TEXT_BRUSH_STYLE::TEXT_BRUSH_STYLE_SOLID)),
+      Reserved1(0),
+      StopCount(1)
    {
-      m_stops[0].color.r = 1.0f;
-      m_stops[0].color.g = 1.0f;
-      m_stops[0].color.b = 1.0f;
-      m_stops[0].color.a = 1.0f;
+      Stops[0].color.r = 1.0f;
+      Stops[0].color.g = 1.0f;
+      Stops[0].color.b = 1.0f;
+      Stops[0].color.a = 1.0f;
    }
 
    size_t BRUSH_BUFFER::size() const
    {
-      return static_cast<size_t>(m_stopCount);
+      return static_cast<size_t>(StopCount);
    }
 
    TEXT_BRUSH_STYLE BRUSH_BUFFER::style() const
    {
-      return static_cast<TEXT_BRUSH_STYLE>(m_style);
+      return static_cast<TEXT_BRUSH_STYLE>(Style);
    }
 
    const D2D1_GRADIENT_STOP* BRUSH_BUFFER::stop(size_t idx) const
@@ -31,7 +31,7 @@ namespace qgl::graphics::content::buffers
          throw std::out_of_range("idx is out of range.");
       }
 
-      return m_stops + idx;
+      return Stops + idx;
    }
 
    inline const D2D1_GRADIENT_STOP* BRUSH_BUFFER::stops() const noexcept
@@ -44,7 +44,7 @@ namespace qgl::graphics::content::buffers
       if (style() == TEXT_BRUSH_STYLE::TEXT_BRUSH_STYLE_GRADIENT_LINEAR)
       {
          return reinterpret_cast<const D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES*>(
-            &m_properties);
+            &Properties);
       }
       else
       {
@@ -57,7 +57,7 @@ namespace qgl::graphics::content::buffers
       if (style() == TEXT_BRUSH_STYLE::TEXT_BRUSH_STYLE_GRADIENT_RADIAL)
       {
          return reinterpret_cast<const D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES*>(
-            &m_properties);
+            &Properties);
       }
       else
       {

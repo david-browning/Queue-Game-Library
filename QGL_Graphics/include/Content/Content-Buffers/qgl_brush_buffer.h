@@ -81,11 +81,11 @@ namespace qgl::graphics::content::buffers
       friend void swap(BRUSH_BUFFER& l, BRUSH_BUFFER& r) noexcept
       {
          using std::swap;
-         swap(l.m_properties, r.m_properties);
-         swap(l.m_reserved1, r.m_reserved1);
-         swap(l.m_stopCount, r.m_stopCount);
-         swap(l.m_stops, r.m_stops);
-         swap(l.m_style, r.m_style);
+         swap(l.Properties, r.Properties);
+         swap(l.Reserved1, r.Reserved1);
+         swap(l.StopCount, r.StopCount);
+         swap(l.Stops, r.Stops);
+         swap(l.Style, r.Style);
       }
 
       /*
@@ -97,8 +97,6 @@ namespace qgl::graphics::content::buffers
          return *this;
       }
 
-      private:
-
       static constexpr size_t BRUSH_FORMAT_BUFFER_MAX_PROPRTY_SIZE =
          std::max<size_t>({ sizeof(D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES),
                             sizeof(D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES) });
@@ -106,23 +104,23 @@ namespace qgl::graphics::content::buffers
       /*
        Brush style. It can be solid, linear gradient, or radial gradient.
        */
-      uint8_t m_style;
+      uint8_t Style;
 
       /*
        Reserved.
        */
-      uint8_t m_reserved1;
+      uint8_t Reserved1;
 
       /*
        Number of gradient stops and properties.
        */
-      uint16_t m_stopCount;
+      uint16_t StopCount;
 
       /*
        Byte buffer.
        */
-      uint8_t m_properties[BRUSH_FORMAT_BUFFER_MAX_PROPRTY_SIZE];
+      uint8_t Properties[BRUSH_FORMAT_BUFFER_MAX_PROPRTY_SIZE];
 
-      D2D1_GRADIENT_STOP m_stops[BRUSH_FORMAT_BUFFER_MAX_GRADIANT_STOPS];
+      D2D1_GRADIENT_STOP Stops[BRUSH_FORMAT_BUFFER_MAX_GRADIANT_STOPS];
    };
 }

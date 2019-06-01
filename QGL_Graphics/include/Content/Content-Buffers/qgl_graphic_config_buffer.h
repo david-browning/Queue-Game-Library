@@ -6,6 +6,10 @@ namespace qgl::graphics::content::buffers
    struct QGL_GRAPHICS_API GRAPHICS_CONFIG_BUFFER
    {
       public:
+      /*
+       Default constructor.
+       Configured to support the largest number of displays.
+       */
       GRAPHICS_CONFIG_BUFFER();
 
       /*
@@ -69,18 +73,18 @@ namespace qgl::graphics::content::buffers
                        GRAPHICS_CONFIG_BUFFER& second) noexcept
       {
          using std::swap;
-         swap(first.m_flags, second.m_flags);
-         swap(first.m_width, second.m_width);
-         swap(first.m_height, second.m_height);
-         swap(first.m_refresh, second.m_refresh);
-         swap(first.m_buffers, second.m_buffers);
-         swap(first.m_fullScreen, second.m_fullScreen);
-         swap(first.m_tearing, second.m_tearing);
-         swap(first.m_highResolution, second.m_highResolution);
-         swap(first.m_3d, second.m_3d);
-         swap(first.m_hdr, second.m_hdr);
-         swap(first.m_enableInterlacing, second.m_enableInterlacing);
-         swap(first.m_preferedAdapterDevID, second.m_preferedAdapterDevID);
+         swap(first.Flags, second.Flags);
+         swap(first.Width, second.Width);
+         swap(first.Height, second.Height);
+         swap(first.Refresh, second.Refresh);
+         swap(first.Buffers, second.Buffers);
+         swap(first.IsFullScreen, second.IsFullScreen);
+         swap(first.IsTearing, second.IsTearing);
+         swap(first.IsHighResolution, second.IsHighResolution);
+         swap(first.Is3D, second.Is3D);
+         swap(first.IsHDR, second.IsHDR);
+         swap(first.IsEnableInterlacing, second.IsEnableInterlacing);
+         swap(first.PreferedAdapterDevID, second.PreferedAdapterDevID);
       }
 
       GRAPHICS_CONFIG_BUFFER& operator=(GRAPHICS_CONFIG_BUFFER r) noexcept
@@ -89,18 +93,17 @@ namespace qgl::graphics::content::buffers
          return *this;
       }
 
-      private:
-      uint32_t m_flags;
-      uint32_t m_preferedAdapterDevID;
-      uint32_t m_width;
-      uint32_t m_height;
-      uint32_t m_refresh;
-      uint8_t m_buffers;
-      uint8_t m_fullScreen;
-      uint8_t m_tearing;
-      uint8_t m_highResolution;
-      uint8_t m_3d;
-      uint8_t m_hdr;
-      uint8_t m_enableInterlacing;
+      uint32_t Flags;
+      uint32_t PreferedAdapterDevID;
+      uint32_t Width;
+      uint32_t Height;
+      uint32_t Refresh;
+      uint8_t Buffers;
+      uint8_t IsFullScreen;
+      uint8_t IsTearing;
+      uint8_t IsHighResolution;
+      uint8_t Is3D;
+      uint8_t IsHDR;
+      uint8_t IsEnableInterlacing;
    };
 }

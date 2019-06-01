@@ -3,48 +3,55 @@
 
 namespace qgl::graphics::content::buffers
 {
-   CAMERA_BUFFER::CAMERA_BUFFER() :
-      m_reserved1(0),
-      m_reserved2(0),
-      m_nearPlane(0.01f),
-      m_farPlane(100.0f),
-      m_fov(1)
+   static constexpr float DEFAULT_CAMERA_LOOK_AT[4] =
    {
-      for (int i = 0; i < 4; i++)
-      {
-         m_position[i] = 0.0f;
-         m_up[i] = 0.0f;
-         m_lookAt[0] = 0.0f;
-      }
+      1.0f, 1.0f, 1.0f, 1.0f
+   };
+
+   static constexpr float DEFAULT_CAMERA_POSITION[4] =
+   {
+      0.0f, 0.0f, 0.0f, 0.0f
+   };
+
+   CAMERA_BUFFER::CAMERA_BUFFER() :
+      Reserved1(0),
+      Reserved2(0),
+      NearPlane(1.0f),
+      FarPlane(10000.0f),
+      FOV(1.0f)
+   {
+      MemoryCopy<float>(Position, DEFAULT_CAMERA_POSITION, 4);
+      MemoryCopy<float>(LookAt, DEFAULT_CAMERA_LOOK_AT, 4);
+      MemoryCopy<float>(Up, DEFAULT_CAMERA_LOOK_AT, 4);
    }
 
    const float* CAMERA_BUFFER::position() const
    {
-      return m_position;
+      return Position;
    }
 
    const float* CAMERA_BUFFER::up() const
    {
-      return m_up;
+      return Up;
    }
 
    const float* CAMERA_BUFFER::look_at() const
    {
-      return m_lookAt;
+      return LookAt;
    }
 
    float CAMERA_BUFFER::near_plane() const
    {
-      return m_nearPlane;
+      return NearPlane;
    }
 
    float CAMERA_BUFFER::far_plane() const
    {
-      return m_farPlane;
+      return FarPlane;
    }
 
    float CAMERA_BUFFER::fov() const
    {
-      return  m_fov;
+      return  FOV;
    }
 }

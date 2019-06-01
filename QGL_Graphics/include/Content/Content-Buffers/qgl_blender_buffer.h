@@ -58,10 +58,10 @@ namespace qgl::graphics::content::buffers
                        BLENDER_BUFFER& second) noexcept
       {
          using std::swap;
-         swap(first.m_flags, second.m_flags);
-         swap(first.m_blend_descs, second.m_blend_descs);
-         swap(first.m_isAlphaToCoverage, second.m_isAlphaToCoverage);
-         swap(first.m_isIndependentBlend, second.m_isIndependentBlend);
+         swap(first.Flags, second.Flags);
+         swap(first.BlendDescriptions, second.BlendDescriptions);
+         swap(first.IsAlphaToCoverage, second.IsAlphaToCoverage);
+         swap(first.IsIndependentBlend, second.IsIndependentBlend);
       }
 
       /*
@@ -73,18 +73,16 @@ namespace qgl::graphics::content::buffers
          return *this;
       }
 
-      private:
-
       /*
        Unused right now.
        */
-      uint16_t m_flags;
+      uint16_t Flags;
 
       /*
        Specifies whether to use alpha-to-coverage as a multisampling
        technique when setting a pixel to a render target.
        */
-      uint8_t m_isAlphaToCoverage;
+      uint8_t IsAlphaToCoverage;
 
       /*
        Specifies whether to enable independent blending in simultaneous render
@@ -92,14 +90,14 @@ namespace qgl::graphics::content::buffers
        only the RenderTarget[0] members are used; RenderTarget[1..7] are
        ignored.
        */
-      uint8_t m_isIndependentBlend;
+      uint8_t IsIndependentBlend;
 
       /*
        An array of D3D12_RENDER_TARGET_BLEND_DESC structures that describe the 
        blend states for render targets; these correspond to the eight render 
        targets that can be bound to the output-merger stage at one time.
        */
-      BLEND_DESC m_blend_descs[NUM_RENDER_TARGETS];
+      BLEND_DESC BlendDescriptions[NUM_RENDER_TARGETS];
 
       static constexpr uint16_t DEFAULT_FLAGS = 0xEEEE;
    };

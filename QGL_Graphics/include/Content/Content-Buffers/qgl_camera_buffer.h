@@ -45,14 +45,14 @@ namespace qgl::graphics::content::buffers
       friend void swap(CAMERA_BUFFER& l, CAMERA_BUFFER& r) noexcept
       {
          using std::swap;
-         swap(l.m_farPlane, r.m_farPlane);
-         swap(l.m_fov, r.m_fov);
-         swap(l.m_lookAt, r.m_lookAt);
-         swap(l.m_nearPlane, r.m_nearPlane);
-         swap(l.m_position, r.m_position);
-         swap(l.m_reserved1, r.m_reserved1);
-         swap(l.m_reserved2, r.m_reserved2);
-         swap(l.m_up, r.m_up);
+         swap(l.FarPlane, r.FarPlane);
+         swap(l.FOV, r.FOV);
+         swap(l.LookAt, r.LookAt);
+         swap(l.NearPlane, r.NearPlane);
+         swap(l.Position, r.Position);
+         swap(l.Reserved1, r.Reserved1);
+         swap(l.Reserved2, r.Reserved2);
+         swap(l.Up, r.Up);
       }
 
       CAMERA_BUFFER& operator=(CAMERA_BUFFER r)
@@ -61,41 +61,40 @@ namespace qgl::graphics::content::buffers
          return *this;
       }
       
-      private:
       /*
        Spawn location
        */
-      float m_position[4];
+      float Position[4];
 
       /*
        Spawn up
        */
-      float m_up[4];
+      float Up[4];
 
       /*
        Spawn look at.
        */
-      float m_lookAt[4];
+      float LookAt[4];
 
       /*
        Field of view.
        */
-      float m_fov;
+      float FOV;
 
       /*
        How close things can be to be rendered. Anything less than this 
        is not rendered.
        */
-      float m_nearPlane;
+      float NearPlane;
 
       /*
        How far away things can be rendered. Anything greater than this is not
        rendered.
        */
-      float m_farPlane;
+      float FarPlane;
 
-      uint32_t m_reserved1;
+      uint32_t Reserved1;
 
-      uint32_t m_reserved2;
+      uint32_t Reserved2;
    };
 }

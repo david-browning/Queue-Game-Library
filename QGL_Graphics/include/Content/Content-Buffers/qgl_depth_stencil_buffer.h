@@ -28,10 +28,10 @@ namespace qgl::graphics::content::buffers
                        DEPTH_STENCIL_BUFFER& second) noexcept
       {
          using std::swap;
-         swap(first.m_depth, second.m_depth);
-         swap(first.m_format, second.m_format);
-         swap(first.m_stencil, second.m_stencil);
-         swap(first.m_flags1, second.m_flags1);
+         swap(first.Depth, second.Depth);
+         swap(first.Format, second.Format);
+         swap(first.Stencil, second.Stencil);
+         swap(first.Flags1, second.Flags1);
       }
 
       DEPTH_STENCIL_BUFFER& operator=(DEPTH_STENCIL_BUFFER r)
@@ -40,10 +40,9 @@ namespace qgl::graphics::content::buffers
          return *this;
       }
 
-      private:
-      float m_depth;
-      uint16_t m_format;
-      uint8_t m_stencil;
-      uint8_t m_flags1;
+      float Depth;
+      uint16_t Format;
+      uint8_t Stencil;
+      uint8_t Flags1;
    };
 }
