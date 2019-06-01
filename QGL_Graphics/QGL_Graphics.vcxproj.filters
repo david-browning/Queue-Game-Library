@@ -47,9 +47,6 @@
     <Filter Include="Source Files\GPU">
       <UniqueIdentifier>{9df4f3b1-9f3a-47b8-814b-36b2e1c986a0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="IDL">
-      <UniqueIdentifier>{f420ff9a-f965-44a6-a851-ec65654cc563}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\GPU\Synchronization">
       <UniqueIdentifier>{b9a01ef2-0ebe-437d-81f1-1a9a8ea46889}</UniqueIdentifier>
     </Filter>
@@ -58,6 +55,21 @@
     </Filter>
     <Filter Include="Source Files\GPU\Stages">
       <UniqueIdentifier>{8df4cdbd-49db-44c1-baa4-67899abc44f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GPU\Root-Signature">
+      <UniqueIdentifier>{4aa82489-8e36-4e78-837f-6d5531e103d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GPU\Root-Signature">
+      <UniqueIdentifier>{543705e5-c976-4818-a5c2-17b835581f94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GPU\Descriptors">
+      <UniqueIdentifier>{a9bb6bd2-6d1f-43d6-908b-3ddcf9a45bb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GPU\Memory">
+      <UniqueIdentifier>{4d8d6cdb-e123-4e36-871b-119495fb2502}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Helpers">
+      <UniqueIdentifier>{d0219762-c314-430d-ac2c-d624d0296756}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -114,6 +126,9 @@
     </ClCompile>
     <ClCompile Include="qgl_viewport.cpp">
       <Filter>Source Files\GPU\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="DDSTextureLoader12.cpp">
+      <Filter>Source Files\Helpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -182,6 +197,33 @@
     </ClInclude>
     <ClInclude Include="include\GPU\Stages\qgl_viewport.h">
       <Filter>Header Files\GPU\Stages</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Root-Signature\qgl_ibindable.h">
+      <Filter>Header Files\GPU\Root-Signature</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Root-Signature\qgl_root_signature.h">
+      <Filter>Header Files\GPU\Root-Signature</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Engines\qgl_icmd_list.h">
+      <Filter>Header Files\Engines</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\qgl_pso.h">
+      <Filter>Header Files\GPU</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Descriptors\qgl_descriptor_heap.h">
+      <Filter>Header Files\GPU\Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Descriptors\qgl_descriptor_range.h">
+      <Filter>Header Files\GPU\Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Descriptors\qgl_descriptor_table.h">
+      <Filter>Header Files\GPU\Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Memory\qgl_igpu_memory_allocator.h">
+      <Filter>Header Files\GPU\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Helpers\DDSTextureLoader12.h">
+      <Filter>Header Files\Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

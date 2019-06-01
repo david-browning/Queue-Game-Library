@@ -170,13 +170,22 @@
     <ClInclude Include="include\Content\Content-Buffers\qgl_rasterizer_buffer.h" />
     <ClInclude Include="include\Content\Content-Buffers\qgl_sampler_buffer.h" />
     <ClInclude Include="include\Content\Content-Buffers\qgl_text_format_buffer.h" />
+    <ClInclude Include="include\Engines\qgl_icmd_list.h" />
+    <ClInclude Include="include\GPU\Descriptors\qgl_descriptor_heap.h" />
+    <ClInclude Include="include\GPU\Descriptors\qgl_descriptor_range.h" />
+    <ClInclude Include="include\GPU\Descriptors\qgl_descriptor_table.h" />
+    <ClInclude Include="include\GPU\Memory\qgl_igpu_memory_allocator.h" />
     <ClInclude Include="include\GPU\qgl_graphics_device.h" />
     <ClInclude Include="include\GPU\qgl_graphics_device_helpers.h" />
+    <ClInclude Include="include\GPU\qgl_pso.h" />
+    <ClInclude Include="include\GPU\Root-Signature\qgl_ibindable.h" />
+    <ClInclude Include="include\GPU\Root-Signature\qgl_root_signature.h" />
     <ClInclude Include="include\GPU\Stages\qgl_scissor.h" />
     <ClInclude Include="include\GPU\Stages\qgl_viewport.h" />
     <ClInclude Include="include\GPU\Synchronization\qgl_fence.h" />
     <ClInclude Include="include\GPU\Synchronization\qgl_sync_object.h" />
     <ClInclude Include="include\Helpers\d3dx12.h" />
+    <ClInclude Include="include\Helpers\DDSTextureLoader12.h" />
     <ClInclude Include="include\qgl_graphics_include.h" />
     <ClInclude Include="include\qgl_window.h" />
     <ClInclude Include="pch.h" />
@@ -184,6 +193,7 @@
     <ClInclude Include="QGL_GraphicsRT.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DDSTextureLoader12.cpp" />
     <ClCompile Include="qgl_blender_buffer.cpp" />
     <ClCompile Include="qgl_blender_desc_buffer.cpp" />
     <ClCompile Include="qgl_brush_buffer.cpp" />
