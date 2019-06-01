@@ -71,6 +71,9 @@
     <Filter Include="Source Files\Helpers">
       <UniqueIdentifier>{d0219762-c314-430d-ac2c-d624d0296756}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GPU\Buffers">
+      <UniqueIdentifier>{bed9bf5d-485c-4471-ad1d-a3e230bdcd8f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
@@ -224,6 +227,21 @@
     </ClInclude>
     <ClInclude Include="include\Helpers\DDSTextureLoader12.h">
       <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Buffers\igpu_buffer.h">
+      <Filter>Header Files\GPU\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Buffers\qgl_const_buffer.h">
+      <Filter>Header Files\GPU\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Buffers\qgl_index_buffer.h">
+      <Filter>Header Files\GPU\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Buffers\qgl_vertex_buffer.h">
+      <Filter>Header Files\GPU\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Buffers\qgl_imappable.h">
+      <Filter>Header Files\GPU\Buffers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

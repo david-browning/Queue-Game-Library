@@ -171,6 +171,11 @@
     <ClInclude Include="include\Content\Content-Buffers\qgl_sampler_buffer.h" />
     <ClInclude Include="include\Content\Content-Buffers\qgl_text_format_buffer.h" />
     <ClInclude Include="include\Engines\qgl_icmd_list.h" />
+    <ClInclude Include="include\GPU\Buffers\igpu_buffer.h" />
+    <ClInclude Include="include\GPU\Buffers\qgl_const_buffer.h" />
+    <ClInclude Include="include\GPU\Buffers\qgl_imappable.h" />
+    <ClInclude Include="include\GPU\Buffers\qgl_index_buffer.h" />
+    <ClInclude Include="include\GPU\Buffers\qgl_vertex_buffer.h" />
     <ClInclude Include="include\GPU\Descriptors\qgl_descriptor_heap.h" />
     <ClInclude Include="include\GPU\Descriptors\qgl_descriptor_range.h" />
     <ClInclude Include="include\GPU\Descriptors\qgl_descriptor_table.h" />
