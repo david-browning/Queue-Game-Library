@@ -1,17 +1,18 @@
 #pragma once
-#include "qgl_graphics_include.h"
-#include "qgl_constant_buffer.h"
-#include "qgl_light_buffer.h"
+#include "include/qgl_graphics_include.h"
+#include "include/Content/Content-Buffers/qgl_light_buffer.h"
+#include "include/GPU/Buffers/qgl_imappable.h"
 
-namespace qgl::graphics
+namespace qgl::graphics::content
 {
-   class alignas(alignof(DirectX::XMVECTOR)) light : public qgl::content::content_item
+   class alignas(alignof(DirectX::XMVECTOR)) light :
+      public qgl::content::content_item
    {
       public:
-      light(const LIGHT_BUFFER& lBuffer,
-            winrt::com_ptr<d3d_device>& dev_p,
-            const std::wstring& name,
-            const content::content_id id);
+      light(const content::buffers::LIGHT_BUFFER* lBuffer,
+            d3d_device* dev_p,
+            const wchar_t* name,
+            const qgl::content::content_id id);
 
       light(const light& c) = delete;
 

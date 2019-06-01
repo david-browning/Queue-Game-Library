@@ -1,47 +1,39 @@
 #pragma once
-#include "qgl_graphics_include.h"
-#include "qgl_igpu_buffer.h"
-#include "qgl_sampler_buffer.h"
-#include "qgl_ibindable.h"
-#include <QGLContent.h>
+#include "include/qgl_graphics_include.h"
+#include "include/Content/Content-Buffers/qgl_sampler_buffer.h"
+#include "include/GPU/Buffers/igpu_buffer.h"
 
-namespace qgl::graphics
+namespace qgl::graphics::content
 {
    /*
-    Represents a sampler. Samplers do not have a resource. Instead, they only have a description
-    and can be added to a descriptor heap.
+    Represents a sampler. Samplers do not have a resource. Instead, they only
+    have a description and can be added to a descriptor heap.
     */
-   class LIB_EXPORT sampler :
-      public low::igpu_buffer<D3D12_SAMPLER_DESC, nullptr_t, d3d_resource>,
-      public content::content_item
+   class QGL_GRAPHICS_API sampler :
+      public qgl::content::content_item,
+      public gpu::buffers::igpu_buffer<D3D12_SAMPLER_DESC, 
+      nullptr_t, 
+      d3d_resource>
    {
       public:
       using ResourceDescriptionT = D3D12_SAMPLER_DESC;
       using ViewDescriptionT = nullptr_t;
 
-      sampler(const SAMPLER_BUFFER& buffer,
-              winrt::com_ptr<d3d_device>& dev_p,
-              const std::wstring& name,
-              const content::content_id id);
+      sampler(const content::buffers::SAMPLER_BUFFER* buffer,
+              const wchar_t* name,
+              const qgl::content::content_id id);
 
-      sampler(const sampler& r) = delete;
+      sampler(const sampler& r) = default;
 
-      sampler(sampler&& r) = delete;
+      sampler(sampler&& r) = default;
 
       virtual ~sampler() = default;
 
-      virtual ResourceDescriptionT description() const
-      {
-         return m_samplerDesc;
-      }
+      virtual const ResourceDescriptionT* description() const;
 
-      virtual ViewDescriptionT view() const
-      {
-         throw std::runtime_error("samplers do not have a view description.");
-      }
+      virtual const ViewDescriptionT* view() const;
 
       private:
-
       /*
        Populated by the constructor.
        */

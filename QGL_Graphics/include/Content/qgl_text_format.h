@@ -1,41 +1,29 @@
 #pragma once
-#include "qgl_graphics_include.h"
-#include "qgl_text_format_buffer.h"
+#include "include/qgl_graphics_include.h"
+#include "include/Content/Content-Buffers/qgl_text_format_buffer.h"
 
-namespace qgl::graphics
+namespace qgl::graphics::content
 {
-   class LIB_EXPORT text_format : public qgl::content::content_item
+   class QGL_GRAPHICS_API text_format : public qgl::content::content_item
    {
       public:
-      text_format(const TEXT_FORMAT_BUFFER& format,
-                  const winrt::com_ptr<IDWriteFactory>& factory_p,
-                  const std::wstring& name,
-                  const content::content_id id);
+      text_format(const content::buffers::TEXT_FORMAT_BUFFER* format,
+                  IDWriteFactory* factory_p,
+                  const wchar_t* name,
+                  qgl::content::content_id id);
 
       text_format(const text_format& r);
 
       text_format(text_format&& r);
 
-      virtual ~text_format() noexcept = default;
+      virtual ~text_format() noexcept;
 
-      inline const IDWriteTextFormat* get() const
-      {
-         return m_format_p.get();
-      }
+      const IDWriteTextFormat* get() const noexcept;
 
-      inline IDWriteTextFormat* get()
-      {
-         return m_format_p.get();
-      }
+      IDWriteTextFormat* get() noexcept;
 
       private:
-      void m_create_text_format();
-
-      TEXT_FORMAT_BUFFER m_buffer;
-      #pragma warning(push)
-      #pragma warning(disable: 4251)
-      winrt::com_ptr<IDWriteFactory> m_factory_p;
-      winrt::com_ptr<IDWriteTextFormat> m_format_p;
-      #pragma warning(pop)
+      struct impl;
+      impl* m_impl_p;
    };
 }

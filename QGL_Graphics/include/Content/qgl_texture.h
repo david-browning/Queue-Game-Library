@@ -3,7 +3,7 @@
 #include "qgl_igpu_buffer.h"
 #include "qgl_texture_buffer.h"
 
-namespace qgl::graphics
+namespace qgl::content
 {
    class LIB_EXPORT texture :
       public low::igpu_buffer<D3D12_RESOURCE_DESC, D3D12_SHADER_RESOURCE_VIEW_DESC, d3d_resource>,

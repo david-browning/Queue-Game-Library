@@ -1,61 +1,47 @@
 #pragma once
-#include "qgl_graphics_include.h"
-#include "qgl_brush_buffer.h"
+#include "include/qgl_graphics_include.h"
+#include "include/Content/Content-Buffers/qgl_brush_buffer.h"
 
-namespace qgl::graphics
+namespace qgl::graphics::content
 {
-   class LIB_EXPORT brush : public qgl::content::content_item
+   class QGL_GRAPHICS_API brush : public qgl::content::content_item
    {
       public:
-      brush(const BRUSH_BUFFER& fmtBuffer,
-            const winrt::com_ptr<d2d_context>& devContext_p,
-            const std::wstring& name,
-            const content::content_id id);
+      /*
+       Constructs a new brush.
+       */
+      brush(const buffers::BRUSH_BUFFER* fmtBuffer,
+            graphics::d2d_context* devContext_p,
+            const wchar_t* name,
+            const qgl::content::content_id id);
 
      /*
       Copy constructor.
-      This does a deep copy of the brush, but not the render target.
       */
-      brush(const brush& r);
+      brush(const brush& r) = delete;
 
       /*
        Move constructor
        */
-      brush(brush&& r);
+      brush(brush&& r) = delete;
 
       /*
        Destructor
        */
-      virtual ~brush() noexcept = default;
+      virtual ~brush() noexcept;
 
-      const ID2D1Brush* get() const noexcept
-      {
-         return m_brush.get();
-      }
+      /*
+       Returns a const pointer to the D2D brush.
+       */
+      const ID2D1Brush* get() const noexcept;
 
-      ID2D1Brush* get() noexcept
-      {
-         return m_brush.get();
-      }
-
-      const auto& com_get() const noexcept
-      {
-         return m_brush;
-      }
-
-      auto& com_get() noexcept
-      {
-         return m_brush;
-      }
+      /*
+       Returns a pointer to the D2D brush.
+       */
+      ID2D1Brush* get() noexcept;
 
       private:
-      void p_make_brush();
-
-      BRUSH_BUFFER m_brushData;
-      #pragma warning(push)
-      #pragma warning(disable: 4251)
-      winrt::com_ptr<d2d_context> m_devContext;
-      winrt::com_ptr<ID2D1Brush> m_brush;
-      #pragma warning(pop)
+      struct impl;
+      impl* m_impl_p;
    };
 }
