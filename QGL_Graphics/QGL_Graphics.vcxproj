@@ -239,6 +239,7 @@
     <ClCompile Include="qgl_rasterizer.cpp" />
     <ClCompile Include="qgl_rasterizer_buffer.cpp" />
     <ClCompile Include="qgl_render_target.cpp" />
+    <ClCompile Include="qgl_root_signature.cpp" />
     <ClCompile Include="qgl_rtv_descriptor_heap.cpp" />
     <ClCompile Include="qgl_sampler.cpp" />
     <ClCompile Include="qgl_sampler_buffer.cpp" />

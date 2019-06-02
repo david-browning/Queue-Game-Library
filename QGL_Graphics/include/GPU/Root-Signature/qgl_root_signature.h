@@ -2,29 +2,25 @@
 #include "include/qgl_graphics_include.h"
 #include "include/GPU/qgl_graphics_device.h"
 #include "include/GPU/Root-Signature/qgl_ibindable.h"
-#include "include/GPU/qgl_graphics_device.h"
 
 namespace qgl::graphics::gpu
 {
-   /*
-    gdev: Pointer to the graphics device.
-    nodeMask: Which GPU to upload the root signature to.
-    */
    class QGL_GRAPHICS_API root_signature
    {
       /*
        gdev: Pointer to the graphics device.
+       descriptors: Pointer to an array of descriptors.
        nodeMask: Which GPU to upload the root signature to.
        */
-      root_signature(const graphics_device* gdev,
-                     ibindable** descriptors,
+      root_signature(d3d_device* gdev,
+                     const ibindable** descriptors,
                      size_t numDescriptors,
                      UINT nodeMask = 0);
 
       /*
-       Copy constructor. Creates new instances of the backing D3D objects.
+       Copy constructor. Cannot have multiple instances of a root signature.
        */
-      root_signature(const root_signature& r);
+      root_signature(const root_signature&) = delete;
 
       /*
        Move constructor.
@@ -58,6 +54,6 @@ namespace qgl::graphics::gpu
 
       private:
       struct impl;
-      impl* m_impl_p;
+      impl* m_impl_p = nullptr;
    };
 }

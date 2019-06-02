@@ -190,6 +190,9 @@
     <ClCompile Include="qgl_uav_descriptor_heap.cpp">
       <Filter>Source Files\GPU\Descriptors</Filter>
     </ClCompile>
+    <ClCompile Include="qgl_root_signature.cpp">
+      <Filter>Source Files\GPU\Root-Signature</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLGraphics.h">
