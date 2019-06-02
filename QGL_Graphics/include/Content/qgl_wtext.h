@@ -1,9 +1,9 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
 
-namespace qgl::graphics::content
+namespace qgl::content
 {
-   class LIB_EXPORT wtext : qgl::content::content_item
+   class QGL_GRAPHICS_API wtext : qgl::content::content_item
    {
       public:
       wtext(const wchar_t* text,

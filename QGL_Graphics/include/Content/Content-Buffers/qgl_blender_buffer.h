@@ -2,7 +2,7 @@
 #include "include/qgl_graphics_include.h"
 #include "include/Content/Content-Buffers/qgl_blender_desc_buffer.h"
 
-namespace qgl::graphics::content::buffers
+namespace qgl::content::buffers
 {
    /*
     Number of render targets that can be bound to the output merger at once.

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "include/Content/Content-Buffers/qgl_brush_buffer.h"
 
-namespace qgl::graphics::content::buffers
+namespace qgl::content::buffers
 {
    BRUSH_BUFFER::BRUSH_BUFFER() :
       Style(static_cast<uint8_t>(TEXT_BRUSH_STYLE::TEXT_BRUSH_STYLE_SOLID)),

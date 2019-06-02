@@ -1,55 +1,86 @@
 #pragma once
-#include "qgl_graphics_include.h"
-#include "qgl_camera_buffer.h"
-#include "qgl_constant_buffer.h"
+#include "include/qgl_graphics_include.h"
+#include "include/Content/Content-Buffers/qgl_camera_buffer.h"
+#include "include/GPU/Buffers/qgl_const_buffer.h"
 
-namespace qgl::graphics
+namespace qgl::content
 {
+   struct alignas(alignof(DirectX::XMVECTOR)) CONST_CAMERA_BUFFER
+   {
+      DirectX::XMMATRIX View;
+      DirectX::XMMATRIX Projection;
+      DirectX::XMVECTOR Position;
+      DirectX::XMVECTOR LookAt;
+      DirectX::XMVECTOR Up;
+   };
+
    template<bool RightHandMode = true>
-   class alignas(alignof(DirectX::XMMATRIX)) camera : public qgl::content::wcontent_item
+   class alignas(alignof(DirectX::XMMATRIX)) camera :
+      public graphics::gpu::buffers::const_buffer<CONST_CAMERA_BUFFER>,
+      public qgl::content::content_item
    {
       public:
-      camera(const CAMERA_BUFFER& cBuffer,
-             float viewWidth, float viewHeight,
-             const winrt::com_ptr<d3d_device>& dev_p,
-             const content::wcontent_item::str_t& name,
-             const content::wcontent_item::id_t& id) :
-         m_cameraBuffer(dev_p),
+      camera(const content::buffers::CAMERA_BUFFER* cBuffer,
+             float viewWidth,
+             float viewHeight,
+             graphics::d3d_device* dev_p,
+             const wchar_t* name,
+             const qgl::content::content_id id) :
+         const_buffer(dev_p),
          content_item(name, id,
-                      qgl::content::RESOURCE_TYPES::RESOURCE_TYPE_CAMERA,
-                      qgl::content::CONTENT_LOADER_IDS::CONTENT_LOADER_ID_CAMERA)
+                      qgl::content::RESOURCE_TYPE_CAMERA,
+                      qgl::content::CONTENT_LOADER_ID_CAMERA)
       {
-         position(DirectX::XMVectorSet(cBuffer.position()[0], cBuffer.position()[1],
-                                       cBuffer.position()[2], cBuffer.position()[3]));
+         position(DirectX::XMVectorSet(cBuffer->Position[0],
+                                       cBuffer->Position[1],
+                                       cBuffer->Position[2],
+                                       cBuffer->Position[3]));
 
-         up(DirectX::XMVectorSet(cBuffer.up()[0], cBuffer.up()[1],
-                                 cBuffer.up()[2], cBuffer.up()[3]));
+         up(DirectX::XMVectorSet(cBuffer->Up[0],
+                                 cBuffer->Up[1],
+                                 cBuffer->Up[2],
+                                 cBuffer->Up[3]));
 
-         look_at(DirectX::XMVectorSet(cBuffer.look_at()[0], cBuffer.look_at()[1],
-                                      cBuffer.look_at()[2], cBuffer.look_at()[3]));
+         look_at(DirectX::XMVectorSet(cBuffer->LookAt[0],
+                                      cBuffer->LookAt[1],
+                                      cBuffer->LookAt[2],
+                                      cBuffer->LookAt[3]));
 
-         make_project(cBuffer.fov(), viewWidth / viewHeight, cBuffer.near_plane(), cBuffer.far_plane());
+         make_projection(cBuffer->FOV,
+                         viewWidth / viewHeight,
+                         cBuffer->NearPlane,
+                         cBuffer->FarPlane);
          make_view();
       }
 
+      /*
+       Copy constructor.
+       */
+      camera(const camera& c) = default;
 
-      camera(const camera& c) = delete;
+      /*
+       Move constructor.
+       */
+      camera(camera&&) = default;
 
-      camera(camera&& m) = delete;
-
-      virtual ~camera()
-      {
-
-      }
+      /*
+       Destructor.
+       */
+      virtual ~camera() = default;
 
       /*
        Updates the projection matrix.
+       If compiled in DEBUG mode, this asserts the value is valid.
+       The constant buffer must be mapped before calling this.
        */
-      inline void make_project(float fov,
-                               float aspectRatio,
-                               float nearPlane = 1.0f,
-                               float farPlane = 1000.0f)
+      void make_projection(float fov,
+                           float aspectRatio,
+                           float nearPlane = 1.0f,
+                           float farPlane = 1000.0f)
       {
+         #ifdef DEBUG
+         assert(mapped());
+         #endif
          if constexpr (RightHandMode)
          {
             p_updateProjectionRH(fov, aspectRatio, nearPlane, farPlane);
@@ -61,10 +92,16 @@ namespace qgl::graphics
       }
 
       /*
-       Updates the view matrix.
+       Updates the view matrix using the position, look at, and up
+       stored in the camera buffer.
+       If compiled in DEBUG mode, this asserts the value is valid.
+       The constant buffer must be mapped before calling this.
        */
-      inline void make_view()
+      void make_view()
       {
+         #ifdef DEBUG
+         assert(mapped());
+         #endif
          if constexpr (RightHandMode)
          {
             p_updateViewRH();
@@ -75,63 +112,72 @@ namespace qgl::graphics
          }
       }
 
-      const auto& XM_CALLCONV position() const
+      /*
+       Returns the camera's position.
+       If compiled in DEBUG mode, this asserts the value is valid.
+       The constant buffer must be mapped before calling this.
+       */
+      DirectX::XMVECTOR XM_CALLCONV position() const
       {
-         return m_cameraBuffer.mapping()->Position;
+         #ifdef DEBUG
+         assert(mapped());
+         #endif
+         return mapping()->Position;
       }
 
+      /*
+       Sets the camera position.
+       If compiled in DEBUG mode, this asserts the value is valid.
+       The constant buffer must be mapped before calling this.
+       */
       void XM_CALLCONV position(const DirectX::FXMVECTOR pos)
       {
-         DirectX::XMStoreFloat4A(&m_cameraBuffer.mapping()->Position, pos);
+         #ifdef DEBUG
+         assert(mapped());
+         #endif
+         mapping()->Position = pos;
       }
 
+      /*
+       Sets the camera's up vector.
+       If compiled in DEBUG mode, this asserts the value is valid.
+       The constant buffer must be mapped before calling this.
+       */
       void XM_CALLCONV up(const DirectX::FXMVECTOR u)
       {
-         DirectX::XMStoreFloat4A(&m_cameraBuffer.mapping()->Up, u);
+         #ifdef DEBUG
+         assert(mapped());
+         #endif
+         mapping()->Up = u;
       }
 
+      /*
+       Sets the camera's look at.
+       If compiled in DEBUG mode, this asserts the value is valid.
+       The constant buffer must be mapped before calling this.
+       */
       void XM_CALLCONV look_at(const DirectX::FXMVECTOR lookAt)
       {
-         DirectX::XMStoreFloat4A(&m_cameraBuffer.mapping()->LookAt, lookAt);
-      }
-
-      inline void map()
-      {
-         m_cameraBuffer.map();
-      }
-
-      inline void unmap()
-      {
-         m_cameraBuffer.unmap();
+         #ifdef DEBUG
+         assert(mapped());
+         #endif
+         mapping()->LookAt = lookAt;
       }
 
       private:
-      struct alignas(alignof(DirectX::XMVECTOR)) CONST_CAMERA_BUFFER
-      {
-         DirectX::XMFLOAT4X4A View;
-         DirectX::XMFLOAT4X4A Projection;
-         DirectX::XMFLOAT4A Position;
-         DirectX::XMFLOAT4A LookAt;
-         DirectX::XMFLOAT4A Up;
-      };
 
-      /*
-       Updates the view matrix using the position, look at, and up stored in the camera buffer.
-       */
       void p_updateViewRH()
       {
-         DirectX::XMStoreFloat4x4A(&m_cameraBuffer.mapping()->View,
-                                   DirectX::XMMatrixLookToRH(DirectX::XMLoadFloat4A(&m_cameraBuffer.mapping()->Position),
-                                                             DirectX::XMLoadFloat4A(&m_cameraBuffer.mapping()->LookAt),
-                                                             DirectX::XMLoadFloat4A(&m_cameraBuffer.mapping()->Up)));
+         mapping()->View = DirectX::XMMatrixLookToRH(mapping()->Position,
+                                                     mapping()->LookAt,
+                                                     mapping()->Up);
       }
 
       void p_updateViewLH()
       {
-         DirectX::XMStoreFloat4x4A(&m_cameraBuffer.mapping()->View,
-                                   DirectX::XMMatrixLookToLH(DirectX::XMLoadFloat4A(&m_cameraBuffer.mapping()->Position),
-                                                             DirectX::XMLoadFloat4A(&m_cameraBuffer.mapping()->LookAt),
-                                                             DirectX::XMLoadFloat4A(&m_cameraBuffer.mapping()->Up)));
+         mapping()->View = DirectX::XMMatrixLookToLH(mapping()->Position,
+                                                     mapping()->LookAt,
+                                                     mapping()->Up);
       }
 
       /*
@@ -142,9 +188,10 @@ namespace qgl::graphics
                                 float nearPlane,
                                 float farPlane)
       {
-         DirectX::XMStoreFloat4x4A(&m_cameraBuffer.mapping()->Projection,
-                                   DirectX::XMMatrixPerspectiveFovRH(fov, aspectRatio,
-                                                                     nearPlane, farPlane));
+         mapping()->Projection = DirectX::XMMatrixPerspectiveFovRH(fov,
+                                                                   aspectRatio,
+                                                                   nearPlane,
+                                                                   farPlane);
       }
 
       void p_updateProjectionLH(float fov,
@@ -152,12 +199,11 @@ namespace qgl::graphics
                                 float nearPlane,
                                 float farPlane)
       {
-         DirectX::XMStoreFloat4x4A(&m_cameraBuffer.mapping()->Projection,
-                                   DirectX::XMMatrixPerspectiveFovLH(fov, aspectRatio,
-                                                                     nearPlane, farPlane));
+         mapping()->Projection = DirectX::XMMatrixPerspectiveFovLH(fov,
+                                                                   aspectRatio,
+                                                                   nearPlane,
+                                                                   farPlane);
       }
-
-      const_buffer<CONST_CAMERA_BUFFER> m_cameraBuffer;
    };
 
    // Constants used to calculate screen rotations.
@@ -171,7 +217,7 @@ namespace qgl::graphics
          0.0f, 0.0f, 0.0f, 1.0f
       );
 
-   // 90-degree Z-rotation
+      // 90-degree Z-rotation
       static const DirectX::XMFLOAT4X4 Rotation90(
          0.0f, 1.0f, 0.0f, 0.0f,
          -1.0f, 0.0f, 0.0f, 0.0f,
@@ -179,7 +225,7 @@ namespace qgl::graphics
          0.0f, 0.0f, 0.0f, 1.0f
       );
 
-   // 180-degree Z-rotation
+      // 180-degree Z-rotation
       static const DirectX::XMFLOAT4X4 Rotation180(
          -1.0f, 0.0f, 0.0f, 0.0f,
          0.0f, -1.0f, 0.0f, 0.0f,
@@ -187,7 +233,7 @@ namespace qgl::graphics
          0.0f, 0.0f, 0.0f, 1.0f
       );
 
-   // 270-degree Z-rotation
+      // 270-degree Z-rotation
       static const DirectX::XMFLOAT4X4 Rotation270(
          0.0f, -1.0f, 0.0f, 0.0f,
          1.0f, 0.0f, 0.0f, 0.0f,

@@ -6,14 +6,18 @@ namespace qgl::graphics::gpu
    /*
     ibindable classes are meant to be attached to a root signature.
     */
-   class ibindable
+   class QGL_GRAPHICS_API ibindable
    {
       public:
       /*
        Constructor.
        rootIndex: Index into the root signature where to bind this.
        */
-      ibindable(UINT rootIndex);
+      ibindable(UINT rootIndex) :
+         m_rootIndex(rootIndex)
+      {
+
+      }
 
       /*
        Bindable objects cannot share a root signature index so do not allow

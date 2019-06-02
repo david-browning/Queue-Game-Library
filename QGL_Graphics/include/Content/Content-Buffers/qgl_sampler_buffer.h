@@ -1,7 +1,7 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
 
-namespace qgl::graphics::content::buffers
+namespace qgl::content::buffers
 {
    struct QGL_GRAPHICS_API SAMPLER_BUFFER
    {

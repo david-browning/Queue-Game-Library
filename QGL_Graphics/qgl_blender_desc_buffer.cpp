@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "include/Content/Content-Buffers/qgl_blender_desc_buffer.h"
 
-namespace qgl::graphics::content::buffers
+namespace qgl::content::buffers
 {
    static const D3D12_RENDER_TARGET_BLEND_DESC
       DEFAULT_RENDER_TARGET_BLEND_DESC =

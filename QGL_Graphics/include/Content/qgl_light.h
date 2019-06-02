@@ -1,92 +1,106 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
 #include "include/Content/Content-Buffers/qgl_light_buffer.h"
-#include "include/GPU/Buffers/qgl_imappable.h"
+#include "include/GPU/Buffers/qgl_const_buffer.h"
 
-namespace qgl::graphics::content
+namespace qgl::content
 {
-   class alignas(alignof(DirectX::XMVECTOR)) light :
+   struct alignas(alignof(DirectX::XMVECTOR)) QGL_GRAPHICS_API
+      LIGHT_CONST_BUFFER
+   {
+      DirectX::XMVECTOR Position;
+      DirectX::XMVECTOR LookAt;
+      DirectX::XMVECTOR Color;
+      float Intensity;
+
+      uint8_t padding[64 -
+         (3 * sizeof(DirectX::XMVECTOR)) -
+         sizeof(float)];
+   };
+
+   class alignas(alignof(DirectX::XMVECTOR)) QGL_GRAPHICS_API light :
+   public graphics::gpu::buffers::const_buffer<LIGHT_CONST_BUFFER>,
       public qgl::content::content_item
    {
       public:
+      /*
+       Constructs a light as a constant buffer.
+       Before changing the light on the CPU side, unmap it by calling unmap().
+       After changing it, call map().
+       If compiled in DEBUG mode, the getters and setters assert that the
+       buffer is mapped.
+       */
       light(const content::buffers::LIGHT_BUFFER* lBuffer,
-            d3d_device* dev_p,
+            graphics::d3d_device* dev_p,
             const wchar_t* name,
             const qgl::content::content_id id);
 
+      /*
+       Constant buffers cannot be copied.
+       */
       light(const light& c) = delete;
 
-      light(light&& m) = delete;
-
-      virtual ~light();
-
-      inline float intensity() const
-      {
-         return m_lightBuffer.mapping()->Intensity;
-      }
-
-      inline void intensity(float intes)
-      {
-         m_lightBuffer.mapping()->Intensity = intes;
-      }
-
-      const auto& XM_CALLCONV position() const
-      {
-         return m_lightBuffer.mapping()->Position;
-      }
-
-      void XM_CALLCONV position(const DirectX::FXMVECTOR pos)
-      {
-         DirectX::XMStoreFloat4(&m_lightBuffer.mapping()->Position, pos);
-      }
-
-      const auto& XM_CALLCONV look_at() const
-      {
-         return m_lightBuffer.mapping()->LookAt;
-      }
-
-      void XM_CALLCONV look_at(const DirectX::FXMVECTOR lookAt)
-      {
-         DirectX::XMStoreFloat4(&m_lightBuffer.mapping()->LookAt, lookAt);
-      }
-
-      const auto& XM_CALLCONV color() const
-      {
-         return m_lightBuffer.mapping()->Color;
-      }
-
-      void XM_CALLCONV color(const DirectX::FXMVECTOR colr)
-      {
-         DirectX::XMStoreFloat4(&m_lightBuffer.mapping()->Color, colr);
-      }
-
-      inline void map()
-      {
-         m_lightBuffer.map();
-      }
-
-      inline void unmap()
-      {
-         m_lightBuffer.unmap();
-      }
-
-      private:
-      struct alignas(alignof(DirectX::XMVECTOR)) LIGHT_CONST_BUFFER
-      {
-         DirectX::XMFLOAT4A Position;
-         DirectX::XMFLOAT4A LookAt;
-         DirectX::XMFLOAT4A Color;
-         float Intensity;
-
-         uint8_t padding[64 -
-            (3 * sizeof(DirectX::XMFLOAT4A)) -
-            sizeof(float)];
-      };
+      /*
+       Move constructor.
+       */
+      light(light&& m) = default;
 
       /*
-       A light is just a wrapper around a constant buffer
+       Destructor.
        */
-      #pragma warning(disable:4324)
-      const_buffer<LIGHT_CONST_BUFFER> m_lightBuffer;
+      virtual ~light() = default;
+
+      /*
+       Returns the intensity of the light.
+       Values are between 0 and 1.0 inclusive.
+       The constant buffer must be mapped before calling this.
+       */
+      float intensity() const;
+
+      /*
+       Sets the intensity of the light. Value must be between 0 and 1.0
+       inclusive.
+       If compiled in DEBUG mode, this asserts the value is valid.
+       The constant buffer must be mapped before calling this.
+       */
+      void intensity(float intes);
+
+      /*
+       Returns the light's position.
+       The constant buffer must be mapped before calling this.
+       */
+      DirectX::XMVECTOR XM_CALLCONV position() const;
+
+      /*
+       Sets the light's position.
+       The constant buffer must be mapped before calling this.
+       */
+      void XM_CALLCONV position(const DirectX::FXMVECTOR pos);
+
+      /*
+       Returns the light's look at.
+       The constant buffer must be mapped before calling this.
+       */
+      DirectX::XMVECTOR XM_CALLCONV look_at() const;
+
+      /*
+       Sets the light's look at.
+       The constant buffer must be mapped before calling this.
+       */
+      void XM_CALLCONV look_at(const DirectX::FXMVECTOR lookAt);
+
+      /*
+       Returns the light's color.
+       The constant buffer must be mapped before calling this.
+       */
+      DirectX::XMVECTOR XM_CALLCONV color() const;
+
+      /*
+       Sets the light's color.
+       The values in the color must be between 0 and 1.0 inclusive.
+       If compiled in DEBUG mode, this asserts the value is valid.
+       The constant buffer must be mapped before calling this.
+       */
+      void XM_CALLCONV color(const DirectX::FXMVECTOR colr);
    };
 }

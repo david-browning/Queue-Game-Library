@@ -1,59 +1,59 @@
 #pragma once
-#include "qgl_graphics_include.h"
-#include "qgl_igpu_buffer.h"
-#include "qgl_texture_buffer.h"
+#include "include/qgl_graphics_include.h"
+#include "include/GPU/Buffers/igpu_buffer.h"
 
 namespace qgl::content
 {
-   class LIB_EXPORT texture :
-      public low::igpu_buffer<D3D12_RESOURCE_DESC, D3D12_SHADER_RESOURCE_VIEW_DESC, d3d_resource>,
-      public content::content_item
+   class QGL_GRAPHICS_API texture :
+      public graphics::gpu::buffers::igpu_buffer<D3D12_RESOURCE_DESC,
+      D3D12_SHADER_RESOURCE_VIEW_DESC,
+      graphics::d3d_resource>,
+      public content_item
    {
       public:
       using ResourceDescriptionT = D3D12_RESOURCE_DESC;
       using ViewDescriptionT = D3D12_SHADER_RESOURCE_VIEW_DESC;
 
-      texture(const TEXTURE_BUFFER& textureData,
-              winrt::com_ptr<d3d_device>& dev_p,
-              qgl::content::CONTENT_LOADER_IDS loaderID,
-              const std::wstring& name,
-              const content::content_id id);
+      texture(const void* textureData,
+              size_t textureSizeBytes,
+              graphics::d3d_device* dev_p,
+              CONTENT_LOADER_IDS loaderID,
+              const wchar_t* name,
+              const content_id id);
 
-      texture(TEXTURE_BUFFER&& textureData,
-              winrt::com_ptr<d3d_device>& dev_p,
-              qgl::content::CONTENT_LOADER_IDS loaderID,
-              const std::wstring& name,
-              const content::content_id id);
+      texture(const texture& r);
 
-      texture(const texture& r) = delete;
-
-      texture(texture&& r) = delete;
+      texture(texture&& r);
 
       virtual ~texture();
 
-      #pragma region Description Getters
-      virtual ResourceDescriptionT description() const
-      {
-         return m_textureDesc;
-      }
+      virtual const ResourceDescriptionT* description() const;
 
-      virtual ViewDescriptionT view() const
-      {
-         return m_viewDesc;
-      }
-      #pragma endregion
+      virtual const ViewDescriptionT* view() const;
+
+      size_t width() const noexcept;
+
+      size_t height() const noexcept;
+
+      size_t depth() const noexcept;
+
+      size_t array_size() const noexcept;
+
+      size_t mip_levels() const noexcept;
+
+      DXGI_FORMAT format() const noexcept;
+
+      D3D12_RESOURCE_DIMENSION dimension() const noexcept;
+
+      bool cube() const noexcept;
 
       private:
-      void p_allocate();
-
-      void p_createTexDesc();
-
-      void p_createViewDesc();
+      struct impl;
+      impl* m_impl_p;
 
       ResourceDescriptionT m_textureDesc;
       ViewDescriptionT m_viewDesc;
 
-      TEXTURE_BUFFER m_data;
       size_t m_subresourcesCount;
    };
 }

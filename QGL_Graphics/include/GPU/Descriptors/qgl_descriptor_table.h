@@ -5,19 +5,31 @@
 
 namespace qgl::graphics::gpu
 {
+   /*
+    Descriptor tables are a collection of shader resources.
+    Descriptor tables are bound to a root signature.
+    */
    class QGL_GRAPHICS_API descriptor_table : public ibindable
    {
       public:
+      /*
+       Sets the descriptor ranges and GPU handle.
+       rootIndex: Index in the root signature where the table will be bound.
+       */
       descriptor_table(
          std::initializer_list<descriptor_range> ranges,
-         const CD3DX12_GPU_DESCRIPTOR_HANDLE& handle,
+         CD3DX12_GPU_DESCRIPTOR_HANDLE handle,
          UINT rootIndex,
          D3D12_SHADER_VISIBILITY visibility = D3D12_SHADER_VISIBILITY_ALL);
 
+      /*
+       Sets the descriptor ranges and GPU handle.
+       rootIndex: Index in the root signature where the table will be bound.
+       */
       descriptor_table(
          descriptor_range* ranges,
          size_t numRanges,
-         const CD3DX12_GPU_DESCRIPTOR_HANDLE& handle,
+         CD3DX12_GPU_DESCRIPTOR_HANDLE handle,
          UINT rootIndex,
          D3D12_SHADER_VISIBILITY visibility = D3D12_SHADER_VISIBILITY_ALL);
 

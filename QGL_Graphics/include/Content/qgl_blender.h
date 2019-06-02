@@ -2,7 +2,7 @@
 #include "include/qgl_graphics_include.h"
 #include "include/Content/Content-Buffers/qgl_blender_buffer.h"
 
-namespace qgl::graphics::content
+namespace qgl::content
 {
    /*
     The blender provides the parameters describing how to blend pixels.
@@ -16,20 +16,43 @@ namespace qgl::graphics::content
       blender(const wchar_t* name,
               qgl::content::content_id id);
 
-      blender(const qgl::graphics::content::buffers::BLENDER_BUFFER* buff,
+      /*
+       Constructs a blend using the given buffer.
+       */
+      blender(const content::buffers::BLENDER_BUFFER* buff,
               const wchar_t* name,
               qgl::content::content_id id);
 
+      /*
+       Copy constructor.
+       */
       blender(const blender&) = default;
 
+      /*
+       Move constructor.
+       */
       blender(blender&&) = default;
 
+      /*
+       Destructor.
+       */
       virtual ~blender() noexcept = default;
 
+      /*
+       Returns a description of the blender.
+       Used by a pipeline state object.
+       */
       const D3D12_BLEND_DESC* description() const;
 
+      /*
+       The sample mask for the blend state. 
+       Used by a pipeline state object.
+       */
       UINT mask() const noexcept;
 
+      /*
+       Swaps the contents of l and r.
+       */
       friend void swap(blender& l, blender& r) noexcept
       {
          using std::swap;
@@ -37,6 +60,9 @@ namespace qgl::graphics::content
          swap(l.m_mask, r.m_mask);
       }
 
+      /*
+       Assignment Operator
+       */
       blender& operator=(blender r) noexcept
       {
          swap(*this, r);

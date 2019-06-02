@@ -2,7 +2,7 @@
 #include "include/qgl_graphics_include.h"
 #include "include/Content/Content-Buffers/qgl_brush_buffer.h"
 
-namespace qgl::graphics::content
+namespace qgl::content
 {
    class QGL_GRAPHICS_API brush : public qgl::content::content_item
    {
@@ -10,7 +10,7 @@ namespace qgl::graphics::content
       /*
        Constructs a new brush.
        */
-      brush(const buffers::BRUSH_BUFFER* fmtBuffer,
+      brush(const content::buffers::BRUSH_BUFFER* fmtBuffer,
             graphics::d2d_context* devContext_p,
             const wchar_t* name,
             const qgl::content::content_id id);

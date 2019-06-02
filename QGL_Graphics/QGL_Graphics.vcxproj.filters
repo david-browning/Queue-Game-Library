@@ -74,6 +74,12 @@
     <Filter Include="Header Files\GPU\Buffers">
       <UniqueIdentifier>{bed9bf5d-485c-4471-ad1d-a3e230bdcd8f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GPU\Descriptors">
+      <UniqueIdentifier>{84389dcc-c65a-42a0-a773-fc7ae7e850b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GPU\Buffers">
+      <UniqueIdentifier>{15ea531a-0951-458a-8b20-fc548e1beb88}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
@@ -130,16 +136,10 @@
     <ClCompile Include="qgl_viewport.cpp">
       <Filter>Source Files\GPU\Stages</Filter>
     </ClCompile>
-    <ClCompile Include="DDSTextureLoader12.cpp">
-      <Filter>Source Files\Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="qgl_blender.cpp">
       <Filter>Source Files\Content</Filter>
     </ClCompile>
     <ClCompile Include="qgl_brush.cpp">
-      <Filter>Source Files\Content</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_camera.cpp">
       <Filter>Source Files\Content</Filter>
     </ClCompile>
     <ClCompile Include="qgl_light.cpp">
@@ -162,6 +162,33 @@
     </ClCompile>
     <ClCompile Include="qgl_rasterizer.cpp">
       <Filter>Source Files\Content</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_descriptor_table.cpp">
+      <Filter>Source Files\GPU\Descriptors</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_descriptor_range.cpp">
+      <Filter>Source Files\GPU\Descriptors</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_render_target.cpp">
+      <Filter>Source Files\GPU\Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_srv_descriptor_heap.cpp">
+      <Filter>Source Files\GPU\Descriptors</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_sampler_descriptor_heap.cpp">
+      <Filter>Source Files\GPU\Descriptors</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_rtv_descriptor_heap.cpp">
+      <Filter>Source Files\GPU\Descriptors</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_cbv_descriptor_heap.cpp">
+      <Filter>Source Files\GPU\Descriptors</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_dsv_descriptor_heap.cpp">
+      <Filter>Source Files\GPU\Descriptors</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_uav_descriptor_heap.cpp">
+      <Filter>Source Files\GPU\Descriptors</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -255,9 +282,6 @@
     <ClInclude Include="include\GPU\Memory\qgl_igpu_memory_allocator.h">
       <Filter>Header Files\GPU\Memory</Filter>
     </ClInclude>
-    <ClInclude Include="include\Helpers\DDSTextureLoader12.h">
-      <Filter>Header Files\Helpers</Filter>
-    </ClInclude>
     <ClInclude Include="include\GPU\Buffers\igpu_buffer.h">
       <Filter>Header Files\GPU\Buffers</Filter>
     </ClInclude>
@@ -302,6 +326,27 @@
     </ClInclude>
     <ClInclude Include="include\Content\qgl_rasterizer.h">
       <Filter>Header Files\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Descriptors\qgl_cbv_descriptor_heap.h">
+      <Filter>Header Files\GPU\Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Descriptors\qgl_dsv_descriptor_heap.h">
+      <Filter>Header Files\GPU\Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Descriptors\qgl_rtv_descriptor_heap.h">
+      <Filter>Header Files\GPU\Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Descriptors\qgl_sampler_descriptor_heap.h">
+      <Filter>Header Files\GPU\Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Descriptors\qgl_srv_descriptor_heap.h">
+      <Filter>Header Files\GPU\Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Buffers\qgl_render_target.h">
+      <Filter>Header Files\GPU\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Descriptors\qgl_uav_descriptor_heap.h">
+      <Filter>Header Files\GPU\Descriptors</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,7 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
 
-namespace qgl::graphics::content::buffers
+namespace qgl::content::buffers
 {
    enum class TEXT_BRUSH_STYLE : uint8_t
    {

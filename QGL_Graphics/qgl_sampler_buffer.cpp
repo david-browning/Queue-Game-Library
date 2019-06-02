@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "include\Content\Content-Buffers\qgl_sampler_buffer.h"
 
-namespace qgl::graphics::content::buffers
+namespace qgl::content::buffers
 {
    static constexpr float DEFAULT_SAMPLER_BORDER_COLOR[4] =
    {

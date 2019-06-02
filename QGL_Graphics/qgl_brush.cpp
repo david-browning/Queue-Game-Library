@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "include/Content/qgl_brush.h"
 
-using namespace qgl::graphics::content::buffers;
-namespace qgl::graphics::content
+using namespace qgl::content::buffers;
+namespace qgl::content
 {
    struct brush::impl
    {
-      impl(const buffers::BRUSH_BUFFER* fmtBuffer,
+      impl(const content::buffers::BRUSH_BUFFER* fmtBuffer,
            graphics::d2d_context* devContext_p) :
          D3DBrush(nullptr),
          Buffer(*fmtBuffer)
@@ -81,7 +81,7 @@ namespace qgl::graphics::content
 
 
    brush::brush(const buffers::BRUSH_BUFFER* fmtBuffer,
-                graphics::d2d_context* devContext_p, 
+                qgl::graphics::d2d_context* devContext_p, 
                 const wchar_t* name, 
                 const qgl::content::content_id id) :
       content_item(name, 

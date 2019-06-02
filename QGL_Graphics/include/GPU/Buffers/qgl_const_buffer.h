@@ -16,11 +16,30 @@ namespace qgl::graphics::gpu::buffers
       using ViewDescriptionT = D3D12_CONSTANT_BUFFER_VIEW_DESC;
       using ResourceDescriptionT = nullptr_t;
 
-      const_buffer(graphics_device* gdev) :
+      /*
+       Creates a committed resource of T.
+       Call map() to map it to a CPU pointer.
+       */
+      const_buffer(d3d_device* gdev) :
          m_viewDescription()
       {
          construct(gdev);
       }
+
+      /*
+       Copy constructor.
+       */
+      const_buffer(const const_buffer&) = default;
+
+      /*
+       Move constructor.
+       */
+      const_buffer(const_buffer&&) = default;
+
+      /*
+       Destructor.
+       */
+      virtual ~const_buffer() = default;
 
       /*
        Returns a description of the resource.
@@ -40,12 +59,11 @@ namespace qgl::graphics::gpu::buffers
       }
 
       private:
-
-      void construct(graphics_device* gdev)
+      void construct(d3d_device* gdev)
       {
          auto heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
          auto rscDesc = CD3DX12_RESOURCE_DESC::Buffer(sizeof(T));
-         winrt::check_hresult(gdev->d3d12_device()->CreateCommittedResource(
+         winrt::check_hresult(gdev->CreateCommittedResource(
             &heapProps,
             D3D12_HEAP_FLAGS::D3D12_HEAP_FLAG_ALLOW_ONLY_BUFFERS,
             &rscDesc,
@@ -63,10 +81,9 @@ namespace qgl::graphics::gpu::buffers
          //by the CPU. 
          //It is valid to specify the CPU won't read any data by passing a 
          //range where End is less than or equal to Begin.
-         auto ptr = mapping();
          winrt::check_hresult(get()->Map(0,
                                          nullptr,
-                                         reinterpret_cast<void**>(&ptr)));
+                                         map_put()));
       }
 
       virtual void p_unmap()

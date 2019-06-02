@@ -185,10 +185,17 @@
     <ClInclude Include="include\GPU\Buffers\qgl_const_buffer.h" />
     <ClInclude Include="include\GPU\Buffers\qgl_imappable.h" />
     <ClInclude Include="include\GPU\Buffers\qgl_index_buffer.h" />
+    <ClInclude Include="include\GPU\Buffers\qgl_render_target.h" />
     <ClInclude Include="include\GPU\Buffers\qgl_vertex_buffer.h" />
+    <ClInclude Include="include\GPU\Descriptors\qgl_cbv_descriptor_heap.h" />
     <ClInclude Include="include\GPU\Descriptors\qgl_descriptor_heap.h" />
     <ClInclude Include="include\GPU\Descriptors\qgl_descriptor_range.h" />
     <ClInclude Include="include\GPU\Descriptors\qgl_descriptor_table.h" />
+    <ClInclude Include="include\GPU\Descriptors\qgl_dsv_descriptor_heap.h" />
+    <ClInclude Include="include\GPU\Descriptors\qgl_rtv_descriptor_heap.h" />
+    <ClInclude Include="include\GPU\Descriptors\qgl_sampler_descriptor_heap.h" />
+    <ClInclude Include="include\GPU\Descriptors\qgl_srv_descriptor_heap.h" />
+    <ClInclude Include="include\GPU\Descriptors\qgl_uav_descriptor_heap.h" />
     <ClInclude Include="include\GPU\Memory\qgl_igpu_memory_allocator.h" />
     <ClInclude Include="include\GPU\qgl_graphics_device.h" />
     <ClInclude Include="include\GPU\qgl_graphics_device_helpers.h" />
@@ -200,7 +207,6 @@
     <ClInclude Include="include\GPU\Synchronization\qgl_fence.h" />
     <ClInclude Include="include\GPU\Synchronization\qgl_sync_object.h" />
     <ClInclude Include="include\Helpers\d3dx12.h" />
-    <ClInclude Include="include\Helpers\DDSTextureLoader12.h" />
     <ClInclude Include="include\qgl_graphics_include.h" />
     <ClInclude Include="include\qgl_window.h" />
     <ClInclude Include="pch.h" />
@@ -208,16 +214,18 @@
     <ClInclude Include="QGL_GraphicsRT.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DDSTextureLoader12.cpp" />
     <ClCompile Include="qgl_blender.cpp" />
     <ClCompile Include="qgl_blender_buffer.cpp" />
     <ClCompile Include="qgl_blender_desc_buffer.cpp" />
     <ClCompile Include="qgl_brush.cpp" />
     <ClCompile Include="qgl_brush_buffer.cpp" />
-    <ClCompile Include="qgl_camera.cpp" />
     <ClCompile Include="qgl_camera_buffer.cpp" />
+    <ClCompile Include="qgl_cbv_descriptor_heap.cpp" />
     <ClCompile Include="qgl_depth_stencil.cpp" />
     <ClCompile Include="qgl_depth_stencil_buffer.cpp" />
+    <ClCompile Include="qgl_descriptor_range.cpp" />
+    <ClCompile Include="qgl_descriptor_table.cpp" />
+    <ClCompile Include="qgl_dsv_descriptor_heap.cpp" />
     <ClCompile Include="QGL_GraphicsRT.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
@@ -230,12 +238,17 @@
     <ClCompile Include="qgl_light_buffer.cpp" />
     <ClCompile Include="qgl_rasterizer.cpp" />
     <ClCompile Include="qgl_rasterizer_buffer.cpp" />
+    <ClCompile Include="qgl_render_target.cpp" />
+    <ClCompile Include="qgl_rtv_descriptor_heap.cpp" />
     <ClCompile Include="qgl_sampler.cpp" />
     <ClCompile Include="qgl_sampler_buffer.cpp" />
+    <ClCompile Include="qgl_sampler_descriptor_heap.cpp" />
     <ClCompile Include="qgl_scissor.cpp" />
+    <ClCompile Include="qgl_srv_descriptor_heap.cpp" />
     <ClCompile Include="qgl_texture.cpp" />
     <ClCompile Include="qgl_text_format.cpp" />
     <ClCompile Include="qgl_text_format_buffer.cpp" />
+    <ClCompile Include="qgl_uav_descriptor_heap.cpp" />
     <ClCompile Include="qgl_viewport.cpp" />
     <ClCompile Include="qgl_window.cpp" />
     <ClCompile Include="qgl_wtext.cpp" />

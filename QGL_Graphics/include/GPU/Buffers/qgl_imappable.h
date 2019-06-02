@@ -3,22 +3,26 @@
 
 namespace qgl::graphics::gpu::buffers
 {
+   /*
+    
+    */
    template<typename T>
    class imappable
    {
       public:
       imappable() :
-         m_buffer(nullptr),
-         m_isMapped(false)
+         m_buffer(nullptr)
       {
          //The CPU pointer is populated by map()
       }
 
       imappable(const imappable&) = delete;
 
+      /*
+       Copies the pointer from r and unmaps r.
+       */
       imappable(imappable&& r) :
-         m_buffer(r.m_buffer),
-         m_isMapped(r.m_isMapped)
+         m_buffer(r.m_buffer)
       {
          r.unmap();
       }
@@ -30,20 +34,18 @@ namespace qgl::graphics::gpu::buffers
 
       void map()
       {
-         if (!m_isMapped)
+         if (!mapped())
          {
             p_map();
-            m_isMapped = true;
          }
       }
 
       void unmap()
       {
-         if (m_isMapped)
+         if (mapped())
          {
             p_unmap();
             m_buffer = nullptr;
-            m_isMapped = false;
          }
       }
 
@@ -54,7 +56,7 @@ namespace qgl::graphics::gpu::buffers
 
       bool mapped() const noexcept
       {
-         return m_isMapped;
+         return m_buffer != nullptr;
       }
 
       protected:
@@ -64,13 +66,24 @@ namespace qgl::graphics::gpu::buffers
          return m_buffer;
       }
 
+      void** map_put()
+      {
+         return reinterpret_cast<void**>(&m_buffer);
+      }
+
       private:
 
+      /*
+       Maps a GPU resource to the CPU pointer. Use map_put() to get a pointer 
+       to the buffer pointer.
+       */
       virtual void p_map() = 0;
 
       virtual void p_unmap() = 0;
       
+      /*
+       Pointer to the cpu pointer.
+       */
       T* m_buffer;
-      bool m_isMapped;
    };
 }

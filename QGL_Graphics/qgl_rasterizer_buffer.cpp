@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "include\Content\Content-Buffers\qgl_rasterizer_buffer.h"
 
-namespace qgl::graphics::content::buffers
+namespace qgl::content::buffers
 {
    RASTERIZER_BUFFER::RASTERIZER_BUFFER() :
       DepthBiasClamp(D3D12_DEFAULT_DEPTH_BIAS_CLAMP),

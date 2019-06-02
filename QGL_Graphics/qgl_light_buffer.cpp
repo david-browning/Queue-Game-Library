@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "include\Content\Content-Buffers\qgl_light_buffer.h"
 
-namespace qgl::graphics::content::buffers
+namespace qgl::content::buffers
 {
    static constexpr float LIGHT_DEFAULT_POS[4] =
    {

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "include/Content/Content-Buffers/qgl_graphic_config_buffer.h"
 
-namespace qgl::graphics::content::buffers
+namespace qgl::content::buffers
 {
 	GRAPHICS_CONFIG_BUFFER::GRAPHICS_CONFIG_BUFFER() :
       Flags(0),

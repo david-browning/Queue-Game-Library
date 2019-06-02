@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "include\Content\qgl_blender.h"
 
-namespace qgl::graphics::content
+namespace qgl::content
 {
    blender::blender(const wchar_t* name,
                     qgl::content::content_id id) :
@@ -15,7 +15,7 @@ namespace qgl::graphics::content
    }
 
    blender::blender(
-      const qgl::graphics::content::buffers::BLENDER_BUFFER* buff,
+      const content::buffers::BLENDER_BUFFER* buff,
       const wchar_t* name,
       qgl::content::content_id id) :
       m_desc(),
@@ -30,7 +30,7 @@ namespace qgl::graphics::content
 
       auto descs = buff->blend_descs();
       for (size_t i = 0;
-           i < qgl::graphics::content::buffers::NUM_RENDER_TARGETS;
+           i < content::buffers::NUM_RENDER_TARGETS;
            i++)
       {
          m_desc.RenderTarget[i] = descs[i].d3d_version();

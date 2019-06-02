@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "include\Content\qgl_wtext.h"
 
-namespace qgl::graphics::content
+namespace qgl::content
 {
    struct wtext::impl
    {
@@ -35,15 +35,17 @@ namespace qgl::graphics::content
    }
 
    wtext::wtext(const wtext& r) :
-      m_impl_p(new impl(*r.m_impl_p)),
       content_item(r)
    {
+      delete m_impl_p;
+      m_impl_p = new impl(*r.m_impl_p);
    }
 
    wtext::wtext(wtext&& r) :
-      m_impl_p(r.m_impl_p),
       content_item(std::move(r))
    {
+      delete m_impl_p;
+      m_impl_p = r.m_impl_p;
       r.m_impl_p = nullptr;
    }
 

@@ -63,16 +63,21 @@ namespace qgl::graphics::gpu::buffers
       {
          return m_resource.get();
       }
-
-      protected:
+      
       ResourceT* get() noexcept
       {
          return m_resource.get();
       }
 
+      protected:
       ResourceT** put() noexcept
       {
          return m_resource.put();
+      }
+
+      void nullify()
+      {
+         m_resource = nullptr;
       }
 
       /*

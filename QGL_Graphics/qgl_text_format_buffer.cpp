@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "include\Content\Content-Buffers\qgl_text_format_buffer.h"
 
-namespace qgl::graphics::content::buffers
+namespace qgl::content::buffers
 {
    static constexpr wchar_t* DEFAULT_FONT_FAMILY = L"Verdana";
 

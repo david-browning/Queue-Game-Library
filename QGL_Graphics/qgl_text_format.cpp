@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "include/Content/qgl_text_format.h"
 
-namespace qgl::graphics::content
+namespace qgl::content
 {
    struct text_format::impl
    {
@@ -61,15 +61,17 @@ namespace qgl::graphics::content
    }
 
    text_format::text_format(const text_format& r) :
-      m_impl_p(new impl(*r.m_impl_p)),
       content_item(r)
    {
+      delete m_impl_p;
+      m_impl_p = new impl(*r.m_impl_p);
    }
 
    text_format::text_format(text_format&& r) :
-      m_impl_p(r.m_impl_p),
       content_item(std::move(r))
    {
+      delete m_impl_p;
+      m_impl_p = r.m_impl_p;
       r.m_impl_p = nullptr;
    }
 

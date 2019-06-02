@@ -1,13 +1,13 @@
 #include "pch.h"
 #include "include\Content\qgl_sampler.h"
 
-namespace qgl::graphics::content
+namespace qgl::content
 {
    sampler::sampler(const content::buffers::SAMPLER_BUFFER* buffer, 
                     const wchar_t* name,
                     const qgl::content::content_id id) :
       content_item(name, id,
-                   qgl::content::RESOURCE_TYPES::RESOURCE_TYPE_DESCRIPTION,
+                   qgl::content::RESOURCE_TYPES::RESOURCE_TYPE_SAMPLER,
                    qgl::content::CONTENT_LOADER_IDS::CONTENT_LOADER_ID_SAMPLER)
    {
       m_samplerDesc.AddressU = buffer->address_u();

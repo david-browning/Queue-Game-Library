@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "include/Content/Content-Buffers/qgl_depth_stencil_buffer.h"
 
-namespace qgl::graphics::content::buffers
+namespace qgl::content::buffers
 {
    inline constexpr DEPTH_STENCIL_BUFFER::DEPTH_STENCIL_BUFFER() :
       Depth(0),

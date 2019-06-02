@@ -1,7 +1,7 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
 
-namespace qgl::graphics::content::buffers
+namespace qgl::content::buffers
 {
    static constexpr size_t MAX_LANGUAGE_CHARS = 8;
    static constexpr size_t MAX_FONT_CHARS = 32;
