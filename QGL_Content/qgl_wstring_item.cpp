@@ -26,8 +26,8 @@ namespace qgl::content
    };
 
    wstring_item::wstring_item(const wchar_t* str,
-                              const wchar_t* name, 
-                              content_id id, 
+                              const wchar_t* name,
+                              content_id id,
                               RESOURCE_TYPES rType,
                               CONTENT_LOADER_IDS loaderID) :
       content_item(name, id, rType, loaderID),
@@ -36,14 +36,16 @@ namespace qgl::content
    }
 
    wstring_item::wstring_item(const wstring_item& r) :
-      content_item(r),
-      m_impl_p(new impl(r.c_str()))
+      content_item(r)
    {
+      delete m_impl_p;
+      m_impl_p = new impl(*r.m_impl_p);
    }
 
    wstring_item::wstring_item(wstring_item&& r) :
       content_item(std::move(r))
    {
+      delete m_impl_p;
       m_impl_p = r.m_impl_p;
       r.m_impl_p = nullptr;
    }
@@ -64,7 +66,7 @@ namespace qgl::content
       return m_impl_p->str.data();
    }
 
-   bool impl_equal(const wstring_item::impl* l, 
+   bool impl_equal(const wstring_item::impl* l,
                    const wstring_item::impl* r,
                    const content_item* lm,
                    const content_item* rm) noexcept

@@ -82,6 +82,6 @@ namespace qgl::graphics
       IUnknown* unknown();
 
       struct impl;
-      impl* m_impl_p;
+      impl* m_impl_p = nullptr;
    };
 }

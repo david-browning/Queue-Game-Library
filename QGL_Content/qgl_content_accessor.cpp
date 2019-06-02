@@ -80,15 +80,16 @@ namespace qgl::content
    {
    }
 
-   content_accessor::content_accessor(const content_accessor& c) :
-      m_impl_p(new impl(*c.m_impl_p))
+   content_accessor::content_accessor(const content_accessor& c)
    {
-
+      delete m_impl_p;
+      m_impl_p = new impl(*c.m_impl_p);
    }
 
-   content_accessor::content_accessor(content_accessor&& m) :
-      m_impl_p(m.m_impl_p)
+   content_accessor::content_accessor(content_accessor&& m) 
    {
+      delete m_impl_p;
+      m_impl_p = m.m_impl_p;
       m.m_impl_p = nullptr;
    }
 

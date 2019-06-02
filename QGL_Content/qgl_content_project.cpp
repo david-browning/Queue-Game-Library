@@ -281,9 +281,10 @@ namespace qgl::content
 
    }
 
-   content_project::content_project(content_project&& m) :
-      m_impl_p(m.m_impl_p)
+   content_project::content_project(content_project&& m) 
    {
+      delete m_impl_p;
+      m_impl_p = m.m_impl_p;
       m.m_impl_p = nullptr;
    }
 

@@ -147,9 +147,10 @@ namespace qgl::content
    {
    }
 
-   content_store::content_store(content_store&& m) :
-      m_impl_p(m.m_impl_p)
+   content_store::content_store(content_store&& m)
    {
+      delete m_impl_p;
+      m_impl_p = m.m_impl_p;
       m.m_impl_p = nullptr;
    }
 

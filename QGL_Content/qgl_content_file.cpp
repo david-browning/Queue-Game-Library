@@ -232,12 +232,12 @@ namespace qgl::content
    content_file::content_file(const winrt::Windows::Storage::StorageFile& f) :
       m_impl_p(new impl(f))
    {
-
    }
 
-   content_file::content_file(content_file&& m) :
-      m_impl_p(m.m_impl_p)
+   content_file::content_file(content_file&& m)
    {
+      delete m_impl_p;
+      m_impl_p = m.m_impl_p;
       m.m_impl_p = nullptr;
    }
 

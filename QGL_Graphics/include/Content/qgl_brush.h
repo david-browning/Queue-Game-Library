@@ -42,6 +42,6 @@ namespace qgl::content
 
       private:
       struct impl;
-      impl* m_impl_p;
+      impl* m_impl_p = nullptr;
    };
 }

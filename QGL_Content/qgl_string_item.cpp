@@ -36,14 +36,16 @@ namespace qgl::content
    }
 
    string_item::string_item(const string_item& r) :
-      content_item(r),
-      m_impl_p(new impl(r.c_str()))
+      content_item(r)
    {
+      delete m_impl_p;
+      m_impl_p = new impl(*r.m_impl_p);
    }
 
    string_item::string_item(string_item&& r) :
       content_item(std::move(r))
    {
+      delete m_impl_p;
       m_impl_p = r.m_impl_p;
       r.m_impl_p = nullptr;
    }

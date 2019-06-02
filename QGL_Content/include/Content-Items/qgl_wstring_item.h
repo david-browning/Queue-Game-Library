@@ -70,7 +70,7 @@ namespace qgl::content
 
       private:
       struct impl;
-      impl* m_impl_p;
+      impl* m_impl_p = nullptr;
 
       /*
        Returns true if the contents of l and r are equal.

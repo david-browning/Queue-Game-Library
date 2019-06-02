@@ -109,6 +109,6 @@ namespace qgl::content
       private:
 
       class impl;
-      impl* m_impl_p;
+      impl* m_impl_p = nullptr;
    };
 }
