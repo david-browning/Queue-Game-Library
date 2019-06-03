@@ -71,6 +71,8 @@ namespace qgl::graphics::gpu
        */
       const ID3D12PipelineState* get() const;
 
+      ID3D12PipelineState* get();
+
       /*
        Sets the sample description.
        */

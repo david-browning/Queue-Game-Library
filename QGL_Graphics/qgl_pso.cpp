@@ -140,6 +140,11 @@ namespace qgl::graphics::gpu
       return m_impl_p->get_and_finalize();
    }
 
+   ID3D12PipelineState * pipeline_state::get()
+   {
+      return m_impl_p->get_and_finalize();
+   }
+
    void pipeline_state::sample_description(DXGI_SAMPLE_DESC desc)
    {
       m_impl_p->PSODesc.SampleDesc = desc;

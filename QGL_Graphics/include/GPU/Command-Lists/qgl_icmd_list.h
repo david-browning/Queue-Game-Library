@@ -9,11 +9,20 @@
 
 namespace qgl::graphics::gpu
 {
-   template<D3D12_COMMAND_LIST_TYPE listType>
+   template<D3D12_COMMAND_LIST_TYPE ListT>
    class icommand_list
    {
       public:
-      icommand_list();
+      icommand_list(d3d_device* dev_p,
+                    pipeline_state* pipelineState_p,
+                    UINT nodeMask = 0) :
+         m_allocator_p(nullptr),
+         m_cmdList_p(nullptr),
+         m_pipeline_p(pipelineState_p)
+      {
+         make_allocator(dev_p);
+         make_cmd_list(dev_p, nodeMask);
+      }
 
       /*
        Copy constructor. This is delete to keep multiple threads from setting
@@ -21,9 +30,12 @@ namespace qgl::graphics::gpu
        */
       icommand_list(const icommand_list&) = delete;
 
-      icommand_list(icommand_list&&);
+      /*
+       Move constructor.
+       */
+      icommand_list(icommand_list&&) = default;
 
-      virtual ~icommand_list() noexcept;
+      virtual ~icommand_list() noexcept = default;
 
       /*
        Puts the command list in the recording state.
@@ -34,7 +46,10 @@ namespace qgl::graphics::gpu
       /*
        Closes the bundle so it can be executed.
        */
-      void close();
+      void close()
+      {
+         m_cmdList_p->Close();
+      }
 
        /*
         Sets the root signature for the bundle or command list.
@@ -67,7 +82,11 @@ namespace qgl::graphics::gpu
        Note that bundles don't inherit the pipeline state set by previous
        calls in direct command lists that are their parents.
        */
-      void pso(const pipeline_state* pipeline_p);
+      void pso(pipeline_state* pipeline_p)
+      {
+         m_pipeline_p = pipeline_p;
+         m_cmdList_p->SetPipelineState(m_pipeline_p->get());
+      }
 
       /*
        Sets the descriptor heaps. This should only be called once because the
@@ -78,30 +97,62 @@ namespace qgl::graphics::gpu
        heaps must match the calling command list descriptor heap.
        */
       template<D3D12_DESCRIPTOR_HEAP_TYPE DescriptorHeapT,
-               D3D12_DESCRIPTOR_HEAP_FLAGS Flag>
-      void descriptors(const descriptor_heap<DescriptorHeapT, Flag>* heaps,
-                       size_t numHeaps);
+         D3D12_DESCRIPTOR_HEAP_FLAGS Flag>
+         void descriptors(descriptor_heap<DescriptorHeapT, Flag>* heaps,
+                          size_t numHeaps)
+      {
+         //Resize the list of heaps and clear it out
+         m_heapsToSet.resize(numHeaps);
+         //m_heapsToSet.clear();
+
+         for (size_t i = 0; i < numHeaps; i++)
+         {
+            m_heapsToSet[i] = heaps[i].get();
+         }
+
+         m_cmdList_p->SetDescriptorHeaps(static_cast<UINT>(m_heapsToSet.size()),
+                                         m_heapsToSet.data());
+      }
 
       /*
        Sets the vertex buffers. Do not allow the vertex buffers to go out of
        scope.
-       */
+      */
       template<typename VertexT>
       void vertex_buffers(const buffers::vertex_buffer<VertexT>* buffers,
-                          size_t numBuffers);
+                          size_t numBuffers)
+      {
+         m_vertexBufferViews.resize(numBuffers);
+         //m_vertexBufferViews.clear();
+
+         for (size_t i = 0; i < numBuffers; i++)
+         {
+            m_vertexBufferViews[i] = buffers[i].view();
+         }
+
+         m_cmdList_p->IASetVertexBuffers(
+            0,
+            static_cast<UINT>(m_vertexBufferViews.size()),
+            m_vertexBufferViews.data());
+      }
 
       /*
-       Appends an index buffer view to the list of index buffer views.
-       Uses IASetVertexBuffer to set the index buffer.
-       To clear the list of index buffer views, call reset() or begin().
+       Sets the index buffer.
        */
       template<typename IndexT>
-      void index(buffers::index_buffer<IndexT>* buff);
+      void index(buffers::index_buffer<IndexT>* buff)
+      {
+         m_indexBufferViews = *buff->view();
+         m_cmdList_p->IASetIndexBuffer(&m_indexBufferViews);
+      }
 
       /*
        Sets the topology of the vertex buffers.
        */
-      void topology(D3D_PRIMITIVE_TOPOLOGY topo) noexcept;
+      void topology(D3D_PRIMITIVE_TOPOLOGY topo) noexcept
+      {
+         m_cmdList_p->IASetPrimitiveTopology(topo);
+      }
 
       /*
        Clears the command list. It must be rebuilt using this class's member
@@ -111,39 +162,81 @@ namespace qgl::graphics::gpu
        Do not reset until the GPU is done using the command list and allocator.
        Use fences to wait until the GPU is done with this.
        */
-      void reset();
+      void reset()
+      {
+         // Command list allocators can only be reset when the associated
+         // command lists have finished execution on the GPU; apps should use
+         // fences to determine GPU execution progress.
+         winrt::check_hresult(m_allocator_p->Reset());
+
+         /*
+          Before calling Reset(), the app must make sure that the GPU is no 
+          longer executing any command lists which are associated with the 
+          allocator; otherwise, the call will fail.
+          Also, note that this API is not free-threaded and therefore can't be 
+          called on the same allocator at the same time from multiple threads.
+          */
+         winrt::check_hresult(m_cmdList_p->Reset(m_allocator_p.get(), 
+                                                 m_pipeline_p->get()));
+         m_vertexBufferViews.resize(0);
+         m_heapsToSet.resize(0);
+      }
 
       /*
        Returns a pointer to the D3D command list.
        */
-      d3d_command_list* get() noexcept;
+      d3d_command_list* get() noexcept
+      {
+         return m_cmdList_p.get();
+      }
 
       /*
        Returns a const pointer to the D3D command list.
        */
-      const d3d_command_list* get() const noexcept;
+      const d3d_command_list* get() const noexcept
+      {
+         return m_cmdList_p.get();
+      }
 
       private:
-       
-      /*
-       When creating a command list, the command list type of the allocator, 
-       specified by D3D12_COMMAND_LIST_TYPE, must match the type of command 
-       list being created.
-       */
-      void make_allocator();
 
       /*
-       Immediately after being created, command lists are in the recording 
-       state.
+       When creating a command list, the command list type of the allocator,
+       specified by D3D12_COMMAND_LIST_TYPE, must match the type of command
+       list being created.
        */
-      void make_cmd_list();
+      void make_allocator(d3d_device* dev_p)
+      {
+         winrt::check_hresult(dev_p->CreateCommandAllocator(
+            ListT,
+            IID_PPV_ARGS(m_allocator_p.put())));
+      }
+
+      /*
+       Immediately after being created, command lists are in the recording
+       state. So, close it.
+       */
+      void make_cmd_list(d3d_device* dev_p, UINT nodeMask)
+      {
+         winrt::check_hresult(dev_p->CreateCommandList(
+            nodeMask,
+            ListT,
+            m_allocator_p.get(),
+            m_pipeline_p->get(),
+            IID_PPV_ARGS(m_cmdList_p.put())));
+
+         //Close command list.
+         winrt::check_hresult(m_cmdList_p->Close());
+      }
+
+      pipeline_state* m_pipeline_p;
 
       winrt::com_ptr<d3d_cmd_allocator> m_allocator_p;
       winrt::com_ptr<d3d_command_list> m_cmdList_p;
 
       /*
-       Keep a list of the descriptor heaps to set. This is here so that the 
-       array of descriptor heap pointers does not go out of scope when 
+       Keep a list of the descriptor heaps to set. This is here so that the
+       array of descriptor heap pointers does not go out of scope when
        descriptors() has finished.
        */
       std::vector<ID3D12DescriptorHeap*> m_heapsToSet;
@@ -156,6 +249,6 @@ namespace qgl::graphics::gpu
       /*
        Keep a list of the index buffer views.
        */
-      std::vector<D3D12_INDEX_BUFFER_VIEW> m_indexBufferViews;
+      D3D12_INDEX_BUFFER_VIEW m_indexBufferViews;
    };
 }
