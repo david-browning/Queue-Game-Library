@@ -1,26 +1,22 @@
 #include "pch.h"
-#include "include/Content/qgl_depth_stencil.h"
+#include "include/GPU/Frame/qgl_depth_stencil.h"
 #include "include/qgl_window.h"
 #include "include/GPU/Descriptors/qgl_dsv_descriptor_heap.h"
 
-namespace qgl::content
+namespace qgl::graphics::gpu::frame
 {
-   depth_stencil::depth_stencil(const content::buffers::DEPTH_STENCIL_BUFFER* buffer,
-                                graphics::d3d_device* dev_p,
-                                const graphics::window* wnd,
-                                UINT frameIndex,
-                                const graphics::gpu::dsv_descriptor_heap* dsvHeap,
-                                const wchar_t* name,
-                                content_id id) :
+   depth_stencil::depth_stencil(
+      const content::buffers::DEPTH_STENCIL_BUFFER* buffer,
+      graphics::graphics_device* dev_p,
+      const graphics::window* wnd,
+      UINT frameIndex,
+      const graphics::gpu::dsv_descriptor_heap* dsvHeap) :
       m_buffer(*buffer),
       m_width(wnd->width()),
       m_height(wnd->height()),
       m_frameIndex(frameIndex),
       m_rects(nullptr),
-      m_numRects(0),
-      content_item(name, id,
-                   RESOURCE_TYPE_DEPTH_STENCIL,
-                   CONTENT_LOADER_ID_DEPTH_STENCIL)
+      m_numRects(0)
    {
       m_clearValue.Format = m_buffer.format();
       m_clearValue.DepthStencil.Depth = m_buffer.depth();
@@ -35,7 +31,7 @@ namespace qgl::content
 
       m_depthDesc = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 
-      construct(dev_p);
+      construct(dev_p->d3d12_device());
    }
 
    depth_stencil::~depth_stencil() noexcept
@@ -111,7 +107,7 @@ namespace qgl::content
          1,
          0,
          D3D12_TEXTURE_LAYOUT_UNKNOWN,
-         D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL | 
+         D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL |
          D3D12_RESOURCE_FLAG_DENY_SHADER_RESOURCE);
 
       auto heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);

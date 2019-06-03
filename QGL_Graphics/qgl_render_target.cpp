@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "include\GPU\Buffers\qgl_render_target.h"
+#include "include\GPU\Frame\qgl_render_target.h"
 #include "include/GPU/Descriptors/qgl_rtv_descriptor_heap.h"
 #include <winrt/Windows.Graphics.Display.h>
 using namespace winrt::Windows::Graphics;
 
-namespace qgl::graphics::gpu::buffers
+namespace qgl::graphics::gpu::frame
 {
    render_target::render_target(graphics_device* dev,
                                 size_t frameIndex,
@@ -93,13 +93,25 @@ namespace qgl::graphics::gpu::buffers
 
    void render_target::release_resources(d3d11_device* dev_p)
    {
-      d3d_wrapped_render_target* targets2D[] = 
+      d3d_wrapped_render_target* targets2D[] =
       {
-         m_wrappedRenderTarget_p.get() 
+         m_wrappedRenderTarget_p.get()
       };
 
       dev_p->ReleaseWrappedResources(targets2D, 1);
       m_acquired = false;
+   }
+
+   void render_target::dispose(d3d11_device* dev_p)
+   {
+      if (m_acquired)
+      {
+         release_resources(dev_p);
+      }
+
+      nullify();
+      m_d2dTarget_p = nullptr;
+      m_wrappedRenderTarget_p = nullptr;
    }
 
    void render_target::construct(d3d11_device* d3d11on12Device,
@@ -146,17 +158,5 @@ namespace qgl::graphics::gpu::buffers
       nameStream << L"Render Target " << m_frameIndex;
       name_d3d(get(), nameStream.str().c_str());
       #endif
-   }
-
-   void render_target::release(d3d11_device * dev_p)
-   {
-      if (m_acquired)
-      {
-         release_resources(dev_p);
-      }
-
-      nullify();
-      m_d2dTarget_p = nullptr;
-      m_wrappedRenderTarget_p = nullptr;
    }
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
 
-namespace qgl::graphics::stages
+namespace qgl::graphics::gpu::frame
 {
    class viewport;
 

@@ -7,10 +7,10 @@ namespace qgl::graphics::gpu
    class rtv_descriptor_heap;
 }
 
-namespace qgl::graphics::gpu::buffers
+namespace qgl::graphics::gpu::frame
 {
    class QGL_GRAPHICS_API render_target : 
-      public igpu_buffer<DXGI_SWAP_CHAIN_DESC1,
+      public buffers::igpu_buffer<DXGI_SWAP_CHAIN_DESC1,
       D3D12_RENDER_TARGET_VIEW_DESC, 
       d3d_render_target>
    {
@@ -74,6 +74,15 @@ namespace qgl::graphics::gpu::buffers
       
       const d2d_render_target* d2d_target() const noexcept;
 
+      private:
+      friend class frame;
+
+      void construct(d3d11_device* d3d11on12Device,
+                     d3d_swap_chain* swapChain_p,
+                     d2d_context* d2dContext_p,
+                     float dpiX,
+                     float dpiY);
+            
       /*
        Acquires resources so this render target can be used.
        */
@@ -84,15 +93,11 @@ namespace qgl::graphics::gpu::buffers
        */
       void release_resources(d3d11_device* dev_p);
 
-      private:
-
-      void construct(d3d11_device* d3d11on12Device,
-                     d3d_swap_chain* swapChain_p,
-                     d2d_context* d2dContext_p,
-                     float dpiX,
-                     float dpiY);
-
-      void release(d3d11_device* dev_p);
+      /*
+       Releases all resources so that the frame can be rebuilt. This only needs
+       to be called when the frames need to be resized.
+       */
+      void dispose(d3d11_device* dev_p);
 
       ViewDescriptionT m_viewDesc;
       ResourceDescriptionT m_swapChainDesc;

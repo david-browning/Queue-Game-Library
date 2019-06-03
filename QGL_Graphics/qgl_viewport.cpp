@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "include\GPU\Stages\qgl_viewport.h"
+#include "include/GPU/Frame/qgl_viewport.h"
 
-namespace qgl::graphics::stages
+namespace qgl::graphics::gpu::frame
 {
    viewport::viewport(const content::buffers::GRAPHICS_CONFIG_BUFFER* config, 
                       const graphics::window* wnd)

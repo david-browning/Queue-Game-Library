@@ -50,12 +50,6 @@
     <Filter Include="Header Files\GPU\Synchronization">
       <UniqueIdentifier>{b9a01ef2-0ebe-437d-81f1-1a9a8ea46889}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\GPU\Stages">
-      <UniqueIdentifier>{bcf956b8-0070-4856-98b9-de7947a507e1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GPU\Stages">
-      <UniqueIdentifier>{8df4cdbd-49db-44c1-baa4-67899abc44f5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\GPU\Root-Signature">
       <UniqueIdentifier>{4aa82489-8e36-4e78-837f-6d5531e103d4}</UniqueIdentifier>
     </Filter>
@@ -79,6 +73,12 @@
     </Filter>
     <Filter Include="Source Files\GPU\Buffers">
       <UniqueIdentifier>{15ea531a-0951-458a-8b20-fc548e1beb88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GPU\Frame">
+      <UniqueIdentifier>{bcf956b8-0070-4856-98b9-de7947a507e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GPU\Frame">
+      <UniqueIdentifier>{8df4cdbd-49db-44c1-baa4-67899abc44f5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -131,10 +131,10 @@
       <Filter>Source Files\GPU</Filter>
     </ClCompile>
     <ClCompile Include="qgl_scissor.cpp">
-      <Filter>Source Files\GPU\Stages</Filter>
+      <Filter>Source Files\GPU\Frame</Filter>
     </ClCompile>
     <ClCompile Include="qgl_viewport.cpp">
-      <Filter>Source Files\GPU\Stages</Filter>
+      <Filter>Source Files\GPU\Frame</Filter>
     </ClCompile>
     <ClCompile Include="qgl_blender.cpp">
       <Filter>Source Files\Content</Filter>
@@ -157,9 +157,6 @@
     <ClCompile Include="qgl_wtext.cpp">
       <Filter>Source Files\Content</Filter>
     </ClCompile>
-    <ClCompile Include="qgl_depth_stencil.cpp">
-      <Filter>Source Files\Content</Filter>
-    </ClCompile>
     <ClCompile Include="qgl_rasterizer.cpp">
       <Filter>Source Files\Content</Filter>
     </ClCompile>
@@ -168,9 +165,6 @@
     </ClCompile>
     <ClCompile Include="qgl_descriptor_range.cpp">
       <Filter>Source Files\GPU\Descriptors</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_render_target.cpp">
-      <Filter>Source Files\GPU\Buffers</Filter>
     </ClCompile>
     <ClCompile Include="qgl_srv_descriptor_heap.cpp">
       <Filter>Source Files\GPU\Descriptors</Filter>
@@ -192,6 +186,21 @@
     </ClCompile>
     <ClCompile Include="qgl_root_signature.cpp">
       <Filter>Source Files\GPU\Root-Signature</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_pso.cpp">
+      <Filter>Source Files\GPU</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_shader.cpp">
+      <Filter>Source Files\Content</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_render_target.cpp">
+      <Filter>Source Files\GPU\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_depth_stencil.cpp">
+      <Filter>Source Files\GPU\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_frame.cpp">
+      <Filter>Source Files\GPU\Frame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -254,12 +263,6 @@
     </ClInclude>
     <ClInclude Include="include\GPU\Synchronization\qgl_sync_object.h">
       <Filter>Header Files\GPU\Synchronization</Filter>
-    </ClInclude>
-    <ClInclude Include="include\GPU\Stages\qgl_scissor.h">
-      <Filter>Header Files\GPU\Stages</Filter>
-    </ClInclude>
-    <ClInclude Include="include\GPU\Stages\qgl_viewport.h">
-      <Filter>Header Files\GPU\Stages</Filter>
     </ClInclude>
     <ClInclude Include="include\GPU\Root-Signature\qgl_ibindable.h">
       <Filter>Header Files\GPU\Root-Signature</Filter>
@@ -324,9 +327,6 @@
     <ClInclude Include="include\Content\qgl_wtext.h">
       <Filter>Header Files\Content</Filter>
     </ClInclude>
-    <ClInclude Include="include\Content\qgl_depth_stencil.h">
-      <Filter>Header Files\Content</Filter>
-    </ClInclude>
     <ClInclude Include="include\Content\qgl_rasterizer.h">
       <Filter>Header Files\Content</Filter>
     </ClInclude>
@@ -345,11 +345,26 @@
     <ClInclude Include="include\GPU\Descriptors\qgl_srv_descriptor_heap.h">
       <Filter>Header Files\GPU\Descriptors</Filter>
     </ClInclude>
-    <ClInclude Include="include\GPU\Buffers\qgl_render_target.h">
-      <Filter>Header Files\GPU\Buffers</Filter>
-    </ClInclude>
     <ClInclude Include="include\GPU\Descriptors\qgl_uav_descriptor_heap.h">
       <Filter>Header Files\GPU\Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\qgl_shader.h">
+      <Filter>Header Files\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Frame\qgl_frame.h">
+      <Filter>Header Files\GPU\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Frame\qgl_scissor.h">
+      <Filter>Header Files\GPU\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Frame\qgl_viewport.h">
+      <Filter>Header Files\GPU\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Frame\qgl_render_target.h">
+      <Filter>Header Files\GPU\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Frame\qgl_depth_stencil.h">
+      <Filter>Header Files\GPU\Frame</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

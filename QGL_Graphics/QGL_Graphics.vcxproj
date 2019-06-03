@@ -173,7 +173,7 @@
     <ClInclude Include="include\Content\qgl_blender.h" />
     <ClInclude Include="include\Content\qgl_brush.h" />
     <ClInclude Include="include\Content\qgl_camera.h" />
-    <ClInclude Include="include\Content\qgl_depth_stencil.h" />
+    <ClInclude Include="include\Content\qgl_shader.h" />
     <ClInclude Include="include\Content\qgl_light.h" />
     <ClInclude Include="include\Content\qgl_rasterizer.h" />
     <ClInclude Include="include\Content\qgl_sampler.h" />
@@ -185,7 +185,6 @@
     <ClInclude Include="include\GPU\Buffers\qgl_const_buffer.h" />
     <ClInclude Include="include\GPU\Buffers\qgl_imappable.h" />
     <ClInclude Include="include\GPU\Buffers\qgl_index_buffer.h" />
-    <ClInclude Include="include\GPU\Buffers\qgl_render_target.h" />
     <ClInclude Include="include\GPU\Buffers\qgl_vertex_buffer.h" />
     <ClInclude Include="include\GPU\Descriptors\qgl_cbv_descriptor_heap.h" />
     <ClInclude Include="include\GPU\Descriptors\qgl_descriptor_heap.h" />
@@ -196,14 +195,17 @@
     <ClInclude Include="include\GPU\Descriptors\qgl_sampler_descriptor_heap.h" />
     <ClInclude Include="include\GPU\Descriptors\qgl_srv_descriptor_heap.h" />
     <ClInclude Include="include\GPU\Descriptors\qgl_uav_descriptor_heap.h" />
+    <ClInclude Include="include\GPU\Frame\qgl_depth_stencil.h" />
+    <ClInclude Include="include\GPU\Frame\qgl_frame.h" />
+    <ClInclude Include="include\GPU\Frame\qgl_render_target.h" />
+    <ClInclude Include="include\GPU\Frame\qgl_scissor.h" />
+    <ClInclude Include="include\GPU\Frame\qgl_viewport.h" />
     <ClInclude Include="include\GPU\Memory\qgl_igpu_memory_allocator.h" />
     <ClInclude Include="include\GPU\qgl_graphics_device.h" />
     <ClInclude Include="include\GPU\qgl_graphics_device_helpers.h" />
     <ClInclude Include="include\GPU\qgl_pso.h" />
     <ClInclude Include="include\GPU\Root-Signature\qgl_ibindable.h" />
     <ClInclude Include="include\GPU\Root-Signature\qgl_root_signature.h" />
-    <ClInclude Include="include\GPU\Stages\qgl_scissor.h" />
-    <ClInclude Include="include\GPU\Stages\qgl_viewport.h" />
     <ClInclude Include="include\GPU\Synchronization\qgl_fence.h" />
     <ClInclude Include="include\GPU\Synchronization\qgl_sync_object.h" />
     <ClInclude Include="include\Helpers\d3dx12.h" />
@@ -226,6 +228,7 @@
     <ClCompile Include="qgl_descriptor_range.cpp" />
     <ClCompile Include="qgl_descriptor_table.cpp" />
     <ClCompile Include="qgl_dsv_descriptor_heap.cpp" />
+    <ClCompile Include="qgl_frame.cpp" />
     <ClCompile Include="QGL_GraphicsRT.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
@@ -236,6 +239,7 @@
     <ClCompile Include="qgl_graphic_config_buffer.cpp" />
     <ClCompile Include="qgl_light.cpp" />
     <ClCompile Include="qgl_light_buffer.cpp" />
+    <ClCompile Include="qgl_pso.cpp" />
     <ClCompile Include="qgl_rasterizer.cpp" />
     <ClCompile Include="qgl_rasterizer_buffer.cpp" />
     <ClCompile Include="qgl_render_target.cpp" />
@@ -245,6 +249,7 @@
     <ClCompile Include="qgl_sampler_buffer.cpp" />
     <ClCompile Include="qgl_sampler_descriptor_heap.cpp" />
     <ClCompile Include="qgl_scissor.cpp" />
+    <ClCompile Include="qgl_shader.cpp" />
     <ClCompile Include="qgl_srv_descriptor_heap.cpp" />
     <ClCompile Include="qgl_texture.cpp" />
     <ClCompile Include="qgl_text_format.cpp" />

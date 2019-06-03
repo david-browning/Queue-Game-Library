@@ -9,26 +9,23 @@ namespace qgl::graphics::gpu
    class dsv_descriptor_heap;
 }
 
-namespace qgl::content
+namespace qgl::graphics::gpu::frame
 {
    class QGL_GRAPHICS_API depth_stencil :
       public graphics::gpu::buffers::igpu_buffer<
          CD3DX12_RESOURCE_DESC,
          D3D12_DEPTH_STENCIL_VIEW_DESC,
-         graphics::d3d_resource>,
-      public content_item
+         graphics::d3d_resource>
    {
       public:
       using ResourceDescriptionT = CD3DX12_RESOURCE_DESC;
       using ViewDescriptionT = D3D12_DEPTH_STENCIL_VIEW_DESC;
 
       depth_stencil(const content::buffers::DEPTH_STENCIL_BUFFER* buffer,
-                    graphics::d3d_device* dev_p,
+                    graphics::graphics_device* dev_p,
                     const graphics::window* wnd,
                     UINT frameIndex,
-                    const graphics::gpu::dsv_descriptor_heap* dsvHeap,
-                    const wchar_t* name,
-                    qgl::content::content_id id);
+                    const graphics::gpu::dsv_descriptor_heap* dsvHeap);
 
       depth_stencil(const depth_stencil&) = delete;
 
