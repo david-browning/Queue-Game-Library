@@ -209,6 +209,7 @@
     <ClInclude Include="include\GPU\Synchronization\qgl_fence.h" />
     <ClInclude Include="include\GPU\Synchronization\qgl_sync_object.h" />
     <ClInclude Include="include\Helpers\d3dx12.h" />
+    <ClInclude Include="include\Metrics\qgl_shader_meta.h" />
     <ClInclude Include="include\qgl_graphics_include.h" />
     <ClInclude Include="include\qgl_window.h" />
     <ClInclude Include="pch.h" />
@@ -250,6 +251,7 @@
     <ClCompile Include="qgl_sampler_descriptor_heap.cpp" />
     <ClCompile Include="qgl_scissor.cpp" />
     <ClCompile Include="qgl_shader.cpp" />
+    <ClCompile Include="qgl_shader_meta.cpp" />
     <ClCompile Include="qgl_srv_descriptor_heap.cpp" />
     <ClCompile Include="qgl_texture.cpp" />
     <ClCompile Include="qgl_text_format.cpp" />

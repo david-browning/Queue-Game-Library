@@ -80,6 +80,12 @@
     <Filter Include="Source Files\GPU\Frame">
       <UniqueIdentifier>{8df4cdbd-49db-44c1-baa4-67899abc44f5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Metrics">
+      <UniqueIdentifier>{4639ac77-f075-4021-993a-be0ff5ace062}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Metrics">
+      <UniqueIdentifier>{beac0474-8c91-4250-b6fa-7216e1439b36}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
@@ -201,6 +207,9 @@
     </ClCompile>
     <ClCompile Include="qgl_frame.cpp">
       <Filter>Source Files\GPU\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_shader_meta.cpp">
+      <Filter>Source Files\Metrics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -365,6 +374,9 @@
     </ClInclude>
     <ClInclude Include="include\GPU\Frame\qgl_depth_stencil.h">
       <Filter>Header Files\GPU\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Metrics\qgl_shader_meta.h">
+      <Filter>Header Files\Metrics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
