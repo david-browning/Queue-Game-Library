@@ -30,16 +30,34 @@ namespace qgl::graphics::gpu
          D3D12_PIPELINE_STATE_FLAG_NONE;
       #endif
 
+      /*
+       Constructor.
+       */
       pipeline_state(d3d_device* dev_p);
 
+      /*
+       Copy constructor. This copies all the pipeline parameters.
+       The pipeline state object is not created until calling get().
+       */
       pipeline_state(const pipeline_state&);
 
+      /*
+       Move constructor. This moves all the pipeline parameters.
+       The pipeline state object is not created until calling get().
+       */
       pipeline_state(pipeline_state&&);
 
+      /*
+       Destructor.
+       */
       virtual ~pipeline_state() noexcept;
 
       /*
-       Sets the depth stencil state, format, and render target views.
+       Sets the depth stencil state, format, and render target views. If the 
+       frames need to be recreated, the PSO does not have to be updated. 
+       This only needs to be called a second time if the render target format,
+       depth stencil format, or depth stencil description change. This is 
+       unlikely after the PSO is built.
        */
       void frames(const frame::frame* frms, 
                   size_t numFrames);
