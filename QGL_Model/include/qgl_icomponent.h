@@ -12,10 +12,12 @@ namespace qgl
     states that should not be public.
     Overload icomponent::update to implement this.
     UpdateContextT: Update Context Type. This is context used to update the
-    object. The context could be the elapsed time since the last render, the
-    current input state, or a graphics context to render the object.
+     object. The context could be the elapsed time since the last render, the
+     current input state, or a graphics context to render the object.
     UpdateT: Type of object to update. Usually, this is the object being
-    updated like a sprite or model.
+     updated like a sprite or model.
+    Components use a GUID so engine components can locate them at run time.
+    Content references components using their GUID.
     */
    template<typename UpdateContextT, typename UpdateT>
    class icomponent
@@ -29,7 +31,11 @@ namespace qgl
       /*
        Default constructor.
        */
-      icomponent() = default;
+      icomponent(const GUID* g) :
+         m_guid(*g)
+      {
+
+      }
 
       /*
        Default copy constructor.
@@ -50,5 +56,13 @@ namespace qgl
        Updates obj using context.
        */
       virtual void update(const uc_t& context, u_t& obj) = 0;
+
+      const GUID* guid() const noexcept
+      {
+         return &m_guid;
+      }
+
+      private:
+      GUID m_guid;
    };
 }
