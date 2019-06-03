@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "include/GPU/Frame/qgl_frame.h"
-#include "include/GPU/Frame/qgl_scissor.h"
-#include "include/GPU/Frame/qgl_viewport.h"
-#include "include/GPU/Frame/qgl_render_target.h"
-#include "include/GPU/Frame/qgl_depth_stencil.h"
+#include "include/GPU/Render/qgl_frame.h"
+#include "include/GPU/Render/qgl_scissor.h"
+#include "include/GPU/Render/qgl_viewport.h"
+#include "include/GPU/Render/qgl_render_target.h"
+#include "include/GPU/Render/qgl_depth_stencil.h"
 
-namespace qgl::graphics::gpu::frame
+namespace qgl::graphics::gpu::render
 {
    struct frame::impl
    {

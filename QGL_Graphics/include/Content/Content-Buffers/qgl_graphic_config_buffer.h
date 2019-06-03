@@ -52,7 +52,7 @@ namespace qgl::content::buffers
        */
       bool full_screen() const noexcept;
       /*
-       Returns true if the engine should allow an uncapped frame rate.
+       Returns true if the engine should allow an uncapped render rate.
        */
       bool tearing() const noexcept;
 

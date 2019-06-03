@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "include/GPU/qgl_pso.h"
 #include "include\GPU\qgl_pso.h"
-#include "include/GPU/Frame/qgl_frame.h"
+#include "include/GPU/Render/qgl_frame.h"
 
 namespace qgl::graphics::gpu
 {
@@ -63,7 +63,7 @@ namespace qgl::graphics::gpu
          return m_pipelineState.get();
       }
 
-      void frames(const frame::frame* frms,
+      void frames(const render::frame* frms,
                   size_t numFrames)
       {
          static constexpr auto maxRTVs =
@@ -129,7 +129,7 @@ namespace qgl::graphics::gpu
       m_impl_p = nullptr;
    }
 
-   void pipeline_state::frames(const frame::frame* frms, 
+   void pipeline_state::frames(const render::frame* frms, 
                                size_t numFrames)
    {
       m_impl_p->frames(frms, numFrames);

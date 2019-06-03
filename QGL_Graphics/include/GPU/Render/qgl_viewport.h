@@ -3,7 +3,7 @@
 #include "include/qgl_window.h"
 #include "include/Content/Content-Buffers/qgl_graphic_config_buffer.h"
 
-namespace qgl::graphics::gpu::frame
+namespace qgl::graphics::gpu::render
 {
    /*
     A viewport is the area of the render target surface to draw.
@@ -12,7 +12,7 @@ namespace qgl::graphics::gpu::frame
    {
       public:
       /*
-       Construct a viewport that is the same width and height as the frame.
+       Construct a viewport that is the same width and height as the render.
        The viewport is then scaled to fit in the window.
        */
       viewport(const content::buffers::GRAPHICS_CONFIG_BUFFER* config,

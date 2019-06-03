@@ -59,7 +59,7 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
 
 		}
 
-		// Place the frame in the current Window
+		// Place the render in the current Window
 		Window::Current->Content = rootFrame;
 	}
 		

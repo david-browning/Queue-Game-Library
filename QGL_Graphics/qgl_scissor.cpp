@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "include/GPU/Frame/qgl_scissor.h"
-#include "include/GPU/Frame/qgl_viewport.h"
+#include "include/GPU/Render/qgl_scissor.h"
+#include "include/GPU/Render/qgl_viewport.h"
 
-namespace qgl::graphics::gpu::frame
+namespace qgl::graphics::gpu::render
 {
    scissor::scissor(const viewport* vp)
    {

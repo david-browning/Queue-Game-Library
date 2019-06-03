@@ -405,6 +405,21 @@ namespace qgl::graphics
       return m_impl_p->m_usingAdapter.get();
    }
 
+   const content::buffers::GRAPHICS_CONFIG_BUFFER* graphics_device::config() const noexcept
+   {
+      return &m_impl_p->m_config;
+   }
+
+   const d3d_device* graphics_device::d3d12_device() const noexcept
+   {
+      return m_impl_p->m_d3d12Device_p.get();
+   }
+
+   d3d_device* graphics_device::d3d12_device() noexcept
+   {
+      return m_impl_p->m_d3d12Device_p.get();
+   }
+
    const d3d11_device* graphics_device::d3d11on12_device() const noexcept
    {
       return m_impl_p->m_d3d11On12Device_p.get();

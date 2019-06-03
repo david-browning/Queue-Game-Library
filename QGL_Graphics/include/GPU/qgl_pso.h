@@ -5,7 +5,7 @@
 #include "include/Content/qgl_rasterizer.h"
 #include "include/Content/qgl_shader.h"
 
-namespace qgl::graphics::gpu::frame
+namespace qgl::graphics::gpu::render
 {
    class frame;
 }
@@ -59,7 +59,7 @@ namespace qgl::graphics::gpu
        depth stencil format, or depth stencil description change. This is 
        unlikely after the PSO is built.
        */
-      void frames(const frame::frame* frms, 
+      void frames(const render::frame* frms, 
                   size_t numFrames);
 
       /*

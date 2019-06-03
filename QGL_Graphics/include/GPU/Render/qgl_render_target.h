@@ -7,7 +7,7 @@ namespace qgl::graphics::gpu
    class rtv_descriptor_heap;
 }
 
-namespace qgl::graphics::gpu::frame
+namespace qgl::graphics::gpu::render
 {
    class QGL_GRAPHICS_API render_target : 
       public buffers::igpu_buffer<DXGI_SWAP_CHAIN_DESC1,
@@ -19,11 +19,11 @@ namespace qgl::graphics::gpu::frame
       using ViewDescriptionT = D3D12_RENDER_TARGET_VIEW_DESC;
 
       /*
-       frameIndex is the frame from swap chain that this attaches to.
-       Ex: A swap chain may have 3 frames, where the frame indices are 
+       frameIndex is the render from swap chain that this attaches to.
+       Ex: A swap chain may have 3 frames, where the render indices are 
        from 0-2.
        TODO: Is there any reason why multiple things cannot bind to the same 
-       frame?
+       render?
        */
       render_target(graphics_device* dev,
                     size_t frameIndex,
@@ -94,7 +94,7 @@ namespace qgl::graphics::gpu::frame
       void release_resources(d3d11_device* dev_p);
 
       /*
-       Releases all resources so that the frame can be rebuilt. This only needs
+       Releases all resources so that the render can be rebuilt. This only needs
        to be called when the frames need to be resized.
        */
       void dispose(d3d11_device* dev_p);

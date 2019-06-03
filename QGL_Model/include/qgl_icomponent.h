@@ -12,7 +12,7 @@ namespace qgl
     states that should not be public.
     Overload icomponent::update to implement this.
     UpdateContextT: Update Context Type. This is context used to update the
-    object. The context could be the elapsed time since the last frame, the
+    object. The context could be the elapsed time since the last render, the
     current input state, or a graphics context to render the object.
     UpdateT: Type of object to update. Usually, this is the object being
     updated like a sprite or model.

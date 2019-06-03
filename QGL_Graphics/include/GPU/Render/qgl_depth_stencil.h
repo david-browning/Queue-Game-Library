@@ -9,7 +9,7 @@ namespace qgl::graphics::gpu
    class dsv_descriptor_heap;
 }
 
-namespace qgl::graphics::gpu::frame
+namespace qgl::graphics::gpu::render
 {
    class QGL_GRAPHICS_API depth_stencil :
       public graphics::gpu::buffers::igpu_buffer<
@@ -24,7 +24,7 @@ namespace qgl::graphics::gpu::frame
       depth_stencil(const content::buffers::DEPTH_STENCIL_BUFFER* buffer,
                     graphics::graphics_device* dev_p,
                     const graphics::window* wnd,
-                    UINT frameIndex,
+                    size_t frameIndex,
                     const graphics::gpu::dsv_descriptor_heap* dsvHeap);
 
       depth_stencil(const depth_stencil&) = delete;

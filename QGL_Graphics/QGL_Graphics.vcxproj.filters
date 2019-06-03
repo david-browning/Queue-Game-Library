@@ -74,17 +74,20 @@
     <Filter Include="Source Files\GPU\Buffers">
       <UniqueIdentifier>{15ea531a-0951-458a-8b20-fc548e1beb88}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\GPU\Frame">
-      <UniqueIdentifier>{bcf956b8-0070-4856-98b9-de7947a507e1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GPU\Frame">
-      <UniqueIdentifier>{8df4cdbd-49db-44c1-baa4-67899abc44f5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Metrics">
       <UniqueIdentifier>{4639ac77-f075-4021-993a-be0ff5ace062}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Metrics">
       <UniqueIdentifier>{beac0474-8c91-4250-b6fa-7216e1439b36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GPU\Command-Lists">
+      <UniqueIdentifier>{f8a19c8c-7acc-415e-b1d2-0d7b6e8d4ac1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GPU\Render">
+      <UniqueIdentifier>{8df4cdbd-49db-44c1-baa4-67899abc44f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GPU\Render">
+      <UniqueIdentifier>{bcf956b8-0070-4856-98b9-de7947a507e1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -137,10 +140,10 @@
       <Filter>Source Files\GPU</Filter>
     </ClCompile>
     <ClCompile Include="qgl_scissor.cpp">
-      <Filter>Source Files\GPU\Frame</Filter>
+      <Filter>Source Files\GPU\Render</Filter>
     </ClCompile>
     <ClCompile Include="qgl_viewport.cpp">
-      <Filter>Source Files\GPU\Frame</Filter>
+      <Filter>Source Files\GPU\Render</Filter>
     </ClCompile>
     <ClCompile Include="qgl_blender.cpp">
       <Filter>Source Files\Content</Filter>
@@ -200,13 +203,13 @@
       <Filter>Source Files\Content</Filter>
     </ClCompile>
     <ClCompile Include="qgl_render_target.cpp">
-      <Filter>Source Files\GPU\Frame</Filter>
+      <Filter>Source Files\GPU\Render</Filter>
     </ClCompile>
     <ClCompile Include="qgl_depth_stencil.cpp">
-      <Filter>Source Files\GPU\Frame</Filter>
+      <Filter>Source Files\GPU\Render</Filter>
     </ClCompile>
     <ClCompile Include="qgl_frame.cpp">
-      <Filter>Source Files\GPU\Frame</Filter>
+      <Filter>Source Files\GPU\Render</Filter>
     </ClCompile>
     <ClCompile Include="qgl_shader_meta.cpp">
       <Filter>Source Files\Metrics</Filter>
@@ -360,23 +363,26 @@
     <ClInclude Include="include\Content\qgl_shader.h">
       <Filter>Header Files\Content</Filter>
     </ClInclude>
-    <ClInclude Include="include\GPU\Frame\qgl_frame.h">
-      <Filter>Header Files\GPU\Frame</Filter>
-    </ClInclude>
-    <ClInclude Include="include\GPU\Frame\qgl_scissor.h">
-      <Filter>Header Files\GPU\Frame</Filter>
-    </ClInclude>
-    <ClInclude Include="include\GPU\Frame\qgl_viewport.h">
-      <Filter>Header Files\GPU\Frame</Filter>
-    </ClInclude>
-    <ClInclude Include="include\GPU\Frame\qgl_render_target.h">
-      <Filter>Header Files\GPU\Frame</Filter>
-    </ClInclude>
-    <ClInclude Include="include\GPU\Frame\qgl_depth_stencil.h">
-      <Filter>Header Files\GPU\Frame</Filter>
-    </ClInclude>
     <ClInclude Include="include\Metrics\qgl_shader_meta.h">
       <Filter>Header Files\Metrics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Command-Lists\qgl_icmd_list.h">
+      <Filter>Header Files\GPU\Command-Lists</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Render\qgl_depth_stencil.h">
+      <Filter>Header Files\GPU\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Render\qgl_frame.h">
+      <Filter>Header Files\GPU\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Render\qgl_render_target.h">
+      <Filter>Header Files\GPU\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Render\qgl_scissor.h">
+      <Filter>Header Files\GPU\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Render\qgl_viewport.h">
+      <Filter>Header Files\GPU\Render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

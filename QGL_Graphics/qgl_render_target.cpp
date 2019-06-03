@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "include\GPU\Frame\qgl_render_target.h"
+#include "include/GPU/Render/qgl_render_target.h"
 #include "include/GPU/Descriptors/qgl_rtv_descriptor_heap.h"
 #include <winrt/Windows.Graphics.Display.h>
 using namespace winrt::Windows::Graphics;
 
-namespace qgl::graphics::gpu::frame
+namespace qgl::graphics::gpu::render
 {
    render_target::render_target(graphics_device* dev,
                                 size_t frameIndex,

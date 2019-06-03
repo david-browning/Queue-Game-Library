@@ -29,6 +29,6 @@ namespace qgl::graphics::metrics
 
       private:
       struct impl;
-      impl* m_impl_p;
+      impl* m_impl_p = nullptr;
    };
 }

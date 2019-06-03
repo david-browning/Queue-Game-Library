@@ -9,4 +9,9 @@ namespace qgl::graphics::metrics
       std::vector<uint32_t> m_tBindings;
       std::vector<uint32_t> m_sBindings;
    };
+
+   shader_meta::~shader_meta() noexcept
+   {
+      delete m_impl_p;
+   }
 }

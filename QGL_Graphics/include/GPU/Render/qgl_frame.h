@@ -6,28 +6,31 @@
 #include "include/GPU/Descriptors/qgl_dsv_descriptor_heap.h"
 #include "include/Content/Content-Buffers/qgl_depth_stencil_buffer.h"
 
-namespace qgl::graphics::gpu::frame
+namespace qgl::graphics::gpu::render
 {
+   class viewport;
+   class scissor;
+   class render_target;
+
    /*
-    After creating a frame bind its frame_buffer() and frame_stencil() to 
+    After creating a render bind its frame_buffer() and frame_stencil() to 
     the RTV and DSV descriptor heaps.
     */
    class QGL_GRAPHICS_API frame
    {
       public:
-
       /*
-       Creates a frame.
+       Creates a render.
        */
       frame(graphics_device* dev,
             size_t frameIndex,
             const content::buffers::DEPTH_STENCIL_BUFFER* depthStencil,
-            const rtv_descriptor_heap* rtvHeap,
-            const dsv_descriptor_heap* dsvHeap,
-            const window* wnd);
+            const gpu::rtv_descriptor_heap* rtvHeap,
+            const gpu::dsv_descriptor_heap* dsvHeap,
+            const graphics::window* wnd);
 
       /*
-       Each frame must be bound to one RTV and DSV heap slot. Do not allow
+       Each render must be bound to one RTV and DSV heap slot. Do not allow
        copying frames.
        */
       frame(const frame&) = delete;
@@ -67,19 +70,19 @@ namespace qgl::graphics::gpu::frame
 
       /*
        Acquires the necessary resources so rendering operations can be queued
-       to this frame. Engines must call this before recording render commands.
+       to this render. Engines must call this before recording render commands.
        */
       void acquire(graphics_device* dev_p);
 
       /*
-       Releases the frame's resources so it can be presented.
+       Releases the render's resources so it can be presented.
        Engines must call release before flushing the D3D11On12 context and
-       presenting the frame on the swap chain.
+       presenting the render on the swap chain.
        */
       void release(graphics_device* dev_p);
 
       /*
-       Disposes of frame resources so the frame can be rebuilt.
+       Disposes of render resources so the render can be rebuilt.
        */
       void dispose(graphics_device* dev_p);
 
