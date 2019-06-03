@@ -5,7 +5,7 @@
 #include "include/Content/qgl_rasterizer.h"
 #include "include/Content/qgl_shader.h"
 
-namespace qgl::graphics::gpu::buffers
+namespace qgl::graphics::gpu::frame
 {
    class frame;
 }
@@ -37,36 +37,12 @@ namespace qgl::graphics::gpu
       pipeline_state(pipeline_state&&);
 
       virtual ~pipeline_state() noexcept;
-            
+
       /*
        Sets the depth stencil state, format, and render target views.
        */
-      template<class InputIterator>
-      void frames(InputIterator first, InputIterator last)
-      {
-         static constexpr auto maxRTVs = 
-            sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC::RTVFormats) /
-            sizeof(DXGI_FORMAT);
-
-         const auto numFrames = last - first;
-         if (numFrames > maxRTVs)
-         {
-            throw std::invalid_argument("Maximum of 8 RTVs allowed.");
-         }
-
-         m_psoDesc.NumRenderTargets = static_cast<UINT>(numFrames);
-         size_t i = 0;
-         for (auto it = first; it != last; ++it)
-         {
-            auto& frame = *it;
-            auto& stncl = frame->frame_stencil();
-            auto& renderTarget = frame->frame_buffer();
-            m_psoDesc.RTVFormats[i] = renderTarget.format();
-            m_psoDesc.DSVFormat = stncl.format();
-            m_psoDesc.DepthStencilState = stncl.depth_state();
-            i++;
-         }
-      }
+      void frames(const frame::frame* frms, 
+                  size_t numFrames);
 
       /*
        Returns a pointer to the D3D pipeline state. Throws an exception is the

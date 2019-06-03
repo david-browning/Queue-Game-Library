@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "include/GPU/qgl_pso.h"
+#include "include\GPU\qgl_pso.h"
+#include "include/GPU/Frame/qgl_frame.h"
 
 namespace qgl::graphics::gpu
 {
@@ -61,6 +63,31 @@ namespace qgl::graphics::gpu
          return m_pipelineState.get();
       }
 
+      void frames(const frame::frame* frms,
+                  size_t numFrames)
+      {
+         static constexpr auto maxRTVs =
+            sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC::RTVFormats) /
+            sizeof(DXGI_FORMAT);
+
+         if (numFrames > maxRTVs)
+         {
+            throw std::invalid_argument("Maximum of 8 RTVs allowed.");
+         }
+
+         PSODesc.NumRenderTargets = static_cast<UINT>(numFrames);
+         for (size_t i = 0; i < numFrames; i++)
+         {
+            auto stncl = frms[i].frame_stencil();
+            auto renderTarget = frms[i].frame_buffer();
+
+            PSODesc.RTVFormats[i] = renderTarget->format();
+            PSODesc.DSVFormat = stncl->format();
+            PSODesc.DepthStencilState = *stncl->depth_desc();
+            i++;
+         }
+      }
+
       mutable winrt::com_ptr<ID3D12PipelineState> m_pipelineState;
       mutable bool m_isFinalized;
 
@@ -100,6 +127,12 @@ namespace qgl::graphics::gpu
    {
       delete m_impl_p;
       m_impl_p = nullptr;
+   }
+
+   void pipeline_state::frames(const frame::frame* frms, 
+                               size_t numFrames)
+   {
+      m_impl_p->frames(frms, numFrames);
    }
 
    const ID3D12PipelineState* pipeline_state::get() const
