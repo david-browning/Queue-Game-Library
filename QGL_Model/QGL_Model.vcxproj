@@ -142,6 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\annotations.h" />
+    <ClInclude Include="include\Bootstrapping\qgl_bootstrapper.h" />
     <ClInclude Include="include\Memory\qgl_mem.h" />
     <ClInclude Include="include\Memory\qgl_mem_tmpl.h" />
     <ClInclude Include="include\Observer-Observable\qgl_callback_observer.h" />
@@ -164,6 +165,7 @@
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="qgl_bootstrapper.cpp" />
     <ClCompile Include="QGL_ModelRT.cpp" />
     <ClCompile Include="qgl_rational.cpp" />
   </ItemGroup>

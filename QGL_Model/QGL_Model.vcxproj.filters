@@ -29,6 +29,12 @@
     <Filter Include="Header Files\Memory">
       <UniqueIdentifier>{9675b492-4eee-4393-b547-f01aa5aca065}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Bootstrapping">
+      <UniqueIdentifier>{460b445a-4add-4b1c-ab3a-9526a8ff61f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Bootstrapping">
+      <UniqueIdentifier>{fa206075-0373-47c1-978b-b4018cb7fbe8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLModel.h">
@@ -82,6 +88,9 @@
     <ClInclude Include="include\qgl_rational.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Bootstrapping\qgl_bootstrapper.h">
+      <Filter>Header Files\Bootstrapping</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="QGL_Model.def">
@@ -101,6 +110,9 @@
     </ClCompile>
     <ClCompile Include="qgl_rational.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_bootstrapper.cpp">
+      <Filter>Source Files\Bootstrapping</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
