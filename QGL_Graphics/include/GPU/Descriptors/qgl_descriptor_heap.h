@@ -50,7 +50,7 @@ namespace qgl::graphics::gpu
        Returns a const pointer to a D3D12 Descriptor heap that can be bound to
        a command list.
        */
-      const ID3D12DescriptorHeap* get() const
+      const ID3D12DescriptorHeap* get() const noexcept
       {
          return m_heap_p.get();
       }
@@ -59,7 +59,7 @@ namespace qgl::graphics::gpu
        Returns a pointer to a D3D12 Descriptor heap that can be bound to a
        command list.
        */
-      ID3D12DescriptorHeap* get()
+      ID3D12DescriptorHeap* get() noexcept
       {
          return m_heap_p.get();
       }

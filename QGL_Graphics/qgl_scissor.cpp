@@ -14,4 +14,14 @@ namespace qgl::graphics::gpu::render
       m_scissor.bottom = static_cast<LONG>(d3dViewport->TopLeftY + 
                                            d3dViewport->Height);
    }
+   
+   const D3D12_RECT* scissor::get() const noexcept
+   {
+      return &m_scissor;
+   }
+
+   D3D12_RECT* scissor::get() noexcept
+   {
+      return &m_scissor;
+   }
 }

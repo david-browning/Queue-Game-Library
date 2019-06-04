@@ -24,7 +24,7 @@ namespace qgl::graphics::gpu::render
       depth_stencil(const content::buffers::DEPTH_STENCIL_BUFFER* buffer,
                     graphics::graphics_device* dev_p,
                     const graphics::window* wnd,
-                    size_t frameIndex,
+                    UINT frameIndex,
                     const graphics::gpu::dsv_descriptor_heap* dsvHeap);
 
       depth_stencil(const depth_stencil&) = delete;

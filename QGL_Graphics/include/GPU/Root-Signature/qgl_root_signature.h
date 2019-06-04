@@ -7,6 +7,7 @@ namespace qgl::graphics::gpu
 {
    class QGL_GRAPHICS_API root_signature
    {
+      public:
       /*
        gdev: Pointer to the graphics device.
        descriptors: Pointer to an array of descriptors.

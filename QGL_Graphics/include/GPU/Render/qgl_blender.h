@@ -2,26 +2,23 @@
 #include "include/qgl_graphics_include.h"
 #include "include/Content/Content-Buffers/qgl_blender_buffer.h"
 
-namespace qgl::content
+namespace qgl::graphics::gpu::render
 {
    /*
     The blender provides the parameters describing how to blend pixels.
     */
-   class QGL_GRAPHICS_API blender : qgl::content::content_item
+   class QGL_GRAPHICS_API blender
    {
       public:
       /*
        Constructs a blender with default parameters.
        */
-      blender(const wchar_t* name,
-              qgl::content::content_id id);
+      blender();
 
       /*
        Constructs a blend using the given buffer.
        */
-      blender(const content::buffers::BLENDER_BUFFER* buff,
-              const wchar_t* name,
-              qgl::content::content_id id);
+      blender(const content::buffers::BLENDER_BUFFER* buff);
 
       /*
        Copy constructor.
@@ -50,6 +47,8 @@ namespace qgl::content
        */
       UINT mask() const noexcept;
 
+      const float* blend_factor() const noexcept;
+
       /*
        Swaps the contents of l and r.
        */
@@ -58,6 +57,7 @@ namespace qgl::content
          using std::swap;
          swap(l.m_desc, r.m_desc);
          swap(l.m_mask, r.m_mask);
+         swap(l.m_blendFactor, r.m_blendFactor);
       }
 
       /*
@@ -72,5 +72,6 @@ namespace qgl::content
       private:
       D3D12_BLEND_DESC m_desc;
       UINT m_mask;
+      float m_blendFactor[4];
    };
 }

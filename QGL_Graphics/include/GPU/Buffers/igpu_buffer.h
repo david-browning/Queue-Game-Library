@@ -2,6 +2,11 @@
 #include "include/qgl_graphics_include.h"
 #include "include/GPU/qgl_graphics_device.h"
 
+namespace qgl::graphics::gpu
+{
+   class graphics_command_list;
+}
+
 namespace qgl::graphics::gpu::buffers
 {
    /*
@@ -70,6 +75,7 @@ namespace qgl::graphics::gpu::buffers
       }
 
       protected:
+      friend class graphics_command_list;
       ResourceT** put() noexcept
       {
          return m_resource.put();

@@ -10,7 +10,7 @@ namespace qgl::graphics::gpu::render
    struct frame::impl
    {
       impl(graphics_device* dev,
-           size_t frameIndex,
+           UINT frameIndex,
            const content::buffers::DEPTH_STENCIL_BUFFER* depthStencil,
            const rtv_descriptor_heap* rtvHeap,
            const dsv_descriptor_heap* dsvHeap,
@@ -41,7 +41,7 @@ namespace qgl::graphics::gpu::render
 
 
    frame::frame(graphics_device* dev,
-                size_t frameIndex,
+                UINT frameIndex,
                 const content::buffers::DEPTH_STENCIL_BUFFER* depthStencil,
                 const rtv_descriptor_heap* rtvHeap,
                 const dsv_descriptor_heap* dsvHeap,
@@ -72,7 +72,17 @@ namespace qgl::graphics::gpu::render
       return &m_impl_p->RenderTarget;
    }
 
+   render_target* frame::frame_buffer() noexcept
+   {
+      return &m_impl_p->RenderTarget;
+   }
+
    const depth_stencil* frame::frame_stencil() const noexcept
+   {
+      return &m_impl_p->DepthStencil;
+   }
+
+   depth_stencil* frame::frame_stencil() noexcept
    {
       return &m_impl_p->DepthStencil;
    }
@@ -82,7 +92,17 @@ namespace qgl::graphics::gpu::render
       return &m_impl_p->Viewport;
    }
 
+   viewport* frame::frame_viewport() noexcept
+   {
+      return &m_impl_p->Viewport;
+   }
+
    const scissor* frame::frame_scissor() const noexcept
+   {
+      return &m_impl_p->Scissor;
+   }
+
+   scissor* frame::frame_scissor() noexcept
    {
       return &m_impl_p->Scissor;
    }

@@ -89,6 +89,9 @@
     <Filter Include="Header Files\GPU\Render">
       <UniqueIdentifier>{bcf956b8-0070-4856-98b9-de7947a507e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GPU\Command-Lists">
+      <UniqueIdentifier>{d6433397-7f88-4628-ab9c-0eb1b5cadc4d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
@@ -144,9 +147,6 @@
     </ClCompile>
     <ClCompile Include="qgl_viewport.cpp">
       <Filter>Source Files\GPU\Render</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_blender.cpp">
-      <Filter>Source Files\Content</Filter>
     </ClCompile>
     <ClCompile Include="qgl_brush.cpp">
       <Filter>Source Files\Content</Filter>
@@ -213,6 +213,15 @@
     </ClCompile>
     <ClCompile Include="qgl_shader_meta.cpp">
       <Filter>Source Files\Metrics</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_blender.cpp">
+      <Filter>Source Files\GPU\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_graphics_cmd_list.cpp">
+      <Filter>Source Files\GPU\Command-Lists</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_icmd_list.cpp">
+      <Filter>Source Files\GPU\Command-Lists</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -315,9 +324,6 @@
     <ClInclude Include="include\GPU\Buffers\qgl_imappable.h">
       <Filter>Header Files\GPU\Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="include\Content\qgl_blender.h">
-      <Filter>Header Files\Content</Filter>
-    </ClInclude>
     <ClInclude Include="include\Content\qgl_brush.h">
       <Filter>Header Files\Content</Filter>
     </ClInclude>
@@ -382,6 +388,18 @@
       <Filter>Header Files\GPU\Render</Filter>
     </ClInclude>
     <ClInclude Include="include\GPU\Render\qgl_viewport.h">
+      <Filter>Header Files\GPU\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Command-Lists\qgl_cmd_bundle.h">
+      <Filter>Header Files\GPU\Command-Lists</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Command-Lists\qgl_cpy_cmd_list.h">
+      <Filter>Header Files\GPU\Command-Lists</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Command-Lists\qgl_graphics_cmd_list.h">
+      <Filter>Header Files\GPU\Command-Lists</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Render\qgl_blender.h">
       <Filter>Header Files\GPU\Render</Filter>
     </ClInclude>
   </ItemGroup>

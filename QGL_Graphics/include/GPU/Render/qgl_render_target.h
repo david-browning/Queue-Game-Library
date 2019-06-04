@@ -5,6 +5,7 @@
 namespace qgl::graphics::gpu
 {
    class rtv_descriptor_heap;
+   class graphics_command_list;
 }
 
 namespace qgl::graphics::gpu::render
@@ -76,6 +77,7 @@ namespace qgl::graphics::gpu::render
 
       private:
       friend class frame;
+      friend class graphics_command_list;
 
       void construct(d3d11_device* d3d11on12Device,
                      d3d_swap_chain* swapChain_p,

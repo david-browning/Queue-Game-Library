@@ -23,7 +23,7 @@ namespace qgl::graphics::gpu::render
        Creates a render.
        */
       frame(graphics_device* dev,
-            size_t frameIndex,
+            UINT frameIndex,
             const content::buffers::DEPTH_STENCIL_BUFFER* depthStencil,
             const gpu::rtv_descriptor_heap* rtvHeap,
             const gpu::dsv_descriptor_heap* dsvHeap,
@@ -50,10 +50,14 @@ namespace qgl::graphics::gpu::render
        */
       const render_target* frame_buffer() const noexcept;
 
+      render_target* frame_buffer() noexcept;
+
       /*
        Returns a pointer to the stencil.
        */
       const depth_stencil* frame_stencil() const noexcept;
+
+      depth_stencil* frame_stencil() noexcept;
 
       /*
        Returns a pointer to the viewport.
@@ -62,11 +66,15 @@ namespace qgl::graphics::gpu::render
        */
       const viewport* frame_viewport() const noexcept;
 
+      viewport* frame_viewport() noexcept;
+
       /*
        Returns a pointer to the scissor.
        By default, the scissor uses the same area as the viewport.
        */
       const scissor* frame_scissor() const noexcept;
+
+      scissor* frame_scissor() noexcept;
 
       /*
        Acquires the necessary resources so rendering operations can be queued
