@@ -223,6 +223,9 @@
     <ClCompile Include="qgl_icmd_list.cpp">
       <Filter>Source Files\GPU\Command-Lists</Filter>
     </ClCompile>
+    <ClCompile Include="qgl_cpy_cmd_list.cpp">
+      <Filter>Source Files\GPU\Command-Lists</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLGraphics.h">

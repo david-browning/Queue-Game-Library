@@ -228,6 +228,7 @@
     <ClCompile Include="qgl_brush_buffer.cpp" />
     <ClCompile Include="qgl_camera_buffer.cpp" />
     <ClCompile Include="qgl_cbv_descriptor_heap.cpp" />
+    <ClCompile Include="qgl_cpy_cmd_list.cpp" />
     <ClCompile Include="qgl_depth_stencil.cpp" />
     <ClCompile Include="qgl_depth_stencil_buffer.cpp" />
     <ClCompile Include="qgl_descriptor_range.cpp" />
