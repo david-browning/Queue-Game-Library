@@ -32,13 +32,13 @@ namespace qgl::graphics::gpu
       m_impl_p = nullptr;
    }
 
-   void copy_command_list::root_sig(root_signature* sig)
+   void copy_command_list::root_sig(root_signature*)
    {
       throw std::runtime_error("Copy command lists do not support root "
                                "signatures.");
    }
 
-   void copy_command_list::table(descriptor_table * tbl)
+   void copy_command_list::table(descriptor_table*)
    {
       throw std::runtime_error("Copy command lists do not support descriptor "
                                "tables.");

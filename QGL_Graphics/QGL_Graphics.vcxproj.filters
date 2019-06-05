@@ -92,6 +92,15 @@
     <Filter Include="Source Files\GPU\Command-Lists">
       <UniqueIdentifier>{d6433397-7f88-4628-ab9c-0eb1b5cadc4d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Scene">
+      <UniqueIdentifier>{9a751344-7f60-4a29-9aa7-1e0198fed353}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{e04d19c3-efeb-432b-a2b8-a1bed719b3a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{89ce81ae-5823-4850-9055-4ce14994248b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
@@ -226,6 +235,9 @@
     <ClCompile Include="qgl_cpy_cmd_list.cpp">
       <Filter>Source Files\GPU\Command-Lists</Filter>
     </ClCompile>
+    <ClCompile Include="qgl_text_render_component.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLGraphics.h">
@@ -293,9 +305,6 @@
     </ClInclude>
     <ClInclude Include="include\GPU\Root-Signature\qgl_root_signature.h">
       <Filter>Header Files\GPU\Root-Signature</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Engines\qgl_icmd_list.h">
-      <Filter>Header Files\Engines</Filter>
     </ClInclude>
     <ClInclude Include="include\GPU\qgl_pso.h">
       <Filter>Header Files\GPU</Filter>
@@ -404,6 +413,21 @@
     </ClInclude>
     <ClInclude Include="include\GPU\Render\qgl_blender.h">
       <Filter>Header Files\GPU\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Scene\qgl_scene.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\qgl_model.h">
+      <Filter>Header Files\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Scene\qgl_stage.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Components\qgl_model_render_component.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Components\qgl_text_render_component.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

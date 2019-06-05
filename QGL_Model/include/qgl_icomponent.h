@@ -55,7 +55,7 @@ namespace qgl
       /*
        Updates obj using context.
        */
-      virtual void update(const uc_t* context, u_t* obj) = 0;
+      virtual void update(uc_t* context, u_t* obj) = 0;
 
       const GUID* guid() const noexcept
       {

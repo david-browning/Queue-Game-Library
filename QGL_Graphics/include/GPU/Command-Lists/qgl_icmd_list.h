@@ -103,9 +103,10 @@ namespace qgl::graphics::gpu
        Sets the vertex buffers. Do not allow the vertex buffers to go out of
        scope.
       */
-      template<typename VertexT>
+      template<typename VertexT, D3D_PRIMITIVE_TOPOLOGY TopologyT>
       void vertex_buffers(
-         std::initializer_list<buffers::vertex_buffer<VertexT>> buffers)
+         std::initializer_list<buffers::vertex_buffer<VertexT, TopologyT>> 
+         buffers)
       {
          std::vector<D3D12_VERTEX_BUFFER_VIEW> views;
          for (auto& b : buffers)
@@ -120,7 +121,7 @@ namespace qgl::graphics::gpu
        Sets the index buffer.
        */
       template<typename IndexT>
-      void index(buffers::index_buffer<IndexT>* buff)
+      void index(const buffers::index_buffer<IndexT>* buff)
       {
          index(buff->view());
       }
