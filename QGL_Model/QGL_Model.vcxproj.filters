@@ -35,6 +35,12 @@
     <Filter Include="Source Files\Bootstrapping">
       <UniqueIdentifier>{fa206075-0373-47c1-978b-b4018cb7fbe8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Physical">
+      <UniqueIdentifier>{a376667f-0301-4e85-92a5-686a9c19de05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Physical">
+      <UniqueIdentifier>{eb1b772e-ed67-49b7-a90b-41f7ee710520}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLModel.h">
@@ -91,12 +97,16 @@
     <ClInclude Include="include\Bootstrapping\qgl_bootstrapper.h">
       <Filter>Header Files\Bootstrapping</Filter>
     </ClInclude>
+    <ClInclude Include="include\Physical\qgl_body.h">
+      <Filter>Header Files\Physical</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="QGL_Model.def">
       <Filter>win_rt</Filter>
     </None>
     <None Include="packages.config" />
+    <None Include="include\qgl_icomponent.h.vsspell" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Generated Files\module.g.cpp">
@@ -113,6 +123,9 @@
     </ClCompile>
     <ClCompile Include="qgl_bootstrapper.cpp">
       <Filter>Source Files\Bootstrapping</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_body.cpp">
+      <Filter>Source Files\Physical</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

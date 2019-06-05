@@ -148,6 +148,7 @@
     <ClInclude Include="include\Observer-Observable\qgl_callback_observer.h" />
     <ClInclude Include="include\Observer-Observable\qgl_iobserver.h" />
     <ClInclude Include="include\Observer-Observable\qgl_subject.h" />
+    <ClInclude Include="include\Physical\qgl_body.h" />
     <ClInclude Include="include\qgl_icomponent.h" />
     <ClInclude Include="include\qgl_model_include.h" />
     <ClInclude Include="include\qgl_platform_abstraction.h" />
@@ -165,11 +166,13 @@
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="qgl_body.cpp" />
     <ClCompile Include="qgl_bootstrapper.cpp" />
     <ClCompile Include="QGL_ModelRT.cpp" />
     <ClCompile Include="qgl_rational.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="include\qgl_icomponent.h.vsspell" />
     <None Include="packages.config" />
     <None Include="QGL_Model.def" />
   </ItemGroup>

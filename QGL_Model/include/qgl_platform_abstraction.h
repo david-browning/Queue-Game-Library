@@ -44,6 +44,7 @@ typedef void* handle_t;
 #include <Windows.h>
 #include <winrt/base.h>
 #include <winrt/Windows.Foundation.h>
+#include <DirectXMath.h>
 
 typedef HANDLE file_handle_t;
 static const file_handle_t NO_FILE = INVALID_HANDLE_VALUE;

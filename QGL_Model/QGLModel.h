@@ -12,3 +12,4 @@
 #include "include/Observer-Observable/qgl_callback_observer.h"
 
 #include "include/qgl_rational.h"
+#include "include/Physical/qgl_body.h"
