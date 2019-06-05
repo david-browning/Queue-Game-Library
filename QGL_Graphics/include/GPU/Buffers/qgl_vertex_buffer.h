@@ -9,7 +9,7 @@ namespace qgl::graphics::gpu::buffers
     be empty.
     To get the vertex data onto the GPU, queue this item in a copy_command_list.
     */
-   template<typename VertexT>
+   template<typename VertexT, D3D_PRIMITIVE_TOPOLOGY TopologyT>
    class vertex_buffer : public igpu_buffer<D3D12_SUBRESOURCE_DATA, 
       D3D12_VERTEX_BUFFER_VIEW, 
       d3d_resource>
@@ -59,6 +59,11 @@ namespace qgl::graphics::gpu::buffers
       virtual const ViewDescriptionT* view() const
       {
          return &m_viewDesc;
+      }
+
+      D3D_PRIMITIVE_TOPOLOGY topology() const noexcept
+      {
+         return TopologyT;
       }
 
       private:
