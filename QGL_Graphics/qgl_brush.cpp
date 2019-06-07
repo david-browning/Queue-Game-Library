@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "include/Content/qgl_brush.h"
+#include <variant>
 
 using namespace qgl::content::buffers;
 namespace qgl::content
