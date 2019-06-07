@@ -37,23 +37,25 @@ namespace QGL_Content_UnitTests
 
          //Create a project.
          {
-            content_project project(newFilePath.c_str());
-            project.emplace_back(&entry1Meta, entry1Path.c_str());
-            project.flush();
+            auto project = qgl_open_content_project(newFilePath.c_str());
+            project->emplace_back(&entry1Meta, entry1Path.c_str());
+            project->flush();
 
             //Compile the project file.
-            compile_content_project(&project, compiledPath.c_str());
+            compile_content_project(project, compiledPath.c_str());
          }
-       
-         //Open the compiled project file.
-         auto compiledFile= qgl_open_content_file(compiledPath.c_str());
 
-         for(size_t i = 0; i < compiledFile->size(); i++)
+         //Open the compiled project file.
+         auto compiledFile = qgl_open_content_file(compiledPath.c_str());
+
+         for (size_t i = 0; i < compiledFile->size(); i++)
          {
             const auto dictEntry = compiledFile->operator[](i);
             Assert::IsTrue(*dictEntry->metadata() == entry1Meta,
                            L"The entry metadata is not correct.");
          }
+
+         compiledFile->release();
       }
 
       private:
@@ -84,11 +86,11 @@ namespace QGL_Content_UnitTests
                L"CompileProjectStorageFile.txt",
                CreationCollisionOption::ReplaceExisting);
 
-            content_project project(projectF);
-            *project.metadata() = projectMeta;
-            project.emplace_back(&entry1Meta, entry1Path.c_str());
-            project.emplace_back(&entry1Meta, entry1Path.c_str());
-            project.flush();
+            auto project = qgl_open_content_project(projectF);
+            *project->metadata() = projectMeta;
+            project->emplace_back(&entry1Meta, entry1Path.c_str());
+            project->emplace_back(&entry1Meta, entry1Path.c_str());
+            project->flush();
 
             //Compile it
             auto contentF = co_await root.CreateFileAsync(
@@ -97,7 +99,7 @@ namespace QGL_Content_UnitTests
 
             try
             {
-               compile_content_project(&project, contentF);
+               compile_content_project(project, contentF);
             }
             catch (winrt::hresult_error&)
             {
@@ -115,11 +117,13 @@ namespace QGL_Content_UnitTests
          Assert::IsTrue(*file->header()->metadata() == projectMeta,
                         L"The metadata is not correct.");
 
-         for(size_t i = 0; i < file->size(); i++)
+         for (size_t i = 0; i < file->size(); i++)
          {
             Assert::IsTrue(*file->operator[](i)->metadata() == entry1Meta,
                            L"Entry 1 meta is not correct.");
          }
+
+         file->release();
       }
    };
 }

@@ -15,17 +15,20 @@ namespace QGL_Content_UnitTests
          winrt::hstring newFilePath(root + L"\\ConstructorNewProjectFile.txt");
          DeleteFile(newFilePath.c_str());
 
-         content_project project(newFilePath.c_str());
+         auto project = qgl_open_content_project(
+            newFilePath.c_str());
 
          Assert::AreEqual(static_cast<size_t>(0),
-                          project.size(),
+                          project->size(),
                           L"There should be 0 project entries.");
 
-         Assert::IsTrue(project.begin() == project.end(),
+         Assert::IsTrue(project->begin() == project->end(),
                         L"The iterators are not equal.");
 
-         Assert::IsTrue(project.cbegin() == project.cend(),
+         Assert::IsTrue(project->cbegin() == project->cend(),
                         L"The const iterators are not equal.");
+
+         project->release();
       }
 
       /*
@@ -38,60 +41,34 @@ namespace QGL_Content_UnitTests
                                     L"\\ConstructorExistingProjectFile.txt");
          DeleteFile(newFilePath.c_str());
 
-         content_project projectWrite(newFilePath.c_str());
+         auto projectWrite= qgl_open_content_project(newFilePath.c_str());
          CONTENT_METADATA_BUFFER projectMeta(RESOURCE_TYPE_CAMERA,
                                              CONTENT_LOADER_ID_CAMERA,
                                              L"ProjectName");
-         (*projectWrite.metadata()) = projectMeta;
+         (*projectWrite->metadata()) = projectMeta;
 
          CONTENT_METADATA_BUFFER entryMeta(RESOURCE_TYPE_BRUSH,
                                            CONTENT_LOADER_ID_BRUSH,
                                            L"Brush");
-         projectWrite.emplace_back(&entryMeta, L"C:\\SomeFile.txt");
-         projectWrite.emplace_back(&entryMeta, L"C:\\SomeFile.txt");
+         projectWrite->emplace_back(&entryMeta, L"C:\\SomeFile.txt");
+         projectWrite->emplace_back(&entryMeta, L"C:\\SomeFile.txt");
 
-         projectWrite.flush();
+         projectWrite->flush();
 
-         content_project projectRead(newFilePath.c_str());
-         Assert::IsTrue(*projectRead.metadata() == *projectWrite.metadata(),
+         auto projectRead= qgl_open_content_project(newFilePath.c_str());
+         Assert::IsTrue(*projectRead->metadata() == *projectWrite->metadata(),
                         L"The project metadata is not equal.");
 
-         for (size_t i = 0; i < projectRead.size(); i++)
+         for (size_t i = 0; i < projectRead->size(); i++)
          {
-            Assert::IsTrue(projectRead[i].first == projectWrite[i].first,
+            Assert::IsTrue(projectRead->at(i).first == projectWrite->at(i).first,
                            L"The project entry metadata is not equal.");
 
-            Assert::IsTrue(projectRead[i].second == projectWrite[i].second,
+            Assert::IsTrue(projectRead->at(i).second == projectWrite->at(i).second,
                            L"The entry paths are not equal.");
          }
-      }
-
-      TEST_METHOD(ContentProjectMoveConstructor)
-      {
-         auto root = ApplicationData::Current().LocalFolder().Path();
-         winrt::hstring newFilePath(root +
-                                    L"\\ContentProjectMoveConstructor.txt");
-         DeleteFile(newFilePath.c_str());
-
-         content_project projectWrite(newFilePath.c_str());
-         CONTENT_METADATA_BUFFER projectMeta(RESOURCE_TYPE_CAMERA,
-                                             CONTENT_LOADER_ID_CAMERA,
-                                             L"ProjectName");
-         (*projectWrite.metadata()) = projectMeta;
-
-         CONTENT_METADATA_BUFFER entryMeta(RESOURCE_TYPE_BRUSH,
-                                           CONTENT_LOADER_ID_BRUSH,
-                                           L"Brush");
-         projectWrite.emplace_back(&entryMeta, L"C:\\SomeFile.txt");
-
-
-         content_project projectMoved(std::move(projectWrite));
-
-         Assert::IsTrue(projectMoved[0].first == entryMeta,
-                        L"The entry's metadata is not correct.");
-
-         Assert::IsTrue(projectMoved[0].second == L"C:\\SomeFile.txt",
-                        L"The entry's path is not correct.");
+         projectRead->release();
+         projectWrite->release();
       }
 
       TEST_METHOD(ContentProjectFlush)
@@ -102,21 +79,21 @@ namespace QGL_Content_UnitTests
                                     L"\\ContentProjectFlush.txt");
          DeleteFile(newFilePath.c_str());
 
-         content_project projectWrite(newFilePath.c_str());
+         auto projectWrite = qgl_open_content_project(newFilePath.c_str());
          CONTENT_METADATA_BUFFER projectMeta(RESOURCE_TYPE_CAMERA,
                                              CONTENT_LOADER_ID_CAMERA,
                                              L"ProjectName");
-         *projectWrite.metadata() = projectMeta;
+         *projectWrite->metadata() = projectMeta;
 
          CONTENT_METADATA_BUFFER entryMeta(RESOURCE_TYPE_BRUSH,
                                            CONTENT_LOADER_ID_BRUSH,
                                            L"Brush");
-         projectWrite.emplace_back(&entryMeta, L"C:\\SomeFile.txt");
+         projectWrite->emplace_back(&entryMeta, L"C:\\SomeFile.txt");
 
-         projectWrite.emplace_back(&entryMeta, L"C:\\SomeFile2.txt");
+         projectWrite->emplace_back(&entryMeta, L"C:\\SomeFile2.txt");
 
          //Flush it
-         projectWrite.flush();
+         projectWrite->flush();
 
          //Read it using tested APIs.
          file_handle hndl;
@@ -141,7 +118,7 @@ namespace QGL_Content_UnitTests
          offset += sizeof(readMetadata);
          uint64_t numEntries = 0;
          read_file_sync(&hndl, sizeof(numEntries), offset, &numEntries);
-         Assert::IsTrue(projectWrite.size() == numEntries,
+         Assert::IsTrue(projectWrite->size() == numEntries,
                         L"The number of entries is not correct.");
          offset += sizeof(numEntries);
 
@@ -159,14 +136,14 @@ namespace QGL_Content_UnitTests
             CONTENT_METADATA_BUFFER readEntryMeta;
             read_file_sync(&hndl, sizeof(readEntryMeta), offset,
                            &readEntryMeta);
-            Assert::IsTrue(readEntryMeta == projectWrite.at(i).first,
+            Assert::IsTrue(readEntryMeta == projectWrite->at(i).first,
                            L"Entry metadata is not correct.");
             offset += sizeof(readEntryMeta);
 
             uint64_t numChars = 0;
             read_file_sync(&hndl, sizeof(numChars), offset,
                            &numChars);
-            Assert::IsTrue(numChars == projectWrite.at(i).second.size(),
+            Assert::IsTrue(numChars == projectWrite->at(i).second.size(),
                            L"The number of characters is not correct.");
             offset += sizeof(numChars);
 
@@ -174,10 +151,12 @@ namespace QGL_Content_UnitTests
             readPath.resize(numChars);
             read_file_sync(&hndl, numChars * sizeof(wchar_t), offset,
                            readPath.data());
-            Assert::IsTrue(projectWrite.at(i).second == readPath,
+            Assert::IsTrue(projectWrite->at(i).second == readPath,
                            L"The file path is not correct.");
             offset += numChars * sizeof(wchar_t);
          }
+
+         projectWrite->release();
       }
 
       /*
@@ -190,24 +169,24 @@ namespace QGL_Content_UnitTests
                                     L"\\ContentProjectAt.txt");
          DeleteFile(newFilePath.c_str());
 
-         content_project projectWrite(newFilePath.c_str());
+         auto projectWrite= qgl_open_content_project(newFilePath.c_str());
          CONTENT_METADATA_BUFFER entryMeta(RESOURCE_TYPE_BRUSH,
                                            CONTENT_LOADER_ID_BRUSH,
                                            L"Brush");
-         projectWrite.emplace_back(&entryMeta, L"C:\\SomeFile.txt");
+         projectWrite->emplace_back(&entryMeta, L"C:\\SomeFile.txt");
 
-         projectWrite.emplace_back(&entryMeta, L"C:\\SomeFile2.txt");
+         projectWrite->emplace_back(&entryMeta, L"C:\\SomeFile2.txt");
 
-         Assert::IsTrue(projectWrite.at(0).first == entryMeta,
+         Assert::IsTrue(projectWrite->at(0).first == entryMeta,
                         L"The metadata is not correct for entry 0.");
 
-         Assert::IsTrue(projectWrite.at(0).second == L"C:\\SomeFile.txt",
+         Assert::IsTrue(projectWrite->at(0).second == L"C:\\SomeFile.txt",
                         L"The path is not correct for entry 0");
 
-         Assert::IsTrue(projectWrite.at(1).first == entryMeta,
+         Assert::IsTrue(projectWrite->at(1).first == entryMeta,
                         L"The metadata is not correct for entry 1.");
 
-         Assert::IsTrue(projectWrite.at(1).second == L"C:\\SomeFile2.txt",
+         Assert::IsTrue(projectWrite->at(1).second == L"C:\\SomeFile2.txt",
                         L"The path is not correct for entry 1");
 
          CONTENT_METADATA_BUFFER newEntryMeta(RESOURCE_TYPE_BRUSH,
@@ -215,12 +194,13 @@ namespace QGL_Content_UnitTests
                                               L"NewEntry");
          auto newEntry = std::make_pair(newEntryMeta,
                                         std::wstring(L"NewPath.txt"));
-         projectWrite.at(1) = newEntry;
+         projectWrite->at(1) = newEntry;
 
-         Assert::IsTrue(projectWrite.at(1).first == newEntryMeta,
+         Assert::IsTrue(projectWrite->at(1).first == newEntryMeta,
                         L"The new metadata for entry 1 is not correct.");
-         Assert::IsTrue(projectWrite.at(1).second == L"NewPath.txt",
+         Assert::IsTrue(projectWrite->at(1).second == L"NewPath.txt",
                         L"The new path for entry 1 is not correct.");
+         projectWrite->release();
       }
 
       TEST_METHOD(ContentProjectIndexOperator)
@@ -230,24 +210,24 @@ namespace QGL_Content_UnitTests
                                     L"\\ContentProjectAt.txt");
          DeleteFile(newFilePath.c_str());
 
-         content_project projectWrite(newFilePath.c_str());
+         auto projectWrite = qgl_open_content_project(newFilePath.c_str());
          CONTENT_METADATA_BUFFER entryMeta(RESOURCE_TYPE_BRUSH,
                                            CONTENT_LOADER_ID_BRUSH,
                                            L"Brush");
-         projectWrite.emplace_back(&entryMeta, L"C:\\SomeFile.txt");
+         projectWrite->emplace_back(&entryMeta, L"C:\\SomeFile.txt");
 
-         projectWrite.emplace_back(&entryMeta, L"C:\\SomeFile2.txt");
+         projectWrite->emplace_back(&entryMeta, L"C:\\SomeFile2.txt");
 
-         Assert::IsTrue(projectWrite[0].first == entryMeta,
+         Assert::IsTrue(projectWrite->at(0).first == entryMeta,
                         L"The metadata is not correct for entry 0.");
 
-         Assert::IsTrue(projectWrite[0].second == L"C:\\SomeFile.txt",
+         Assert::IsTrue(projectWrite->at(0).second == L"C:\\SomeFile.txt",
                         L"The path is not correct for entry 0");
 
-         Assert::IsTrue(projectWrite[1].first == entryMeta,
+         Assert::IsTrue(projectWrite->at(1).first == entryMeta,
                         L"The metadata is not correct for entry 1.");
 
-         Assert::IsTrue(projectWrite[1].second == L"C:\\SomeFile2.txt",
+         Assert::IsTrue(projectWrite->at(1).second == L"C:\\SomeFile2.txt",
                         L"The path is not correct for entry 1");
 
          CONTENT_METADATA_BUFFER newEntryMeta(RESOURCE_TYPE_BRUSH,
@@ -255,12 +235,13 @@ namespace QGL_Content_UnitTests
                                               L"NewEntry");
          auto newEntry = std::make_pair(newEntryMeta,
                                         std::wstring(L"NewPath.txt"));
-         projectWrite[1] = newEntry;
+         projectWrite->at(1) = newEntry;
 
-         Assert::IsTrue(projectWrite[1].first == newEntryMeta,
+         Assert::IsTrue(projectWrite->at(1).first == newEntryMeta,
                         L"The new metadata for entry 1 is not correct.");
-         Assert::IsTrue(projectWrite[1].second == L"NewPath.txt",
+         Assert::IsTrue(projectWrite->at(1).second == L"NewPath.txt",
                         L"The new path for entry 1 is not correct.");
+         projectWrite->release();
       }
 
       TEST_METHOD(ContentProjectSize)
@@ -270,18 +251,19 @@ namespace QGL_Content_UnitTests
                                     L"\\ContentProjectSize.txt");
          DeleteFile(newFilePath.c_str());
 
-         content_project projectWrite(newFilePath.c_str());
-         Assert::IsTrue(0 == projectWrite.size(),
+         auto projectWrite= qgl_open_content_project(newFilePath.c_str());
+         Assert::IsTrue(0 == projectWrite->size(),
                         L"The size should be 0.");
 
          CONTENT_METADATA_BUFFER def;
-         projectWrite.emplace_back(&def, L"0");
-         Assert::IsTrue(1 == projectWrite.size(),
+         projectWrite->emplace_back(&def, L"0");
+         Assert::IsTrue(1 == projectWrite->size(),
                         L"The size should be 1.");
 
-         projectWrite.emplace_back(&def, L"2");
-         Assert::IsTrue(2 == projectWrite.size(),
+         projectWrite->emplace_back(&def, L"2");
+         Assert::IsTrue(2 == projectWrite->size(),
                         L"The size should be 2.");
+         projectWrite->release();
       }
 
       /*
@@ -294,51 +276,52 @@ namespace QGL_Content_UnitTests
                                     L"\\ContentProjectErasing.txt");
          DeleteFile(newFilePath.c_str());
 
-         content_project projectWrite(newFilePath.c_str());
+         auto projectWrite= qgl_open_content_project(newFilePath.c_str());
          CONTENT_METADATA_BUFFER entry1;
          CONTENT_METADATA_BUFFER entry2;
          CONTENT_METADATA_BUFFER entry3;
 
          //Insert an item.
-         projectWrite.emplace_back(&entry1, L"Str0");
+         projectWrite->emplace_back(&entry1, L"Str0");
 
          //Erase it.
-         projectWrite.erase(projectWrite.cbegin());
+         projectWrite->erase(projectWrite->cbegin());
 
          //Verify size is 0
          Assert::AreEqual(static_cast<size_t>(0),
-                          projectWrite.size(),
+                          projectWrite->size(),
                           L"Removed only entry: Size should be 0");
 
          //Verify iterators are correct.
-         Assert::IsTrue(projectWrite.begin() == projectWrite.end(),
+         Assert::IsTrue(projectWrite->begin() == projectWrite->end(),
                         L"The iterators should be equal");
 
          //Insert 3 items
-         projectWrite.emplace_back(&entry1, L"Str1");
-         projectWrite.emplace_back(&entry2, L"Str2");
-         projectWrite.emplace_back(&entry3, L"Str3");
+         projectWrite->emplace_back(&entry1, L"Str1");
+         projectWrite->emplace_back(&entry2, L"Str2");
+         projectWrite->emplace_back(&entry3, L"Str3");
 
          //Verify size is 3.
          Assert::AreEqual(static_cast<size_t>(3),
-                          projectWrite.size(),
+                          projectWrite->size(),
                           L"There should be 3 entries.");
 
          //Remove middle item.
-         projectWrite.erase(projectWrite.cbegin() + 1);
+         projectWrite->erase(projectWrite->cbegin() + 1);
 
          //Verify size is 2.
          Assert::AreEqual(static_cast<size_t>(2),
-                          projectWrite.size(),
+                          projectWrite->size(),
                           L"There should be 2 entries.");
 
          //Remove all items.
-         projectWrite.erase(projectWrite.cbegin(), projectWrite.cend());
+         projectWrite->erase(projectWrite->cbegin(), projectWrite->cend());
 
          //Verify size is 0.
          Assert::AreEqual(static_cast<size_t>(0),
-                          projectWrite.size(),
+                          projectWrite->size(),
                           L"Removed range: size is not 0.");
+         projectWrite->release();
       }
 
       /*
@@ -351,7 +334,7 @@ namespace QGL_Content_UnitTests
                                     L"\\ContentProjectIterators.txt");
          DeleteFile(newFilePath.c_str());
 
-         content_project projectWrite(newFilePath.c_str());
+         auto projectWrite= qgl_open_content_project(newFilePath.c_str());
 
          std::vector<CONTENT_METADATA_BUFFER> metaDatas =
          {
@@ -369,12 +352,12 @@ namespace QGL_Content_UnitTests
 
          for (size_t i = 0; i < metaDatas.size(); i++)
          {
-            projectWrite.emplace_back(&metaDatas[i],
+            projectWrite->emplace_back(&metaDatas[i],
                                       paths[i].c_str());
          }
 
          size_t i = 0;
-         for (const auto& entry : projectWrite)
+         for (const auto& entry : *projectWrite)
          {
             Assert::IsTrue(entry.first == metaDatas[i],
                            L"Metadata is not correct.");
@@ -383,6 +366,7 @@ namespace QGL_Content_UnitTests
                            L"Path is not correct.");
             i++;
          }
+         projectWrite->release();
       }
 
       TEST_METHOD(StorageFileOpenFlushRead)
@@ -399,34 +383,37 @@ namespace QGL_Content_UnitTests
             CreationCollisionOption::ReplaceExisting);
 
 
-         content_project projectWrite(f);
+         auto projectWrite = qgl_open_content_project(f);
          CONTENT_METADATA_BUFFER projectMeta(RESOURCE_TYPE_CAMERA,
                                              CONTENT_LOADER_ID_CAMERA,
                                              L"ProjectName");
-         *projectWrite.metadata() = projectMeta;
+         *projectWrite->metadata() = projectMeta;
 
          CONTENT_METADATA_BUFFER entryMeta(RESOURCE_TYPE_BRUSH,
                                            CONTENT_LOADER_ID_BRUSH,
                                            L"Brush");
-         projectWrite.emplace_back(&entryMeta, L"C:\\SomeFile.txt");
+         projectWrite->emplace_back(&entryMeta, L"C:\\SomeFile.txt");
 
-         projectWrite.emplace_back(&entryMeta, L"C:\\SomeFile2.txt");
+         projectWrite->emplace_back(&entryMeta, L"C:\\SomeFile2.txt");
 
          //Flush it
-         projectWrite.flush();
+         projectWrite->flush();
 
-         content_project projectRead(f.Path().c_str());
-         Assert::IsTrue(*projectRead.metadata() == *projectWrite.metadata(),
+         auto projectRead= qgl_open_content_project(f.Path().c_str());
+         Assert::IsTrue(*projectRead->metadata() == *projectWrite->metadata(),
                         L"The project metadata is not equal.");
 
-         for (size_t i = 0; i < projectRead.size(); i++)
+         for (size_t i = 0; i < projectRead->size(); i++)
          {
-            Assert::IsTrue(projectRead[i].first == projectWrite[i].first,
+            Assert::IsTrue(projectRead->at(i).first == projectWrite->at(i).first,
                            L"The project entry metadata is not equal.");
 
-            Assert::IsTrue(projectRead[i].second == projectWrite[i].second,
+            Assert::IsTrue(projectRead->at(i).second == projectWrite->at(i).second,
                            L"The entry paths are not equal.");
          }
+
+         projectWrite->release();
+         projectRead->release();
       }
    };
 }

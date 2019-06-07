@@ -1,14 +1,13 @@
 #include "pch.h"
-#include "include\Content-Project\qgl_content_project.h"
+#include "include/Interfaces/qgl_icontent_project.h"
 #include "include/qgl_file_handle.h"
 #include "include/qgl_file_helpers.h"
 
 namespace qgl::content
 {
-   struct content_project::impl
+   struct content_project : public icontent_project
    {
-      public:
-      impl(const wchar_t* filePath)
+      content_project(const wchar_t* filePath)
       {
          auto exists = file_exists(filePath);
          open_file_readwrite(filePath, &m_handle);
@@ -18,7 +17,7 @@ namespace qgl::content
          }
       }
 
-      impl(const winrt::Windows::Storage::StorageFile& f)
+      content_project(const winrt::Windows::Storage::StorageFile& f)
       {
          //The storage file already exists, so to check if it is an old file, 
          //check if it is greater than 0 bytes.
@@ -30,30 +29,39 @@ namespace qgl::content
          }
       }
 
-      impl(const impl&) = delete;
+      content_project(const content_project&) = delete;
 
-      impl(impl&& m) = default;
+      content_project(content_project&&) = default;
 
-      virtual ~impl() noexcept = default;
+      virtual ~content_project() noexcept = default;
 
-      void flush()
+      virtual void release()
+      {
+         //Calls the destructor.
+         delete this;
+      }
+
+      /*
+       Flushes any changes to the content file to the disk.
+       */
+      virtual void flush()
       {
          size_t offset = 0;
 
          //Write the magic number
-         write_file_sync(&m_handle, 
+         write_file_sync(&m_handle,
                          sizeof(QGL_CONTENT_PROJECT_MAGIC_NUMBER),
                          offset, &QGL_CONTENT_PROJECT_MAGIC_NUMBER);
          offset += sizeof(QGL_CONTENT_PROJECT_MAGIC_NUMBER);
 
          //Write the metadata
-         write_file_sync(&m_handle, 
+         write_file_sync(&m_handle,
                          sizeof(m_hdr), offset, &m_hdr);
          offset += sizeof(m_hdr);
 
          //Write the number of entries.
          uint64_t numEntries = static_cast<uint64_t>(size());
-         write_file_sync(&m_handle, 
+         write_file_sync(&m_handle,
                          sizeof(numEntries), offset, &numEntries);
          offset += sizeof(numEntries);
 
@@ -69,13 +77,13 @@ namespace qgl::content
 
             //Pad the magic number to 16 bytes by writing an addition 8 bytes.
             static constexpr uint64_t EXTRA_PAD = 0xEEEEEEEEEEEEEEEE;
-            write_file_sync(&m_handle, 
+            write_file_sync(&m_handle,
                             sizeof(EXTRA_PAD), offset, &EXTRA_PAD);
             offset += sizeof(EXTRA_PAD);
 
             //Write the metadata
-            write_file_sync(&m_handle, 
-                            sizeof(entry.first), 
+            write_file_sync(&m_handle,
+                            sizeof(entry.first),
                             offset,
                             &entry.first);
             offset += sizeof(entry.first);
@@ -86,7 +94,7 @@ namespace qgl::content
             offset += sizeof(numChars);
 
             //Write the path. Each character in the path is 2 bytes.
-            write_file_sync(&m_handle, 
+            write_file_sync(&m_handle,
                             numChars * sizeof(wchar_t),
                             offset,
                             entry.second.c_str());
@@ -94,87 +102,135 @@ namespace qgl::content
          }
       }
 
-      CONTENT_METADATA_BUFFER* metadata() noexcept
+      /*
+       Returns a reference to the content project's metadata.
+       */
+      virtual CONTENT_METADATA_BUFFER* metadata() noexcept
       {
          return &m_hdr;
       }
 
-      const CONTENT_METADATA_BUFFER* metadata() const noexcept
+      /*
+       Returns a const reference to the content project's metadata.
+       */
+      virtual const CONTENT_METADATA_BUFFER* metadata() const noexcept
       {
          return &m_hdr;
       }
 
-      size_t size() const noexcept
+      /*
+       Returns the number of entries in the project.
+       */
+      virtual size_t size() const noexcept
       {
          return m_entries.size();
       }
 
-      void emplace_back(const content_project_entry_pair::first_type* entry,
-                        const wchar_t* absPath)
+      /*
+       Constructs and places a project entry at the end.
+       */
+      virtual void emplace_back(
+         const content_project_entry_pair::first_type* entry,
+         const wchar_t* absPath)
       {
          m_entries.emplace_back(*entry, winrt::to_hstring(absPath));
       }
 
-      content_project_entry_pair& at(size_t idx)
+      /*
+       Returns a reference to the idx'th project entry.
+       This throws out_of_range if the index is out of bounds.
+       */
+      virtual content_project_entry_pair& at(size_t idx)
       {
          return m_entries.at(idx);
       }
 
-      const content_project_entry_pair& at(size_t idx) const
+      /*
+       Returns a const reference to the idx'th project entry.
+       This throws out_of_range if the index is out of bounds.
+       */
+      virtual const content_project_entry_pair& at(size_t idx) const
       {
          return m_entries.at(idx);
       }
 
-      content_project_entry_pair& operator[](size_t idx) noexcept
+      /*
+       Returns a reference to the idx'th project entry.
+       This does no bounds checking.
+       */
+      virtual content_project_entry_pair& operator[](size_t idx) noexcept
       {
          return m_entries[idx];
       }
 
-      const content_project_entry_pair& operator[](size_t idx) const noexcept
+      /*
+       Returns a const reference to the idx'th project entry.
+       This does no bounds checking.
+       */
+      virtual const content_project_entry_pair& operator[](
+         size_t idx) const noexcept
       {
          return m_entries[idx];
       }
 
-      iterator erase(const_iterator position)
+        /*
+       Returns the project entry at the given position.
+       */
+      virtual iterator erase(const_iterator position)
       {
          return m_entries.erase(position);
       }
 
-      iterator erase(const_iterator first, const_iterator last)
+      /*
+       Removes the project entries between first and last, inclusive.
+       */
+      virtual iterator erase(const_iterator first, const_iterator last)
       {
          return m_entries.erase(first, last);
       }
 
-      iterator begin() noexcept
+      /*
+       Returns an iterator to the beginning of the project entries.
+       */
+      virtual iterator begin() noexcept
       {
          return m_entries.begin();
       }
 
-      const_iterator begin() const noexcept
+      virtual const_iterator begin() const noexcept
       {
          return m_entries.cbegin();
       }
 
-      const_iterator cbegin() const noexcept
+      /*
+       Returns a const iterator to the beginning of the project entries.
+       */
+      virtual const_iterator cbegin() const noexcept
       {
          return m_entries.cbegin();
       }
 
-      iterator end() noexcept
+      /*
+       Returns an iterator to the end of the project entries.
+       */
+      virtual iterator end() noexcept
       {
          return m_entries.end();
       }
 
-      const_iterator end() const noexcept
+      virtual const_iterator end() const noexcept
       {
          return m_entries.cend();
       }
 
-      const_iterator cend() const noexcept
+      /*
+       Returns a const iterator to the end of the project entries.
+       */
+      virtual const_iterator cend() const noexcept
       {
          return m_entries.cend();
       }
-
+         
       private:
       /*
        Reads in the file using m_handle. Also verifies that the file is
@@ -188,9 +244,9 @@ namespace qgl::content
 
          //Read the magic number and check it.
          uint64_t readMagicNumber = 0;
-         read_file_sync(&m_handle, 
-                        sizeof(readMagicNumber), 
-                        offset, 
+         read_file_sync(&m_handle,
+                        sizeof(readMagicNumber),
+                        offset,
                         &readMagicNumber);
          offset += sizeof(readMagicNumber);
          if (readMagicNumber != QGL_CONTENT_PROJECT_MAGIC_NUMBER)
@@ -219,9 +275,9 @@ namespace qgl::content
                #ifdef DEBUG
                char exceptionMessage[128];
                sprintf_s(exceptionMessage, "The entry's magic number is %llX",
-                       readMagicNumber);
+                         readMagicNumber);
                #else
-               const char* exceptionMessage = 
+               const char* exceptionMessage =
                   "The entry's magic number is not correct.";
                #endif
                throw std::exception(exceptionMessage);
@@ -251,7 +307,7 @@ namespace qgl::content
             numEntries--;
          }
       }
-
+      
       /*
        Collection of entries.
        */
@@ -268,116 +324,14 @@ namespace qgl::content
       CONTENT_METADATA_BUFFER m_hdr;
    };
 
-   content_project::content_project(const wchar_t* filePath) :
-      m_impl_p(new impl(filePath))
+   icontent_project* qgl_open_content_project(const wchar_t* filePath)
    {
-
+      return new content_project(filePath);
    }
 
-   content_project::content_project(
-      const winrt::Windows::Storage::StorageFile& f) :
-      m_impl_p(new impl(f))
+   icontent_project* qgl_open_content_project(
+      const winrt::Windows::Storage::StorageFile& f)
    {
-
-   }
-
-   content_project::content_project(content_project&& m) 
-   {
-      delete m_impl_p;
-      m_impl_p = m.m_impl_p;
-      m.m_impl_p = nullptr;
-   }
-
-   content_project::~content_project() noexcept
-   {
-      delete m_impl_p;
-   }
-
-   void content_project::flush()
-   {
-      m_impl_p->flush();
-   }
-
-   CONTENT_METADATA_BUFFER* content_project::metadata() noexcept
-   {
-      return m_impl_p->metadata();
-   }
-
-   const CONTENT_METADATA_BUFFER* content_project::metadata() const noexcept
-   {
-      return m_impl_p->metadata();
-   }
-
-   size_t content_project::size() const noexcept
-   {
-      return m_impl_p->size();
-   }
-
-   void content_project::emplace_back(const cpep::first_type* entry,
-                                      const wchar_t* absPath)
-   {
-      m_impl_p->emplace_back(entry, absPath);
-   }
-
-   content_project::cpep& content_project::at(size_t idx)
-   {
-      return m_impl_p->at(idx);
-   }
-
-   const content_project::cpep& content_project::at(size_t idx) const
-   {
-      return m_impl_p->at(idx);
-   }
-
-   content_project::cpep& content_project::operator[](size_t idx) noexcept
-   {
-      return (*m_impl_p)[idx];
-   }
-
-   const content_project::cpep& content_project::operator[](
-      size_t idx) const noexcept
-   {
-      return (*m_impl_p)[idx];
-   }
-
-   content_project::iterator content_project::erase(const_iterator position)
-   {
-      return m_impl_p->erase(position);
-   }
-
-   content_project::iterator content_project::erase(const_iterator first,
-                                                    const_iterator last)
-   {
-      return m_impl_p->erase(first, last);
-   }
-
-   content_project::iterator content_project::begin() noexcept
-   {
-      return m_impl_p->begin();
-   }
-
-   content_project::const_iterator content_project::begin() const noexcept
-   {
-      return m_impl_p->begin();
-   }
-
-   content_project::const_iterator content_project::cbegin() const noexcept
-   {
-      return m_impl_p->cbegin();
-   }
-
-   content_project::iterator content_project::end() noexcept
-   {
-      return m_impl_p->end();
-   }
-
-   content_project::const_iterator content_project::end() const noexcept
-   {
-      return m_impl_p->end();
-   }
-
-   content_project::const_iterator content_project::cend() const noexcept
-   {
-      return m_impl_p->cend();
+      return new content_project(f);
    }
 }

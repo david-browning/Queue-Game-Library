@@ -66,7 +66,7 @@ namespace qgl::content
     If the file exists, the constructor checks if the file is valid. If the
     file is not valid, this throws std::domain_error.
     */
-   QGL_CONTENT_API icontent_file* qgl_open_content_file(
+   extern QGL_CONTENT_API icontent_file* qgl_open_content_file(
       const wchar_t* filePath);
 
    /*
@@ -76,6 +76,6 @@ namespace qgl::content
     If the file exists, the constructor checks if the file is valid. If the
     file is not valid, this throws std::domain_error.
     */
-   QGL_CONTENT_API icontent_file* qgl_open_content_file(
+   extern QGL_CONTENT_API icontent_file* qgl_open_content_file(
       const winrt::Windows::Storage::StorageFile& f);
 }

@@ -6,14 +6,14 @@
 
 namespace qgl::content
 {
-   void compile_content_project(const content_project& proj,
+   void compile_content_project(const icontent_project* proj,
                                 icontent_file* cf)
    {
-      CONTENT_FILE_HEADER_BUFFER hdr(proj.metadata());
+      CONTENT_FILE_HEADER_BUFFER hdr(proj->metadata());
       (*cf->header()) = hdr;
 
       //Fill the dictionary and 
-      for (const auto& entry : proj)
+      for (const auto& entry : *proj)
       {
          file_handle bufferHandle;
          open_file_read(entry.second.c_str(), &bufferHandle);
@@ -26,20 +26,20 @@ namespace qgl::content
    }
 }
 
-void qgl::content::compile_content_project(const content_project* proj,
+void qgl::content::compile_content_project(const icontent_project* proj,
                                            const wchar_t* absPath)
 {
    //Create a content file in write mode.
    auto cf = qgl::make_shared(qgl_open_content_file(absPath));
-   compile_content_project(*proj, cf->as<icontent_file>());
+   compile_content_project(proj, cf->as<icontent_file>());
 }
 
 
 void qgl::content::compile_content_project(
-   const content_project* proj,
+   const icontent_project* proj,
    const winrt::Windows::Storage::StorageFile& f)
 {
    //Create a content file in write mode.
    auto cf = qgl::make_shared(qgl_open_content_file(f));
-   compile_content_project(*proj, cf->as<icontent_file>());
+   compile_content_project(proj, cf->as<icontent_file>());
 }

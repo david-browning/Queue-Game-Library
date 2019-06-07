@@ -85,9 +85,6 @@
     <ClCompile Include="qgl_content_dict_entry_buffer.cpp">
       <Filter>Source Files\Content-Buffers</Filter>
     </ClCompile>
-    <ClCompile Include="qgl_content_project.cpp">
-      <Filter>Source Files\Content-Project</Filter>
-    </ClCompile>
     <ClCompile Include="qgl_content_project_compiler.cpp">
       <Filter>Source Files\Content-Project</Filter>
     </ClCompile>
@@ -146,6 +143,9 @@
       <Filter>Source Files\Content-Items</Filter>
     </ClCompile>
     <ClCompile Include="qgl_icontent_file.cpp">
+      <Filter>Source Files\Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_icontent_project.cpp">
       <Filter>Source Files\Interfaces</Filter>
     </ClCompile>
   </ItemGroup>
@@ -207,9 +207,6 @@
     <ClInclude Include="include\File-Loaders\qgl_file_loaders.h">
       <Filter>Header Files\File-Loaders</Filter>
     </ClInclude>
-    <ClInclude Include="include\Content-Project\qgl_content_project.h">
-      <Filter>Header Files\Content-Project</Filter>
-    </ClInclude>
     <ClInclude Include="include\Content-Project\qgl_content_project_compiler.h">
       <Filter>Header Files\Content-Project</Filter>
     </ClInclude>
@@ -248,6 +245,9 @@
       <Filter>Header Files\Content-Items</Filter>
     </ClInclude>
     <ClInclude Include="include\Interfaces\qgl_icontent_file.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Interfaces\qgl_icontent_project.h">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
   </ItemGroup>
