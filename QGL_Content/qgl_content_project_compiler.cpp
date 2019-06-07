@@ -30,7 +30,8 @@ void qgl::content::compile_content_project(const icontent_project* proj,
                                            const wchar_t* absPath)
 {
    //Create a content file in write mode.
-   auto cf = qgl::make_shared(qgl_open_content_file(absPath));
+   auto cf = qgl::make_shared(qgl_open_content_file(absPath, 
+                                                    proj->metadata()->version()));
    compile_content_project(proj, cf->as<icontent_file>());
 }
 
@@ -40,6 +41,7 @@ void qgl::content::compile_content_project(
    const winrt::Windows::Storage::StorageFile& f)
 {
    //Create a content file in write mode.
-   auto cf = qgl::make_shared(qgl_open_content_file(f));
+   auto cf = qgl::make_shared(qgl_open_content_file(f,
+                                                    proj->metadata()->version()));
    compile_content_project(proj, cf->as<icontent_file>());
 }

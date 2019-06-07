@@ -229,14 +229,34 @@ namespace qgl::content
       file_handle m_handle;
    };
 
-   icontent_file* qgl_open_content_file(const wchar_t* filePath)
+   icontent_file* qgl_open_content_file(const wchar_t* filePath,
+                                        qgl_version_t v)
    {
-      return new content_file(filePath);
+      switch (v)
+      {
+         case QGL_VERSION_0_1_WIN:
+         case QGL_VERSION_0_2_WIN:
+         {
+            return new content_file(filePath);
+         }
+      }
+
+      return nullptr;
    }
 
    icontent_file* qgl_open_content_file(
-      const winrt::Windows::Storage::StorageFile& f)
+      const winrt::Windows::Storage::StorageFile& f,
+      qgl_version_t v)
    {
-      return new content_file(f);
+      switch (v)
+      {
+         case QGL_VERSION_0_1_WIN:
+         case QGL_VERSION_0_2_WIN:
+         {
+            return new content_file(f);
+         }
+      }
+
+      return nullptr;
    }
 }

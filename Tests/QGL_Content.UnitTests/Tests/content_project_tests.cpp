@@ -15,8 +15,8 @@ namespace QGL_Content_UnitTests
          winrt::hstring newFilePath(root + L"\\ConstructorNewProjectFile.txt");
          DeleteFile(newFilePath.c_str());
 
-         auto project = qgl_open_content_project(
-            newFilePath.c_str());
+         auto project = qgl_open_content_project(newFilePath.c_str(),
+                                                 qgl::QGL_VERSION_0_1_WIN);
 
          Assert::AreEqual(static_cast<size_t>(0),
                           project->size(),
@@ -41,7 +41,8 @@ namespace QGL_Content_UnitTests
                                     L"\\ConstructorExistingProjectFile.txt");
          DeleteFile(newFilePath.c_str());
 
-         auto projectWrite= qgl_open_content_project(newFilePath.c_str());
+         auto projectWrite = qgl_open_content_project(newFilePath.c_str(),
+                                                      qgl::QGL_VERSION_0_1_WIN);
          CONTENT_METADATA_BUFFER projectMeta(RESOURCE_TYPE_CAMERA,
                                              CONTENT_LOADER_ID_CAMERA,
                                              L"ProjectName");
@@ -55,7 +56,8 @@ namespace QGL_Content_UnitTests
 
          projectWrite->flush();
 
-         auto projectRead= qgl_open_content_project(newFilePath.c_str());
+         auto projectRead = qgl_open_content_project(newFilePath.c_str(),
+                                                     qgl::QGL_VERSION_0_1_WIN);
          Assert::IsTrue(*projectRead->metadata() == *projectWrite->metadata(),
                         L"The project metadata is not equal.");
 
@@ -79,7 +81,8 @@ namespace QGL_Content_UnitTests
                                     L"\\ContentProjectFlush.txt");
          DeleteFile(newFilePath.c_str());
 
-         auto projectWrite = qgl_open_content_project(newFilePath.c_str());
+         auto projectWrite = qgl_open_content_project(newFilePath.c_str(),
+                                                      qgl::QGL_VERSION_0_1_WIN);
          CONTENT_METADATA_BUFFER projectMeta(RESOURCE_TYPE_CAMERA,
                                              CONTENT_LOADER_ID_CAMERA,
                                              L"ProjectName");
@@ -169,7 +172,8 @@ namespace QGL_Content_UnitTests
                                     L"\\ContentProjectAt.txt");
          DeleteFile(newFilePath.c_str());
 
-         auto projectWrite= qgl_open_content_project(newFilePath.c_str());
+         auto projectWrite = qgl_open_content_project(newFilePath.c_str(),
+                                                      qgl::QGL_VERSION_0_1_WIN);
          CONTENT_METADATA_BUFFER entryMeta(RESOURCE_TYPE_BRUSH,
                                            CONTENT_LOADER_ID_BRUSH,
                                            L"Brush");
@@ -210,7 +214,8 @@ namespace QGL_Content_UnitTests
                                     L"\\ContentProjectAt.txt");
          DeleteFile(newFilePath.c_str());
 
-         auto projectWrite = qgl_open_content_project(newFilePath.c_str());
+         auto projectWrite = qgl_open_content_project(newFilePath.c_str(),
+                                                      qgl::QGL_VERSION_0_1_WIN);
          CONTENT_METADATA_BUFFER entryMeta(RESOURCE_TYPE_BRUSH,
                                            CONTENT_LOADER_ID_BRUSH,
                                            L"Brush");
@@ -251,7 +256,8 @@ namespace QGL_Content_UnitTests
                                     L"\\ContentProjectSize.txt");
          DeleteFile(newFilePath.c_str());
 
-         auto projectWrite= qgl_open_content_project(newFilePath.c_str());
+         auto projectWrite = qgl_open_content_project(newFilePath.c_str(),
+                                                      qgl::QGL_VERSION_0_1_WIN);
          Assert::IsTrue(0 == projectWrite->size(),
                         L"The size should be 0.");
 
@@ -276,7 +282,8 @@ namespace QGL_Content_UnitTests
                                     L"\\ContentProjectErasing.txt");
          DeleteFile(newFilePath.c_str());
 
-         auto projectWrite= qgl_open_content_project(newFilePath.c_str());
+         auto projectWrite = qgl_open_content_project(newFilePath.c_str(),
+                                                      qgl::QGL_VERSION_0_1_WIN);
          CONTENT_METADATA_BUFFER entry1;
          CONTENT_METADATA_BUFFER entry2;
          CONTENT_METADATA_BUFFER entry3;
@@ -334,7 +341,8 @@ namespace QGL_Content_UnitTests
                                     L"\\ContentProjectIterators.txt");
          DeleteFile(newFilePath.c_str());
 
-         auto projectWrite= qgl_open_content_project(newFilePath.c_str());
+         auto projectWrite = qgl_open_content_project(newFilePath.c_str(),
+                                                      qgl::QGL_VERSION_0_1_WIN);
 
          std::vector<CONTENT_METADATA_BUFFER> metaDatas =
          {
@@ -353,7 +361,7 @@ namespace QGL_Content_UnitTests
          for (size_t i = 0; i < metaDatas.size(); i++)
          {
             projectWrite->emplace_back(&metaDatas[i],
-                                      paths[i].c_str());
+                                       paths[i].c_str());
          }
 
          size_t i = 0;
@@ -383,7 +391,8 @@ namespace QGL_Content_UnitTests
             CreationCollisionOption::ReplaceExisting);
 
 
-         auto projectWrite = qgl_open_content_project(f);
+         auto projectWrite = qgl_open_content_project(f,
+                                                      qgl::QGL_VERSION_0_1_WIN);
          CONTENT_METADATA_BUFFER projectMeta(RESOURCE_TYPE_CAMERA,
                                              CONTENT_LOADER_ID_CAMERA,
                                              L"ProjectName");
@@ -399,7 +408,8 @@ namespace QGL_Content_UnitTests
          //Flush it
          projectWrite->flush();
 
-         auto projectRead= qgl_open_content_project(f.Path().c_str());
+         auto projectRead = qgl_open_content_project(f.Path().c_str(),
+                                                     qgl::QGL_VERSION_0_1_WIN);
          Assert::IsTrue(*projectRead->metadata() == *projectWrite->metadata(),
                         L"The project metadata is not equal.");
 

@@ -67,7 +67,8 @@ namespace qgl::content
     file is not valid, this throws std::domain_error.
     */
    extern QGL_CONTENT_API icontent_file* qgl_open_content_file(
-      const wchar_t* filePath);
+      const wchar_t* filePath,
+      qgl_version_t v);
 
    /*
     Opens a content file in read write mode.
@@ -77,5 +78,6 @@ namespace qgl::content
     file is not valid, this throws std::domain_error.
     */
    extern QGL_CONTENT_API icontent_file* qgl_open_content_file(
-      const winrt::Windows::Storage::StorageFile& f);
+      const winrt::Windows::Storage::StorageFile& f,
+      qgl_version_t v);
 }

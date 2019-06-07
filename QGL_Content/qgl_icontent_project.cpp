@@ -324,14 +324,34 @@ namespace qgl::content
       CONTENT_METADATA_BUFFER m_hdr;
    };
 
-   icontent_project* qgl_open_content_project(const wchar_t* filePath)
+   icontent_project* qgl_open_content_project(const wchar_t* filePath,
+                                              qgl_version_t v)
    {
-      return new content_project(filePath);
+      switch (v)
+      {
+         case QGL_VERSION_0_1_WIN :
+         case QGL_VERSION_0_2_WIN:
+         {
+            return new content_project(filePath);
+         }
+      }
+
+      return nullptr;
    }
 
    icontent_project* qgl_open_content_project(
-      const winrt::Windows::Storage::StorageFile& f)
+      const winrt::Windows::Storage::StorageFile& f,
+      qgl_version_t v)
    {
-      return new content_project(f);
+      switch (v)
+      {
+         case QGL_VERSION_0_1_WIN:
+         case QGL_VERSION_0_2_WIN:
+         {
+            return new content_project(f);
+         }
+      }
+
+      return nullptr;
    }
 }

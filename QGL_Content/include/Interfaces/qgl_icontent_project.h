@@ -115,7 +115,8 @@ namespace qgl::content
     file is not valid, this throws an exception.
     */
    extern QGL_CONTENT_API icontent_project* qgl_open_content_project(
-      const wchar_t* filePath);
+      const wchar_t* filePath,
+      qgl_version_t v);
 
    /*
     Opens a content project file in read-write mode. The storage file must
@@ -128,5 +129,6 @@ namespace qgl::content
     file is not valid, this throws an exception.
     */
    extern QGL_CONTENT_API icontent_project* qgl_open_content_project(
-      const winrt::Windows::Storage::StorageFile& f);
+      const winrt::Windows::Storage::StorageFile& f,
+      qgl_version_t v);
 }

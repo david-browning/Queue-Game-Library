@@ -17,7 +17,8 @@ namespace QGL_Content_UnitTests
             L"\\ContentFileCreateNew.txt";
          DeleteFile(newFilePath.c_str());
 
-         auto cf = qgl_open_content_file(newFilePath.c_str());
+         auto cf = qgl_open_content_file(newFilePath.c_str(),
+                                         qgl::QGL_VERSION_0_1_WIN);
          cf->release();
          Assert::IsTrue(true, L"The test should pass.");
       }
@@ -34,7 +35,8 @@ namespace QGL_Content_UnitTests
             L"\\ContentFileGetSetHeader.txt";
          DeleteFile(newFilePath.c_str());
 
-         auto cf = qgl_open_content_file(newFilePath.c_str());
+         auto cf = qgl_open_content_file(newFilePath.c_str(),
+                                         qgl::QGL_VERSION_0_1_WIN);
 
          CONTENT_METADATA_BUFFER meta(RESOURCE_TYPE_BRUSH,
                                       CONTENT_LOADER_ID_BRUSH,
@@ -55,7 +57,8 @@ namespace QGL_Content_UnitTests
             L"\\ContentFileGetSize.txt";
          DeleteFile(newFilePath.c_str());
 
-         auto cf = qgl_open_content_file(newFilePath.c_str());
+         auto cf = qgl_open_content_file(newFilePath.c_str(),
+                                         qgl::QGL_VERSION_0_1_WIN);
 
          Assert::AreEqual(static_cast<size_t>(0), cf->size(),
                           L"The size should be 0.");
@@ -83,7 +86,8 @@ namespace QGL_Content_UnitTests
             L"\\ContentFileSinglePushBack.txt";
          DeleteFile(newFilePath.c_str());
 
-         auto  cf = qgl_open_content_file(newFilePath.c_str());
+         auto  cf = qgl_open_content_file(newFilePath.c_str(),
+                                          qgl::QGL_VERSION_0_1_WIN);
 
          Assert::AreEqual(static_cast<size_t>(0), cf->size(),
                           L"The beginning and end iterators should be equal.");
@@ -108,7 +112,8 @@ namespace QGL_Content_UnitTests
             L"\\ContentFileMultiPushBack.txt";
          DeleteFile(newFilePath.c_str());
 
-         auto cf = qgl_open_content_file(newFilePath.c_str());
+         auto cf = qgl_open_content_file(newFilePath.c_str(),
+                                         qgl::QGL_VERSION_0_1_WIN);
          uint8_t rawBuffData[8] = { 0 };
          DATA_CONTENT_ENTRY dataBuffer1(rawBuffData, 8);
          DATA_CONTENT_ENTRY dataBuffer2(rawBuffData, 8);
@@ -159,7 +164,8 @@ namespace QGL_Content_UnitTests
             L"\\ContentFileFlush.txt";
          DeleteFile(newFilePath.c_str());
 
-         auto cf = qgl_open_content_file(newFilePath.c_str());
+         auto cf = qgl_open_content_file(newFilePath.c_str(),
+                                         qgl::QGL_VERSION_0_1_WIN);
          std::vector<uint8_t> rawBuffData = { 0 };
          DATA_CONTENT_ENTRY buffData(rawBuffData);
 
@@ -202,7 +208,8 @@ namespace QGL_Content_UnitTests
                                             CONTENT_LOADER_ID_BRUSH,
                                             L"Brush");
 
-         auto cf = qgl_open_content_file(newFilePath.c_str());
+         auto cf = qgl_open_content_file(newFilePath.c_str(),
+                                         qgl::QGL_VERSION_0_1_WIN);
          *cf->header() = CONTENT_FILE_HEADER_BUFFER(&headerMeta);
 
          CONTENT_METADATA_BUFFER meta1(RESOURCE_TYPE_FLOAT,
@@ -218,7 +225,8 @@ namespace QGL_Content_UnitTests
 
          cf->flush();
 
-         auto cfOpen = qgl_open_content_file(newFilePath.c_str());
+         auto cfOpen = qgl_open_content_file(newFilePath.c_str(),
+                                             qgl::QGL_VERSION_0_1_WIN);
 
          Assert::IsTrue(*cf->header() == *cfOpen->header(),
                         L"The headers are not equal.");
@@ -241,7 +249,8 @@ namespace QGL_Content_UnitTests
                                             CONTENT_LOADER_ID_BRUSH,
                                             L"Brush");
 
-         auto cf = qgl_open_content_file(newFilePath.c_str());
+         auto cf = qgl_open_content_file(newFilePath.c_str(),
+                                         qgl::QGL_VERSION_0_1_WIN);
          *cf->header() = CONTENT_FILE_HEADER_BUFFER(&headerMeta);
 
          CONTENT_METADATA_BUFFER meta1(RESOURCE_TYPE_FLOAT,
@@ -265,14 +274,16 @@ namespace QGL_Content_UnitTests
          DATA_CONTENT_ENTRY bluedata(rawbluedata);
 
          {
-            auto cfOpen = qgl_open_content_file(newFilePath.c_str());
+            auto cfOpen = qgl_open_content_file(newFilePath.c_str(),
+                                                qgl::QGL_VERSION_0_1_WIN);
             cfOpen->push_back(&meta3, &bluedata);
             cfOpen->flush();
             cfOpen->release();
          }
 
          {
-            auto cfOpen = qgl_open_content_file(newFilePath.c_str());
+            auto cfOpen = qgl_open_content_file(newFilePath.c_str(),
+                                                qgl::QGL_VERSION_0_1_WIN);
             Assert::IsTrue(*(cfOpen->operator[](2)->metadata()) == meta3,
                            L"The last dictionary entry is not correct.");
             cfOpen->release();
@@ -287,7 +298,8 @@ namespace QGL_Content_UnitTests
             L"CreateNewStorageContentFile.txt",
             CreationCollisionOption::ReplaceExisting);
 
-         auto cf = qgl_open_content_file(f);
+         auto cf = qgl_open_content_file(f,
+                                         qgl::QGL_VERSION_0_1_WIN);
          cf->release();
          Assert::IsTrue(true, L"The test should pass.");
       }
