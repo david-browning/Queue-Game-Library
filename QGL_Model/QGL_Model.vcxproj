@@ -142,6 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\annotations.h" />
+    <ClInclude Include="include\Interfaces\qgl_interface.h" />
     <ClInclude Include="include\Memory\qgl_mem.h" />
     <ClInclude Include="include\Memory\qgl_mem_tmpl.h" />
     <ClInclude Include="include\Observer-Observable\qgl_callback_observer.h" />

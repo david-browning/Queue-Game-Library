@@ -35,6 +35,9 @@
     <Filter Include="Source Files\Physical">
       <UniqueIdentifier>{eb1b772e-ed67-49b7-a90b-41f7ee710520}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Interfaces">
+      <UniqueIdentifier>{ca2b5dc4-045b-45e2-9c54-c02b0e26146a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLModel.h">
@@ -90,6 +93,9 @@
     </ClInclude>
     <ClInclude Include="include\Physical\qgl_body.h">
       <Filter>Header Files\Physical</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Interfaces\qgl_interface.h">
+      <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
