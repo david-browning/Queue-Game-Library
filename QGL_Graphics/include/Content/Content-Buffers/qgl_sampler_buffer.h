@@ -3,7 +3,7 @@
 
 namespace qgl::content::buffers
 {
-   struct QGL_GRAPHICS_API SAMPLER_BUFFER
+   struct QGL_GRAPHICS_API SAMPLER_BUFFER final
    {
       public:
       SAMPLER_BUFFER();

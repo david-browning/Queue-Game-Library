@@ -3,7 +3,7 @@
 
 namespace qgl::content::buffers
 {
-   struct QGL_GRAPHICS_API DEPTH_STENCIL_BUFFER
+   struct QGL_GRAPHICS_API DEPTH_STENCIL_BUFFER final
    {
       public:
       constexpr DEPTH_STENCIL_BUFFER();

@@ -3,7 +3,7 @@
 
 namespace qgl::content::buffers
 {
-   struct QGL_GRAPHICS_API BLEND_DESC
+   struct QGL_GRAPHICS_API BLEND_DESC final
    {
       public:
       /*

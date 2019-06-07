@@ -15,7 +15,7 @@ namespace qgl::content::buffers
     Describes a blender which is used by a graphics pipeline state.
     https://tinyurl.com/d3d12-blend-desc
     */
-   struct QGL_GRAPHICS_API BLENDER_BUFFER
+   struct QGL_GRAPHICS_API BLENDER_BUFFER final
    {
       public:
       /*

@@ -7,7 +7,7 @@ namespace qgl::content
     /*
      Dictionaries store entries, which map to content data.
      */
-   struct QGL_CONTENT_API CONTENT_DICTIONARY_ENTRY_BUFFER
+   struct QGL_CONTENT_API CONTENT_DICTIONARY_ENTRY_BUFFER final
    {
       friend class content_file;
 

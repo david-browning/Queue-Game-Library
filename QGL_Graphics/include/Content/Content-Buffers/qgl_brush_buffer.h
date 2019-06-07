@@ -12,7 +12,7 @@ namespace qgl::content::buffers
 
    static constexpr size_t BRUSH_FORMAT_BUFFER_MAX_GRADIANT_STOPS = 16;
 
-   struct QGL_GRAPHICS_API BRUSH_BUFFER
+   struct QGL_GRAPHICS_API BRUSH_BUFFER final
    {
       public:
       /*

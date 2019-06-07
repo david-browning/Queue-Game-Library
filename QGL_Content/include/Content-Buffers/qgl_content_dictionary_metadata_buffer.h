@@ -6,7 +6,7 @@ namespace qgl::content
     /*
      This is metadata for a content dictionary.
      */
-   struct QGL_CONTENT_API CONTENT_DICTIONARY_METADATA_BUFFER
+   struct QGL_CONTENT_API CONTENT_DICTIONARY_METADATA_BUFFER final
    {
       public:
       static constexpr uint64_t DEFAULT_FLAGS = 0;

@@ -3,7 +3,7 @@
 
 namespace qgl::content::buffers
 {
-   struct QGL_GRAPHICS_API RASTERIZER_BUFFER
+   struct QGL_GRAPHICS_API RASTERIZER_BUFFER final
    {
       public:
       /*

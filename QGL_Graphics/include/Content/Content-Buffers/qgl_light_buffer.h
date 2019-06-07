@@ -3,7 +3,7 @@
 
 namespace qgl::content::buffers
 {
-   struct QGL_GRAPHICS_API LIGHT_BUFFER
+   struct QGL_GRAPHICS_API LIGHT_BUFFER final
    {
       public:
       /*
