@@ -17,8 +17,8 @@ namespace QGL_Content_UnitTests
             L"\\ContentFileCreateNew.txt";
          DeleteFile(newFilePath.c_str());
 
-         auto cf = new content_file(newFilePath.c_str());
-         delete cf;
+         auto cf = qgl_open_content_file(newFilePath.c_str());
+         cf->release();
          Assert::IsTrue(true, L"The test should pass.");
       }
 
@@ -34,17 +34,18 @@ namespace QGL_Content_UnitTests
             L"\\ContentFileGetSetHeader.txt";
          DeleteFile(newFilePath.c_str());
 
-         content_file cf(newFilePath.c_str());
+         auto cf = qgl_open_content_file(newFilePath.c_str());
 
          CONTENT_METADATA_BUFFER meta(RESOURCE_TYPE_BRUSH,
                                       CONTENT_LOADER_ID_BRUSH,
                                       L"Brush");
          CONTENT_FILE_HEADER_BUFFER newHeader(&meta);
 
-         *cf.header() = newHeader;
+         *cf->header() = newHeader;
 
-         Assert::IsTrue(*cf.header() == newHeader,
+         Assert::IsTrue(*cf->header() == newHeader,
                         L"The headers should be equal.");
+         cf->release();
       }
 
       TEST_METHOD(GetSize)
@@ -54,24 +55,25 @@ namespace QGL_Content_UnitTests
             L"\\ContentFileGetSize.txt";
          DeleteFile(newFilePath.c_str());
 
-         content_file cf(newFilePath.c_str());
+         auto cf = qgl_open_content_file(newFilePath.c_str());
 
-         Assert::AreEqual(static_cast<size_t>(0), cf.size(),
+         Assert::AreEqual(static_cast<size_t>(0), cf->size(),
                           L"The size should be 0.");
 
          CONTENT_METADATA_BUFFER meta(RESOURCE_TYPE_BRUSH,
                                       CONTENT_LOADER_ID_BRUSH,
                                       L"Brush");
          SHARED_CONTENT_ENTRY sharedPathEntry(L"Q:Shared Path");
-         cf.push_back(&meta, &sharedPathEntry);
-         Assert::AreEqual(static_cast<size_t>(1), cf.size(),
+         cf->push_back(&meta, &sharedPathEntry);
+         Assert::AreEqual(static_cast<size_t>(1), cf->size(),
                           L"The size should be 1.");
 
          uint8_t buffData[8] = { 0 };
          DATA_CONTENT_ENTRY dataBuffer(buffData, 8);
-         cf.push_back(&meta, &dataBuffer);
-         Assert::AreEqual(static_cast<size_t>(2), cf.size(),
+         cf->push_back(&meta, &dataBuffer);
+         Assert::AreEqual(static_cast<size_t>(2), cf->size(),
                           L"The size should be 2.");
+         cf->release();
       }
 
       TEST_METHOD(SinglePushBackAndIterator)
@@ -81,10 +83,10 @@ namespace QGL_Content_UnitTests
             L"\\ContentFileSinglePushBack.txt";
          DeleteFile(newFilePath.c_str());
 
-         content_file cf(newFilePath.c_str());
+         auto  cf = qgl_open_content_file(newFilePath.c_str());
 
-         Assert::AreEqual(static_cast<size_t>(0),cf.size(),
-                        L"The beginning and end iterators should be equal.");
+         Assert::AreEqual(static_cast<size_t>(0), cf->size(),
+                          L"The beginning and end iterators should be equal.");
 
          uint8_t buffData[8] = { 0 };
          DATA_CONTENT_ENTRY dataBuffer1(buffData, 8);
@@ -92,10 +94,11 @@ namespace QGL_Content_UnitTests
                                       CONTENT_LOADER_ID_BRUSH,
                                       L"Brush");
 
-         cf.push_back(&meta, &dataBuffer1);
+         cf->push_back(&meta, &dataBuffer1);
 
-         Assert::IsTrue(*(cf[0].metadata()) == meta,
+         Assert::IsTrue(*(cf->operator[](0)->metadata()) == meta,
                         L"The metadata should be equal.");
+         cf->release();
       }
 
       TEST_METHOD(MultiPushBackAndIterator)
@@ -105,7 +108,7 @@ namespace QGL_Content_UnitTests
             L"\\ContentFileMultiPushBack.txt";
          DeleteFile(newFilePath.c_str());
 
-         content_file cf(newFilePath.c_str());
+         auto cf = qgl_open_content_file(newFilePath.c_str());
          uint8_t rawBuffData[8] = { 0 };
          DATA_CONTENT_ENTRY dataBuffer1(rawBuffData, 8);
          DATA_CONTENT_ENTRY dataBuffer2(rawBuffData, 8);
@@ -118,34 +121,35 @@ namespace QGL_Content_UnitTests
                                        CONTENT_LOADER_ID_CAMERA,
                                        L"Camera");
 
-         cf.push_back(&meta1, &dataBuffer1);
-         cf.push_back(&meta2, &dataBuffer2);
+         cf->push_back(&meta1, &dataBuffer1);
+         cf->push_back(&meta2, &dataBuffer2);
          SHARED_CONTENT_ENTRY sharedPath1(L"Q:Shared Path 1");
          SHARED_CONTENT_ENTRY sharedPath2(L"V:Shared Path 2");
-         cf.push_back(&meta1, &sharedPath1);
-         cf.push_back(&meta2, &sharedPath2);
+         cf->push_back(&meta1, &sharedPath1);
+         cf->push_back(&meta2, &sharedPath2);
 
-         for(size_t i = 0; i < cf.size(); i++)
+         for (size_t i = 0; i < cf->size(); i++)
          {
-            auto& entry = cf[i];
+            auto entry = cf->operator[](i);
             if (i & 1)
             {
-               Assert::IsTrue(meta2 == *entry.metadata(),
+               Assert::IsTrue(meta2 == *entry->metadata(),
                               L"Entry should be meta2.");
             }
             else
             {
-               Assert::IsTrue(meta1 == *entry.metadata(),
+               Assert::IsTrue(meta1 == *entry->metadata(),
                               L"Entry should be meta1.");
             }
             if (i > 1)
             {
-               Assert::IsTrue(entry.shared(),
+               Assert::IsTrue(entry->shared(),
                               L"Entry should be shared.");
             }
 
             i++;
          }
+         cf->release();
       }
 
       TEST_METHOD(Flush)
@@ -155,7 +159,7 @@ namespace QGL_Content_UnitTests
             L"\\ContentFileFlush.txt";
          DeleteFile(newFilePath.c_str());
 
-         content_file cf(newFilePath.c_str());
+         auto cf = qgl_open_content_file(newFilePath.c_str());
          std::vector<uint8_t> rawBuffData = { 0 };
          DATA_CONTENT_ENTRY buffData(rawBuffData);
 
@@ -167,22 +171,24 @@ namespace QGL_Content_UnitTests
                                        CONTENT_LOADER_ID_CAMERA,
                                        L"Camera");
 
-         cf.push_back(&meta1, &buffData);
-         cf.push_back(&meta2, &buffData);
+         cf->push_back(&meta1, &buffData);
+         cf->push_back(&meta2, &buffData);
          SHARED_CONTENT_ENTRY sharedPath1(L"Q:Shared Path 1");
          SHARED_CONTENT_ENTRY sharedPath2(L"V:Shared Path 2");
-         cf.push_back(&meta1, &sharedPath1);
-         cf.push_back(&meta2, &sharedPath2);
+         cf->push_back(&meta1, &sharedPath1);
+         cf->push_back(&meta2, &sharedPath2);
 
          //This should not throw an exception.
          try
          {
-            cf.flush();
+            cf->flush();
          }
          catch (...)
          {
             Assert::Fail(L"An exception happened.");
          }
+
+         cf->release();
       }
 
       TEST_METHOD(OpenExistingFile)
@@ -196,8 +202,8 @@ namespace QGL_Content_UnitTests
                                             CONTENT_LOADER_ID_BRUSH,
                                             L"Brush");
 
-         content_file cf(newFilePath.c_str());
-         *cf.header() = CONTENT_FILE_HEADER_BUFFER(&headerMeta);
+         auto cf = qgl_open_content_file(newFilePath.c_str());
+         *cf->header() = CONTENT_FILE_HEADER_BUFFER(&headerMeta);
 
          CONTENT_METADATA_BUFFER meta1(RESOURCE_TYPE_FLOAT,
                                        CONTENT_LOADER_ID_STRING,
@@ -207,19 +213,21 @@ namespace QGL_Content_UnitTests
                                        L"Green Value");
          SHARED_CONTENT_ENTRY sharedPath1(L"Q:Shared Path 1");
          SHARED_CONTENT_ENTRY sharedPath2(L"V:Shared Path 2");
-         cf.push_back(&meta1, &sharedPath1);
-         cf.push_back(&meta2, &sharedPath2);
+         cf->push_back(&meta1, &sharedPath1);
+         cf->push_back(&meta2, &sharedPath2);
 
-         cf.flush();
+         cf->flush();
 
-         content_file cfOpen(newFilePath.c_str());
+         auto cfOpen = qgl_open_content_file(newFilePath.c_str());
 
-         Assert::IsTrue(*cf.header() == *cfOpen.header(),
+         Assert::IsTrue(*cf->header() == *cfOpen->header(),
                         L"The headers are not equal.");
 
-         Assert::AreEqual(cf.size(), cfOpen.size(),
+         Assert::AreEqual(cf->size(), cfOpen->size(),
                           L"The content files do not have the same number of"
                           " entries.");
+         cf->release();
+         cfOpen->release();
       }
 
       TEST_METHOD(ModifyExistingFile)
@@ -233,8 +241,8 @@ namespace QGL_Content_UnitTests
                                             CONTENT_LOADER_ID_BRUSH,
                                             L"Brush");
 
-         content_file cf(newFilePath.c_str());
-         *cf.header() = CONTENT_FILE_HEADER_BUFFER(&headerMeta);
+         auto cf = qgl_open_content_file(newFilePath.c_str());
+         *cf->header() = CONTENT_FILE_HEADER_BUFFER(&headerMeta);
 
          CONTENT_METADATA_BUFFER meta1(RESOURCE_TYPE_FLOAT,
                                        CONTENT_LOADER_ID_STRING,
@@ -245,11 +253,10 @@ namespace QGL_Content_UnitTests
          SHARED_CONTENT_ENTRY sharedPath1(L"Q:Shared Path 1");
          SHARED_CONTENT_ENTRY sharedPath2(L"V:Shared Path 2");
 
-         cf.push_back(&meta1, &sharedPath1);
-         cf.push_back(&meta2, &sharedPath2);
-
-         cf.flush();
-
+         cf->push_back(&meta1, &sharedPath1);
+         cf->push_back(&meta2, &sharedPath2);
+         cf->flush();
+         cf->release();
 
          CONTENT_METADATA_BUFFER meta3(RESOURCE_TYPE_FLOAT,
                                        CONTENT_LOADER_ID_STRING,
@@ -258,15 +265,17 @@ namespace QGL_Content_UnitTests
          DATA_CONTENT_ENTRY bluedata(rawbluedata);
 
          {
-            content_file cfOpen(newFilePath.c_str());
-            cfOpen.push_back(&meta3, &bluedata);
-            cfOpen.flush();
+            auto cfOpen = qgl_open_content_file(newFilePath.c_str());
+            cfOpen->push_back(&meta3, &bluedata);
+            cfOpen->flush();
+            cfOpen->release();
          }
-         
+
          {
-            content_file cfOpen(newFilePath.c_str());
-            Assert::IsTrue(*(cfOpen[2].metadata()) == meta3,
+            auto cfOpen = qgl_open_content_file(newFilePath.c_str());
+            Assert::IsTrue(*(cfOpen->operator[](2)->metadata()) == meta3,
                            L"The last dictionary entry is not correct.");
+            cfOpen->release();
          }
       }
 
@@ -278,8 +287,8 @@ namespace QGL_Content_UnitTests
             L"CreateNewStorageContentFile.txt",
             CreationCollisionOption::ReplaceExisting);
 
-         content_file cf(f);
-
+         auto cf = qgl_open_content_file(f);
+         cf->release();
          Assert::IsTrue(true, L"The test should pass.");
       }
    };

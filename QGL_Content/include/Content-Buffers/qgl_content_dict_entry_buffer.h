@@ -9,7 +9,7 @@ namespace qgl::content
      */
    struct QGL_CONTENT_API CONTENT_DICTIONARY_ENTRY_BUFFER final
    {
-      friend class content_file;
+      friend struct content_file;
 
       public:
       /*

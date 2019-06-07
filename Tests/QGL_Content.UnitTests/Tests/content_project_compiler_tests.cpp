@@ -46,12 +46,12 @@ namespace QGL_Content_UnitTests
          }
        
          //Open the compiled project file.
-         content_file compiledFile(compiledPath.c_str());
+         auto compiledFile= qgl_open_content_file(compiledPath.c_str());
 
-         for(size_t i = 0; i < compiledFile.size(); i++)
+         for(size_t i = 0; i < compiledFile->size(); i++)
          {
-            const auto& dictEntry = compiledFile[i];
-            Assert::IsTrue(*dictEntry.metadata() == entry1Meta,
+            const auto dictEntry = compiledFile->operator[](i);
+            Assert::IsTrue(*dictEntry->metadata() == entry1Meta,
                            L"The entry metadata is not correct.");
          }
       }
@@ -109,15 +109,15 @@ namespace QGL_Content_UnitTests
          auto contentF = co_await root.CreateFileAsync(
             L"CompiledContentProject.txt",
             CreationCollisionOption::OpenIfExists);
-         content_file file(contentF);
+         auto file = qgl_open_content_file(contentF);
 
          //Verify the header metadata is correct.
-         Assert::IsTrue(*file.header()->metadata() == projectMeta,
+         Assert::IsTrue(*file->header()->metadata() == projectMeta,
                         L"The metadata is not correct.");
 
-         for(size_t i = 0; i < file.size(); i++)
+         for(size_t i = 0; i < file->size(); i++)
          {
-            Assert::IsTrue(*file[i].metadata() == entry1Meta,
+            Assert::IsTrue(*file->operator[](i)->metadata() == entry1Meta,
                            L"Entry 1 meta is not correct.");
          }
       }

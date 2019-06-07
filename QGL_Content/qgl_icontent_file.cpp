@@ -1,21 +1,16 @@
 #include "pch.h"
-#include "include/Content-Files/qgl_content_file.h"
-#include "include/Content-Files/qgl_content_file_helpers.h"
+#include "include/Interfaces/qgl_icontent_file.h"
+#include "include/Content-Buffers/qgl_content_dictionary_metadata_buffer.h"
 #include "include/qgl_file_helpers.h"
+#include "include/Content-Files/qgl_content_file_helpers.h"
 
 namespace qgl::content
 {
    using namespace content_file_helpers;
 
-   #pragma region impl
-   class content_file::impl
+   struct content_file : public icontent_file
    {
-      public:
-      using dictionary_container_t = 
-         std::vector<CONTENT_DICTIONARY_ENTRY_BUFFER>;
-      using content_container_t = std::vector<content_variant_entry>;
-
-      impl(const wchar_t* filePath)
+      content_file(const wchar_t* filePath)
       {
          bool existingFile = file_exists(filePath);
          open_file_readwrite(filePath, &m_handle);
@@ -27,7 +22,7 @@ namespace qgl::content
          }
       }
 
-      impl(const winrt::Windows::Storage::StorageFile& f)
+      content_file(const winrt::Windows::Storage::StorageFile& f)
       {
          bool existingFile = file_size(f) > 0;
          open_file_readwrite(f, &m_handle);
@@ -39,62 +34,30 @@ namespace qgl::content
          }
       }
 
-      impl(const impl&) = delete;
+      /*
+       Cannot copy a file.
+       */
+      content_file(const content_file&) = delete;
 
-      impl(impl&& m) = default;
+      /*
+       Move constructor.
+       */
+      content_file(content_file&&) = default;
 
-      ~impl() noexcept = default;
+      /*
+       The destructor does not flush the file but does close the file handle.
+       If the file is not flushed and this goes out of scope, any changes to
+       the file will be lost.
+       */
+      virtual ~content_file() noexcept = default;
 
-      void push_back(const CONTENT_METADATA_BUFFER* meta,
-                     const DATA_CONTENT_ENTRY* buff)
+      virtual void release()
       {
-         content_variant_entry cont(buff);
-         CONTENT_DICTIONARY_ENTRY_BUFFER entry(buff->size(), meta);
-         entry.shared(false);
-
-         m_entryDataToWrite.push_back(std::move(cont));
-         m_dict.push_back(std::move(entry));
+         //Calls the destructor.
+         delete this;
       }
 
-      void push_back(const CONTENT_METADATA_BUFFER* meta,
-                     const SHARED_CONTENT_ENTRY* buff)
-      {
-         content_variant_entry cont(buff);
-         CONTENT_DICTIONARY_ENTRY_BUFFER entry(shared_entry_data_size(buff),
-                                               meta);
-         entry.shared(true);
-
-         m_entryDataToWrite.push_back(std::move(cont));
-         m_dict.push_back(std::move(entry));
-      }
-
-      void pop_back()
-      {
-         m_dict.pop_back();
-         m_entryDataToWrite.pop_back();
-      }
-
-      const CONTENT_FILE_HEADER_BUFFER* header() const noexcept
-      {
-         return &m_header;
-      }
-
-      CONTENT_FILE_HEADER_BUFFER* header()
-      {
-         return &m_header;
-      }
-
-      size_t size() const noexcept
-      {
-         return m_dict.size();
-      }
-
-      const file_handle& handle() const noexcept
-      {
-         return m_handle;
-      }
-
-      void flush()
+      virtual void flush()
       {
           //Write the header.
          content_file_helpers::write_header(&m_handle, m_header);
@@ -123,7 +86,7 @@ namespace qgl::content
 
          auto entryIt = m_dict.begin();
          auto contentIt = m_entryDataToWrite.begin();
-         for (; entryIt != m_dict.end() && 
+         for (; entryIt != m_dict.end() &&
               contentIt != m_entryDataToWrite.end();
               ++entryIt, ++contentIt)
          {
@@ -148,15 +111,59 @@ namespace qgl::content
          }
       }
 
-      CONTENT_DICTIONARY_ENTRY_BUFFER& operator[](size_t idx) noexcept
+      virtual void push_back(const CONTENT_METADATA_BUFFER* meta,
+                             const DATA_CONTENT_ENTRY* buff)
       {
-         return m_dict[idx];
+         content_variant_entry cont(buff);
+         CONTENT_DICTIONARY_ENTRY_BUFFER entry(buff->size(), meta);
+         entry.shared(false);
+
+         m_entryDataToWrite.push_back(std::move(cont));
+         m_dict.push_back(std::move(entry));
       }
 
-      const CONTENT_DICTIONARY_ENTRY_BUFFER& operator[](size_t idx) 
-         const noexcept
+      virtual void push_back(const CONTENT_METADATA_BUFFER* meta,
+                             const SHARED_CONTENT_ENTRY* buff)
       {
-         return m_dict[idx];
+         content_variant_entry cont(buff);
+         CONTENT_DICTIONARY_ENTRY_BUFFER entry(shared_entry_data_size(buff),
+                                               meta);
+         entry.shared(true);
+
+         m_entryDataToWrite.push_back(std::move(cont));
+         m_dict.push_back(std::move(entry));
+      }
+
+      virtual const CONTENT_FILE_HEADER_BUFFER* header() const noexcept
+      {
+         return &m_header;
+      }
+
+      virtual CONTENT_FILE_HEADER_BUFFER* header() noexcept
+      {
+         return &m_header;
+      }
+
+      virtual size_t size() const noexcept
+      {
+         return m_dict.size();
+      }
+
+      virtual const file_handle* handle() const noexcept
+      {
+         return &m_handle;
+      }
+
+      virtual CONTENT_DICTIONARY_ENTRY_BUFFER* operator[](
+         size_t idx) noexcept
+      {
+         return &m_dict[idx];
+      }
+
+      virtual const CONTENT_DICTIONARY_ENTRY_BUFFER* operator[](
+         size_t idx) const noexcept
+      {
+         return &m_dict[idx];
       }
 
       private:
@@ -221,77 +228,15 @@ namespace qgl::content
        */
       file_handle m_handle;
    };
-   #pragma endregion
 
-   content_file::content_file(const wchar_t* filePath) :
-      m_impl_p(new impl(filePath))
+   icontent_file* qgl_open_content_file(const wchar_t* filePath)
    {
-
+      return new content_file(filePath);
    }
 
-   content_file::content_file(const winrt::Windows::Storage::StorageFile& f) :
-      m_impl_p(new impl(f))
+   icontent_file* qgl_open_content_file(
+      const winrt::Windows::Storage::StorageFile& f)
    {
-   }
-
-   content_file::content_file(content_file&& m)
-   {
-      delete m_impl_p;
-      m_impl_p = m.m_impl_p;
-      m.m_impl_p = nullptr;
-   }
-
-   content_file::~content_file() noexcept
-   {
-      delete m_impl_p;
-   }
-
-   void content_file::flush()
-   {
-      m_impl_p->flush();
-   }
-
-   void content_file::push_back(const CONTENT_METADATA_BUFFER* meta,
-                                const DATA_CONTENT_ENTRY* buff)
-   {
-      m_impl_p->push_back(meta, buff);
-   }
-
-   void content_file::push_back(const CONTENT_METADATA_BUFFER* meta,
-                                const SHARED_CONTENT_ENTRY* buff)
-   {
-      m_impl_p->push_back(meta, buff);
-   }
-
-   const CONTENT_FILE_HEADER_BUFFER* content_file::header() const noexcept
-   {
-      return m_impl_p->header();
-   }
-
-   CONTENT_FILE_HEADER_BUFFER* content_file::header()
-   {
-      return m_impl_p->header();
-   }
-
-   size_t content_file::size() const noexcept
-   {
-      return m_impl_p->size();
-   }
-
-   const file_handle* content_file::handle() const noexcept
-   {
-      return &m_impl_p->handle();
-   }
-
-   CONTENT_DICTIONARY_ENTRY_BUFFER& content_file::operator[](
-      size_t idx) noexcept
-   {
-      return (*m_impl_p)[idx];
-   }
-
-   const CONTENT_DICTIONARY_ENTRY_BUFFER& content_file::operator[](
-      size_t idx) const noexcept
-   {
-      return (*m_impl_p)[idx];
+      return new content_file(f);
    }
 }

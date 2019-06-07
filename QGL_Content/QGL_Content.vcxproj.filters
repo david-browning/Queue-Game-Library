@@ -65,6 +65,12 @@
     <Filter Include="Source Files\Content-Items">
       <UniqueIdentifier>{403a4da7-d985-44d8-9ea4-eec6be865513}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Interfaces">
+      <UniqueIdentifier>{1f43e97c-fb23-4018-8ef4-ccc528f43c25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Interfaces">
+      <UniqueIdentifier>{a9e37a01-2245-4656-b036-3cbaf18eee7e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
@@ -115,9 +121,6 @@
     <ClCompile Include="qgl_file_helpers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="qgl_content_file.cpp">
-      <Filter>Source Files\Content-Files</Filter>
-    </ClCompile>
     <ClCompile Include="qgl_data_content_entry.cpp">
       <Filter>Source Files\Content-Files</Filter>
     </ClCompile>
@@ -141,6 +144,9 @@
     </ClCompile>
     <ClCompile Include="qgl_string_item.cpp">
       <Filter>Source Files\Content-Items</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_icontent_file.cpp">
+      <Filter>Source Files\Interfaces</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -179,9 +185,6 @@
     </ClInclude>
     <ClInclude Include="include\Content-Importers\qgl_importer_wstring.h">
       <Filter>Header Files\Content-Importers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Content-Files\qgl_content_file.h">
-      <Filter>Header Files\Content-Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Content-Files\qgl_content_file_helpers.h">
       <Filter>Header Files\Content-Files</Filter>
@@ -243,6 +246,9 @@
     </ClInclude>
     <ClInclude Include="include\Content-Items\qgl_wstring_item.h">
       <Filter>Header Files\Content-Items</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Interfaces\qgl_icontent_file.h">
+      <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -47,7 +47,7 @@ namespace QGL_Content_UnitTests
        Create a file, write some data to it, close the file, re-open it and
        read the first half of the data.
        */
-      TEST_METHOD(WriteFirstPartAndVerify)
+      /*TEST_METHOD(WriteFirstPartAndVerify)
       {
          auto root = ApplicationData::Current().LocalFolder().Path();
          winrt::hstring newFilePath(root + L"\\WriteFirstPartAndVerify.txt");
@@ -68,39 +68,39 @@ namespace QGL_Content_UnitTests
 
          Assert::IsTrue(memcmp(readBuffer, data_to_rw, data_size / 2) == 0,
                         L"The data is not the same.");
-      }
+      }*/
 
       /*
        Create a file, write some data to it, close the file, re-open it and
        read the second half of the data.
        */
-      TEST_METHOD(WriteSecondPartAndVerify)
-      {
-         auto root = ApplicationData::Current().LocalFolder().Path();
-         winrt::hstring newFilePath(root + L"\\WriteSecondPartAndVerify.txt");
-         DeleteFile(newFilePath.c_str());
+      //TEST_METHOD(WriteSecondPartAndVerify)
+      //{
+      //   auto root = ApplicationData::Current().LocalFolder().Path();
+      //   winrt::hstring newFilePath(root + L"\\WriteSecondPartAndVerify.txt");
+      //   DeleteFile(newFilePath.c_str());
 
-         file_handle handle;
-         open_file_write(newFilePath.c_str(), &handle);
-         write_file_sync(&handle, data_size / 2, data_size / 2,
-                         data_to_rw + (data_size / 2));
+      //   file_handle handle;
+      //   open_file_write(newFilePath.c_str(), &handle);
+      //   write_file_sync(&handle, data_size / 2, data_size / 2,
+      //                   data_to_rw + (data_size / 2));
 
-         handle.close();
+      //   handle.close();
 
-         open_file_read(newFilePath.c_str(), &handle);
-         char readBuffer[data_size / 2] = { 0 };
-         DWORD bytesRead = 0;
-         OVERLAPPED offsetOverlapped;
-         make_overlapped(data_size / 2, &offsetOverlapped);
-         auto result = ReadFile(handle.get(), readBuffer, data_size / 2,
-                                &bytesRead, &offsetOverlapped);
+      //   open_file_read(newFilePath.c_str(), &handle);
+      //   char readBuffer[data_size / 2] = { 0 };
+      //   DWORD bytesRead = 0;
+      //   OVERLAPPED offsetOverlapped;
+      //   make_overlapped(data_size / 2, &offsetOverlapped);
+      //   auto result = ReadFile(handle.get(), readBuffer, data_size / 2,
+      //                          &bytesRead, &offsetOverlapped);
 
-         Assert::IsTrue(result != 0, L"Could not read the file.");
+      //   Assert::IsTrue(result != 0, L"Could not read the file.");
 
-         Assert::IsTrue(memcmp(readBuffer, data_to_rw + (data_size / 2),
-                               data_size / 2) == 0,
-                        L"The data is not correct.");
-      }
+      //   Assert::IsTrue(memcmp(readBuffer, data_to_rw + (data_size / 2),
+      //                         data_size / 2) == 0,
+      //                  L"The data is not correct.");
+      //}
      
       private:
       static const size_t data_size = 10;

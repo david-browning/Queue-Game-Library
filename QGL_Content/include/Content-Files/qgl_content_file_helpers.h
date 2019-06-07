@@ -15,7 +15,7 @@ namespace qgl::content::content_file_helpers
     Throws an exception if there is an error reading.
     */
    extern CONTENT_FILE_HEADER_BUFFER load_header(const file_handle* hndl);
-
+   
    /*
     Reads the dictionary metadata from a content file at the offset.
     The offset is stored in the file's header.
