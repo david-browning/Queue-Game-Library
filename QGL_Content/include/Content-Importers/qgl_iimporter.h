@@ -3,7 +3,7 @@
 #include "include/Content-Items/qgl_content_item.h"
 #include "include/qgl_content_types.h"
 #include "include/Content-Buffers/qgl_content_dict_entry_buffer.h"
-
+#include <type_traits>
 
 namespace qgl::content
 {
@@ -41,6 +41,12 @@ namespace qgl::content
       typename DictMakeFunction>
    struct ientry_importer
    {
+      static_assert(std::is_trivially_constructible<LoadFunction>::value,
+                    "LoadFunction must be trivially constructible.");
+
+      static_assert(std::is_trivially_constructible<DictMakeFunction>::value,
+                    "DictMakeFunction must be trivially constructible.");
+
       public:
       /*
        Loads content from a file using the lookup data.
