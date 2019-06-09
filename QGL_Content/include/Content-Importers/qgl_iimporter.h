@@ -4,8 +4,32 @@
 #include "include/qgl_content_types.h"
 #include "include/Content-Buffers/qgl_content_dict_entry_buffer.h"
 
+
 namespace qgl::content
 {
+   #ifdef DEBUG
+   //These structs only exist to instantiate a template at design time.
+   struct test_entry_loader
+   {
+      int operator()(const file_handle&,
+                     const CONTENT_DICTIONARY_ENTRY_BUFFER&) const
+      {
+         return 0;
+      }
+   };
+
+   struct test_dict_export
+   {
+      CONTENT_DICTIONARY_ENTRY_BUFFER operator()(const int&,
+                                                 const wchar_t*,
+                                                 size_t) const
+      {
+         return CONTENT_DICTIONARY_ENTRY_BUFFER();
+      }
+   };
+
+   #endif
+
    /*
     Entry importers load data stored in a content file.
     Overload load and dict_entry when implementing this class.
@@ -26,7 +50,8 @@ namespace qgl::content
       LoadT load(const file_handle& fileHandle,
                  const CONTENT_DICTIONARY_ENTRY_BUFFER& lookup) const
       {
-         return LoadFunction(fileHandle, lookup);
+         LoadFunction ret;
+         return ret(fileHandle, lookup);
       }
 
      /*
@@ -38,7 +63,8 @@ namespace qgl::content
                                                  const wchar_t* objName,
                                                  size_t offset = -1) const
       {
-         return DictMakeFunction(data, objName, offset);
+         DictMakeFunction ret;
+         return ret(data, objName, offset);
       }
    };
 }
