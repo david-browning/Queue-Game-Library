@@ -5,59 +5,48 @@
 
 namespace qgl::content
 {
-   /*
-    StructType must be a POD.
-    */
-   template<typename StructType, CONTENT_LOADER_IDS lid, RESOURCE_TYPES rid>
-   class struct_importer : public ientry_importer<StructType>
+   template<typename StructT>
+   struct struct_load_entry_fn
    {
-      static_assert(std::is_pod<StructType>::value,
+      static_assert(std::is_pod<StructT>::value,
                     "Parameter 'StructType' must be plain old data.");
 
-      public:
-      using LoadT = StructType;
-      constexpr struct_importer() :
-         ientry_importer(lid)
+      StructT operator()(const file_handle& fileHandle,
+                         const CONTENT_DICTIONARY_ENTRY_BUFFER& lookup)
       {
-
-      }
-
-      virtual ~struct_importer() noexcept
-      {
-
-      }
-
-      virtual LoadT load(const file_handle* fileHandle,
-                         const CONTENT_DICTIONARY_ENTRY_BUFFER& lookup) const
-      {
-         LoadT ret;
-         read_file_sync(fileHandle, lookup.size(), lookup.offset(), &ret);
+         StructT ret;
+         read_file_sync<StructT>(&fileHandle,
+                                 lookup.size(),
+                                 lookup.offset(),
+                                 &ret);
          return ret;
       }
+   };
 
-      virtual CONTENT_DICTIONARY_ENTRY_BUFFER dict_entry(
-         const LoadT& data,
-         const winrt::hstring& objName,
-         size_t offset = -1) const
+   template<
+      typename StructT, 
+      RESOURCE_TYPES ResourceType,
+      CONTENT_LOADER_IDS LoaderID>
+   struct struct_dict_export_fn
+   {
+      static_assert(std::is_pod<StructT>::value,
+                    "Parameter 'StructType' must be plain old data.");
+
+      CONTENT_DICTIONARY_ENTRY_BUFFER operator()(const StructT& data, 
+                                                 const wchar_t* objName,
+                                                 size_t offset)
       {
-         static CONTENT_METADATA_BUFFER info(rid, lid, objName);
+         static CONTENT_METADATA_BUFFER info(ResourceType, LoaderID, objName);
 
-         return CONTENT_DICTIONARY_ENTRY_BUFFER(sizeof(LoadT),
-                                                info,
+         return CONTENT_DICTIONARY_ENTRY_BUFFER(sizeof(StructT),
+                                                &info,
                                                 offset);
       }
    };
 
-   #pragma region Signed Integer Importers
-
-   #pragma endregion
-
-   #pragma region Unsigned Integer Importer
-
-   using uint8_importer = struct_importer<uint8_t,
-      CONTENT_LOADER_IDS::CONTENT_LOADER_ID_UINT8,
-      RESOURCE_TYPES::RESOURCE_TYPE_INTEGER>;
-
-   #pragma endregion
-
+   template<typename StructT, CONTENT_LOADER_IDS LoaderID>
+   using struct_importer = ientry_importer<StructT,
+      LoaderID,
+      struct_load_entry_fn<StructT>,
+      struct_dict_export_fn<StructT>>;
 }

@@ -17,7 +17,8 @@ namespace qgl::content
       using content_ptr_t = std::unique_ptr<content_item>;
 
       using load_function =
-         std::function<content_ptr_t(const icontent_file* f)>;
+         std::function<content_ptr_t(const icontent_file* f,
+                                     const id_t newID)>;
 
       /*
        Maps a resource type and loader ID to a loader function. 

@@ -5,49 +5,40 @@
 
 namespace qgl::content
 {
-   class string_importer : public ientry_importer<std::string>
+   struct string_load_entry_fn
    {
-      public:
-      using LoadT = std::string;
-      constexpr string_importer() :
-         ientry_importer(CONTENT_LOADER_IDS::CONTENT_LOADER_ID_STRING)
+      std::string operator()(const file_handle& fileHandle,
+                             const CONTENT_DICTIONARY_ENTRY_BUFFER& lookup)
       {
-
-      }
-
-      virtual ~string_importer() noexcept
-      {
-
-      }
-
-      virtual LoadT load(const file_handle* fileHandle,
-                         const CONTENT_DICTIONARY_ENTRY_BUFFER& lookup) const
-      {
-         //Add an extra byte for the NULL.
-         char* newStr = new char[lookup.size() + 1];
-         newStr[lookup.size()] = '\0';
-
-         read_file_sync<char>(fileHandle,
+         std::string ret(lookup.size(), '\0');
+         read_file_sync<char>(&fileHandle,
                               lookup.size(),
                               lookup.offset(),
-                              newStr);
-         std::string ret(newStr);
-         delete[] newStr;
-
+                              ret.data());
          return ret;
       }
+   };
 
-      virtual CONTENT_DICTIONARY_ENTRY_BUFFER dict_entry(
-         const LoadT& data,
-         const winrt::hstring& objName,
-         size_t offset = -1) const
+   struct string_dict_export_fn
+   {
+      CONTENT_DICTIONARY_ENTRY_BUFFER operator()(const std::string& data,
+                                                 const wchar_t* objName,
+                                                 size_t offset)
       {
          static constexpr RESOURCE_TYPES rType =
             RESOURCE_TYPES::RESOURCE_TYPE_STRING;
-         static CONTENT_METADATA_BUFFER info(rType, this->id(),
-                                             objName.c_str());
+         static CONTENT_METADATA_BUFFER info(rType,
+                                             CONTENT_LOADER_ID_STRING,
+                                             objName);
 
          return CONTENT_DICTIONARY_ENTRY_BUFFER(data.size(), &info, offset);
       }
    };
+
+
+   using string_importer = ientry_importer<
+      std::string,
+      CONTENT_LOADER_ID_STRING,
+      string_load_entry_fn,
+      string_dict_export_fn>;
 }

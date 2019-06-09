@@ -5,54 +5,40 @@
 
 namespace qgl::content
 {
-   class wstring_importer : public ientry_importer<std::wstring>
+   struct wstring_load_entry_fn
    {
-      public:
-      using LoadT = std::wstring;
-      constexpr wstring_importer() :
-         ientry_importer(CONTENT_LOADER_IDS::CONTENT_LOADER_ID_WSTRING)
+      std::wstring operator()(const file_handle& fileHandle,
+                              const CONTENT_DICTIONARY_ENTRY_BUFFER& lookup)
       {
-
-      }
-
-      virtual ~wstring_importer() noexcept
-      {
-
-      }
-
-      virtual LoadT load(const file_handle* fileHandle,
-                         const CONTENT_DICTIONARY_ENTRY_BUFFER& lookup) const
-      {
-         const size_t numChars = lookup.size() / sizeof(wchar_t);
-         wchar_t* newStr = new wchar_t[numChars + 1];
-         newStr[numChars] = L'\0';
-
-         read_file_sync<wchar_t>(fileHandle,
+         auto numChars = lookup.size() / sizeof(wchar_t);
+         std::wstring ret(numChars, L'\0');
+         read_file_sync<wchar_t>(&fileHandle,
                                  lookup.size(),
                                  lookup.offset(),
-                                 newStr);
-
-         LoadT ret(newStr);
-         delete[] newStr;
+                                 ret.data());
          return ret;
       }
+   };
 
-      virtual CONTENT_DICTIONARY_ENTRY_BUFFER dict_entry(
-         const LoadT& data,
-         const winrt::hstring& objName,
-         size_t offset = -1) const
+   struct wstring_dict_export_fn
+   {
+      CONTENT_DICTIONARY_ENTRY_BUFFER operator()(const std::wstring& data,
+                                                 const wchar_t* objName,
+                                                 size_t offset)
       {
          static constexpr RESOURCE_TYPES rType =
             RESOURCE_TYPES::RESOURCE_TYPE_STRING;
+         static CONTENT_METADATA_BUFFER info(rType,
+                                             CONTENT_LOADER_ID_WSTRING,
+                                             objName);
 
-         static CONTENT_METADATA_BUFFER info(rType, 
-                                             this->id(), 
-                                             objName.c_str());
-
-         return
-            CONTENT_DICTIONARY_ENTRY_BUFFER(data.size() * sizeof(wchar_t),
-                                            &info,
-                                            offset);
+         return CONTENT_DICTIONARY_ENTRY_BUFFER(data.size(), &info, offset);
       }
    };
+
+   using wstring_importer = ientry_importer<
+      std::wstring,
+      CONTENT_LOADER_ID_WSTRING,
+      wstring_load_entry_fn,
+      wstring_dict_export_fn>;
 }

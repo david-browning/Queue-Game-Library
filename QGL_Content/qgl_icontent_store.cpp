@@ -74,7 +74,7 @@ namespace qgl::content
          auto loaderFn = m_loadFunctionMap.at(loaderHash);
 
          //Load the content using the file loader.
-         auto contentPtr = loaderFn(f);
+         auto contentPtr = loaderFn(f, retID);
 
          //Save the unique pointer in the map.
          //Map the file to the id.
