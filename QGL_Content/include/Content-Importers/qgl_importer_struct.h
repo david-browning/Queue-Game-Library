@@ -43,10 +43,4 @@ namespace qgl::content
                                                 offset);
       }
    };
-
-   //template<typename StructT, CONTENT_LOADER_IDS LoaderID>
-   //using struct_importer = ientry_importer<StructT,
-   //   LoaderID,
-   //   struct_load_entry_fn<StructT>,
-   //   struct_dict_export_fn<StructT>>;
 }
