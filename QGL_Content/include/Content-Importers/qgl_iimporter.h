@@ -50,7 +50,7 @@ namespace qgl::content
       LoadT load(const file_handle& fileHandle,
                  const CONTENT_DICTIONARY_ENTRY_BUFFER& lookup) const
       {
-         LoadFunction ret;
+         static LoadFunction ret;
          return ret(fileHandle, lookup);
       }
 
@@ -63,7 +63,7 @@ namespace qgl::content
                                                  const wchar_t* objName,
                                                  size_t offset = -1) const
       {
-         DictMakeFunction ret;
+         static DictMakeFunction ret;
          return ret(data, objName, offset);
       }
    };
