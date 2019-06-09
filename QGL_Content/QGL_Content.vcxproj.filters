@@ -79,9 +79,6 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="qgl_content_store_config.cpp">
-      <Filter>Source Files\Content-Store</Filter>
-    </ClCompile>
     <ClCompile Include="qgl_content_dict_entry_buffer.cpp">
       <Filter>Source Files\Content-Buffers</Filter>
     </ClCompile>
@@ -103,13 +100,7 @@
     <ClCompile Include="qgl_content_file_helpers.cpp">
       <Filter>Source Files\Content-Files</Filter>
     </ClCompile>
-    <ClCompile Include="qgl_content_store.cpp">
-      <Filter>Source Files\Content-Store</Filter>
-    </ClCompile>
     <ClCompile Include="qgl_file_loader_wstring.cpp">
-      <Filter>Source Files\File-Loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_file_loader_content_store_config.cpp">
       <Filter>Source Files\File-Loaders</Filter>
     </ClCompile>
     <ClCompile Include="qgl_file_loader_string.cpp">
@@ -146,6 +137,9 @@
       <Filter>Source Files\Interfaces</Filter>
     </ClCompile>
     <ClCompile Include="qgl_icontent_project.cpp">
+      <Filter>Source Files\Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_icontent_store.cpp">
       <Filter>Source Files\Interfaces</Filter>
     </ClCompile>
   </ItemGroup>
@@ -188,15 +182,6 @@
     </ClInclude>
     <ClInclude Include="include\Content-Files\qgl_content_file_helpers.h">
       <Filter>Header Files\Content-Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Content-Store\qgl_content_store.h">
-      <Filter>Header Files\Content Store</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Content-Store\qgl_content_store_config.h">
-      <Filter>Header Files\Content Store</Filter>
-    </ClInclude>
-    <ClInclude Include="include\File-Loaders\qgl_file_loader_content_store_config.h">
-      <Filter>Header Files\File-Loaders</Filter>
     </ClInclude>
     <ClInclude Include="include\File-Loaders\qgl_file_loader_string.h">
       <Filter>Header Files\File-Loaders</Filter>
@@ -248,6 +233,9 @@
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="include\Interfaces\qgl_icontent_project.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Interfaces\qgl_icontent_store.h">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
   </ItemGroup>

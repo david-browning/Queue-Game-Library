@@ -9,6 +9,7 @@
 
 #include "include/Interfaces/qgl_icontent_file.h"
 #include "include/Interfaces/qgl_icontent_project.h"
+#include "include/Interfaces/qgl_icontent_store.h"
 
 #include "include/Content-Items/qgl_content_item.h"
 #include "include/Content-Items/qgl_string_item.h"
@@ -20,6 +21,5 @@
 #include "include/Content-Importers/qgl_importer_wstring.h"
 
 #include "include/File-Loaders/qgl_file_loaders.h"
-#include "include/Content-Store/qgl_content_store.h"
 
 #include "include/Content-Project/qgl_content_project_compiler.h"

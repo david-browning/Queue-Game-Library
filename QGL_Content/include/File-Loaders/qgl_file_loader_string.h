@@ -4,8 +4,6 @@
 
 namespace qgl::content
 {
-   struct QGL_CONTENT_API string_file_loader
-   {
-      std::shared_ptr<std::string> operator()(const icontent_file* f);
-   };
+   extern QGL_CONTENT_API std::unique_ptr<content_item> qgl_load_string_file(
+      const icontent_file* f);
 }

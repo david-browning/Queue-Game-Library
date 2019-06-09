@@ -13,7 +13,6 @@ namespace qgl::content
    class QGL_CONTENT_API content_item
    {
       public:
-
       /*
        Constructor.
        */
