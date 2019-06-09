@@ -26,9 +26,6 @@
     <Filter Include="Header Files\Content-Project">
       <UniqueIdentifier>{43969cc7-8121-4076-977d-12ff28f77390}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Content-Dictionary">
-      <UniqueIdentifier>{5a4c8f2e-74ec-4d23-a8e1-91f63e9d6846}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Content-Files">
       <UniqueIdentifier>{7afd98e3-e081-45cf-b7b9-cb189cc5e2f4}</UniqueIdentifier>
     </Filter>

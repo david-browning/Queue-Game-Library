@@ -100,7 +100,7 @@ namespace QGL_Content_UnitTests
 
          cf->push_back(&meta, &dataBuffer1);
 
-         Assert::IsTrue(*(cf->operator[](0)->metadata()) == meta,
+         Assert::IsTrue(*(cf->at(0)->metadata()) == meta,
                         L"The metadata should be equal.");
          cf->release();
       }
@@ -135,7 +135,7 @@ namespace QGL_Content_UnitTests
 
          for (size_t i = 0; i < cf->size(); i++)
          {
-            auto entry = cf->operator[](i);
+            auto entry = cf->at(i);
             if (i & 1)
             {
                Assert::IsTrue(meta2 == *entry->metadata(),
@@ -284,7 +284,7 @@ namespace QGL_Content_UnitTests
          {
             auto cfOpen = qgl_open_content_file(newFilePath.c_str(),
                                                 qgl::QGL_VERSION_0_1_WIN);
-            Assert::IsTrue(*(cfOpen->operator[](2)->metadata()) == meta3,
+            Assert::IsTrue(*(cfOpen->at(2)->metadata()) == meta3,
                            L"The last dictionary entry is not correct.");
             cfOpen->release();
          }

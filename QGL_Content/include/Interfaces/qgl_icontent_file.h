@@ -52,10 +52,10 @@ namespace qgl::content
        */
       virtual const file_handle* handle() const noexcept = 0;
 
-      virtual CONTENT_DICTIONARY_ENTRY_BUFFER* operator[](
+      virtual CONTENT_DICTIONARY_ENTRY_BUFFER* at(
          size_t idx) noexcept = 0;
 
-      virtual const CONTENT_DICTIONARY_ENTRY_BUFFER* operator[](
+      virtual const CONTENT_DICTIONARY_ENTRY_BUFFER* at(
          size_t idx) const noexcept = 0;
    };
 

@@ -154,13 +154,13 @@ namespace qgl::content
          return &m_handle;
       }
 
-      virtual CONTENT_DICTIONARY_ENTRY_BUFFER* operator[](
+      virtual CONTENT_DICTIONARY_ENTRY_BUFFER* at(
          size_t idx) noexcept
       {
          return &m_dict[idx];
       }
 
-      virtual const CONTENT_DICTIONARY_ENTRY_BUFFER* operator[](
+      virtual const CONTENT_DICTIONARY_ENTRY_BUFFER* at(
          size_t idx) const noexcept
       {
          return &m_dict[idx];

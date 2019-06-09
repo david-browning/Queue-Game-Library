@@ -52,7 +52,7 @@ namespace QGL_Content_UnitTests
 
          for (size_t i = 0; i < compiledFile->size(); i++)
          {
-            const auto dictEntry = compiledFile->operator[](i);
+            const auto dictEntry = compiledFile->at(i);
             Assert::IsTrue(*dictEntry->metadata() == entry1Meta,
                            L"The entry metadata is not correct.");
          }
@@ -123,7 +123,7 @@ namespace QGL_Content_UnitTests
 
          for (size_t i = 0; i < file->size(); i++)
          {
-            Assert::IsTrue(*file->operator[](i)->metadata() == entry1Meta,
+            Assert::IsTrue(*file->at(i)->metadata() == entry1Meta,
                            L"Entry 1 meta is not correct.");
          }
 
