@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "include/Interfaces/qgl_icontent_store.h"
+#include <execution>
 
 namespace qgl::content
 {
@@ -36,25 +37,63 @@ namespace qgl::content
          delete this;
       }
 
+      virtual id_t reserve(const wchar_t* relative)
+      {
+         //Check if the file already has an ID.
+         id_t retID = 0;
+         if (m_fileIDMap.count(relative) > 0)
+         {
+            retID = m_fileIDMap.at(relative);
+         }
+         else
+         {
+            //Lock the mutex until the function finishes.
+            std::lock_guard<std::mutex>lock(m_mappingMutex);
+
+            //File not mapped. Map it to a new ID.
+            retID = m_nextID.fetch_add(1);
+            m_fileIDMap[relative] = retID;
+            m_fileIDMapReverse[retID] = relative;
+         }
+
+         return retID;
+      }
+
+      virtual bool loaded(id_t id) const
+      {
+         return m_IDContentMap.count(id) > 0 &&
+            m_IDContentMap.at(id).has_value();
+      }
+
       virtual void map(RESOURCE_TYPES rID,
                        CONTENT_LOADER_IDS lID,
                        load_function fn)
       {
          auto h = hash(rID, lID);
+
+         //Lock the mutex until done mapping
+         std::lock_guard<std::mutex>lock(m_mappingMutex);
+
          m_loadFunctionMap[h] = fn;
       }
 
       virtual id_t load(const wchar_t* relative)
       {
-         //Check if the file already has an ID.
-         if (m_fileIDMap.count(relative) > 0)
-         {
-            //Return the ID if the path is already in the store.
-            return m_fileIDMap[relative];
-         }
+         //Get an ID for the file.
+         auto retID = reserve(relative);
 
-         //Get and then increment the ID for the content we are loading.
-         id_t retID = m_nextID.fetch_add(1);
+         //The id may have just been reserved or it was previously unloaded.
+         //Check if the ID maps to loaded content. The content is loaded if the
+         //optional has a value. When unloaded, the optional value is destroyed.
+
+         //If the content is already loaded:
+         if (m_IDContentMap.count(retID) > 0 &&
+             m_IDContentMap.at(retID).has_value())
+         {
+            //Return the ID for the already loaded content.
+            return retID;
+         }
+         //Else, continue to load the content.
 
          //Open the content file.
          //This loads the file's header and dictionary.
@@ -76,32 +115,54 @@ namespace qgl::content
          //Load the content using the file loader.
          auto contentPtr = loaderFn(f, retID);
 
+         //Lock the mutex until done mapping
+         std::lock_guard<std::mutex>lock(m_mappingMutex);
+
          //Save the unique pointer in the map.
-         //Map the file to the id.
          m_IDContentMap[retID] = std::make_optional(std::move(contentPtr));
-         m_fileIDMap[relative] = retID;
-         m_fileIDMapReverse[retID] = relative;
 
          //Return the loaded content's ID.
          return retID;
       }
 
+      virtual void queue_load(const wchar_t* relative)
+      {
+         std::lock_guard lock(m_queueMutex);
+         m_pendingLoads.push_back(relative);
+      }
+
+      virtual thread_handle_t flush_loads()
+      {
+         std::thread backgroundThread(
+            &content_store_1_0::flush_loads_thread,
+            this);
+
+         return backgroundThread.native_handle();
+      }
+
       virtual void unload(id_t id)
       {
+         //Do nothing if the id is not in the content map.
          if (m_IDContentMap.count(id) <= 0)
          {
             return;
          }
 
+         //Lock the mutex until done unloading
+         std::lock_guard<std::mutex>lock(m_mappingMutex);
+
          //Content pointers are wrapped in an optional so they can be easily
          //destructed without changing the container.
 
-         //Destroy the optional's data.
+         //Destroy the optional's data. The load function checks if the 
+         //optional has a value to determine if the content is already loaded.
          m_IDContentMap[id].reset();
 
-         //Remove the file path mapping.
-         file_string path = m_fileIDMapReverse.at(id);
-         m_fileIDMap.erase(path);
+         //Do not remove the file mapping, in case we load the same file 
+         //again. 
+         //file_string path = m_fileIDMapReverse.at(id);
+         //m_fileIDMap.erase(path);
+         //m_fileIDMapReverse.erase(id);
       }
 
       virtual const content_item* get(id_t id) const
@@ -144,11 +205,28 @@ namespace qgl::content
          }
       }
 
-
       private:
       file_string abs_path(const wchar_t* relativePath) const
       {
          return m_rootPath + file_string(relativePath);
+      }
+
+      void flush_loads_thread()
+      {
+         //Do not allow any queuing while this is running.
+         std::lock_guard lock(m_queueMutex);
+
+         //Call load on each string in the pending list.
+         //Do it in parallel.
+         std::for_each(std::execution::par,
+                       m_pendingLoads.begin(),
+                       m_pendingLoads.end(),
+                       [&](const file_string& p)
+         {
+            load(p.c_str());
+         });
+
+         m_pendingLoads.clear();
       }
 
       /*
@@ -176,7 +254,13 @@ namespace qgl::content
 
       std::unordered_map<id_t, file_string> m_fileIDMapReverse;
 
+      std::mutex m_mappingMutex;
+
+      std::mutex m_queueMutex;
+
       qgl_version_t m_version;
+
+      std::vector<file_string> m_pendingLoads;
    };
 
    icontent_store* qgl_create_content_store(const wchar_t* storePath,
