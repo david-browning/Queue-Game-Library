@@ -27,48 +27,6 @@ namespace qgl::content::buffers
        */
       ~GRAPHICS_CONFIG_BUFFER() noexcept = default;
 
-      /*
-       Returns the horizontal resolution in pixels.
-      */
-      UINT width() const noexcept;
-
-      /*
-       Returns the vertical resolution in pixels.
-       */
-      UINT height() const noexcept;
-
-      /*
-       Returns the monitor refresh rate in hertz.
-       */
-      UINT refresh() const noexcept;
-
-      /*
-       Returns the number of render target back buffers the engine will use.
-       */
-      UINT buffers() const noexcept;
-
-      /*
-       Returns true if the engine should be in full screen.
-       */
-      bool full_screen() const noexcept;
-      /*
-       Returns true if the engine should allow an uncapped render rate.
-       */
-      bool tearing() const noexcept;
-
-      /*
-       Returns true if the engine uses high resolution rendering.
-       */
-      bool high_resolution() const noexcept;
-
-      bool stereo() const noexcept;
-
-      bool hdr() const noexcept;
-
-      bool interlacing() const noexcept;
-
-      UINT adapter_devID() const noexcept;
-
       friend void swap(GRAPHICS_CONFIG_BUFFER& first, 
                        GRAPHICS_CONFIG_BUFFER& second) noexcept
       {

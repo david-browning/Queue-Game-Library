@@ -7,7 +7,7 @@ namespace qgl::content
                     const wchar_t* name,
                     const qgl::content::content_id id) :
       content_item(name, id,
-                   qgl::content::RESOURCE_TYPES::RESOURCE_TYPE_SAMPLER,
+                   qgl::content::RESOURCE_TYPES::RESOURCE_TYPE_DESCRIPTION,
                    qgl::content::CONTENT_LOADER_IDS::CONTENT_LOADER_ID_SAMPLER)
    {
       m_samplerDesc.AddressU = buffer->address_u();

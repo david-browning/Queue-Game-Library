@@ -101,6 +101,9 @@
     <Filter Include="Source Files\Components">
       <UniqueIdentifier>{89ce81ae-5823-4850-9055-4ce14994248b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Interfaces">
+      <UniqueIdentifier>{95c8f513-3213-4ff0-b0fd-60f366f49639}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
@@ -237,6 +240,9 @@
     </ClCompile>
     <ClCompile Include="qgl_text_render_component.cpp">
       <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_graphics_config.cpp">
+      <Filter>Source Files\Content</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -428,6 +434,12 @@
     </ClInclude>
     <ClInclude Include="include\Components\qgl_text_render_component.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Interfaces\qgl_igraphics_device.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\qgl_graphics_config.h">
+      <Filter>Header Files\Content</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

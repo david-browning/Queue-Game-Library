@@ -7,7 +7,7 @@ namespace qgl::content
                           qgl::content::content_id id) :
       m_desc(CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT)),
       content_item(name, id,
-                   qgl::content::RESOURCE_TYPE_RASTERIZER,
+                   qgl::content::RESOURCE_TYPE_DESCRIPTION,
                    qgl::content::CONTENT_LOADER_ID_RASTERIZER)
 	{
 	}
@@ -16,7 +16,7 @@ namespace qgl::content
                           const wchar_t* name,
                           qgl::content::content_id id) :
       content_item(name, id, 
-                   qgl::content::RESOURCE_TYPE_RASTERIZER,
+                   qgl::content::RESOURCE_TYPE_DESCRIPTION,
                    qgl::content::CONTENT_LOADER_ID_RASTERIZER)
 	{
       m_desc.FillMode = buff->fill_mode();
