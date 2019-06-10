@@ -6,7 +6,7 @@
 namespace qgl::graphics
 {
    struct igraphics_device;
-   struct iwindow;
+   struct window;
 }
 
 namespace qgl::graphics::gpu
@@ -28,7 +28,7 @@ namespace qgl::graphics::gpu::render
 
       depth_stencil(const content::buffers::DEPTH_STENCIL_BUFFER* buffer,
                     graphics::igraphics_device* dev_p,
-                    const graphics::iwindow* wnd,
+                    const graphics::window* wnd,
                     UINT frameIndex,
                     const graphics::gpu::dsv_descriptor_heap* dsvHeap);
 

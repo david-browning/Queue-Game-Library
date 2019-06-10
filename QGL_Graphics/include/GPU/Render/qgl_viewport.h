@@ -9,7 +9,7 @@ namespace qgl::content
 
 namespace qgl::graphics
 {
-   struct iwindow;
+   struct window;
 }
 
 namespace qgl::graphics::gpu::render
@@ -25,7 +25,7 @@ namespace qgl::graphics::gpu::render
        The viewport is then scaled to fit in the window.
        */
       viewport(const content::graphics_config* config,
-               const graphics::iwindow* wnd);
+               const graphics::window* wnd);
 
       /*
        Move constructor.

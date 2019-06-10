@@ -16,14 +16,13 @@ namespace qgl::graphics
    struct graphics_device_0_1 : public igraphics_device
    {
       graphics_device_0_1(const content::graphics_config* config,
-                          iwindow* wnd) :
+                          window* wnd) :
          m_config(*config),
          m_wasFullScreen(false),
          m_wnd_p(wnd)
       {
          construct();
       }
-
 
       graphics_device_0_1(const graphics_device_0_1&) = delete;
 
@@ -270,7 +269,7 @@ namespace qgl::graphics
 
       std::vector<IUnknown*> m_queues;
 
-      iwindow* m_wnd_p;
+      window* m_wnd_p;
 
       /*
        Constructs the class by making the factories, graphics devices,
@@ -506,7 +505,7 @@ namespace qgl::graphics
 
    igraphics_device* make_graphics_device(
       const content::graphics_config* config,
-      iwindow* wnd,
+      window* wnd,
       qgl_version_t v)
    {
       switch (v)

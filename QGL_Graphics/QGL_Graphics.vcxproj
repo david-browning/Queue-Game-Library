@@ -223,10 +223,12 @@
     <ClInclude Include="include\Scene\qgl_scene.h" />
     <ClInclude Include="include\Scene\qgl_stage.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="qgl.graphics.window_rt.h" />
     <ClInclude Include="QGLGraphics.h" />
     <ClInclude Include="QGL_GraphicsRT.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="qgl.graphics.window_rt.cpp" />
     <ClCompile Include="qgl_blender.cpp" />
     <ClCompile Include="qgl_blender_buffer.cpp" />
     <ClCompile Include="qgl_blender_desc_buffer.cpp" />
@@ -283,6 +285,7 @@
   </ItemGroup>
   <ItemGroup>
     <Midl Include="QGL_GraphicsRT.idl" />
+    <Midl Include="qgl_iwindow.idl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

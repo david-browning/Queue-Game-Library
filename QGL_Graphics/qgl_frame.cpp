@@ -16,7 +16,7 @@ namespace qgl::graphics::gpu::render
            const content::buffers::DEPTH_STENCIL_BUFFER* depthStencil,
            const rtv_descriptor_heap* rtvHeap,
            const dsv_descriptor_heap* dsvHeap,
-           const graphics::iwindow* wnd) :
+           const graphics::window* wnd) :
          RenderTarget(dev, frameIndex, rtvHeap),
          Viewport(dev->config(), wnd),
          DepthStencil(depthStencil, 
@@ -47,7 +47,7 @@ namespace qgl::graphics::gpu::render
                 const content::buffers::DEPTH_STENCIL_BUFFER* depthStencil,
                 const rtv_descriptor_heap* rtvHeap,
                 const dsv_descriptor_heap* dsvHeap,
-                const graphics::iwindow* wnd) :
+                const graphics::window* wnd) :
       m_impl_p(new impl(dev, 
                         frameIndex, 
                         depthStencil, 

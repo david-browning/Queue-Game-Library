@@ -9,7 +9,7 @@ namespace qgl::content
 
 namespace qgl::graphics
 {
-   struct iwindow;
+   struct window;
 
    struct igraphics_device : public iqgl
    {
@@ -63,6 +63,6 @@ namespace qgl::graphics
     */
    extern QGL_GRAPHICS_API igraphics_device* make_graphics_device(
       const content::graphics_config* config,
-      iwindow* wnd,
+      window* wnd,
       qgl_version_t v);
 }

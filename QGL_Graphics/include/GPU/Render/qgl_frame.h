@@ -7,7 +7,7 @@
 namespace qgl::graphics
 {
    struct igraphics_device;
-   struct iwindow;
+   struct window;
 }
 
 
@@ -32,7 +32,7 @@ namespace qgl::graphics::gpu::render
             const content::buffers::DEPTH_STENCIL_BUFFER* depthStencil,
             const gpu::rtv_descriptor_heap* rtvHeap,
             const gpu::dsv_descriptor_heap* dsvHeap,
-            const graphics::iwindow* wnd);
+            const graphics::window* wnd);
 
       /*
        Each render must be bound to one RTV and DSV heap slot. Do not allow

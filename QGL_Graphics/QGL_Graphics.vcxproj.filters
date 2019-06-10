@@ -250,6 +250,9 @@
     <ClCompile Include="qgl_igraphics_device.cpp">
       <Filter>Source Files\Interfaces</Filter>
     </ClCompile>
+    <ClCompile Include="qgl.graphics.window_rt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLGraphics.h">
@@ -447,6 +450,9 @@
     <ClInclude Include="include\Content\qgl_graphics_config.h">
       <Filter>Header Files\Content</Filter>
     </ClInclude>
+    <ClInclude Include="qgl.graphics.window_rt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="QGL_Graphics.def">
@@ -456,6 +462,9 @@
   </ItemGroup>
   <ItemGroup>
     <Midl Include="QGL_GraphicsRT.idl">
+      <Filter>win_rt</Filter>
+    </Midl>
+    <Midl Include="qgl_iwindow.idl">
       <Filter>win_rt</Filter>
     </Midl>
   </ItemGroup>

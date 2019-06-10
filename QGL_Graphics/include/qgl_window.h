@@ -1,32 +1,31 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include <winrt/Windows.Foundation.h>
+#include "qgl.graphics.window_rt.h"
 
 namespace qgl::graphics
 {
-   struct QGL_GRAPHICS_API iwindow
+   struct QGL_GRAPHICS_API window
    {
       public:
       /*
        Constructs a window using a CoreWindow and ApplicationView.
        */
-      iwindow(winrt::Windows::Foundation::IInspectable coreWindow,
-             winrt::Windows::Foundation::IInspectable appView);
+      window(const winrt::qgl::graphics::window_rt& wnd);
 
       /*
        Do not allow copies of a window.
        */
-      iwindow(const iwindow& r) = delete;
+      window(const window& r) = delete;
 
       /*
        Move constructor.
        */
-      iwindow(iwindow&& r);
+      window(window&& r);
 
       /*
        Destructor
        */
-      virtual ~iwindow() noexcept;
+      virtual ~window() noexcept;
 
       /*
        Returns true if the window is in full screen.
@@ -78,7 +77,6 @@ namespace qgl::graphics
        Returns an IUnknown pointer to the core window.
        */
       IUnknown* unknown();
-
 
       private:
       struct impl;
