@@ -46,6 +46,8 @@ typedef void* handle_t;
 #include <winrt/Windows.Foundation.h>
 #include <DirectXMath.h>
 
+typedef HANDLE thread_handle_t;
+
 typedef HANDLE file_handle_t;
 static const file_handle_t NO_FILE = INVALID_HANDLE_VALUE;
 
@@ -63,6 +65,8 @@ inline std::string HrToString(HRESULT hr)
 }
 
 #else
+
+typedef void* thread_handle_t;
 
 typedef int file_handle_t;
 static constexpr file_handle_t NO_FILE = -1;
