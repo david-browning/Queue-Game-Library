@@ -21,6 +21,7 @@
 #include <stdexcept>
 #include <sstream>
 #include <atomic>
+#include <system_error>
 
 #if !defined(NDEBUG) || defined(_DEBUG) || defined(DEBUG)
 
