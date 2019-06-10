@@ -27,8 +27,7 @@ namespace qgl::graphics::helpers
       return false;
    }
 
-   UINT get_swap_flag(
-      const content::buffers::GRAPHICS_CONFIG_BUFFER& cnfg) noexcept
+   UINT get_swap_flag(const content::graphics_config& cnfg) noexcept
    {
       //TODO: Does only windowed mode support tearing?
       //Variable refresh rate displays: https://tinyurl.com/y4polwfg
@@ -40,7 +39,7 @@ namespace qgl::graphics::helpers
    }
 
    UINT get_sync_interval(
-      const content::buffers::GRAPHICS_CONFIG_BUFFER& cnfg) noexcept
+      const content::graphics_config& cnfg) noexcept
    {
       return cnfg.tearing() ? 0 : 1;
    }
@@ -200,7 +199,7 @@ namespace qgl::graphics::helpers
    }
 
    winrt::com_ptr<d3d_swap_chain> make_swap_chain(
-      const content::buffers::GRAPHICS_CONFIG_BUFFER& config,
+      const content::graphics_config& config,
       DXGI_FORMAT fmt,
       UINT windowWidth,
       UINT windowHeight,

@@ -104,6 +104,9 @@
     <Filter Include="Header Files\Interfaces">
       <UniqueIdentifier>{95c8f513-3213-4ff0-b0fd-60f366f49639}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Interfaces">
+      <UniqueIdentifier>{570add9b-fba5-4a56-96e3-70168e1c2d1b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
@@ -243,6 +246,9 @@
     </ClCompile>
     <ClCompile Include="qgl_graphics_config.cpp">
       <Filter>Source Files\Content</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_igraphics_device.cpp">
+      <Filter>Source Files\Interfaces</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

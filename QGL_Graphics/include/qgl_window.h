@@ -4,29 +4,29 @@
 
 namespace qgl::graphics
 {
-   class QGL_GRAPHICS_API window
+   struct QGL_GRAPHICS_API iwindow
    {
       public:
       /*
        Constructs a window using a CoreWindow and ApplicationView.
        */
-      window(winrt::Windows::Foundation::IInspectable coreWindow,
+      iwindow(winrt::Windows::Foundation::IInspectable coreWindow,
              winrt::Windows::Foundation::IInspectable appView);
 
       /*
        Do not allow copies of a window.
        */
-      window(const window& r) = delete;
+      iwindow(const iwindow& r) = delete;
 
       /*
        Move constructor.
        */
-      window(window&& r);
+      iwindow(iwindow&& r);
 
       /*
        Destructor
        */
-      virtual ~window() noexcept;
+      virtual ~iwindow() noexcept;
 
       /*
        Returns true if the window is in full screen.
@@ -73,14 +73,14 @@ namespace qgl::graphics
        Returns the height of the window in pixels.
        */
       UINT height() const noexcept;
-
-      private:
-      friend class graphics_device;
+      
       /*
        Returns an IUnknown pointer to the core window.
        */
       IUnknown* unknown();
 
+
+      private:
       struct impl;
       impl* m_impl_p = nullptr;
    };

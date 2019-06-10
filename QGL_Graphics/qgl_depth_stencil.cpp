@@ -1,14 +1,15 @@
 #include "pch.h"
 #include "include/GPU/Render/qgl_depth_stencil.h"
 #include "include/qgl_window.h"
+#include "include/Interfaces/qgl_igraphics_device.h"
 #include "include/GPU/Descriptors/qgl_dsv_descriptor_heap.h"
 
 namespace qgl::graphics::gpu::render
 {
    depth_stencil::depth_stencil(
       const content::buffers::DEPTH_STENCIL_BUFFER* buffer,
-      graphics::graphics_device* dev_p,
-      const graphics::window* wnd,
+      graphics::igraphics_device* dev_p,
+      const graphics::iwindow* wnd,
       UINT frameIndex,
       const graphics::gpu::dsv_descriptor_heap* dsvHeap) :
       m_buffer(*buffer),

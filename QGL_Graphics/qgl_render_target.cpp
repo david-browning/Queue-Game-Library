@@ -1,12 +1,13 @@
 #include "pch.h"
 #include "include/GPU/Render/qgl_render_target.h"
+#include "include/Interfaces/qgl_igraphics_device.h"
 #include "include/GPU/Descriptors/qgl_rtv_descriptor_heap.h"
 #include <winrt/Windows.Graphics.Display.h>
 using namespace winrt::Windows::Graphics;
 
 namespace qgl::graphics::gpu::render
 {
-   render_target::render_target(graphics_device* dev,
+   render_target::render_target(graphics::igraphics_device* dev,
                                 size_t frameIndex,
                                 const rtv_descriptor_heap* rtvHeap) :
       m_rects(nullptr),

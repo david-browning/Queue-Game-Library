@@ -1,7 +1,16 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include "include/qgl_window.h"
 #include "include/Content/Content-Buffers/qgl_graphic_config_buffer.h"
+
+namespace qgl::content
+{
+   class graphics_config;
+}
+
+namespace qgl::graphics
+{
+   struct iwindow;
+}
 
 namespace qgl::graphics::gpu::render
 {
@@ -15,8 +24,8 @@ namespace qgl::graphics::gpu::render
        Construct a viewport that is the same width and height as the render.
        The viewport is then scaled to fit in the window.
        */
-      viewport(const content::buffers::GRAPHICS_CONFIG_BUFFER* config,
-               const graphics::window* wnd);
+      viewport(const content::graphics_config* config,
+               const graphics::iwindow* wnd);
 
       /*
        Move constructor.

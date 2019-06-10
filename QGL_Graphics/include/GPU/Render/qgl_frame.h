@@ -1,10 +1,15 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include "include/GPU/qgl_graphics_device.h"
-#include "include/qgl_window.h"
 #include "include/GPU/Descriptors/qgl_rtv_descriptor_heap.h"
 #include "include/GPU/Descriptors/qgl_dsv_descriptor_heap.h"
 #include "include/Content/Content-Buffers/qgl_depth_stencil_buffer.h"
+
+namespace qgl::graphics
+{
+   struct igraphics_device;
+   struct iwindow;
+}
+
 
 namespace qgl::graphics::gpu::render
 {
@@ -22,12 +27,12 @@ namespace qgl::graphics::gpu::render
       /*
        Creates a render.
        */
-      frame(graphics_device* dev,
+      frame(graphics::igraphics_device* dev,
             UINT frameIndex,
             const content::buffers::DEPTH_STENCIL_BUFFER* depthStencil,
             const gpu::rtv_descriptor_heap* rtvHeap,
             const gpu::dsv_descriptor_heap* dsvHeap,
-            const graphics::window* wnd);
+            const graphics::iwindow* wnd);
 
       /*
        Each render must be bound to one RTV and DSV heap slot. Do not allow
@@ -80,19 +85,19 @@ namespace qgl::graphics::gpu::render
        Acquires the necessary resources so rendering operations can be queued
        to this render. Engines must call this before recording render commands.
        */
-      void acquire(graphics_device* dev_p);
+      void acquire(graphics::igraphics_device* dev_p);
 
       /*
        Releases the render's resources so it can be presented.
        Engines must call release before flushing the D3D11On12 context and
        presenting the render on the swap chain.
        */
-      void release(graphics_device* dev_p);
+      void release(graphics::igraphics_device* dev_p);
 
       /*
        Disposes of render resources so the render can be rebuilt.
        */
-      void dispose(graphics_device* dev_p);
+      void dispose(graphics::igraphics_device* dev_p);
 
       private:
       struct impl;

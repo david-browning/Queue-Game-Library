@@ -1,5 +1,5 @@
 #include "include/qgl_graphics_include.h"
-#include "include/Content/Content-Buffers/qgl_graphic_config_buffer.h"
+#include "include/Content/qgl_graphics_config.h"
 
 namespace qgl::graphics::helpers
 {
@@ -25,14 +25,14 @@ namespace qgl::graphics::helpers
     See https://tinyurl.com/dxgi-present
     */
    extern UINT get_swap_flag(
-      const content::buffers::GRAPHICS_CONFIG_BUFFER& cnfg) noexcept;
+      const content::graphics_config& cnfg) noexcept;
 
    /*
     Returns the synchronization interval to use for the swap chain.
     See https://tinyurl.com/nf-dxgi-idxgiswapchain-present
     */
    extern UINT get_sync_interval(
-      const content::buffers::GRAPHICS_CONFIG_BUFFER& cnfg) noexcept;
+      const content::graphics_config& cnfg) noexcept;
 
    /*
     Returns a vector of display modes supported by the monitor and the
@@ -71,7 +71,7 @@ namespace qgl::graphics::helpers
       const winrt::com_ptr<d2d_device>& d2dDev_p);
 
    extern winrt::com_ptr<d3d_swap_chain> make_swap_chain(
-      const content::buffers::GRAPHICS_CONFIG_BUFFER& config,
+      const content::graphics_config& config,
       DXGI_FORMAT fmt,
       UINT windowWidth,
       UINT windowHeight,

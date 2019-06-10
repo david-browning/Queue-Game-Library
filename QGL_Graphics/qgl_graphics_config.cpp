@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "include/Content/qgl_graphics_config.h"
-#include "include/Content/Content-Buffers/qgl_graphic_config_buffer.h"
 
 namespace qgl::content
 {

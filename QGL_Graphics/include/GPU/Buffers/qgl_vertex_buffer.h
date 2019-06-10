@@ -1,6 +1,7 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
 #include "include/GPU/Buffers/igpu_buffer.h"
+#include "include/GPU/qgl_graphics_device.h"
 
 namespace qgl::graphics::gpu::buffers
 {
@@ -18,7 +19,7 @@ namespace qgl::graphics::gpu::buffers
       using ResourceDescriptionT = D3D12_SUBRESOURCE_DATA;
       using ViewDescriptionT = D3D12_VERTEX_BUFFER_VIEW;
 
-      vertex_buffer(graphics_device* gdev,
+      vertex_buffer(graphics::igraphics_device* gdev,
                     const VertexT* vertices,
                     size_t numVertices) :
          m_desc(),
@@ -30,7 +31,7 @@ namespace qgl::graphics::gpu::buffers
          construct(gdev);
       }
 
-      vertex_buffer(graphics_device* gdev,
+      vertex_buffer(graphics::igraphics_device* gdev,
                     std::vector<VertexT>& vertices) :
          m_desc(),
          m_viewDesc(),
@@ -67,7 +68,7 @@ namespace qgl::graphics::gpu::buffers
       }
 
       private:
-      void construct(graphics_device* gdev)
+      void construct(graphics::igraphics_device* gdev)
       {
          //Initialize the description.
          m_desc.pData = m_vertices.data();

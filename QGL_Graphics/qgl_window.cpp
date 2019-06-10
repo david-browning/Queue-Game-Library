@@ -14,7 +14,7 @@ namespace qgl::graphics
       return static_cast<UINT>(dip * dpi / 96.0f + 0.5f);
    }
 
-   struct window::impl
+   struct iwindow::impl
    {
       public:
 
@@ -116,7 +116,7 @@ namespace qgl::graphics
    };
 
 
-   window::window(winrt::Windows::Foundation::IInspectable coreWindow, 
+   iwindow::iwindow(winrt::Windows::Foundation::IInspectable coreWindow,
                   winrt::Windows::Foundation::IInspectable appView)
    {
       auto win = std::make_shared<Core::CoreWindow>(
@@ -128,59 +128,59 @@ namespace qgl::graphics
       m_impl_p = new impl(vew, win);
    }
 
-   window::window(window&& r)
+   iwindow::iwindow(iwindow&& r)
    {
       m_impl_p = r.m_impl_p;
       r.m_impl_p = nullptr;
    }
 
-   window::~window() noexcept
+   iwindow::~iwindow() noexcept
    {
       delete m_impl_p;
       m_impl_p = nullptr;
    }
 
-   bool window::full_screen() const
+   bool iwindow::full_screen() const
    {
       return m_impl_p->full_screen();
    }
 
-   bool window::toggle_full_screen()
+   bool iwindow::toggle_full_screen()
    {
       return m_impl_p->toggle_full_screen();
    }
 
-   bool window::enter_full_screen()
+   bool iwindow::enter_full_screen()
    {
       return m_impl_p->enter_full_screen();
    }
 
-   bool window::exit_full_screen()
+   bool iwindow::exit_full_screen()
    {
       return m_impl_p->exit_full_screen();
    }
 
-   void window::title(const winrt::param::hstring str)
+   void iwindow::title(const winrt::param::hstring str)
    {
       m_impl_p->title(winrt::to_hstring(str));
    }
 
-   winrt::hstring window::title() const
+   winrt::hstring iwindow::title() const
    {
       return m_impl_p->title();
    }
 
-   UINT window::width() const noexcept
+   UINT iwindow::width() const noexcept
    {
       return m_impl_p->m_widthPixels;
    }
 
-   UINT window::height() const noexcept
+   UINT iwindow::height() const noexcept
    {
       return m_impl_p->m_heightPixels;
    }
 
-   IUnknown* window::unknown()
+   IUnknown* iwindow::unknown()
    {
       return m_impl_p->unknown();
    }

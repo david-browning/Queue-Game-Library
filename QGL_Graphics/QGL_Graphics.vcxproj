@@ -252,6 +252,7 @@
     <ClCompile Include="qgl_graphics_device_helpers.cpp" />
     <ClCompile Include="qgl_graphic_config_buffer.cpp" />
     <ClCompile Include="qgl_icmd_list.cpp" />
+    <ClCompile Include="qgl_igraphics_device.cpp" />
     <ClCompile Include="qgl_light.cpp" />
     <ClCompile Include="qgl_light_buffer.cpp" />
     <ClCompile Include="qgl_pso.cpp" />

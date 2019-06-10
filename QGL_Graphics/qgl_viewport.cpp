@@ -1,10 +1,12 @@
 #include "pch.h"
 #include "include/GPU/Render/qgl_viewport.h"
+#include "include/qgl_window.h"
+#include "include/Content/qgl_graphics_config.h"
 
 namespace qgl::graphics::gpu::render
 {
-   viewport::viewport(const content::buffers::GRAPHICS_CONFIG_BUFFER* config, 
-                      const graphics::window* wnd)
+   viewport::viewport(const content::graphics_config* config,
+                      const graphics::iwindow* wnd)
    {
       auto windowWidth = wnd->width();
       auto windowHeight = wnd->height();

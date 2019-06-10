@@ -2,7 +2,12 @@
 #include "include/qgl_graphics_include.h"
 #include "include/GPU/Buffers/igpu_buffer.h"
 #include "include/Content/Content-Buffers/qgl_depth_stencil_buffer.h"
-#include "include/qgl_window.h"
+
+namespace qgl::graphics
+{
+   struct igraphics_device;
+   struct iwindow;
+}
 
 namespace qgl::graphics::gpu
 {
@@ -22,8 +27,8 @@ namespace qgl::graphics::gpu::render
       using ViewDescriptionT = D3D12_DEPTH_STENCIL_VIEW_DESC;
 
       depth_stencil(const content::buffers::DEPTH_STENCIL_BUFFER* buffer,
-                    graphics::graphics_device* dev_p,
-                    const graphics::window* wnd,
+                    graphics::igraphics_device* dev_p,
+                    const graphics::iwindow* wnd,
                     UINT frameIndex,
                     const graphics::gpu::dsv_descriptor_heap* dsvHeap);
 

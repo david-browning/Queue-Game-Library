@@ -2,6 +2,11 @@
 #include "include/qgl_graphics_include.h"
 #include "include/GPU/Buffers/igpu_buffer.h"
 
+namespace qgl::graphics
+{
+   struct igraphics_device;
+}
+
 namespace qgl::graphics::gpu
 {
    class rtv_descriptor_heap;
@@ -26,7 +31,7 @@ namespace qgl::graphics::gpu::render
        TODO: Is there any reason why multiple things cannot bind to the same 
        render?
        */
-      render_target(graphics_device* dev,
+      render_target(graphics::igraphics_device* dev,
                     size_t frameIndex,
                     const rtv_descriptor_heap* rtvHeap);
 

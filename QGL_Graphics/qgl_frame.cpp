@@ -4,17 +4,19 @@
 #include "include/GPU/Render/qgl_viewport.h"
 #include "include/GPU/Render/qgl_render_target.h"
 #include "include/GPU/Render/qgl_depth_stencil.h"
+#include "include/qgl_window.h"
+#include "include/Interfaces/qgl_igraphics_device.h"
 
 namespace qgl::graphics::gpu::render
 {
    struct frame::impl
    {
-      impl(graphics_device* dev,
+      impl(graphics::igraphics_device* dev,
            UINT frameIndex,
            const content::buffers::DEPTH_STENCIL_BUFFER* depthStencil,
            const rtv_descriptor_heap* rtvHeap,
            const dsv_descriptor_heap* dsvHeap,
-           const window* wnd) :
+           const graphics::iwindow* wnd) :
          RenderTarget(dev, frameIndex, rtvHeap),
          Viewport(dev->config(), wnd),
          DepthStencil(depthStencil, 
@@ -40,12 +42,12 @@ namespace qgl::graphics::gpu::render
    };
 
 
-   frame::frame(graphics_device* dev,
+   frame::frame(graphics::igraphics_device* dev,
                 UINT frameIndex,
                 const content::buffers::DEPTH_STENCIL_BUFFER* depthStencil,
                 const rtv_descriptor_heap* rtvHeap,
                 const dsv_descriptor_heap* dsvHeap,
-                const window* wnd) :
+                const graphics::iwindow* wnd) :
       m_impl_p(new impl(dev, 
                         frameIndex, 
                         depthStencil, 
@@ -107,17 +109,17 @@ namespace qgl::graphics::gpu::render
       return &m_impl_p->Scissor;
    }
 
-   void frame::acquire(graphics_device* dev_p)
+   void frame::acquire(graphics::igraphics_device* dev_p)
    {
       m_impl_p->RenderTarget.acquire_resources(dev_p->d3d11on12_device());
    }
 
-   void frame::release(graphics_device* dev_p)
+   void frame::release(graphics::igraphics_device* dev_p)
    {
       m_impl_p->RenderTarget.release_resources(dev_p->d3d11on12_device());
    }
 
-   void frame::dispose(graphics_device* dev_p)
+   void frame::dispose(graphics::igraphics_device* dev_p)
    {
       m_impl_p->RenderTarget.dispose(dev_p->d3d11on12_device());
    }

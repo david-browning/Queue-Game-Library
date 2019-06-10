@@ -1,14 +1,10 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
+#include "include/Content/Content-Buffers/qgl_graphic_config_buffer.h"
 
 namespace qgl::content
 {
-   namespace buffers
-   {
-      struct GRAPHICS_CONFIG_BUFFER;
-   }
-
-   class QGL_CONTENT_API graphics_config : public content_item
+   class QGL_GRAPHICS_API graphics_config : public content_item
    {
       public:
       /*
@@ -74,6 +70,18 @@ namespace qgl::content
       bool interlacing() const noexcept;
 
       UINT adapter_devID() const noexcept;
+
+      friend void swap(graphics_config& l, graphics_config& r) noexcept
+      {
+         using std::swap;
+         swap(l.m_buffer, r.m_buffer);
+      }
+
+      graphics_config& operator=(graphics_config r) noexcept
+      {
+         swap(*this, r);
+         return *this;
+      }
 
       private:
       buffers::GRAPHICS_CONFIG_BUFFER m_buffer;

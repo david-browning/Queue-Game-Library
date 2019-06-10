@@ -2,13 +2,24 @@
 #include "include/qgl_graphics_include.h"
 #include "include/Content/qgl_graphics_config.h"
 
+namespace qgl::content
+{
+   //class graphics_config;
+}
+
 namespace qgl::graphics
 {
+   struct iwindow;
+
    struct igraphics_device : public iqgl
    {
+      /*
+       Updates the graphics device and swap chain with the new config.
+       All render targets must be released before calling this.
+       */
+      virtual void reset(const content::graphics_config* newConfig) = 0;
 
-
-
+      virtual const content::graphics_config* config() const noexcept = 0;
 
       virtual const d3d_device* d3d12_device() const noexcept = 0;
 
@@ -46,4 +57,12 @@ namespace qgl::graphics
 
       virtual IDXGIAdapter4* adapter() noexcept = 0;
    };
+
+   /*
+    wnd: Pointer to a window the graphcis device wraps.
+    */
+   extern QGL_GRAPHICS_API igraphics_device* make_graphics_device(
+      const content::graphics_config* config,
+      iwindow* wnd,
+      qgl_version_t v);
 }
