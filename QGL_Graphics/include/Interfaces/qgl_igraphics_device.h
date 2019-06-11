@@ -1,10 +1,9 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include "include/Content/qgl_graphics_config.h"
 
 namespace qgl::content
 {
-   //class graphics_config;
+   class graphics_config;
 }
 
 namespace qgl::graphics

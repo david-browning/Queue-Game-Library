@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+#include <bitset>
 
 inline constexpr uintptr_t MemAlignAddress(const uintptr_t addr,
                                            const size_t alignment) noexcept

@@ -2,6 +2,7 @@
 #include "include/qgl_graphics_include.h"
 #include "include/GPU/Buffers/igpu_buffer.h"
 #include "include/GPU/Buffers/qgl_imappable.h"
+#include "include/Interfaces/qgl_igraphics_device.h"
 
 namespace qgl::graphics::gpu::buffers
 {
@@ -83,7 +84,7 @@ namespace qgl::graphics::gpu::buffers
          //range where End is less than or equal to Begin.
          winrt::check_hresult(get()->Map(0,
                                          nullptr,
-                                         map_put()));
+                                         this->map_put()));
       }
 
       virtual void p_unmap()

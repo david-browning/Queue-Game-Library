@@ -3,9 +3,9 @@
 
 namespace qgl::content::buffers
 {
-   static constexpr wchar_t* DEFAULT_FONT_FAMILY = L"Verdana";
+   static constexpr const wchar_t* DEFAULT_FONT_FAMILY = L"Verdana";
 
-   static constexpr wchar_t* DEFAULT_FONT_LOCALE = L"en-us";
+   static constexpr const wchar_t* DEFAULT_FONT_LOCALE = L"en-us";
 
 	TEXT_FORMAT_BUFFER::TEXT_FORMAT_BUFFER() :
       FontSize(32.0f),
