@@ -37,10 +37,10 @@ namespace qgl::content
          delete this;
       }
 
-      virtual id_t reserve(const wchar_t* relative)
+      virtual id_t reserve(const wchar_t* relative) noexcept
       {
          //Check if the file already has an ID.
-         id_t retID = 0;
+         id_t retID = INVALID_CONTENT_ID;
          if (m_fileIDMap.count(relative) > 0)
          {
             retID = m_fileIDMap.at(relative);
@@ -53,13 +53,12 @@ namespace qgl::content
             //File not mapped. Map it to a new ID.
             retID = m_nextID.fetch_add(1);
             m_fileIDMap[relative] = retID;
-            m_fileIDMapReverse[retID] = relative;
          }
 
          return retID;
       }
 
-      virtual bool loaded(id_t id) const
+      virtual bool loaded(id_t id) const noexcept
       {
          return m_IDContentMap.count(id) > 0 &&
             m_IDContentMap.at(id).has_value();
@@ -67,7 +66,7 @@ namespace qgl::content
 
       virtual void map(RESOURCE_TYPES rID,
                        CONTENT_LOADER_IDS lID,
-                       load_function fn)
+                       load_function fn) noexcept
       {
          auto h = hash(rID, lID);
 
@@ -77,7 +76,7 @@ namespace qgl::content
          m_loadFunctionMap[h] = fn;
       }
 
-      virtual id_t load(const wchar_t* relative)
+      virtual id_t load(const wchar_t* relative) noexcept
       {
          //Get an ID for the file.
          auto retID = reserve(relative);
@@ -99,18 +98,23 @@ namespace qgl::content
          //This loads the file's header and dictionary.
          auto absPath = abs_path(relative);
          icontent_file* filePtr = nullptr;
-         winrt::check_hresult(qgl_open_content_file(relative, 
-                                                    m_version,
-                                                    &filePtr));
+         auto hr = qgl_open_content_file(relative,
+                                         m_version,
+                                         &filePtr);
          auto fileSafe = qgl::make_unique<icontent_file>(filePtr);
-         
+
+         if (FAILED(hr))
+         {
+            return INVALID_CONTENT_ID;
+         }
+
          const auto meta = fileSafe->header()->metadata();
 
          //Look up the loader using the content file's header.
          auto loaderHash = hash(meta->resource_type(), meta->loader_id());
          if (m_loadFunctionMap.count(loaderHash) <= 0)
          {
-            throw std::logic_error("No valid loader is mapped.");
+            return INVALID_CONTENT_ID;
          }
          auto loaderFn = m_loadFunctionMap.at(loaderHash);
 
@@ -127,13 +131,13 @@ namespace qgl::content
          return retID;
       }
 
-      virtual void queue_load(const wchar_t* relative)
+      virtual void queue_load(const wchar_t* relative) noexcept
       {
          std::lock_guard lock(m_queueMutex);
          m_pendingLoads.push_back(relative);
       }
 
-      virtual thread_handle_t flush_loads()
+      virtual thread_handle_t flush_loads() noexcept
       {
          std::thread backgroundThread(
             &content_store_1_0::flush_loads_thread,
@@ -142,7 +146,7 @@ namespace qgl::content
          return backgroundThread.native_handle();
       }
 
-      virtual void unload(id_t id)
+      virtual void unload(id_t id) noexcept
       {
          //Do nothing if the id is not in the content map.
          if (m_IDContentMap.count(id) <= 0)
@@ -155,7 +159,6 @@ namespace qgl::content
 
          //Content pointers are wrapped in an optional so they can be easily
          //destructed without changing the container.
-
          //Destroy the optional's data. The load function checks if the 
          //optional has a value to determine if the content is already loaded.
          m_IDContentMap[id].reset();
@@ -167,7 +170,7 @@ namespace qgl::content
          //m_fileIDMapReverse.erase(id);
       }
 
-      virtual const content_item* get(id_t id) const
+      virtual const content_item* get(id_t id) const noexcept
       {
          if (m_IDContentMap.count(id) > 0)
          {
@@ -176,18 +179,12 @@ namespace qgl::content
             {
                return opt.value().get();
             }
-            else
-            {
-               throw std::logic_error("The content is not loaded.");
-            }
          }
-         else
-         {
-            throw std::runtime_error("The ID is not mapped.");
-         }
+       
+         return nullptr;
       }
 
-      virtual content_item* get(id_t id)
+      virtual content_item* get(id_t id) noexcept
       {
          if (m_IDContentMap.count(id) > 0)
          {
@@ -196,15 +193,9 @@ namespace qgl::content
             {
                return opt.value().get();
             }
-            else
-            {
-               throw std::logic_error("The content is not loaded.");
-            }
          }
-         else
-         {
-            throw std::runtime_error("The ID is not mapped.");
-         }
+       
+         return nullptr;
       }
 
       private:
@@ -254,8 +245,6 @@ namespace qgl::content
 
       std::unordered_map<file_string, id_t> m_fileIDMap;
 
-      std::unordered_map<id_t, file_string> m_fileIDMapReverse;
-
       std::mutex m_mappingMutex;
 
       std::mutex m_queueMutex;
@@ -264,10 +253,10 @@ namespace qgl::content
 
       std::vector<file_string> m_pendingLoads;
    };
-   
-   HRESULT qgl_create_content_store(const wchar_t* storePath, 
-                                            qgl_version_t v, 
-                                            icontent_store** out_p)
+
+   HRESULT qgl_create_content_store(const wchar_t* storePath,
+                                    qgl_version_t v,
+                                    icontent_store** out_p) noexcept
    {
       if (out_p == nullptr)
       {

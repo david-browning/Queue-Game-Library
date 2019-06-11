@@ -25,14 +25,14 @@ namespace qgl::content
        returns the ID already assigned to that file.
        This operation is thread-safe.
        */
-      virtual id_t reserve(const wchar_t* relative) = 0;
+      virtual id_t reserve(const wchar_t* relative) noexcept = 0;
 
       /*
        Returns true if content was assigned the given ID and its loaded.
        This can return false even for a valid ID. This happens if the ID was
        reserved or the content was unloaded.
        */
-      virtual bool loaded(id_t id) const = 0;
+      virtual bool loaded(id_t id) const noexcept = 0;
 
       /*
        Maps a resource type and loader ID to a loader function. 
@@ -43,16 +43,17 @@ namespace qgl::content
        */
       virtual void map(RESOURCE_TYPES rID,
                        CONTENT_LOADER_IDS lID,
-                       load_function fn) = 0;
+                       load_function fn) noexcept = 0;
 
       /*
        Loads the content from the relative path and returns an ID that can be
        used to lookup a pointer to the loaded item. If the file is already 
        loaded, this returns the existing content's ID.
-       Throws std::logic_error if the loader is not mapped.
+       Returns INVALID_CONTENT_ID if the loader is not mapped or the content
+       file cannot be opened.
        This operation is thread-safe.
        */
-      virtual id_t load(const wchar_t* relative) = 0;
+      virtual id_t load(const wchar_t* relative) noexcept = 0;
 
       /*
        Enqueues a content file to be loaded in parallel with other queued 
@@ -67,14 +68,14 @@ namespace qgl::content
        the queue is empty. When this returns, the file will be added to the 
        queue for flushing next time.
        */
-      virtual void queue_load(const wchar_t* relative) = 0;
+      virtual void queue_load(const wchar_t* relative) noexcept = 0;
 
       /*
        Flushes all queued loaded.
        Returns a handle that can be waited on.
        Waiting on the handle is dependent on the OS.
        */
-      virtual thread_handle_t flush_loads() = 0;
+      virtual thread_handle_t flush_loads() noexcept = 0;
 
       /*
        Unloads the memory associated with the given content ID. After unloaded,
@@ -84,25 +85,25 @@ namespace qgl::content
        ID and a new pointer.
        Does nothing if there is no loaded content with the given ID.
        */
-      virtual void unload(id_t id) = 0;
+      virtual void unload(id_t id) noexcept = 0;
 
       /*
-       Returns a const pointer to content. Throws std::runtime_error if the 
-       content ID is not mapped in the store. Throws std::logic_error if the 
-       content is valid, but not loaded.
+       Returns a const pointer to content. 
+       Returns nullptr if the content ID is not mapped in the store. 
+       Returns nullptr if the content is valid, but not loaded.
        The content store manages the pointer's memory. Do not free or 
        reallocate the memory.
        */
-      virtual const content_item* get(id_t id) const = 0;
+      virtual const content_item* get(id_t id) const noexcept = 0;
 
       /*
-       Returns a pointer to content. Throws std::runtime_error if the content
-       ID is not mapped in the store. Throws std::logic_error if the 
-       content is valid, but not loaded.
+       Returns a const pointer to content.
+       Returns nullptr if the content ID is not mapped in the store.
+       Returns nullptr if the content is valid, but not loaded.
        The content store manages the pointer's memory. Do not free or
        reallocate the memory.
        */
-      virtual content_item* get(id_t id) = 0;
+      virtual content_item* get(id_t id) noexcept = 0;
    };
 
    template<typename T>
@@ -118,6 +119,8 @@ namespace qgl::content
    }
 
    /*
+    Be sure to call release on the returned pointer or wrap it 
+    using make_unique.
     Returns:
       E_INVALIDARG if out_p is nullptr.
       E_OUTOFMEMORY if memory cannot be allocated.
@@ -127,5 +130,5 @@ namespace qgl::content
    extern "C" QGL_CONTENT_API HRESULT qgl_create_content_store(
       const wchar_t* storePath, 
       qgl_version_t v,
-      icontent_store** out_p);
+      icontent_store** out_p) noexcept;
 }
