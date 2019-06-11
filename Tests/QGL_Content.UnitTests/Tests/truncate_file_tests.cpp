@@ -25,20 +25,27 @@ namespace QGL_Content_UnitTests
          DeleteFile(newFilePath.c_str());
 
          file_handle handle;
-         qgl::content::open_file_write(newFilePath.c_str(), &handle);
+         auto hr = qgl::content::open_file_write(newFilePath.c_str(), &handle);
+         Assert::IsTrue(SUCCEEDED(hr), L"HRESULT failed.");
 
          //Write to it.
          std::string buffer("Test");
-         write_file_sync(&handle, buffer.size(), 0, buffer.c_str());
-       
+         hr = write_file_sync(&handle, buffer.size(), 0, buffer.c_str());
+         Assert::IsTrue(SUCCEEDED(hr), L"HRESULT failed.");
+
          //Get file size.
-         auto fileSize = file_size(&handle);
+         size_t fileSize = 0;
+         hr = file_size(&handle, &fileSize);
+         Assert::IsTrue(SUCCEEDED(hr), L"HRESULT failed.");
 
          //Truncate file
-         truncate_file(&handle);
+         hr = truncate_file(&handle);
+         Assert::IsTrue(SUCCEEDED(hr), L"HRESULT failed.");
 
          //Get file size.
-         auto truncatedSize = file_size(&handle);
+         size_t truncatedSize = 0;
+         hr = file_size(&handle, &truncatedSize);
+         Assert::IsTrue(SUCCEEDED(hr), L"HRESULT failed.");
 
          Assert::AreEqual(static_cast<size_t>(0), truncatedSize,
                           L"The file size should be 0.");

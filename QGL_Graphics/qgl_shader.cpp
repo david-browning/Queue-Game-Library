@@ -25,9 +25,13 @@ namespace qgl::content
                    CONTENT_LOADER_IDS::CONTENT_LOADER_ID_SHADER_COMPILED)
    {
       file_handle csoHandle;
-      open_file_read(csoFile, &csoHandle);
+      auto hr = open_file_read(csoFile, &csoHandle);
+      winrt::check_hresult(hr);
 
-      m_byteCode.BytecodeLength = file_size(&csoHandle);
+      m_byteCode.BytecodeLength = 0; 
+      hr = file_size(&csoHandle, &m_byteCode.BytecodeLength);
+      winrt::check_hresult(hr);
+
       m_data = new uint8_t[m_byteCode.BytecodeLength];
       read_file_sync(&csoHandle, 
                      m_byteCode.BytecodeLength,

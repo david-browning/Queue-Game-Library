@@ -51,19 +51,24 @@ namespace QGL_Content_UnitTests
 
          //Open a file for writing.
          file_handle handle;
-         open_file_write(newFilePath.c_str(), &handle);
+         auto hr = open_file_write(newFilePath.c_str(), &handle);
+         Assert::IsTrue(SUCCEEDED(hr), L"HRESULT failed.");
 
          //Write data to the file.
-         write_file_sync(&handle, bufferSize, 0, buffer);
+         hr = write_file_sync(&handle, bufferSize, 0, buffer);
+         Assert::IsTrue(SUCCEEDED(hr), L"HRESULT failed.");
 
          //Close the file.
          handle.close();
 
          //Open the file with read permissions.
-         open_file_read(newFilePath.c_str(), &handle);
+         hr = open_file_read(newFilePath.c_str(), &handle);
+         Assert::IsTrue(SUCCEEDED(hr), L"HRESULT failed.");
 
          //Get file size.
-         auto fileSize = file_size(&handle);
+         size_t fileSize = 0;
+         hr = file_size(&handle, &fileSize);
+         Assert::IsTrue(SUCCEEDED(hr), L"HRESULT failed.");
 
          Assert::AreEqual(bufferSize, fileSize,
                           L"The file size is not correct.");
@@ -83,7 +88,10 @@ namespace QGL_Content_UnitTests
             L"Tests\\Test-Files\\CheckMe.txt",
             CreationCollisionOption::OpenIfExists);
 
-         auto fileSize = file_size(f);
+         size_t fileSize = 0;
+         auto hr = file_size(f, &fileSize);
+         Assert::IsTrue(SUCCEEDED(hr), L"HRESULT failed.");
+
          Assert::AreEqual(static_cast<size_t>(8), fileSize,
                           L"The file size is not correct.");
       }

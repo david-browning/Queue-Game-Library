@@ -19,5 +19,9 @@ namespace qgl::content
       const void* data() const noexcept;
 
       size_t size() const noexcept;
+
+      private:
+      struct impl;
+      impl* m_impl_p;
    };
 }
