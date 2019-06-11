@@ -4,8 +4,6 @@
 
 namespace qgl::content
 {
-   static constexpr HRESULT E_BADMAGIC = MAKE_HRESULT(1, 0, 0);
-
    struct icontent_project : public iqgl
    {
       using content_project_entry_pair =
