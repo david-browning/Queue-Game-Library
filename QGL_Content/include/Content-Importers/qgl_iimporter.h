@@ -37,17 +37,19 @@ namespace qgl::content
     */
    template<class LoadT,
       CONTENT_LOADER_IDS LoaderID,
-      typename LoadFunction,
-      typename DictMakeFunction>
+      typename LoadFunctor,
+      typename DictMakeFunctor>
    struct ientry_importer
    {
-      static_assert(std::is_trivially_constructible<LoadFunction>::value,
-                    "LoadFunction must be trivially constructible.");
-
-      static_assert(std::is_trivially_constructible<DictMakeFunction>::value,
-                    "DictMakeFunction must be trivially constructible.");
-
       public:
+      constexpr ientry_importer(LoadFunctor lf = LoadFunctor(),
+                                DictMakeFunctor df = DictMakeFunctor()) :
+         m_loadFunctor(lf),
+         m_dictMakeFunctor(df)
+      {
+
+      }
+
       /*
        Loads content from a file using the lookup data.
        The file must be opened with read permissions.
@@ -56,8 +58,7 @@ namespace qgl::content
       LoadT load(const file_handle& fileHandle,
                  const CONTENT_DICTIONARY_ENTRY_BUFFER& lookup) const
       {
-         static LoadFunction ret;
-         return ret(fileHandle, lookup);
+         return m_loadFunctor(fileHandle, lookup);
       }
 
      /*
@@ -69,8 +70,11 @@ namespace qgl::content
                                                  const wchar_t* objName,
                                                  size_t offset = -1) const
       {
-         static DictMakeFunction ret;
-         return ret(data, objName, offset);
+         return m_dictMakeFunctor(data, objName, offset);
       }
+
+      private:
+      LoadFunctor m_loadFunctor;
+      DictMakeFunctor m_dictMakeFunctor;
    };
 }

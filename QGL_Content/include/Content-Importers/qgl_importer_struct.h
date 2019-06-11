@@ -12,7 +12,7 @@ namespace qgl::content
                     "Parameter 'StructType' must be plain old data.");
 
       StructT operator()(const file_handle& fileHandle,
-                         const CONTENT_DICTIONARY_ENTRY_BUFFER& lookup)
+                         const CONTENT_DICTIONARY_ENTRY_BUFFER& lookup) const
       {
          StructT ret;
          read_file_sync<StructT>(&fileHandle,
@@ -24,7 +24,7 @@ namespace qgl::content
    };
 
    template<
-      typename StructT, 
+      typename StructT,
       RESOURCE_TYPES ResourceType,
       CONTENT_LOADER_IDS LoaderID>
    struct struct_dict_export_fn
@@ -32,9 +32,9 @@ namespace qgl::content
       static_assert(std::is_pod<StructT>::value,
                     "Parameter 'StructType' must be plain old data.");
 
-      CONTENT_DICTIONARY_ENTRY_BUFFER operator()(const StructT& data, 
+      CONTENT_DICTIONARY_ENTRY_BUFFER operator()(const StructT& data,
                                                  const wchar_t* objName,
-                                                 size_t offset)
+                                                 size_t offset) const
       {
          static CONTENT_METADATA_BUFFER info(ResourceType, LoaderID, objName);
 

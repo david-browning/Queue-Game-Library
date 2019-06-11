@@ -7,8 +7,9 @@ namespace qgl::content
 {
    struct wstring_load_entry_fn
    {
-      std::wstring operator()(const file_handle& fileHandle,
-                              const CONTENT_DICTIONARY_ENTRY_BUFFER& lookup)
+      std::wstring operator()(
+         const file_handle& fileHandle,
+                              const CONTENT_DICTIONARY_ENTRY_BUFFER& lookup) const
       {
          auto numChars = lookup.size() / sizeof(wchar_t);
          std::wstring ret(numChars, L'\0');
@@ -24,7 +25,7 @@ namespace qgl::content
    {
       CONTENT_DICTIONARY_ENTRY_BUFFER operator()(const std::wstring& data,
                                                  const wchar_t* objName,
-                                                 size_t offset)
+                                                 size_t offset) const
       {
          static constexpr RESOURCE_TYPES rType =
             RESOURCE_TYPES::RESOURCE_TYPE_STRING;

@@ -7,8 +7,9 @@ namespace qgl::content
 {
    struct string_load_entry_fn
    {
-      std::string operator()(const file_handle& fileHandle,
-                             const CONTENT_DICTIONARY_ENTRY_BUFFER& lookup)
+      std::string operator()(
+         const file_handle& fileHandle,
+         const CONTENT_DICTIONARY_ENTRY_BUFFER& lookup) const
       {
          std::string ret(lookup.size(), '\0');
          read_file_sync<char>(&fileHandle,
@@ -23,7 +24,7 @@ namespace qgl::content
    {
       CONTENT_DICTIONARY_ENTRY_BUFFER operator()(const std::string& data,
                                                  const wchar_t* objName,
-                                                 size_t offset)
+                                                 size_t offset) const
       {
          static constexpr RESOURCE_TYPES rType =
             RESOURCE_TYPES::RESOURCE_TYPE_STRING;
