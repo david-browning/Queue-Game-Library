@@ -327,14 +327,7 @@ namespace qgl::content
    icontent_project* qgl_open_content_project(const wchar_t* filePath,
                                               qgl_version_t v)
    {
-      switch (v)
-      {
-         case QGL_VERSION_0_1_WIN :
-         case QGL_VERSION_0_2_WIN:
-         {
-            return new content_project(filePath);
-         }
-      }
+      return new content_project(filePath);
 
       return nullptr;
    }
@@ -343,14 +336,7 @@ namespace qgl::content
       const winrt::Windows::Storage::StorageFile& f,
       qgl_version_t v)
    {
-      switch (v)
-      {
-         case QGL_VERSION_0_1_WIN:
-         case QGL_VERSION_0_2_WIN:
-         {
-            return new content_project(f);
-         }
-      }
+      return new content_project(f);
 
       return nullptr;
    }

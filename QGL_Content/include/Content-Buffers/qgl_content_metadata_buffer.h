@@ -163,7 +163,7 @@ namespace qgl::content
       /*
        Version the content was compiled.
        */
-      uint32_t m_compilerVersion;
+      qgl_version_t m_compilerVersion;
 
       /*
        Unique ID for this content.

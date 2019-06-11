@@ -66,18 +66,13 @@ namespace qgl::content
     If the file exists, the constructor checks if the file is valid. If the
     file is not valid, this throws std::domain_error.
     */
-   extern QGL_CONTENT_API icontent_file* qgl_open_content_file(
+   extern "C" QGL_CONTENT_API HRESULT qgl_open_content_file(
       const wchar_t* filePath,
-      qgl_version_t v);
+      qgl_version_t v,
+      icontent_file** out_p);
 
-   /*
-    Opens a content file in read write mode.
-    File path must be absolute.
-    If the file does not exist, this creates a new one.
-    If the file exists, the constructor checks if the file is valid. If the
-    file is not valid, this throws std::domain_error.
-    */
-   extern QGL_CONTENT_API icontent_file* qgl_open_content_file(
+   extern "C" QGL_CONTENT_API HRESULT qgl_open_content_file_sf(
       const winrt::Windows::Storage::StorageFile& f,
-      qgl_version_t v);
+      qgl_version_t v,
+      icontent_file** out_p);
 }

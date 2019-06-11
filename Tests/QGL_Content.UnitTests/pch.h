@@ -24,4 +24,10 @@ namespace Microsoft::VisualStudio::CppUnitTestFramework
    {
       RETURN_WIDE_STRING(t);
    }
+
+      template<> static std::wstring ToString<qgl::qgl_version_t>
+         (const qgl::qgl_version_t& v)
+      {
+         RETURN_WIDE_STRING(v.Major);
+   }
 }

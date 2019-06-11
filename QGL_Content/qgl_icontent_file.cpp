@@ -229,34 +229,70 @@ namespace qgl::content
       file_handle m_handle;
    };
 
-   icontent_file* qgl_open_content_file(const wchar_t* filePath,
-                                        qgl_version_t v)
+   HRESULT qgl_open_content_file(const wchar_t* filePath,
+                                 qgl_version_t v,
+                                 icontent_file** out_p)
    {
-      switch (v)
+      if (out_p == nullptr)
       {
-         case QGL_VERSION_0_1_WIN:
-         case QGL_VERSION_0_2_WIN:
+         return E_INVALIDARG;
+      }
+
+      icontent_file* ret = nullptr;
+      switch (std::hash<qgl_version_t>{}(v))
+      {
+         case qgl::hashes::VERSION_0_1_HASH:
+         case qgl::hashes::VERSION_0_2_HASH:
          {
-            return new content_file(filePath);
+            ret = new(std::nothrow) content_file(filePath);
+            break;
+         }
+         default:
+         {
+            return E_NOINTERFACE;
          }
       }
 
-      return nullptr;
+      if (ret == nullptr)
+      {
+         return E_OUTOFMEMORY;
+      }
+
+      *out_p = ret;
+      return S_OK;
    }
 
-   icontent_file* qgl_open_content_file(
+   HRESULT qgl_open_content_file_sf(
       const winrt::Windows::Storage::StorageFile& f,
-      qgl_version_t v)
+      qgl_version_t v,
+      icontent_file** out_p)
    {
-      switch (v)
+      if (out_p == nullptr)
       {
-         case QGL_VERSION_0_1_WIN:
-         case QGL_VERSION_0_2_WIN:
+         return E_INVALIDARG;
+      }
+
+      icontent_file* ret = nullptr;
+      switch (std::hash<qgl_version_t>{}(v))
+      {
+         case qgl::hashes::VERSION_0_1_HASH:
+         case qgl::hashes::VERSION_0_2_HASH:
          {
-            return new content_file(f);
+            ret = new(std::nothrow) content_file(f);
+            break;
+         }
+         default:
+         {
+            return E_NOINTERFACE;
          }
       }
 
-      return nullptr;
+      if (ret == nullptr)
+      {
+         return E_OUTOFMEMORY;
+      }
+
+      *out_p = ret;
+      return S_OK;
    }
 }

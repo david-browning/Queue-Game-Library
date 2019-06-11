@@ -98,11 +98,13 @@ namespace qgl::content
          //Open the content file.
          //This loads the file's header and dictionary.
          auto absPath = abs_path(relative);
-         auto f = qgl::make_shared(qgl_open_content_file(
-            relative,
-            m_version))->as<icontent_file>();
-
-         const auto meta = f->header()->metadata();
+         icontent_file* filePtr = nullptr;
+         winrt::check_hresult(qgl_open_content_file(relative, 
+                                                    m_version,
+                                                    &filePtr));
+         auto fileSafe = qgl::make_unique<icontent_file>(filePtr);
+         
+         const auto meta = fileSafe->header()->metadata();
 
          //Look up the loader using the content file's header.
          auto loaderHash = hash(meta->resource_type(), meta->loader_id());
@@ -113,7 +115,7 @@ namespace qgl::content
          auto loaderFn = m_loadFunctionMap.at(loaderHash);
 
          //Load the content using the file loader.
-         auto contentPtr = loaderFn(f, retID);
+         auto contentPtr = loaderFn(fileSafe.get(), retID);
 
          //Lock the mutex until done mapping
          std::lock_guard<std::mutex>lock(m_mappingMutex);
@@ -262,19 +264,38 @@ namespace qgl::content
 
       std::vector<file_string> m_pendingLoads;
    };
-
-   icontent_store* qgl_create_content_store(const wchar_t* storePath,
-                                            qgl_version_t v)
+   
+   HRESULT qgl_create_content_store(const wchar_t* storePath, 
+                                            qgl_version_t v, 
+                                            icontent_store** out_p)
    {
-      switch (v)
+      if (out_p == nullptr)
       {
-         case QGL_VERSION_0_1_WIN:
-         case QGL_VERSION_0_2_WIN:
+         return E_INVALIDARG;
+      }
+
+      icontent_store* ret = nullptr;
+
+      switch (std::hash<qgl_version_t>{}(v))
+      {
+         case qgl::hashes::VERSION_0_1_HASH:
+         case qgl::hashes::VERSION_0_2_HASH:
          {
-            return new content_store_1_0(storePath, v);
+            ret = new(std::nothrow) content_store_1_0(storePath, v);
+            break;
+         }
+         default:
+         {
+            return E_NOINTERFACE;
          }
       }
 
-      return nullptr;
+      if (ret == nullptr)
+      {
+         return E_OUTOFMEMORY;
+      }
+
+      *out_p = ret;
+      return S_OK;
    }
 }

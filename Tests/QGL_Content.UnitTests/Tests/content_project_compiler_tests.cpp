@@ -47,8 +47,10 @@ namespace QGL_Content_UnitTests
          }
 
          //Open the compiled project file.
-         auto compiledFile = qgl_open_content_file(compiledPath.c_str(),
-                                                   qgl::QGL_VERSION_0_1_WIN);
+         icontent_file* compiledFile = nullptr;
+         winrt::check_hresult(qgl_open_content_file(compiledPath.c_str(),
+                                                    qgl::QGL_VERSION_0_1_WIN,
+                                                    &compiledFile));
 
          for (size_t i = 0; i < compiledFile->size(); i++)
          {
@@ -114,8 +116,10 @@ namespace QGL_Content_UnitTests
          auto contentF = co_await root.CreateFileAsync(
             L"CompiledContentProject.txt",
             CreationCollisionOption::OpenIfExists);
-         auto file = qgl_open_content_file(contentF,
-                                           qgl::QGL_VERSION_0_1_WIN);
+         icontent_file* file = nullptr;
+         winrt::check_hresult(qgl_open_content_file_sf(contentF,
+                                                       qgl::QGL_VERSION_0_1_WIN,
+                                                       &file));
 
          //Verify the header metadata is correct.
          Assert::IsTrue(*file->header()->metadata() == projectMeta,

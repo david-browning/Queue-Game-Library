@@ -117,6 +117,15 @@ namespace qgl::content
       return dynamic_cast<const T*>(p);
    }
 
-   extern QGL_CONTENT_API icontent_store* qgl_create_content_store(
-      const wchar_t* storePath, qgl_version_t v);
+   /*
+    Returns:
+      E_INVALIDARG if out_p is nullptr.
+      E_OUTOFMEMORY if memory cannot be allocated.
+      E_NOINTERFACE if the version is not correct.
+      S_OK if the pointer was constructed.
+    */
+   extern "C" QGL_CONTENT_API HRESULT qgl_create_content_store(
+      const wchar_t* storePath, 
+      qgl_version_t v,
+      icontent_store** out_p);
 }

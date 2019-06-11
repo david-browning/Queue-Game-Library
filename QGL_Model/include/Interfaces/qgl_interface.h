@@ -14,10 +14,18 @@ namespace qgl
       }
    };
 
-   typedef std::shared_ptr<iqgl> iqgl_sptr;
-
-   inline iqgl_sptr make_shared(iqgl* p)
+   struct iqgl_impl : public iqgl
    {
-      return iqgl_sptr(p, std::mem_fn(&iqgl::release));
+
+   };
+
+   template<class T>
+   inline std::unique_ptr<T, std::function<void(T*)>>make_unique(T* p)
+   {
+      return std::unique_ptr<T, std::function<void(T*)>>(p,
+                                                         [](T* ptr)
+      {
+         ptr->release();
+      });
    }
 }

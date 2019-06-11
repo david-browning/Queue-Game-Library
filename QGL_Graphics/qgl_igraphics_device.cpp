@@ -508,14 +508,7 @@ namespace qgl::graphics
       window* wnd,
       qgl_version_t v)
    {
-      switch (v)
-      {
-         case QGL_VERSION_0_1_WIN:
-         case QGL_VERSION_0_2_WIN:
-         {
-            return new graphics_device_0_1(config, wnd);
-         }
-      }
+
 
       return nullptr;
    }
