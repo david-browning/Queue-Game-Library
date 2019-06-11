@@ -43,7 +43,9 @@ namespace QGL_Content_UnitTests
             project->flush();
 
             //Compile the project file.
-            compile_content_project(project, compiledPath.c_str());
+            winrt::check_hresult(compile_content_project(project,
+                                                         compiledPath.c_str()));
+
          }
 
          //Open the compiled project file.
@@ -102,14 +104,8 @@ namespace QGL_Content_UnitTests
                L"CompiledContentProject.txt",
                CreationCollisionOption::ReplaceExisting);
 
-            try
-            {
-               compile_content_project(project, contentF);
-            }
-            catch (winrt::hresult_error&)
-            {
-               Assert::Fail(L"Exception compiling project.");
-            }
+            winrt::check_hresult(compile_content_project_sf(project,
+                                                            contentF));
          }
 
          //Load the compiled file into a content_file

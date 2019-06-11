@@ -7,17 +7,19 @@ namespace qgl::content
    /*
     Compiles a content project into a content file and saves it.
     absPath: Path where to save the compiled project.
+    Returns a failed HRESULT on error.
     */
-   extern QGL_CONTENT_API void compile_content_project(
+   extern "C" QGL_CONTENT_API HRESULT compile_content_project(
       const icontent_project* proj,
-      const wchar_t* absPath);
+      const wchar_t* absPath) noexcept;
 
    /*
     Compiles a content project into a content file and saves it.
     Storage file must have write permissions.
     Storage file permissions should be brokered by the storage file provider.
+    Returns a failed HRESULT on error.
     */
-   extern QGL_CONTENT_API void compile_content_project(
+   extern "C" QGL_CONTENT_API HRESULT compile_content_project_sf(
       const icontent_project* proj,
-      const winrt::Windows::Storage::StorageFile& f);
+      const winrt::Windows::Storage::StorageFile& f) noexcept;
 }
