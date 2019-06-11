@@ -5,24 +5,25 @@
 
 namespace qgl::content
 {
-   /*
-    Populates an OVERLAPPED so it can be used to read and write a file using
-    an offset.
-    */
-   extern QGL_CONTENT_API void make_overlapped(size_t offsetBytes,
-                                               OVERLAPPED* over_p);
+   inline void make_overlapped(size_t offsetBytes, OVERLAPPED* over_p)
+   {
+      ZeroMemory(over_p, sizeof(OVERLAPPED));
+      over_p->hEvent = nullptr;
+      over_p->Offset = offsetBytes & 0xFFFF'FFFF;
+      over_p->OffsetHigh = (offsetBytes >> 32) & 0xFFFF'FFFF;
+   }
 
    /*
     Reads bytesToRead bytes from a file and stores it in buffer_p.
     Specify the offset into the file using offsetBytes.
     File handle must be open with read permissions.
-    Throws an exception on error.
+    Returns a failed HRESULT on error.
     */
    template<typename T>
-   void read_file_sync(const file_handle* hdnl_p,
-                       size_t bytesToRead,
-                       size_t offsetBytes,
-                       T* const buffer_p)
+   HRESULT read_file_sync(const file_handle* hdnl_p,
+                          size_t bytesToRead,
+                          size_t offsetBytes,
+                          T* const buffer_p) noexcept
    {
       DWORD bytesRead = 0;
       OVERLAPPED overlapped;
@@ -35,22 +36,24 @@ namespace qgl::content
          auto lastError = GetLastError();
          if (lastError != ERROR_IO_PENDING)
          {
-            winrt::check_win32(lastError);
+            return HRESULT_FROM_WIN32(lastError);
          }
       }
+
+      return S_OK;
    }
 
    /*
     Writes bytesToWrite from buffer_p to the file.
     Specify the offset into the file using offsetBytes.
     File handle must be open with write permissions.
-    Throws an exception on error.
+    Returns a failed HRESULT on error.
     */
    template<typename T>
-   void write_file_sync(const file_handle* hdnl_p,
-                        size_t bytesToWrite,
-                        size_t offsetBytes,
-                        const T* const buffer_p)
+   HRESULT write_file_sync(const file_handle* hdnl_p,
+                           size_t bytesToWrite,
+                           size_t offsetBytes,
+                           const T* const buffer_p) noexcept
    {
       DWORD bytesWritten = 0;
       OVERLAPPED overlapped;
@@ -63,88 +66,91 @@ namespace qgl::content
          auto lastError = GetLastError();
          if (lastError != ERROR_IO_PENDING)
          {
-            winrt::check_win32(lastError);
+            return HRESULT_FROM_WIN32(lastError);
          }
       }
+
+      return S_OK;
    }
 
    /*
     Opens a file for read access.
     Creates the file if it does not exist.
-    Throws an exception on error.
+    Returns a failed HRESULT on error.
     */
-   extern QGL_CONTENT_API void open_file_read(const wchar_t* filePath,
-                                              file_handle* out_p);
+   extern QGL_CONTENT_API HRESULT open_file_read(
+      const wchar_t* filePath,
+      file_handle* out_p) noexcept;
 
    /*
     Opens a storage file for read access.
-    Throws an exception on error
+    Returns E_UNEXPECTED on error.
     */
-   extern QGL_CONTENT_API void open_file_read(
+   extern QGL_CONTENT_API HRESULT open_file_read(
       const winrt::Windows::Storage::StorageFile& f,
-      file_handle* out_p);
+      file_handle* out_p) noexcept;
 
   /*
    Opens a file for write access.
    Creates the file if it does not exist.
-   Throws an exception on error.
+   Returns a failed HRESULT on error.
    */
-   extern QGL_CONTENT_API void open_file_write(const wchar_t* filePath,
-                                               file_handle* out_p);
+   extern QGL_CONTENT_API HRESULT open_file_write(
+      const wchar_t* filePath,
+      file_handle* out_p) noexcept;
 
    /*
     Opens a file for write access.
-    Throws an exception on error.
+    Returns E_UNEXPECTED on error.
     */
-   extern QGL_CONTENT_API void open_file_write(
+   extern QGL_CONTENT_API HRESULT open_file_write(
       const winrt::Windows::Storage::StorageFile& f,
-      file_handle* out_p);
+      file_handle* out_p) noexcept;
 
   /*
    Opens a file for read and write access.
    Creates the file if it does not exist.
-   Throws an exception on error.
+   Returns a failed HRESULT on error.
    */
-   extern QGL_CONTENT_API void open_file_readwrite(const wchar_t* filePath,
-                                                   file_handle* out_p);
+   extern QGL_CONTENT_API HRESULT open_file_readwrite(
+      const wchar_t* filePath,
+      file_handle* out_p) noexcept;
 
    /*
     Opens a storage file for read and write access.
     TODO: Don't know if the file is valid after the storage file goes out of
     scope.
-    Throws an exception on error.
+    Returns E_UNEXPECTED on error.
     */
-   extern QGL_CONTENT_API void open_file_readwrite(
+   extern QGL_CONTENT_API HRESULT open_file_readwrite(
       const winrt::Windows::Storage::StorageFile& f,
-      file_handle* out_p);
+      file_handle* out_p) noexcept;
 
   /*
    Sets a handle's file pointer to zero and marks it as the end of the file.
    This truncates the file to 0 bytes.
    The file handle must have been opened with write access.
-   Throws an exception on error.
+   Returns E_UNEXPECTED on error.
    */
-   extern QGL_CONTENT_API void truncate_file(const file_handle* hdnl_p);
+   extern QGL_CONTENT_API HRESULT truncate_file(
+      const file_handle* hdnl_p) noexcept;
 
    /*
    Returns how many bytes large the file is.
    The file handle must have been opened with read permissions.
-   Throws an exception on error.
+   Returns a failed HRESULT on error.
    */
-   extern QGL_CONTENT_API size_t file_size(const file_handle* hdnl_p);
+   extern QGL_CONTENT_API HRESULT file_size(
+      const file_handle* hdnl_p,
+      size_t* out_p) noexcept;
 
    /*
     Returns the size in bytes of the file.
+    Returns a failed HRESULT on error.
     */
-   extern QGL_CONTENT_API size_t file_size(
-      const winrt::Windows::Storage::StorageFile& f);
-
-   /*
-    Loads the entire file into memory
-    Returns a vector of bytes.
-    */
-   extern QGL_CONTENT_API std::vector<uint8_t> file_data(
-      const file_handle* hdnl_p);
+   extern QGL_CONTENT_API HRESULT file_size(
+      const winrt::Windows::Storage::StorageFile& f,
+      size_t* out_p) noexcept;
 
   /*
    Returns true if a file or folder contains the given attribute.
@@ -153,7 +159,7 @@ namespace qgl::content
    https://docs.microsoft.com/en-us/windows/desktop/FileIO/file-attribute-constants
    */
    template<DWORD Attribute>
-   bool attribute_exists(const wchar_t* absPath)
+   bool attribute_exists(const wchar_t* absPath) noexcept
    {
       auto attr = GetFileAttributes(absPath);
       if (attr != INVALID_FILE_ATTRIBUTES)
@@ -172,7 +178,7 @@ namespace qgl::content
     to a directory.
     The directory path must be absolute.
     */
-   bool QGL_CONTENT_API dir_exists(const wchar_t* absPath);
+   bool QGL_CONTENT_API dir_exists(const wchar_t* absPath) noexcept;
 
    /*
     Returns true if the file exists.
@@ -180,5 +186,5 @@ namespace qgl::content
     file.
     The file path must be an absolute path.
     */
-   bool QGL_CONTENT_API file_exists(const wchar_t* absPath);
+   bool QGL_CONTENT_API file_exists(const wchar_t* absPath) noexcept;
 }

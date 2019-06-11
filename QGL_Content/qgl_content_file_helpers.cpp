@@ -118,7 +118,11 @@ namespace qgl::content::content_file_helpers
    bool valid_content_file_size(const file_handle* hndl)
    {
       //Get the file size
-      auto sz = file_size(hndl);
+      size_t sz = 0;
+      if (FAILED(file_size(hndl, &sz)))
+      {
+         return false;
+      }
 
       //If the size is less than expected, throw an exception.
       static constexpr size_t minValidFileSize =

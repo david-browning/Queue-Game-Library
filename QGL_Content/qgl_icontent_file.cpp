@@ -24,7 +24,11 @@ namespace qgl::content
 
       content_file(const winrt::Windows::Storage::StorageFile& f)
       {
-         bool existingFile = file_size(f) > 0;
+         size_t sz = 0;
+         auto hr = file_size(f, &sz);
+         winrt::check_hresult(hr);
+
+         bool existingFile = sz > 0;
          open_file_readwrite(f, &m_handle);
 
          if (existingFile)
@@ -57,7 +61,7 @@ namespace qgl::content
          delete this;
       }
 
-      virtual void flush()
+      virtual HRESULT flush() noexcept
       {
           //Write the header.
          content_file_helpers::write_header(&m_handle, m_header);
@@ -77,12 +81,6 @@ namespace qgl::content
 
          //Offset to where to put the content data.
          auto contentDataOffset = dictionary_data_offset(m_header, dictMeta);
-
-         if (m_dict.size() != m_entryDataToWrite.size())
-         {
-            throw std::domain_error("There must be the same number of entries "
-                                    "and data.");
-         }
 
          auto entryIt = m_dict.begin();
          auto contentIt = m_entryDataToWrite.begin();
@@ -109,10 +107,12 @@ namespace qgl::content
             contentDataOffset += entryIt->size();
             dictEntryOffset += dictMeta.entry_size();
          }
+
+         return S_OK;
       }
 
       virtual void push_back(const CONTENT_METADATA_BUFFER* meta,
-                             const DATA_CONTENT_ENTRY* buff)
+                             const DATA_CONTENT_ENTRY* buff) noexcept
       {
          content_variant_entry cont(buff);
          CONTENT_DICTIONARY_ENTRY_BUFFER entry(buff->size(), meta);
@@ -123,7 +123,7 @@ namespace qgl::content
       }
 
       virtual void push_back(const CONTENT_METADATA_BUFFER* meta,
-                             const SHARED_CONTENT_ENTRY* buff)
+                             const SHARED_CONTENT_ENTRY* buff) noexcept
       {
          content_variant_entry cont(buff);
          CONTENT_DICTIONARY_ENTRY_BUFFER entry(shared_entry_data_size(buff),

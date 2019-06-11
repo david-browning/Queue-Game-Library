@@ -19,24 +19,36 @@ namespace qgl::content
    {
       /*
        Flushes any changes to the content file to the disk.
-       This function is only valid if the file was opened with write
-       permissions.
+       Returns:
+         Error codes returned by file reading and writing functions. 
+            See qgl_file_helpers.h
+         S_OK if success.
        */
-      virtual void flush() = 0;
+      virtual HRESULT flush() noexcept = 0;
 
+      /*
+       The metadata and buffer are copied and can go out of scope after calling
+       this.
+       */
       virtual void push_back(const CONTENT_METADATA_BUFFER* meta,
-                             const DATA_CONTENT_ENTRY* buff) = 0;
+                             const DATA_CONTENT_ENTRY* buff) noexcept = 0;
 
+      /*
+       The metadata and buffer are copied and can go out of scope after calling
+       this.
+       */
       virtual void push_back(const CONTENT_METADATA_BUFFER* meta,
-                             const SHARED_CONTENT_ENTRY* buff) = 0;
+                             const SHARED_CONTENT_ENTRY* buff) noexcept = 0;
 
       /*
        Returns a const reference to the file's header.
+       Do not free or reallocate the returned pointer.
        */
       virtual const CONTENT_FILE_HEADER_BUFFER* header() const noexcept = 0;
 
       /*
        Returns a reference to the file's header.
+       Do not free or reallocate the returned pointer.
        */
       virtual CONTENT_FILE_HEADER_BUFFER* header() noexcept = 0;
 
@@ -52,9 +64,17 @@ namespace qgl::content
        */
       virtual const file_handle* handle() const noexcept = 0;
 
+      /*
+       Does not bounds checking.
+       Do not free or reallocate the returned pointer.
+       */
       virtual CONTENT_DICTIONARY_ENTRY_BUFFER* at(
          size_t idx) noexcept = 0;
 
+      /*
+       Does not bounds checking.
+       Do not free or reallocate the returned pointer.
+       */
       virtual const CONTENT_DICTIONARY_ENTRY_BUFFER* at(
          size_t idx) const noexcept = 0;
    };

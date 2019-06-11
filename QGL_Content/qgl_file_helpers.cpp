@@ -12,16 +12,7 @@ using namespace qgl::content;
 
 static constexpr DWORD DEFAULT_SHARE_MODE = FILE_SHARE_READ | FILE_SHARE_WRITE;
 
-
-void qgl::content::make_overlapped(size_t offsetBytes, OVERLAPPED* over_p)
-{
-   ZeroMemory(over_p, sizeof(OVERLAPPED));
-   over_p->hEvent = nullptr;
-   over_p->Offset = offsetBytes & 0xFFFF'FFFF;
-   over_p->OffsetHigh = (offsetBytes >> 32) & 0xFFFF'FFFF;
-}
-
-SECURITY_ATTRIBUTES make_default_security_attributes()
+SECURITY_ATTRIBUTES make_default_security_attributes() noexcept
 {
    SECURITY_ATTRIBUTES ret;
    ret.bInheritHandle = TRUE;
@@ -31,7 +22,7 @@ SECURITY_ATTRIBUTES make_default_security_attributes()
 }
 
 CREATEFILE2_EXTENDED_PARAMETERS make_default_open_file_params(
-   SECURITY_ATTRIBUTES * attr_p)
+   SECURITY_ATTRIBUTES* attr_p) noexcept
 {
    CREATEFILE2_EXTENDED_PARAMETERS ret;
    ret.dwSize = sizeof(CREATEFILE2_EXTENDED_PARAMETERS);
@@ -43,8 +34,8 @@ CREATEFILE2_EXTENDED_PARAMETERS make_default_open_file_params(
    return ret;
 }
 
-void qgl::content::open_file_read(const wchar_t* filePath,
-                                  file_handle* out_p)
+HRESULT qgl::content::open_file_read(const wchar_t* filePath,
+                                     file_handle* out_p) noexcept
 {
    auto sa = make_default_security_attributes();
    auto params = make_default_open_file_params(&sa);
@@ -55,32 +46,35 @@ void qgl::content::open_file_read(const wchar_t* filePath,
                         &params);
    if (h == INVALID_HANDLE_VALUE)
    {
-      winrt::throw_last_error();
+      return HRESULT_FROM_WIN32(GetLastError());
    }
 
    out_p->attach(h);
+   return S_OK;
 }
 
-void qgl::content::open_file_read(
+HRESULT qgl::content::open_file_read(
    const winrt::Windows::Storage::StorageFile& f,
-   file_handle* out_p)
+   file_handle* out_p) noexcept
 {
    winrt::com_ptr<IStorageItemHandleAccess> handleAccess =
-      f.as<IStorageItemHandleAccess>();
+      f.try_as<IStorageItemHandleAccess>();
+   if (!handleAccess)
+   {
+      return E_UNEXPECTED;
+   }
 
-   auto hr = handleAccess->Create(HANDLE_ACCESS_OPTIONS::HAO_READ,
-                                  HANDLE_SHARING_OPTIONS::HSO_SHARE_READ |
-                                  HANDLE_SHARING_OPTIONS::HSO_SHARE_WRITE,
-                                  HANDLE_OPTIONS::HO_OVERLAPPED |
-                                  HANDLE_OPTIONS::HO_SEQUENTIAL_SCAN,
-                                  nullptr,
-                                  out_p->put());
-
-   winrt::check_hresult(hr);
+   return handleAccess->Create(HANDLE_ACCESS_OPTIONS::HAO_READ,
+                               HANDLE_SHARING_OPTIONS::HSO_SHARE_READ |
+                               HANDLE_SHARING_OPTIONS::HSO_SHARE_WRITE,
+                               HANDLE_OPTIONS::HO_OVERLAPPED |
+                               HANDLE_OPTIONS::HO_SEQUENTIAL_SCAN,
+                               nullptr,
+                               out_p->put());
 }
 
-void qgl::content::open_file_write(const wchar_t* filePath,
-                                   file_handle* out_p)
+HRESULT qgl::content::open_file_write(const wchar_t* filePath,
+                                      file_handle* out_p) noexcept
 {
    auto sa = make_default_security_attributes();
    auto params = make_default_open_file_params(&sa);
@@ -92,32 +86,35 @@ void qgl::content::open_file_write(const wchar_t* filePath,
 
    if (h == INVALID_HANDLE_VALUE)
    {
-      winrt::throw_last_error();
+      return HRESULT_FROM_WIN32(GetLastError());
    }
 
    out_p->attach(h);
+   return S_OK;
 }
 
-void qgl::content::open_file_write(
+HRESULT qgl::content::open_file_write(
    const winrt::Windows::Storage::StorageFile & f,
-   file_handle* out_p)
+   file_handle* out_p) noexcept
 {
    winrt::com_ptr<IStorageItemHandleAccess> handleAccess =
-      f.as<IStorageItemHandleAccess>();
+      f.try_as<IStorageItemHandleAccess>();
+   if (!handleAccess)
+   {
+      return E_UNEXPECTED;
+   }
 
-   auto hr = handleAccess->Create(HANDLE_ACCESS_OPTIONS::HAO_READ |
-                                  HANDLE_ACCESS_OPTIONS::HAO_WRITE,
-                                  HANDLE_SHARING_OPTIONS::HSO_SHARE_WRITE,
-                                  HANDLE_OPTIONS::HO_OVERLAPPED |
-                                  HANDLE_OPTIONS::HO_SEQUENTIAL_SCAN,
-                                  nullptr,
-                                  out_p->put());
-
-   winrt::check_hresult(hr);
+   return handleAccess->Create(HANDLE_ACCESS_OPTIONS::HAO_READ |
+                               HANDLE_ACCESS_OPTIONS::HAO_WRITE,
+                               HANDLE_SHARING_OPTIONS::HSO_SHARE_WRITE,
+                               HANDLE_OPTIONS::HO_OVERLAPPED |
+                               HANDLE_OPTIONS::HO_SEQUENTIAL_SCAN,
+                               nullptr,
+                               out_p->put());
 }
 
-void qgl::content::open_file_readwrite(const wchar_t* filePath,
-                                       file_handle* out_p)
+HRESULT qgl::content::open_file_readwrite(const wchar_t* filePath,
+                                          file_handle* out_p) noexcept
 {
    auto sa = make_default_security_attributes();
    auto params = make_default_open_file_params(&sa);
@@ -129,42 +126,62 @@ void qgl::content::open_file_readwrite(const wchar_t* filePath,
 
    if (h == INVALID_HANDLE_VALUE)
    {
-      winrt::throw_last_error();
+      return HRESULT_FROM_WIN32(GetLastError());
    }
 
    out_p->attach(h);
+   return S_OK;
 }
 
-void qgl::content::open_file_readwrite(
+HRESULT qgl::content::open_file_readwrite(
    const winrt::Windows::Storage::StorageFile& f,
-   file_handle* out_p)
+   file_handle* out_p) noexcept
 {
    winrt::com_ptr<IStorageItemHandleAccess> handleAccess =
-      f.as<IStorageItemHandleAccess>();
+      f.try_as<IStorageItemHandleAccess>();
+   if (!handleAccess)
+   {
+      return E_UNEXPECTED;
+   }
 
-   auto hr = handleAccess->Create(HANDLE_ACCESS_OPTIONS::HAO_READ |
-                                  HANDLE_ACCESS_OPTIONS::HAO_WRITE,
-                                  HANDLE_SHARING_OPTIONS::HSO_SHARE_READ |
-                                  HANDLE_SHARING_OPTIONS::HSO_SHARE_WRITE,
-                                  HANDLE_OPTIONS::HO_OVERLAPPED |
-                                  HANDLE_OPTIONS::HO_SEQUENTIAL_SCAN,
-                                  nullptr,
-                                  out_p->put());
-
-   winrt::check_hresult(hr);
+   return handleAccess->Create(HANDLE_ACCESS_OPTIONS::HAO_READ |
+                               HANDLE_ACCESS_OPTIONS::HAO_WRITE,
+                               HANDLE_SHARING_OPTIONS::HSO_SHARE_READ |
+                               HANDLE_SHARING_OPTIONS::HSO_SHARE_WRITE,
+                               HANDLE_OPTIONS::HO_OVERLAPPED |
+                               HANDLE_OPTIONS::HO_SEQUENTIAL_SCAN,
+                               nullptr,
+                               out_p->put());
 }
 
-void qgl::content::truncate_file(const file_handle* hdnl_p)
+HRESULT qgl::content::truncate_file(const file_handle* hdnl_p) noexcept
 {
    LARGE_INTEGER distance;
    distance.QuadPart = 0;
-   winrt::check_bool(SetFilePointerEx(hdnl_p->get(), distance,
-                                      nullptr, FILE_BEGIN));
-   winrt::check_bool(SetEndOfFile(hdnl_p->get()));
+   auto ret = SetFilePointerEx(hdnl_p->get(), distance,
+                               nullptr, FILE_BEGIN);
+   if (!ret)
+   {
+      return E_UNEXPECTED;
+   }
+
+   ret = SetEndOfFile(hdnl_p->get());
+   if (!ret)
+   {
+      return E_UNEXPECTED;
+   }
+
+   return S_OK;
 }
 
-size_t qgl::content::file_size(const file_handle* hdnl_p)
+HRESULT qgl::content::file_size(const file_handle* hdnl_p,
+                                size_t* out_p) noexcept
 {
+   if (out_p == nullptr)
+   {
+      return E_INVALIDARG;
+   }
+
    //Get the file info and check the result.
    FILE_STANDARD_INFO fileInfo = {};
    auto res = GetFileInformationByHandleEx(
@@ -175,34 +192,32 @@ size_t qgl::content::file_size(const file_handle* hdnl_p)
 
    if (!res)
    {
-      winrt::throw_last_error();
+      return HRESULT_FROM_WIN32(GetLastError());
    }
 
-   return static_cast<size_t>(fileInfo.EndOfFile.QuadPart);
+   *out_p = static_cast<size_t>(fileInfo.EndOfFile.QuadPart);
+   return S_OK;
 }
 
-LIB_EXPORT size_t qgl::content::file_size(
-   const winrt::Windows::Storage::StorageFile & f)
+HRESULT qgl::content::file_size(const winrt::Windows::Storage::StorageFile& f,
+                                size_t* out_p) noexcept
 {
    file_handle hndl;
-   open_file_read(f, &hndl);
-   return file_size(&hndl);
+   auto hr = open_file_read(f, &hndl);
+   if (FAILED(hr))
+   {
+      return hr;
+   }
+
+   return file_size(&hndl, out_p);
 }
 
-std::vector<uint8_t> qgl::content::file_data(const file_handle* hdnl_p)
-{
-   auto fileSize = file_size(hdnl_p);
-   std::vector<uint8_t> ret(fileSize);
-   read_file_sync(hdnl_p, fileSize, 0, ret.data());
-   return ret;
-}
-
-bool qgl::content::dir_exists(const wchar_t* absPath)
+bool qgl::content::dir_exists(const wchar_t* absPath) noexcept
 {
    return attribute_exists<FILE_ATTRIBUTE_DIRECTORY>(absPath);
 }
 
-bool qgl::content::file_exists(const wchar_t* absPath)
+bool qgl::content::file_exists(const wchar_t* absPath) noexcept
 {
    auto attr = GetFileAttributes(absPath);
    return attr != INVALID_FILE_ATTRIBUTES &&

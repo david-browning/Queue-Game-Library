@@ -180,6 +180,7 @@
     <ClInclude Include="include\Interfaces\qgl_icontent_store.h" />
     <ClInclude Include="include\qgl_content_include.h" />
     <ClInclude Include="include\qgl_content_types.h" />
+    <ClInclude Include="include\qgl_file_buffer.h" />
     <ClInclude Include="include\qgl_file_handle.h" />
     <ClInclude Include="include\qgl_file_helpers.h" />
     <ClInclude Include="QGLContent.h" />
@@ -193,6 +194,7 @@
     <ClCompile Include="qgl_content_variant_entry.cpp" />
     <ClCompile Include="qgl_content_file_helpers.cpp" />
     <ClCompile Include="qgl_content_project_compiler.cpp" />
+    <ClCompile Include="qgl_file_buffer.cpp" />
     <ClCompile Include="qgl_icontent_file.cpp" />
     <ClCompile Include="qgl_icontent_project.cpp" />
     <ClCompile Include="qgl_icontent_store.cpp" />

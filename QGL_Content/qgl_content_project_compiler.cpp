@@ -1,7 +1,8 @@
 #include "pch.h"
-#include "include\Content-Project/qgl_content_project_compiler.h"
+#include "include/Content-Project/qgl_content_project_compiler.h"
 #include "include/Interfaces/qgl_icontent_file.h"
 #include "include/qgl_file_helpers.h"
+#include "include/qgl_file_buffer.h"
 
 
 namespace qgl::content
@@ -17,7 +18,7 @@ namespace qgl::content
       {
          file_handle bufferHandle;
          open_file_read(entry.second.c_str(), &bufferHandle);
-         auto rawBuffer = file_data(&bufferHandle);
+         file_buffer rawBuffer(&bufferHandle);
          DATA_CONTENT_ENTRY buffer(rawBuffer.data(), rawBuffer.size());
          cf->push_back(&entry.first, &buffer);
       }
