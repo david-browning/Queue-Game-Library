@@ -37,10 +37,13 @@ namespace QGL_Content_UnitTests
 
          //Create a project.
          {
-            auto project = qgl_open_content_project(newFilePath.c_str(),
-                                                    qgl::QGL_VERSION_0_1_WIN);
+            icontent_project* project = nullptr;
+            winrt::check_hresult(qgl_open_content_project(
+               newFilePath.c_str(),
+               qgl::QGL_VERSION_0_1_WIN,
+               &project));
             project->emplace_back(&entry1Meta, entry1Path.c_str());
-            project->flush();
+            winrt::check_hresult(project->flush());
 
             //Compile the project file.
             winrt::check_hresult(compile_content_project(project,
@@ -92,8 +95,11 @@ namespace QGL_Content_UnitTests
                L"CompileProjectStorageFile.txt",
                CreationCollisionOption::ReplaceExisting);
 
-            auto project = qgl_open_content_project(projectF,
-                                                    qgl::QGL_VERSION_0_1_WIN);
+            icontent_project* project = nullptr;
+            winrt::check_hresult(qgl_open_content_project_sf(
+               projectF,
+               qgl::QGL_VERSION_0_1_WIN,
+               &project));
             *project->metadata() = projectMeta;
             project->emplace_back(&entry1Meta, entry1Path.c_str());
             project->emplace_back(&entry1Meta, entry1Path.c_str());

@@ -4,6 +4,8 @@
 
 namespace qgl::content
 {
+   static constexpr HRESULT E_BADMAGIC = MAKE_HRESULT(1, 0, 0);
+
    struct icontent_project : public iqgl
    {
       using content_project_entry_pair =
@@ -13,14 +15,10 @@ namespace qgl::content
       using iterator = container::iterator;
       using const_iterator = container::const_iterator;
 
-      virtual ~icontent_project() noexcept
-      {
-      }
-
       /*
        Flushes any changes to the content file to the disk.
        */
-      virtual void flush() = 0;
+      virtual HRESULT flush() noexcept = 0;
 
       /*
        Returns a reference to the content project's metadata.
@@ -46,30 +44,21 @@ namespace qgl::content
 
       /*
        Returns a reference to the idx'th project entry.
-       This throws out_of_range if the index is out of bounds.
+       Does not bounds checking.
+       Do not free or reallocate the returned pointer.
        */
-      virtual content_project_entry_pair& at(size_t idx) = 0;
+      virtual content_project_entry_pair* at(
+         size_t idx) noexcept = 0;
 
       /*
        Returns a const reference to the idx'th project entry.
-       This throws out_of_range if the index is out of bounds.
+       Does not bounds checking.
+       Do not free or reallocate the returned pointer.
        */
-      virtual const content_project_entry_pair& at(size_t idx) const = 0;
-
-      /*
-       Returns a reference to the idx'th project entry.
-       This does no bounds checking.
-       */
-      virtual content_project_entry_pair& operator[](size_t idx) noexcept = 0;
-
-      /*
-       Returns a const reference to the idx'th project entry.
-       This does no bounds checking.
-       */
-      virtual const content_project_entry_pair& operator[](
+      virtual const content_project_entry_pair* at(
          size_t idx) const noexcept = 0;
 
-        /*
+      /*
        Returns the project entry at the given position.
        */
       virtual iterator erase(const_iterator position) = 0;
@@ -111,12 +100,19 @@ namespace qgl::content
     When creating a new file, the content metadata is default and the list
     of project entries is empty.
 
-    If the file exists, the constructor checks if the file is valid. If the
-    file is not valid, this throws an exception.
+    Be sure to call release on the returned pointer or wrap it
+    using make_unique.
+    Returns:
+      E_INVALIDARG if out_p is nullptr.
+      E_OUTOFMEMORY if memory cannot be allocated.
+      E_NOINTERFACE if the version is not correct.
+      E_BADMAGIC if the file is not correct.
+      S_OK if the pointer was constructed.
     */
-   extern QGL_CONTENT_API icontent_project* qgl_open_content_project(
+   extern "C" QGL_CONTENT_API HRESULT qgl_open_content_project(
       const wchar_t* filePath,
-      qgl_version_t v);
+      qgl_version_t v,
+      icontent_project** out_p);
 
    /*
     Opens a content project file in read-write mode. The storage file must
@@ -125,10 +121,17 @@ namespace qgl::content
     When creating a new file, the content metadata is default and the list
     of project entries is empty.
 
-    If the file exists, the constructor checks if the file is valid. If the
-    file is not valid, this throws an exception.
+    Be sure to call release on the returned pointer or wrap it
+    using make_unique.
+    Returns:
+      E_INVALIDARG if out_p is nullptr.
+      E_OUTOFMEMORY if memory cannot be allocated.
+      E_NOINTERFACE if the version is not correct.
+      E_BADMAGIC if the file is not correct.
+      S_OK if the pointer was constructed.
     */
-   extern QGL_CONTENT_API icontent_project* qgl_open_content_project(
+   extern "C" QGL_CONTENT_API HRESULT qgl_open_content_project_sf(
       const winrt::Windows::Storage::StorageFile& f,
-      qgl_version_t v);
+      qgl_version_t v,
+      icontent_project** out_p);
 }
