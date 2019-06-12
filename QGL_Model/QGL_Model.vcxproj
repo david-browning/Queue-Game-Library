@@ -188,6 +188,7 @@
     <ClCompile Include="qgl_body.cpp" />
     <ClCompile Include="QGL_ModelRT.cpp" />
     <ClCompile Include="qgl_rational.cpp" />
+    <ClCompile Include="qgl_version.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\qgl_icomponent.h.vsspell" />

@@ -121,6 +121,9 @@
     <ClCompile Include="qgl_body.cpp">
       <Filter>Source Files\Physical</Filter>
     </ClCompile>
+    <ClCompile Include="qgl_version.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="QGL_ModelRT.idl">

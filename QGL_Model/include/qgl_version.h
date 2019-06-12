@@ -24,7 +24,7 @@ namespace qgl
    /*
     Bit layout: {2 OS Flag} { 14 Flags} {8 Major} {8 Minor}
     */
-   struct qgl_version_t
+   struct QGL_MODEL_API qgl_version_t
    {
       constexpr qgl_version_t(uint8_t major, uint8_t minor,
                               QGL_OS_VERSION_FLAGS os) :
@@ -51,11 +51,7 @@ namespace qgl
          swap(l.Minor, r.Minor);
       }
 
-      qgl_version_t& operator=(qgl_version_t r)
-      {
-         swap(*this, r);
-         return *this;
-      }
+      qgl_version_t& operator=(qgl_version_t r);
 
       friend bool operator==(const qgl_version_t& l, 
                              const qgl_version_t& r) noexcept
