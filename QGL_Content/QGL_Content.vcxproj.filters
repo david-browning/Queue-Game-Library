@@ -139,8 +139,8 @@
     <ClCompile Include="qgl_icontent_store.cpp">
       <Filter>Source Files\Interfaces</Filter>
     </ClCompile>
-    <ClCompile Include="qgl_file_buffer.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="qgl_ifile_buffer.cpp">
+      <Filter>Source Files\Interfaces</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -238,8 +238,8 @@
     <ClInclude Include="include\Interfaces\qgl_icontent_store.h">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_file_buffer.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\Interfaces\qgl_ifile_buffer.h">
+      <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
