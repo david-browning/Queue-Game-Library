@@ -27,11 +27,3 @@
  */
 #define QGL_VCC __vectorcall
 #endif
-
-#ifndef QGL_API_CC
-/*
- Default calling convention for factory methods that must cross the API.
- Does not support variadic arguments. 
- */
-#define QGL_API_CC __stdcall
-#endif

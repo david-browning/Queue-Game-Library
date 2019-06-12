@@ -38,23 +38,23 @@ namespace qgl::content
          /*
           Returns true if the file handle references a valid file.
           */
-         bool QGL_API_CC valid() const noexcept;
+         bool valid() const noexcept;
 
          /*
           Closes the file handle.
           */
-         void QGL_API_CC close() noexcept;
+         void close() noexcept;
 
          /*
           Returns the platform-dependent underlying handle.
           */
-         file_handle_t QGL_API_CC get() const noexcept;
+         file_handle_t get() const noexcept;
 
-         void QGL_API_CC attach(file_handle_t hndl) noexcept;
+         void attach(file_handle_t hndl) noexcept;
 
-         file_handle_t QGL_API_CC detach() noexcept;
+         file_handle_t detach() noexcept;
 
-         file_handle_t* QGL_API_CC put() noexcept;
+         file_handle_t* put() noexcept;
 
          explicit operator bool() const noexcept
          {

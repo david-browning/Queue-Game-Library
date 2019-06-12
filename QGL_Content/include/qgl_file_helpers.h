@@ -78,7 +78,7 @@ namespace qgl::content
     Creates the file if it does not exist.
     Returns a failed HRESULT on error.
     */
-   extern "C" QGL_CONTENT_API HRESULT QGL_API_CC open_file_read(
+   extern "C" QGL_CONTENT_API HRESULT QGL_CC open_file_read(
       const wchar_t* filePath,
       file_handle* out_p) noexcept;
 
@@ -86,7 +86,7 @@ namespace qgl::content
     Opens a storage file for read access.
     Returns E_UNEXPECTED on error.
     */
-   extern QGL_CONTENT_API HRESULT QGL_API_CC open_file_read_sf(
+   extern QGL_CONTENT_API HRESULT QGL_CC open_file_read_sf(
       const winrt::Windows::Storage::StorageFile& f,
       file_handle* out_p) noexcept;
 
@@ -95,7 +95,7 @@ namespace qgl::content
    Creates the file if it does not exist.
    Returns a failed HRESULT on error.
    */
-   extern "C" QGL_CONTENT_API HRESULT QGL_API_CC open_file_write(
+   extern "C" QGL_CONTENT_API HRESULT QGL_CC open_file_write(
       const wchar_t* filePath,
       file_handle* out_p) noexcept;
 
@@ -103,7 +103,7 @@ namespace qgl::content
     Opens a file for write access.
     Returns E_UNEXPECTED on error.
     */
-   extern QGL_CONTENT_API HRESULT QGL_API_CC open_file_write_sf(
+   extern QGL_CONTENT_API HRESULT QGL_CC open_file_write_sf(
       const winrt::Windows::Storage::StorageFile& f,
       file_handle* out_p) noexcept;
 
@@ -112,7 +112,7 @@ namespace qgl::content
    Creates the file if it does not exist.
    Returns a failed HRESULT on error.
    */
-   extern "C" QGL_CONTENT_API HRESULT QGL_API_CC open_file_readwrite(
+   extern "C" QGL_CONTENT_API HRESULT QGL_CC open_file_readwrite(
       const wchar_t* filePath,
       file_handle* out_p) noexcept;
 
@@ -122,7 +122,7 @@ namespace qgl::content
     scope.
     Returns E_UNEXPECTED on error.
     */
-   extern QGL_CONTENT_API HRESULT QGL_API_CC open_file_readwrite_sf(
+   extern QGL_CONTENT_API HRESULT QGL_CC open_file_readwrite_sf(
       const winrt::Windows::Storage::StorageFile& f,
       file_handle* out_p) noexcept;
 
@@ -132,7 +132,7 @@ namespace qgl::content
    The file handle must have been opened with write access.
    Returns E_UNEXPECTED on error.
    */
-   extern "C" QGL_CONTENT_API HRESULT QGL_API_CC truncate_file(
+   extern "C" QGL_CONTENT_API HRESULT QGL_CC truncate_file(
       const file_handle* hdnl_p) noexcept;
 
    /*
@@ -140,7 +140,7 @@ namespace qgl::content
    The file handle must have been opened with read permissions.
    Returns a failed HRESULT on error.
    */
-   extern "C" QGL_CONTENT_API HRESULT QGL_API_CC file_size(
+   extern "C" QGL_CONTENT_API HRESULT QGL_CC file_size(
       const file_handle* hdnl_p,
       size_t* out_p) noexcept;
 
@@ -148,7 +148,7 @@ namespace qgl::content
     Returns the size in bytes of the file.
     Returns a failed HRESULT on error.
     */
-   extern QGL_CONTENT_API HRESULT QGL_API_CC file_size_sf(
+   extern QGL_CONTENT_API HRESULT QGL_CC file_size_sf(
       const winrt::Windows::Storage::StorageFile& f,
       size_t* out_p) noexcept;
 
@@ -178,7 +178,7 @@ namespace qgl::content
     to a directory.
     The directory path must be absolute.
     */
-   extern "C" QGL_CONTENT_API bool QGL_API_CC dir_exists(
+   extern "C" QGL_CONTENT_API bool QGL_CC dir_exists(
       const wchar_t* absPath) noexcept;
 
    /*
@@ -187,6 +187,6 @@ namespace qgl::content
     file.
     The file path must be an absolute path.
     */
-   extern "C" QGL_CONTENT_API bool QGL_API_CC file_exists(
+   extern "C" QGL_CONTENT_API bool QGL_CC file_exists(
       const wchar_t* absPath) noexcept;
 }

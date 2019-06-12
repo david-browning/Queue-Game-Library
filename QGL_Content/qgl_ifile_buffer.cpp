@@ -34,17 +34,17 @@ namespace qgl::content
             delete this;
          }
 
-         virtual const void* QGL_API_CC const_data() const noexcept
+         virtual const void* const_data() const noexcept
          {
             return m_buffer.data();
          }
 
-         virtual size_t QGL_API_CC size() const noexcept
+         virtual size_t size() const noexcept
          {
             return m_buffer.size();
          }
 
-         virtual const file_handle* QGL_API_CC handle() const noexcept
+         virtual const file_handle* handle() const noexcept
          {
             return &m_hndl;
          }

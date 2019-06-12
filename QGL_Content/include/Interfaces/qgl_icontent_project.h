@@ -107,7 +107,7 @@ namespace qgl::content
       E_BADMAGIC if the file is not correct.
       S_OK if the pointer was constructed.
     */
-   extern "C" QGL_CONTENT_API HRESULT QGL_API_CC qgl_open_content_project(
+   extern "C" QGL_CONTENT_API HRESULT QGL_CC qgl_open_content_project(
       const wchar_t* filePath,
       qgl_version_t v,
       icontent_project** out_p);
@@ -128,7 +128,7 @@ namespace qgl::content
       E_BADMAGIC if the file is not correct.
       S_OK if the pointer was constructed.
     */
-   extern "C" QGL_CONTENT_API HRESULT QGL_API_CC qgl_open_content_project_sf(
+   extern "C" QGL_CONTENT_API HRESULT QGL_CC qgl_open_content_project_sf(
       const winrt::Windows::Storage::StorageFile& f,
       qgl_version_t v,
       icontent_project** out_p);
