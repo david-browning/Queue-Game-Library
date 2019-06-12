@@ -1,68 +1,31 @@
 #include "pch.h"
 #include "include/Content-Files/qgl_data_content_entry.h"
 
-using namespace qgl::content;
-
-constexpr qgl::content::DATA_CONTENT_ENTRY::DATA_CONTENT_ENTRY() :
-   m_buffer(nullptr),
-   m_buffSize(0)
+namespace qgl::content::entries
 {
+   constexpr data_content_entry::data_content_entry()
+   {
+   }
 
-}
+   data_content_entry::data_content_entry(const void* const b,
+                                          size_t bytes)
+   {
+      m_buffer.resize(bytes);
+      memcpy(m_buffer.data(), b, bytes);
+   }
 
-DATA_CONTENT_ENTRY::DATA_CONTENT_ENTRY(const void* const b,
-                                       size_t bytes) 
-{
-   m_buffSize = bytes;
-   m_buffer = new uint8_t[bytes];
-   memcpy(m_buffer, b, bytes);
-}
+   data_content_entry::data_content_entry(const std::vector<uint8_t>& bytes) :
+      m_buffer(bytes)
+   {
+   }
 
-DATA_CONTENT_ENTRY::DATA_CONTENT_ENTRY(const DATA_CONTENT_ENTRY& c)
-{
-   m_buffSize = c.m_buffSize;
-   m_buffer = new uint8_t[m_buffSize];
-   memcpy(m_buffer, c.m_buffer, m_buffSize);
-}
+   const void* data_content_entry::data() const noexcept
+   {
+      return m_buffer.data();
+   }
 
-qgl::content::DATA_CONTENT_ENTRY::DATA_CONTENT_ENTRY(DATA_CONTENT_ENTRY&& m)
-{
-   m_buffSize = m.m_buffSize;
-   m_buffer = m.m_buffer;
-   m.m_buffer = nullptr;
-
-   #ifdef DEBUG
-   m.m_buffSize = static_cast<size_t>(-1);
-   #endif
-}
-
-qgl::content::DATA_CONTENT_ENTRY::~DATA_CONTENT_ENTRY() noexcept
-{
-   delete[] m_buffer;
-   #ifdef DEBUG
-   m_buffer = nullptr;
-   m_buffSize = static_cast<size_t>(-1);
-   #endif
-}
-
-void* DATA_CONTENT_ENTRY::data() noexcept
-{
-   return m_buffer;
-}
-
-const void* DATA_CONTENT_ENTRY::data() const noexcept
-{
-   return m_buffer;
-}
-
-size_t DATA_CONTENT_ENTRY::size() const noexcept
-{
-   return m_buffSize;
-}
-
-DATA_CONTENT_ENTRY& qgl::content::DATA_CONTENT_ENTRY::operator=(
-   DATA_CONTENT_ENTRY r) noexcept
-{
-   swap(*this, r);
-   return *this;
+   size_t data_content_entry::size() const noexcept
+   {
+      return m_buffer.size();
+   }
 }

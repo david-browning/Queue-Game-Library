@@ -1,45 +1,42 @@
 #pragma once
 #include "include/qgl_content_include.h"
 
-namespace qgl::content
+namespace qgl::content::entries
 {
    /*
     The content data stored in a content file is a raw byte array.
     The byte array is not interpreted by content files. Instead, it is the
     job of a content importer to derive meaning from the bytes.
     */
-   struct QGL_CONTENT_API DATA_CONTENT_ENTRY
+   class data_content_entry
    {
       public:
-      constexpr DATA_CONTENT_ENTRY();
+      constexpr data_content_entry();
 
       /*
        Copies bytes from b to internal storage. After construction, b can be
        freed.
        */
-      DATA_CONTENT_ENTRY(const void* const b,
+      data_content_entry(const void* const b,
                          size_t bytes);
+
+
+      data_content_entry(const std::vector<uint8_t>& bytes);
 
       /*
        Copy Constructor.
        */
-      DATA_CONTENT_ENTRY(const DATA_CONTENT_ENTRY&);
+      data_content_entry(const data_content_entry&) = default;
 
       /*
        Move Constructor.
        */
-      DATA_CONTENT_ENTRY(DATA_CONTENT_ENTRY&&);
+      data_content_entry(data_content_entry&&) = default;
 
       /*
        Destructor.
        */
-      virtual ~DATA_CONTENT_ENTRY() noexcept;
-
-      /*
-       Returns a pointer to the buffer. The destructor frees the buffer.
-       Do not try to free this pointer.
-       */
-      void* data() noexcept;
+      ~data_content_entry() noexcept = default;
 
       /*
        Returns a const pointer to the buffer. The destructor frees the buffer.
@@ -52,30 +49,32 @@ namespace qgl::content
        */
       size_t size() const noexcept;
 
-      friend void swap(DATA_CONTENT_ENTRY& first,
-                       DATA_CONTENT_ENTRY& second) noexcept
+      friend void swap(data_content_entry& first,
+                       data_content_entry& second) noexcept
       {
          using std::swap;
          swap(first.m_buffer, second.m_buffer);
-         swap(first.m_buffSize, second.m_buffSize);
       }
 
       /*
        Assignment Operator.
        */
-      DATA_CONTENT_ENTRY& operator=(DATA_CONTENT_ENTRY r) noexcept;
+      data_content_entry& operator=(data_content_entry r) noexcept
+      {
+         swap(*this, r);
+         return *this;
+      }
 
       /*
        Equality Operator.
        */
-      friend bool operator==(const DATA_CONTENT_ENTRY& r,
-                             const DATA_CONTENT_ENTRY& l) noexcept
+      friend bool operator==(const data_content_entry& r,
+                             const data_content_entry& l) noexcept
       {
-         return memcmp(r.m_buffer, l.m_buffer, r.m_buffSize) == 0;
+         return r.m_buffer == l.m_buffer;
       }
 
       private:
-      void* m_buffer;
-      size_t m_buffSize;
+      std::vector<uint8_t> m_buffer;
    };
 }

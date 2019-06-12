@@ -6,8 +6,8 @@
 
 namespace qgl::content
 {
-   template class QGL_CONTENT_API std::shared_ptr<DATA_CONTENT_ENTRY>;
-   template class QGL_CONTENT_API std::shared_ptr<SHARED_CONTENT_ENTRY>;
+   template class QGL_CONTENT_API std::shared_ptr<entries::data_content_entry>;
+   template class QGL_CONTENT_API std::shared_ptr<entries::shared_content_entry>;
 
    /*
     Content data can either be a buffer, baked into the file, or a shared
@@ -76,7 +76,7 @@ namespace qgl::content
        Throws std::bad_variant_access if the variant does not hold a content
        buffer.
        */
-      const DATA_CONTENT_ENTRY& buffer() const
+      const entries::data_content_entry& buffer() const
       {
          if (shared())
          {
@@ -91,7 +91,7 @@ namespace qgl::content
        Throws std::bad_variant_access if the variant does not hold a reference
        to an external file.
        */
-      const SHARED_CONTENT_ENTRY& shared_buffer() const
+      const entries::shared_content_entry& shared_buffer() const
       {
          if (!shared())
          {
@@ -127,8 +127,8 @@ namespace qgl::content
 
       private:
       CONTENT_DATA_USE_TYPES m_useType;
-      DATA_CONTENT_ENTRY* m_buffer;
-      SHARED_CONTENT_ENTRY* m_sharedBuffer;
+      entries::data_content_entry* m_buffer;
+      entries::shared_content_entry* m_sharedBuffer;
       bool m_loaded;
    };
 }

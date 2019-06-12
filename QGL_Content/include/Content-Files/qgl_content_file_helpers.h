@@ -69,7 +69,7 @@ namespace qgl::content::content_file_helpers
    extern HRESULT write_content_data(
       const file_handle& hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
-      const DATA_CONTENT_ENTRY& contentData) noexcept;
+      const entries::data_content_entry& contentData) noexcept;
 
    /*
     Writes the shared content path to the content file.
@@ -78,7 +78,7 @@ namespace qgl::content::content_file_helpers
    extern HRESULT write_shared_data_path(
       const file_handle& hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
-      const SHARED_CONTENT_ENTRY& path) noexcept;
+      const entries::shared_content_entry& path) noexcept;
 
    /*
     Returns the offset, in bytes, to where content data starts in a file.

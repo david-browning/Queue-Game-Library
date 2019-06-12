@@ -1,7 +1,7 @@
 #pragma once
 #include "include/qgl_content_include.h"
 
-namespace qgl::content
+namespace qgl::content::entries
 {
    /*
     Shared content is a path. This path is an encoded relative path to where
@@ -9,39 +9,32 @@ namespace qgl::content
     relative path, separated by a colon.
     The shared path must be converted to a content file using a content store.
     */
-   struct QGL_CONTENT_API SHARED_CONTENT_ENTRY
+   class shared_content_entry
    {
       public:
-      SHARED_CONTENT_ENTRY() :
-         m_metadataStr(nullptr),
-         m_relativePath(nullptr),
-         m_buffer(nullptr),
-         m_bufferSize(0)
-      {
-
-      }
+      constexpr shared_content_entry();
 
       /*
        Parses the string's metadata and copies the relative path to internal
        storage. 
        Throws std::invalid_argument is the string is not the correct form.
        */
-      SHARED_CONTENT_ENTRY(const wchar_t* str);
+      shared_content_entry(const wchar_t* str);
 
       /*
        Copy Constructor.
        */
-      SHARED_CONTENT_ENTRY(const SHARED_CONTENT_ENTRY&);
+      shared_content_entry(const shared_content_entry&) = default;
 
       /*
        Move Constructor.
        */
-      SHARED_CONTENT_ENTRY(SHARED_CONTENT_ENTRY&&);
+      shared_content_entry(shared_content_entry&&) = default;
 
       /*
        Destructor.
        */
-      virtual ~SHARED_CONTENT_ENTRY() noexcept;
+      ~shared_content_entry() noexcept = default;
 
       /*
        Returns true if the shared file is a vendor specific file.
@@ -51,32 +44,27 @@ namespace qgl::content
       bool vendor_file() const noexcept;
 
       /*
-       Returns the number of characters.
+       Returns the number of characters in the buffer.
        */
       size_t size() const noexcept;
 
-      const void* data() const;
+      const wchar_t* buffer() const noexcept;
 
-      /*
-       Returns a const reference to the relative file path. This gets 
-       processed by a content store.
-       */
-      const wchar_t* path() const noexcept;
+      const wchar_t* relative_path() const noexcept;
 
-      friend void swap(SHARED_CONTENT_ENTRY& first,
-                       SHARED_CONTENT_ENTRY& second) noexcept
+      friend void swap(shared_content_entry& first,
+                       shared_content_entry& second) noexcept
       {
          using std::swap;
          swap(first.m_metadataStr, second.m_metadataStr);
-         swap(first.m_relativePath, second.m_relativePath);
-         swap(first.m_buffer, second.m_buffer);
-         swap(first.m_bufferSize, second.m_bufferSize);
+         swap(first.m_relativeStr, second.m_relativeStr);
+         swap(first.m_completeStr, second.m_completeStr);
       }
 
       /*
        Assignment operator.
        */
-      SHARED_CONTENT_ENTRY& operator=(SHARED_CONTENT_ENTRY r) noexcept
+      shared_content_entry& operator=(shared_content_entry r) noexcept
       {
          swap(*this, r);
          return *this;
@@ -85,28 +73,26 @@ namespace qgl::content
       /*
        Equality operator.
        */
-      friend bool operator==(const SHARED_CONTENT_ENTRY& r,
-                             const SHARED_CONTENT_ENTRY& l) noexcept
+      friend bool operator==(const shared_content_entry& r,
+                             const shared_content_entry& l) noexcept
       {
-         return r.m_bufferSize == l.m_bufferSize &&
-            (memcmp(r.m_buffer, l.m_buffer, r.m_bufferSize) == 0);
+         return r.m_completeStr == l.m_completeStr;
       }
 
       private:
-      /*
-       Use wide string because that is what Windows uses.
-       */
-      wchar_t* m_relativePath;
+      std::wstring m_completeStr;
 
       /*
        The first character in the metadata is either a 'Q' or 'V'. 'Q'
        indicates the shared file is a QGL content file. 'V' indicates the
        shared file is vendor specified.When a vendor specified file is loaded
-       by QGL, the file's bytes are passed to an appropiate content importer.
+       by QGL, the file's bytes are passed to an appropriate content importer.
        */
-      wchar_t* m_metadataStr;
+      std::wstring m_metadataStr;
 
-      wchar_t* m_buffer;
-      size_t m_bufferSize;
+      /*
+       Use wide string because that is what Windows uses.
+       */
+      std::wstring m_relativeStr;
    };
 }

@@ -72,7 +72,7 @@ namespace qgl::content::content_file_helpers
    HRESULT write_content_data(
       const file_handle& hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
-      const DATA_CONTENT_ENTRY& contentData) noexcept
+      const entries::data_content_entry& contentData) noexcept
    {
       return write_file_sync(&hndl,
                              entry.size(),
@@ -80,9 +80,10 @@ namespace qgl::content::content_file_helpers
                              contentData.data());
    }
 
-   HRESULT write_shared_data_path(const file_handle& hndl,
-                                  const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
-                                  const SHARED_CONTENT_ENTRY& path) noexcept
+   HRESULT write_shared_data_path(
+      const file_handle& hndl,
+      const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
+      const entries::shared_content_entry& path) noexcept
    {
       //First 8 bytes are the number of characters in the path.
       //Next bytes is the path. It is a wide string. Not null-terminated.
@@ -99,7 +100,7 @@ namespace qgl::content::content_file_helpers
       return write_file_sync(&hndl,
                              sizeof(wchar_t) * numChars,
                              entry.offset() + sizeof(numChars),
-                             path.data());
+                             path.buffer());
 
    }
 

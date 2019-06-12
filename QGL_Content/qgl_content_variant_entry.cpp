@@ -26,7 +26,7 @@ namespace qgl::content
       m_useType(CONTENT_DATA_USE_TYPES::CONTENT_DATA_USE_TYPE_BUFFER),
       m_loaded(false)
    {
-      m_buffer = new DATA_CONTENT_ENTRY(buff, numBytes);
+      m_buffer = new entries::data_content_entry(buff, numBytes);
       m_sharedBuffer = false;
    }
 
@@ -34,7 +34,7 @@ namespace qgl::content
       m_useType(CONTENT_DATA_USE_TYPES::CONTENT_DATA_USE_TYPE_SHARED),
       m_loaded(false)
    {
-      m_sharedBuffer = new SHARED_CONTENT_ENTRY(sharedPath);
+      m_sharedBuffer = new entries::shared_content_entry(sharedPath);
       m_buffer = nullptr;
    }
 
@@ -45,13 +45,13 @@ namespace qgl::content
    {
       if (m_useType == CONTENT_DATA_USE_TYPES::CONTENT_DATA_USE_TYPE_BUFFER)
       {
-         m_buffer = new DATA_CONTENT_ENTRY(*r.m_buffer);
+         m_buffer = new entries::data_content_entry(*r.m_buffer);
          m_sharedBuffer = nullptr;
       }
       else
       {
          m_buffer = nullptr;
-         m_sharedBuffer = new SHARED_CONTENT_ENTRY(*r.m_sharedBuffer);
+         m_sharedBuffer = new entries::shared_content_entry(*r.m_sharedBuffer);
       }
    }
 
