@@ -53,7 +53,7 @@ namespace qgl::content::content_file_helpers
          return hr;
       }
 
-      *out_p = DATA_CONTENT_ENTRY(ret);
+      *out_p = DATA_CONTENT_ENTRY(ret.data(), ret.size());
       return S_OK;
    }
 

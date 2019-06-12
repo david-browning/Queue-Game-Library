@@ -178,7 +178,7 @@ namespace QGL_Content_UnitTests
                                                     qgl::QGL_VERSION_0_1_WIN,
                                                     &cf));
          std::vector<uint8_t> rawBuffData = { 0 };
-         DATA_CONTENT_ENTRY buffData(rawBuffData);
+         DATA_CONTENT_ENTRY buffData(rawBuffData.data(), rawBuffData.size());
 
          CONTENT_METADATA_BUFFER meta1(RESOURCE_TYPE_BRUSH,
                                        CONTENT_LOADER_ID_BRUSH,
@@ -280,7 +280,7 @@ namespace QGL_Content_UnitTests
                                        CONTENT_LOADER_ID_STRING,
                                        L"Blue Value");
          std::vector<uint8_t> rawbluedata = { 0x00, 0x10, 0x20 };
-         DATA_CONTENT_ENTRY bluedata(rawbluedata);
+         DATA_CONTENT_ENTRY bluedata(rawbluedata.data(), rawbluedata.size());
 
          {
             icontent_file* cfOpen = nullptr;

@@ -3,11 +3,11 @@
 
 using namespace qgl::content;
 
-DATA_CONTENT_ENTRY::DATA_CONTENT_ENTRY(std::vector<uint8_t>& b)
+constexpr qgl::content::DATA_CONTENT_ENTRY::DATA_CONTENT_ENTRY() :
+   m_buffer(nullptr),
+   m_buffSize(0)
 {
-   m_buffSize = b.size();
-   m_buffer = new uint8_t[m_buffSize];
-   memcpy(m_buffer, b.data(), m_buffSize);
+
 }
 
 DATA_CONTENT_ENTRY::DATA_CONTENT_ENTRY(const void* const b,
@@ -58,4 +58,11 @@ const void* DATA_CONTENT_ENTRY::data() const noexcept
 size_t DATA_CONTENT_ENTRY::size() const noexcept
 {
    return m_buffSize;
+}
+
+DATA_CONTENT_ENTRY& qgl::content::DATA_CONTENT_ENTRY::operator=(
+   DATA_CONTENT_ENTRY r) noexcept
+{
+   swap(*this, r);
+   return *this;
 }

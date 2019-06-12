@@ -11,17 +11,7 @@ namespace qgl::content
    struct QGL_CONTENT_API DATA_CONTENT_ENTRY
    {
       public:
-      DATA_CONTENT_ENTRY() :
-         m_buffer(nullptr),
-         m_buffSize(0)
-      {
-
-      }
-
-      /*
-       Copies the byte buffer to internal storage.
-       */
-      DATA_CONTENT_ENTRY(std::vector<uint8_t>& b);
+      constexpr DATA_CONTENT_ENTRY();
 
       /*
        Copies bytes from b to internal storage. After construction, b can be
@@ -73,16 +63,7 @@ namespace qgl::content
       /*
        Assignment Operator.
        */
-      DATA_CONTENT_ENTRY& operator=(DATA_CONTENT_ENTRY r) noexcept
-      {
-         swap(*this, r);
-         return *this;
-      }
-
-      DATA_CONTENT_ENTRY operator=(const std::vector<uint8_t>& r)
-      {
-         return DATA_CONTENT_ENTRY(r.data(), r.size());
-      }
+      DATA_CONTENT_ENTRY& operator=(DATA_CONTENT_ENTRY r) noexcept;
 
       /*
        Equality Operator.
