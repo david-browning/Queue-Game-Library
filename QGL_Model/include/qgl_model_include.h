@@ -26,3 +26,7 @@
  */
 #define QGL_VCC __vectorcall
 #endif
+
+#ifndef QGL_API_CC
+#define QGL_API_CC __stdcall
+#endif

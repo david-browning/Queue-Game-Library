@@ -60,7 +60,7 @@ namespace qgl::graphics
    /*
     wnd: Pointer to a window the graphcis device wraps.
     */
-   extern QGL_GRAPHICS_API igraphics_device* make_graphics_device(
+   extern QGL_GRAPHICS_API igraphics_device* QGL_API_CC make_graphics_device(
       const content::graphics_config* config,
       window* wnd,
       qgl_version_t v);
