@@ -112,7 +112,7 @@ namespace QGL_Content_UnitTests
          file_handle handle;
          try
          {
-            open_file_readwrite(f, &handle);
+            open_file_readwrite_sf(f, &handle);
          }
          catch (winrt::hresult_error&)
          {

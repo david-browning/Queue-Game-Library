@@ -53,7 +53,7 @@ HRESULT qgl::content::open_file_read(const wchar_t* filePath,
    return S_OK;
 }
 
-HRESULT qgl::content::open_file_read(
+HRESULT qgl::content::open_file_read_sf(
    const winrt::Windows::Storage::StorageFile& f,
    file_handle* out_p) noexcept
 {
@@ -93,7 +93,7 @@ HRESULT qgl::content::open_file_write(const wchar_t* filePath,
    return S_OK;
 }
 
-HRESULT qgl::content::open_file_write(
+HRESULT qgl::content::open_file_write_sf(
    const winrt::Windows::Storage::StorageFile & f,
    file_handle* out_p) noexcept
 {
@@ -133,7 +133,7 @@ HRESULT qgl::content::open_file_readwrite(const wchar_t* filePath,
    return S_OK;
 }
 
-HRESULT qgl::content::open_file_readwrite(
+HRESULT qgl::content::open_file_readwrite_sf(
    const winrt::Windows::Storage::StorageFile& f,
    file_handle* out_p) noexcept
 {
@@ -199,11 +199,12 @@ HRESULT qgl::content::file_size(const file_handle* hdnl_p,
    return S_OK;
 }
 
-HRESULT qgl::content::file_size(const winrt::Windows::Storage::StorageFile& f,
-                                size_t* out_p) noexcept
+HRESULT qgl::content::file_size_sf(
+   const winrt::Windows::Storage::StorageFile& f,
+   size_t* out_p) noexcept
 {
    file_handle hndl;
-   auto hr = open_file_read(f, &hndl);
+   auto hr = open_file_read_sf(f, &hndl);
    if (FAILED(hr))
    {
       return hr;

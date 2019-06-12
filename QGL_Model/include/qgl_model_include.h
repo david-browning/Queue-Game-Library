@@ -13,6 +13,7 @@
 #ifndef QGL_CC
 /*
  Use the x64 calling convention. Pass integral arguments in RCX, RDX, R8, R9.
+ Do not use for functions that must cross the ABI.
  https://docs.microsoft.com/en-us/cpp/cpp/fastcall?view=vs-2019
  */
 #define QGL_CC __fastcall
@@ -28,5 +29,9 @@
 #endif
 
 #ifndef QGL_API_CC
+/*
+ Default calling convention for factory methods that must cross the API.
+ Does not support variadic arguments. 
+ */
 #define QGL_API_CC __stdcall
 #endif

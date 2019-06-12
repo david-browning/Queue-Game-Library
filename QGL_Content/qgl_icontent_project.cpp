@@ -22,10 +22,10 @@ namespace qgl::content
          //The storage file already exists, so to check if it is an old file, 
          //check if it is greater than 0 bytes.
          size_t sz = 0;
-         winrt::check_hresult(file_size(f, &sz));
+         winrt::check_hresult(file_size_sf(f, &sz));
 
          bool exists = sz > 0;
-         winrt::check_hresult(open_file_readwrite(f, &m_handle));
+         winrt::check_hresult(open_file_readwrite_sf(f, &m_handle));
          if (exists)
          {
             winrt::check_hresult(read_in());

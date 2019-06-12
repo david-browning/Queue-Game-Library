@@ -89,7 +89,7 @@ namespace QGL_Content_UnitTests
             CreationCollisionOption::OpenIfExists);
 
          size_t fileSize = 0;
-         auto hr = file_size(f, &fileSize);
+         auto hr = file_size_sf(f, &fileSize);
          Assert::IsTrue(SUCCEEDED(hr), L"HRESULT failed.");
 
          Assert::AreEqual(static_cast<size_t>(8), fileSize,

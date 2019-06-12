@@ -25,11 +25,11 @@ namespace qgl::content
       content_file(const winrt::Windows::Storage::StorageFile& f)
       {
          size_t sz = 0;
-         auto hr = file_size(f, &sz);
+         auto hr = file_size_sf(f, &sz);
          winrt::check_hresult(hr);
 
          bool existingFile = sz > 0;
-         open_file_readwrite(f, &m_handle);
+         open_file_readwrite_sf(f, &m_handle);
 
          if (existingFile)
          {
