@@ -64,7 +64,11 @@ namespace qgl::content
       virtual HRESULT flush() noexcept
       {
           //Write the header.
-         content_file_helpers::write_header(&m_handle, m_header);
+         auto hr = content_file_helpers::write_header(m_handle, m_header);
+         if (FAILED(hr))
+         {
+            return hr;
+         }
 
          //Create a dictionary metadata buffer;
          CONTENT_DICTIONARY_METADATA_BUFFER dictMeta(
@@ -73,7 +77,11 @@ namespace qgl::content
 
          //Write the dictionary metadata
          size_t dictMetaOffset = m_header.dictionary_offset();
-         write_dictionary_metadata(&m_handle, dictMeta, dictMetaOffset);
+         hr = write_dictionary_metadata(m_handle, dictMeta, dictMetaOffset);
+         if (FAILED(hr))
+         {
+            return hr;
+         }
 
          //Offset to where to put the next dictionary entry.
          size_t dictEntryOffset = dictMetaOffset +
@@ -89,24 +97,30 @@ namespace qgl::content
               ++entryIt, ++contentIt)
          {
             entryIt->m_offset = contentDataOffset;
-            write_dictionary_entry(&m_handle, *entryIt, dictEntryOffset);
+            hr = write_dictionary_entry(m_handle, *entryIt, dictEntryOffset);
 
             if (entryIt->shared())
             {
-               write_shared_data_path(&m_handle,
+               hr = write_shared_data_path(m_handle,
                                       *entryIt,
                                       contentIt->shared_buffer());
             }
             else
             {
-               write_content_data(&m_handle,
+               hr = write_content_data(m_handle,
                                   *entryIt,
                                   contentIt->buffer());
+            }
+
+            if (FAILED(hr))
+            {
+               return hr;
             }
 
             contentDataOffset += entryIt->size();
             dictEntryOffset += dictMeta.entry_size();
          }
+
 
          return S_OK;
       }
@@ -167,14 +181,25 @@ namespace qgl::content
       }
 
       private:
-      void read_in()
+      HRESULT read_in() noexcept
       {
          //Read the header
-         m_header = load_header(&m_handle);
+         auto hr = load_header(m_handle, &m_header);
+         if (FAILED(hr))
+         {
+            return hr;
+         }
 
          //Read the dictionary metadata
-         auto dictMeta = load_dictionary_metadata(&m_handle,
-                                                  m_header.dictionary_offset());
+         CONTENT_DICTIONARY_METADATA_BUFFER dictMeta;
+         hr = load_dictionary_metadata(
+            m_handle,
+            m_header.dictionary_offset(),
+            &dictMeta);
+         if (FAILED(hr))
+         {
+            return hr;
+         }
 
          size_t dictEntryOffset = m_header.dictionary_offset() +
             sizeof(CONTENT_DICTIONARY_METADATA_BUFFER);
@@ -182,29 +207,53 @@ namespace qgl::content
          //For each entry in the dictionary:
          for (size_t i = 0; i < dictMeta.count(); i++)
          {
-            auto dictEntry = load_dictionary_entry(&m_handle, dictEntryOffset);
+            CONTENT_DICTIONARY_ENTRY_BUFFER dictEntry;
+            hr = load_dictionary_entry(m_handle,
+                                       dictEntryOffset,
+                                       &dictEntry);
+            if (FAILED(hr))
+            {
+               return hr;
+            }
+
             m_dict.push_back(dictEntry);
 
             if (dictEntry.shared())
             {
-               auto sharedContent = load_shared_data_path(&m_handle, dictEntry);
+               SHARED_CONTENT_ENTRY sharedContent;
+               hr = load_shared_data_path(m_handle, 
+                                          dictEntry,
+                                          &sharedContent);
+               if (FAILED(hr))
+               {
+                  return hr;
+               }
+
                content_variant_entry cbt(&sharedContent);
                m_entryDataToWrite.push_back(cbt);
             }
             else
             {
-               auto content = load_content_data(&m_handle, dictEntry);
+               DATA_CONTENT_ENTRY content;
+               hr = load_content_data(m_handle, dictEntry, &content);
+               if (FAILED(hr))
+               {
+                  return hr;
+               }
+
                content_variant_entry cbt(&content);
                m_entryDataToWrite.push_back(cbt);
             }
 
             dictEntryOffset += sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER);
          }
+
+         return S_OK;
       }
 
       void check_and_throw_file_size()
       {
-         if (!valid_content_file_size(&m_handle))
+         if (!valid_content_file_size(m_handle))
          {
             throw std::domain_error("The file is too small to be valid.");
          }

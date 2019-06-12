@@ -195,15 +195,7 @@ namespace QGL_Content_UnitTests
          cf->push_back(&meta1, &sharedPath1);
          cf->push_back(&meta2, &sharedPath2);
 
-         //This should not throw an exception.
-         try
-         {
-            cf->flush();
-         }
-         catch (...)
-         {
-            Assert::Fail(L"An exception happened.");
-         }
+         Assert::IsTrue(SUCCEEDED(cf->flush()), L"The HRESULT failed.");
 
          cf->release();
       }

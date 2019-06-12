@@ -6,99 +6,152 @@ using NumCharsType = uint16_t;
 
 namespace qgl::content::content_file_helpers
 {
-   CONTENT_FILE_HEADER_BUFFER load_header(const file_handle* hndl)
+   HRESULT load_header(const file_handle& hndl,
+                       CONTENT_FILE_HEADER_BUFFER* out_p) noexcept
    {
-      CONTENT_FILE_HEADER_BUFFER ret;
-      read_file_sync(hndl, sizeof(ret), 0, &ret);
-      return ret;
+      return read_file_sync(&hndl,
+                            sizeof(CONTENT_FILE_HEADER_BUFFER),
+                            0,
+                            out_p);
    }
 
-   CONTENT_DICTIONARY_METADATA_BUFFER load_dictionary_metadata(
-      const file_handle* hndl,
-      size_t dictionaryOffset)
+   HRESULT load_dictionary_metadata(
+      const file_handle& hndl,
+      size_t dictionaryOffset,
+      CONTENT_DICTIONARY_METADATA_BUFFER* out_p) noexcept
    {
-      CONTENT_DICTIONARY_METADATA_BUFFER ret;
-      read_file_sync(hndl, sizeof(ret), dictionaryOffset, &ret);
-      return ret;
+      return read_file_sync(&hndl,
+                            sizeof(CONTENT_DICTIONARY_METADATA_BUFFER),
+                            dictionaryOffset,
+                            out_p);
    }
 
-   CONTENT_DICTIONARY_ENTRY_BUFFER load_dictionary_entry(
-      const file_handle* hndl,
-      size_t entryOffset)
+   HRESULT load_dictionary_entry(
+      const file_handle& hndl,
+      size_t entryOffset,
+      CONTENT_DICTIONARY_ENTRY_BUFFER* out_p) noexcept
    {
-      CONTENT_DICTIONARY_ENTRY_BUFFER ret;
-      read_file_sync(hndl, sizeof(ret), entryOffset, &ret);
-      return ret;
+      return read_file_sync(&hndl,
+                            sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER),
+                            entryOffset,
+                            out_p);
    }
 
-   DATA_CONTENT_ENTRY load_content_data(
-      const file_handle* hndl,
-      const CONTENT_DICTIONARY_ENTRY_BUFFER& entry)
+   HRESULT load_content_data(const file_handle& hndl,
+                             const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
+                             DATA_CONTENT_ENTRY* out_p) noexcept
    {
       auto entrySize = entry.size();
       std::vector<uint8_t> ret;
       ret.resize(entrySize);
-      read_file_sync(hndl, entrySize, entry.offset(), ret.data());
-      return ret;
+      auto hr = read_file_sync(&hndl,
+                               entrySize,
+                               entry.offset(),
+                               ret.data());
+      if (FAILED(hr))
+      {
+         return hr;
+      }
+
+      *out_p = DATA_CONTENT_ENTRY(ret);
+      return S_OK;
    }
 
-   SHARED_CONTENT_ENTRY load_shared_data_path(
-      const file_handle* hndl,
-      const CONTENT_DICTIONARY_ENTRY_BUFFER& entry)
+   HRESULT load_shared_data_path(const file_handle& hndl,
+                                 const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
+                                 SHARED_CONTENT_ENTRY* out_p) noexcept
    {
       //First 8 bytes are the number of characters in the path.
       //Next bytes is the path. It is a wide string. Not null-terminated.
       NumCharsType numChars = 0;
-      read_file_sync(hndl, sizeof(numChars), entry.offset(), &numChars);
+      auto hr = read_file_sync(&hndl,
+                               sizeof(numChars),
+                               entry.offset(),
+                               &numChars);
+      if (FAILED(hr))
+      {
+         return hr;
+      }
 
       std::wstring path(numChars, L'\0');
-      read_file_sync(hndl,
-                     numChars * sizeof(wchar_t),
-                     entry.offset() + sizeof(numChars),
-                     path.data());
-      return SHARED_CONTENT_ENTRY(path.c_str());
+      hr = read_file_sync(&hndl,
+                          numChars * sizeof(wchar_t),
+                          entry.offset() + sizeof(numChars),
+                          path.data());
+      if (FAILED(hr))
+      {
+         return hr;
+      }
+
+      *out_p = SHARED_CONTENT_ENTRY(path.c_str());
+
+      return S_OK;
    }
 
-   void write_header(const file_handle* hndl,
-                     const CONTENT_FILE_HEADER_BUFFER& hdr)
+   HRESULT write_header(
+      const file_handle& hndl,
+      const CONTENT_FILE_HEADER_BUFFER& hdr) noexcept
    {
-      write_file_sync(hndl, sizeof(hdr), 0, &hdr);
+      return write_file_sync(&hndl,
+                             sizeof(hdr),
+                             0,
+                             &hdr);
    }
 
-   void write_dictionary_metadata(
-      const file_handle* hndl,
+   HRESULT write_dictionary_metadata(
+      const file_handle& hndl,
       const CONTENT_DICTIONARY_METADATA_BUFFER& meta,
-      size_t offset)
+      size_t offset) noexcept
    {
-      write_file_sync(hndl, sizeof(meta), offset, &meta);
+      return write_file_sync(&hndl,
+                             sizeof(meta),
+                             offset,
+                             &meta);
    }
 
-   void write_dictionary_entry(const file_handle* hndl,
-                               const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
-                               size_t offset)
+   HRESULT write_dictionary_entry(
+      const file_handle& hndl,
+      const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
+      size_t offset) noexcept
    {
-      write_file_sync(hndl, sizeof(entry), offset, &entry);
+      return write_file_sync(&hndl,
+                             sizeof(entry),
+                             offset,
+                             &entry);
    }
 
-   void write_content_data(const file_handle* hndl,
-                           const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
-                           const DATA_CONTENT_ENTRY& contentData)
+   HRESULT write_content_data(
+      const file_handle& hndl,
+      const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
+      const DATA_CONTENT_ENTRY& contentData) noexcept
    {
-      write_file_sync(hndl, entry.size(), entry.offset(), contentData.data());
+      return write_file_sync(&hndl,
+                             entry.size(),
+                             entry.offset(),
+                             contentData.data());
    }
 
-   void write_shared_data_path(const file_handle* hndl,
-                               const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
-                               const SHARED_CONTENT_ENTRY& path)
+   HRESULT write_shared_data_path(const file_handle& hndl,
+                                  const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
+                                  const SHARED_CONTENT_ENTRY& path) noexcept
    {
       //First 8 bytes are the number of characters in the path.
       //Next bytes is the path. It is a wide string. Not null-terminated.
       NumCharsType numChars = static_cast<NumCharsType>(path.size());
-      write_file_sync(hndl, sizeof(numChars), entry.offset(), &numChars);
-      write_file_sync(hndl,
-                      sizeof(wchar_t) * numChars,
-                      entry.offset() + sizeof(numChars),
-                      path.data());
+      auto hr = write_file_sync(&hndl,
+                                sizeof(numChars),
+                                entry.offset(),
+                                &numChars);
+      if (FAILED(hr))
+      {
+         return hr;
+      }
+
+      return write_file_sync(&hndl,
+                             sizeof(wchar_t) * numChars,
+                             entry.offset() + sizeof(numChars),
+                             path.data());
+
    }
 
    size_t dictionary_data_offset(
@@ -115,11 +168,11 @@ namespace qgl::content::content_file_helpers
       return sizeof(NumCharsType) + (sizeof(wchar_t) * data->size());
    }
 
-   bool valid_content_file_size(const file_handle* hndl)
+   bool valid_content_file_size(const file_handle& hndl)
    {
       //Get the file size
       size_t sz = 0;
-      if (FAILED(file_size(hndl, &sz)))
+      if (FAILED(file_size(&hndl, &sz)))
       {
          return false;
       }

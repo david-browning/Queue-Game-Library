@@ -12,6 +12,15 @@ namespace qgl::content
    struct QGL_CONTENT_API SHARED_CONTENT_ENTRY
    {
       public:
+      SHARED_CONTENT_ENTRY() :
+         m_metadataStr(nullptr),
+         m_relativePath(nullptr),
+         m_buffer(nullptr),
+         m_bufferSize(0)
+      {
+
+      }
+
       /*
        Parses the string's metadata and copies the relative path to internal
        storage. 
@@ -61,6 +70,7 @@ namespace qgl::content
          swap(first.m_metadataStr, second.m_metadataStr);
          swap(first.m_relativePath, second.m_relativePath);
          swap(first.m_buffer, second.m_buffer);
+         swap(first.m_bufferSize, second.m_bufferSize);
       }
 
       /*
@@ -83,7 +93,6 @@ namespace qgl::content
       }
 
       private:
-      
       /*
        Use wide string because that is what Windows uses.
        */

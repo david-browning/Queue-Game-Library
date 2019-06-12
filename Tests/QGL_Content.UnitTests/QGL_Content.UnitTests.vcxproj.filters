@@ -81,9 +81,6 @@
     <ClCompile Include="Tests\wstring_file_loader.cpp">
       <Filter>Tests\File-Loaders</Filter>
     </ClCompile>
-    <ClCompile Include="Tests\content_store_config_loader.cpp">
-      <Filter>Tests\File-Loaders</Filter>
-    </ClCompile>
     <ClCompile Include="Tests\open_file_tests.cpp">
       <Filter>Tests\File-Helpers</Filter>
     </ClCompile>

@@ -280,7 +280,6 @@
     <ClCompile Include="Tests\content_metadata_buffer_tests.cpp" />
     <ClCompile Include="Tests\content_project_compiler_tests.cpp" />
     <ClCompile Include="Tests\content_project_tests.cpp" />
-    <ClCompile Include="Tests\content_store_config_loader.cpp" />
     <ClCompile Include="Tests\dict_entry_buffer_tests.cpp" />
     <ClCompile Include="Tests\dict_metadata_buffer_tests.cpp" />
     <ClCompile Include="Tests\file_attribute_tests.cpp" />

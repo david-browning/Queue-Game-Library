@@ -11,6 +11,13 @@ namespace qgl::content
    struct QGL_CONTENT_API DATA_CONTENT_ENTRY
    {
       public:
+      DATA_CONTENT_ENTRY() :
+         m_buffer(nullptr),
+         m_buffSize(0)
+      {
+
+      }
+
       /*
        Copies the byte buffer to internal storage.
        */

@@ -409,7 +409,7 @@ namespace QGL_Content_UnitTests
                            projectWrite->at(i)->first,
                            L"The project entry metadata is not equal.");
 
-            Assert::IsTrue(projectRead->at(i)->second == 
+            Assert::IsTrue(projectRead->at(i)->second ==
                            projectWrite->at(i)->second,
                            L"The entry paths are not equal.");
          }

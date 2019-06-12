@@ -12,95 +12,95 @@ namespace qgl::content::content_file_helpers
     Reads the file header from a content file and returns it.
     The file must be opened with read permissions.
     This does not validate the data read.
-    Throws an exception if there is an error reading.
     */
-   extern CONTENT_FILE_HEADER_BUFFER load_header(const file_handle* hndl);
+   extern HRESULT load_header(const file_handle& hndl,
+                              CONTENT_FILE_HEADER_BUFFER* out_p) noexcept;
    
    /*
     Reads the dictionary metadata from a content file at the offset.
     The offset is stored in the file's header.
     The file must be opened with read permissions.
     This does not validate the data read.
-    Throws an exception if there is an error reading.
     */
-   extern CONTENT_DICTIONARY_METADATA_BUFFER load_dictionary_metadata(
-      const file_handle* hndl,
-      size_t dictionaryOffset);
+   extern HRESULT load_dictionary_metadata(
+      const file_handle& hndl,
+      size_t dictionaryOffset,
+      CONTENT_DICTIONARY_METADATA_BUFFER* out_p) noexcept;
 
    /*
     Reads a dictionary entry from a content file and returns it.
     The file must be opened with read permissions.
     This does not validate the data read.
-    Throws an exception if there is an error reading.
     */
-   extern CONTENT_DICTIONARY_ENTRY_BUFFER load_dictionary_entry(
-      const file_handle* hndl,
-      size_t entryOffset);
+   extern HRESULT load_dictionary_entry(
+      const file_handle& hndl,
+      size_t entryOffset,
+      CONTENT_DICTIONARY_ENTRY_BUFFER* out_p) noexcept;
 
    /*
     Reads the content data from a content file. The data is accessed using the
     dictionary entry. Returns a vector of bytes.
     The file must be opened with read permissions.
     This does not validate the data read.
-    Throws an exception if there is an error reading.
     */
-   extern DATA_CONTENT_ENTRY load_content_data(
-      const file_handle* hndl,
-      const CONTENT_DICTIONARY_ENTRY_BUFFER& entry);
+   extern HRESULT load_content_data(
+      const file_handle& hndl,
+      const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
+      DATA_CONTENT_ENTRY* out_p) noexcept;
 
    /*
     Reads the shared entry from a content file. The path is access using the
-    dictionary entry. Retuns the shared entry path.
+    dictionary entry. Returns the shared entry path.
     The file must be opened with read permissions.
     This does not validate the data read.
-    Throws an exception if there is an error reading.
     */
-   extern SHARED_CONTENT_ENTRY load_shared_data_path(
-      const file_handle* hndl,
-      const CONTENT_DICTIONARY_ENTRY_BUFFER& entry);
+   extern HRESULT load_shared_data_path(
+      const file_handle& hndl,
+      const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
+      SHARED_CONTENT_ENTRY* out_p) noexcept;
 
    /*
     Writes a file header to a content file.
     The file must be opened with write permissions.
     */
-   extern void write_header(const file_handle* hndl,
-                            const CONTENT_FILE_HEADER_BUFFER& hdr);
+   extern HRESULT write_header(const file_handle& hndl,
+                            const CONTENT_FILE_HEADER_BUFFER& hdr) noexcept;
 
    /*
     Writes the dictionary metadata to a content file.
     The file must be opened with write permissions.
     */
-   extern void write_dictionary_metadata(
-      const file_handle* hndl,
+   extern HRESULT write_dictionary_metadata(
+      const file_handle& hndl,
       const CONTENT_DICTIONARY_METADATA_BUFFER& meta,
-      size_t offset);
+      size_t offset) noexcept;
 
    /*
     Writes a dictionary entry to the content file.
     The file must be opened with write permissions.
     */
-   extern void write_dictionary_entry(
-      const file_handle* hndl,
+   extern HRESULT write_dictionary_entry(
+      const file_handle& hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
-      size_t offset);
+      size_t offset) noexcept;
 
    /*
     Writes the content data to the content file.
     The file must be opened with write permissions.
     */
-   extern void write_content_data(
-      const file_handle* hndl,
+   extern HRESULT write_content_data(
+      const file_handle& hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
-      const DATA_CONTENT_ENTRY& contentData);
+      const DATA_CONTENT_ENTRY& contentData) noexcept;
 
    /*
     Writes the shared content path to the content file.
     The file must be opened with write permissions.
     */
-   extern void write_shared_data_path(
-      const file_handle* hndl,
+   extern HRESULT write_shared_data_path(
+      const file_handle& hndl,
       const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
-      const SHARED_CONTENT_ENTRY& path);
+      const SHARED_CONTENT_ENTRY& path) noexcept;
 
    /*
     Returns the offset, in bytes, to where content data starts in a file.
@@ -116,5 +116,5 @@ namespace qgl::content::content_file_helpers
     */
    extern size_t shared_entry_data_size(const SHARED_CONTENT_ENTRY* data);
 
-   extern bool valid_content_file_size(const file_handle* hndl);
+   extern bool valid_content_file_size(const file_handle& hndl);
 }
