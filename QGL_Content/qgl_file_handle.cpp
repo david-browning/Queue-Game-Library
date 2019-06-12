@@ -47,7 +47,7 @@ namespace qgl::content
       return hndl;
    }
 
-   bool file_handle::valid() const
+   bool file_handle::valid() const noexcept
    {
       return m_handle != INVALID_FILE_HANDLE;
    }
