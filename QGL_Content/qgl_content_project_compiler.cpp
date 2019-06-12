@@ -24,7 +24,10 @@ namespace qgl::content
             return hr;
          }
 
-         DATA_CONTENT_ENTRY buffer(buff->const_data(), buff->size());
+         auto safeBuffer = qgl::make_unique<ifile_buffer>(buff);
+
+         DATA_CONTENT_ENTRY buffer(safeBuffer->const_data(),
+                                   safeBuffer->size());
          cf->push_data_entry(&entry.first, &buffer);
       }
 
