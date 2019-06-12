@@ -3,8 +3,6 @@
 #include "include/Content-Buffers/qgl_content_metadata_buffer.h"
 #include "include/Content-Buffers/qgl_content_file_header_buffer.h"
 #include "include/Content-Buffers/qgl_content_dict_entry_buffer.h"
-#include "include/Content-Files/qgl_data_content_entry.h"
-#include "include/Content-Files/qgl_shared_content_entry.h"
 #include "include/qgl_file_handle.h"
 
 namespace qgl::content
@@ -32,7 +30,8 @@ namespace qgl::content
        */
       virtual void push_data_entry(
          const CONTENT_METADATA_BUFFER* meta,
-         const DATA_CONTENT_ENTRY* buff) noexcept = 0;
+         const void* buff,
+         size_t buffBytes) noexcept = 0;
 
       /*
        The metadata and buffer are copied and can go out of scope after calling
@@ -40,7 +39,7 @@ namespace qgl::content
        */
       virtual void push_shared_entry(
          const CONTENT_METADATA_BUFFER* meta,
-         const SHARED_CONTENT_ENTRY* buff) noexcept = 0;
+         const wchar_t* str) noexcept = 0;
 
       /*
        Returns a const reference to the file's header.

@@ -36,15 +36,16 @@ namespace qgl::content
 
       /*
        Constructs the variant so it holds a content buffer.
-       Copies the buffer to internal storage.
+       Copies the buffer. The buffer can be freed after constructing this.
        */
-      content_variant_entry(const DATA_CONTENT_ENTRY* b);
+      content_variant_entry(const void* buff,
+                            size_t numBytes);
 
       /*
-       Constructs the variant so it references an external content file.
-       Copies the buffer to internal storage.
+       Constructs a variant so it references an external content file.
+       Copies the buffer. The buffer can be freed after constructing this.
        */
-      content_variant_entry(const SHARED_CONTENT_ENTRY* b);
+      content_variant_entry(const wchar_t* sharedPath);
 
       /*
        Copy constructor.

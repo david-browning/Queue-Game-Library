@@ -127,10 +127,11 @@ namespace qgl::content
 
       virtual void push_data_entry(
          const CONTENT_METADATA_BUFFER* meta,
-         const DATA_CONTENT_ENTRY* buff) noexcept
+         const void* buff,
+         size_t buffBytes) noexcept
       {
-         content_variant_entry cont(buff);
-         CONTENT_DICTIONARY_ENTRY_BUFFER entry(buff->size(), meta);
+         content_variant_entry cont(buff, buffBytes);
+         CONTENT_DICTIONARY_ENTRY_BUFFER entry(buffBytes, meta);
          entry.shared(false);
 
          m_entryDataToWrite.push_back(std::move(cont));
@@ -139,10 +140,10 @@ namespace qgl::content
 
       virtual void push_shared_entry(
          const CONTENT_METADATA_BUFFER* meta,
-         const SHARED_CONTENT_ENTRY* buff) noexcept
+         const wchar_t* str) noexcept
       {
-         content_variant_entry cont(buff);
-         CONTENT_DICTIONARY_ENTRY_BUFFER entry(shared_entry_data_size(buff),
+         content_variant_entry cont(str);
+         CONTENT_DICTIONARY_ENTRY_BUFFER entry(shared_entry_data_size(&cont),
                                                meta);
          entry.shared(true);
 
@@ -222,28 +223,48 @@ namespace qgl::content
 
             if (dictEntry.shared())
             {
-               SHARED_CONTENT_ENTRY sharedContent;
-               hr = load_shared_data_path(m_handle,
-                                          dictEntry,
-                                          &sharedContent);
+               using NumCharsType = uint16_t;
+
+               //First bytes are the number of characters in the path.
+               //Next bytes is the path. It is a wide string. Not null-terminated.
+               NumCharsType numChars = 0;
+               hr = read_file_sync(&m_handle,
+                                   sizeof(numChars),
+                                   dictEntry.offset(),
+                                   &numChars);
                if (FAILED(hr))
                {
                   return hr;
                }
 
-               content_variant_entry cbt(&sharedContent);
+               std::wstring path(numChars, L'\0');
+               hr = read_file_sync(&m_handle,
+                                   numChars * sizeof(wchar_t),
+                                   dictEntry.offset() + sizeof(numChars),
+                                   path.data());
+               if (FAILED(hr))
+               {
+                  return hr;
+               }
+
+               content_variant_entry cbt(path.c_str());
                m_entryDataToWrite.push_back(cbt);
             }
             else
             {
-               DATA_CONTENT_ENTRY content;
-               hr = load_content_data(m_handle, dictEntry, &content);
+               auto entrySize = dictEntry.size();
+               std::vector<uint8_t> ret;
+               ret.resize(entrySize);
+               hr = read_file_sync(&m_handle,
+                                   entrySize,
+                                   dictEntry.offset(),
+                                   ret.data());
                if (FAILED(hr))
                {
                   return hr;
                }
 
-               content_variant_entry cbt(&content);
+               content_variant_entry cbt(ret.data(), ret.size());
                m_entryDataToWrite.push_back(cbt);
             }
 

@@ -71,14 +71,13 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER meta(RESOURCE_TYPE_BRUSH,
                                       CONTENT_LOADER_ID_BRUSH,
                                       L"Brush");
-         SHARED_CONTENT_ENTRY sharedPathEntry(L"Q:Shared Path");
-         cf->push_shared_entry(&meta, &sharedPathEntry);
+         auto sharedPathEntry = L"Q:Shared Path";
+         cf->push_shared_entry(&meta, sharedPathEntry);
          Assert::AreEqual(static_cast<size_t>(1), cf->size(),
                           L"The size should be 1.");
 
          uint8_t buffData[8] = { 0 };
-         DATA_CONTENT_ENTRY dataBuffer(buffData, 8);
-         cf->push_data_entry(&meta, &dataBuffer);
+         cf->push_data_entry(&meta, buffData, 8);
          Assert::AreEqual(static_cast<size_t>(2), cf->size(),
                           L"The size should be 2.");
          cf->release();
@@ -100,12 +99,10 @@ namespace QGL_Content_UnitTests
                           L"The beginning and end iterators should be equal.");
 
          uint8_t buffData[8] = { 0 };
-         DATA_CONTENT_ENTRY dataBuffer1(buffData, 8);
          CONTENT_METADATA_BUFFER meta(RESOURCE_TYPE_BRUSH,
                                       CONTENT_LOADER_ID_BRUSH,
                                       L"Brush");
-
-         cf->push_data_entry(&meta, &dataBuffer1);
+         cf->push_data_entry(&meta, buffData, 8);
 
          Assert::IsTrue(*(cf->at(0)->metadata()) == meta,
                         L"The metadata should be equal.");
@@ -124,9 +121,6 @@ namespace QGL_Content_UnitTests
                                                     qgl::QGL_VERSION_0_1_WIN,
                                                     &cf));
          uint8_t rawBuffData[8] = { 0 };
-         DATA_CONTENT_ENTRY dataBuffer1(rawBuffData, 8);
-         DATA_CONTENT_ENTRY dataBuffer2(rawBuffData, 8);
-
          CONTENT_METADATA_BUFFER meta1(RESOURCE_TYPE_BRUSH,
                                        CONTENT_LOADER_ID_BRUSH,
                                        L"Brush");
@@ -135,12 +129,12 @@ namespace QGL_Content_UnitTests
                                        CONTENT_LOADER_ID_CAMERA,
                                        L"Camera");
 
-         cf->push_data_entry(&meta1, &dataBuffer1);
-         cf->push_data_entry(&meta2, &dataBuffer2);
-         SHARED_CONTENT_ENTRY sharedPath1(L"Q:Shared Path 1");
-         SHARED_CONTENT_ENTRY sharedPath2(L"V:Shared Path 2");
-         cf->push_shared_entry(&meta1, &sharedPath1);
-         cf->push_shared_entry(&meta2, &sharedPath2);
+         cf->push_data_entry(&meta1, rawBuffData, 8);
+         cf->push_data_entry(&meta2, rawBuffData, 8);
+         auto sharedPath1 = L"Q:Shared Path 1";
+         auto sharedPath2 = L"V:Shared Path 2";
+         cf->push_shared_entry(&meta1, sharedPath1);
+         cf->push_shared_entry(&meta2, sharedPath2);
 
          for (size_t i = 0; i < cf->size(); i++)
          {
@@ -178,8 +172,6 @@ namespace QGL_Content_UnitTests
                                                     qgl::QGL_VERSION_0_1_WIN,
                                                     &cf));
          std::vector<uint8_t> rawBuffData = { 0 };
-         DATA_CONTENT_ENTRY buffData(rawBuffData.data(), rawBuffData.size());
-
          CONTENT_METADATA_BUFFER meta1(RESOURCE_TYPE_BRUSH,
                                        CONTENT_LOADER_ID_BRUSH,
                                        L"Brush");
@@ -188,12 +180,12 @@ namespace QGL_Content_UnitTests
                                        CONTENT_LOADER_ID_CAMERA,
                                        L"Camera");
 
-         cf->push_data_entry(&meta1, &buffData);
-         cf->push_data_entry(&meta2, &buffData);
-         SHARED_CONTENT_ENTRY sharedPath1(L"Q:Shared Path 1");
-         SHARED_CONTENT_ENTRY sharedPath2(L"V:Shared Path 2");
-         cf->push_shared_entry(&meta1, &sharedPath1);
-         cf->push_shared_entry(&meta2, &sharedPath2);
+         cf->push_data_entry(&meta1, rawBuffData.data(), rawBuffData.size());
+         cf->push_data_entry(&meta2, rawBuffData.data(), rawBuffData.size());
+         auto sharedPath1 = L"Q:Shared Path 1";
+         auto sharedPath2 = L"V:Shared Path 2";
+         cf->push_shared_entry(&meta1, sharedPath1);
+         cf->push_shared_entry(&meta2, sharedPath2);
 
          Assert::IsTrue(SUCCEEDED(cf->flush()), L"The HRESULT failed.");
 
@@ -223,10 +215,10 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER meta2(RESOURCE_TYPE_FLOAT,
                                        CONTENT_LOADER_ID_STRING,
                                        L"Green Value");
-         SHARED_CONTENT_ENTRY sharedPath1(L"Q:Shared Path 1");
-         SHARED_CONTENT_ENTRY sharedPath2(L"V:Shared Path 2");
-         cf->push_shared_entry(&meta1, &sharedPath1);
-         cf->push_shared_entry(&meta2, &sharedPath2);
+         auto sharedPath1 = L"Q:Shared Path 1";
+         auto sharedPath2 = L"V:Shared Path 2";
+         cf->push_shared_entry(&meta1, sharedPath1);
+         cf->push_shared_entry(&meta2, sharedPath2);
 
          cf->flush();
 
@@ -268,11 +260,11 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER meta2(RESOURCE_TYPE_FLOAT,
                                        CONTENT_LOADER_ID_STRING,
                                        L"Green Value");
-         SHARED_CONTENT_ENTRY sharedPath1(L"Q:Shared Path 1");
-         SHARED_CONTENT_ENTRY sharedPath2(L"V:Shared Path 2");
+         auto sharedPath1 = L"Q:Shared Path 1";
+         auto sharedPath2 = L"V:Shared Path 2";
 
-         cf->push_shared_entry(&meta1, &sharedPath1);
-         cf->push_shared_entry(&meta2, &sharedPath2);
+         cf->push_shared_entry(&meta1, sharedPath1);
+         cf->push_shared_entry(&meta2, sharedPath2);
          cf->flush();
          cf->release();
 
@@ -280,14 +272,14 @@ namespace QGL_Content_UnitTests
                                        CONTENT_LOADER_ID_STRING,
                                        L"Blue Value");
          std::vector<uint8_t> rawbluedata = { 0x00, 0x10, 0x20 };
-         DATA_CONTENT_ENTRY bluedata(rawbluedata.data(), rawbluedata.size());
-
          {
             icontent_file* cfOpen = nullptr;
             winrt::check_hresult(qgl_open_content_file(newFilePath.c_str(),
                                                        qgl::QGL_VERSION_0_1_WIN,
                                                        &cfOpen));
-            cfOpen->push_data_entry(&meta3, &bluedata);
+            cfOpen->push_data_entry(&meta3, 
+                                    rawbluedata.data(),
+                                    rawbluedata.size());
             cfOpen->flush();
             cfOpen->release();
          }

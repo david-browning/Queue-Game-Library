@@ -54,7 +54,7 @@ namespace qgl
 
       qgl_version_t& operator=(qgl_version_t r);
 
-      friend bool operator==(const qgl_version_t& l, 
+      friend bool operator==(const qgl_version_t& l,
                              const qgl_version_t& r) noexcept
       {
          return l.Flags == r.Flags &&

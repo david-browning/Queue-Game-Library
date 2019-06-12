@@ -21,19 +21,20 @@ namespace qgl::content
 
    }
 
-   content_variant_entry::content_variant_entry(const DATA_CONTENT_ENTRY* b) :
+   content_variant_entry::content_variant_entry(const void* buff,
+                                                size_t numBytes) :
       m_useType(CONTENT_DATA_USE_TYPES::CONTENT_DATA_USE_TYPE_BUFFER),
       m_loaded(false)
    {
-      m_buffer = new DATA_CONTENT_ENTRY(*b);
-      m_sharedBuffer = nullptr;
+      m_buffer = new DATA_CONTENT_ENTRY(buff, numBytes);
+      m_sharedBuffer = false;
    }
 
-   content_variant_entry::content_variant_entry(const SHARED_CONTENT_ENTRY* b) :
+   content_variant_entry::content_variant_entry(const wchar_t* sharedPath) :
       m_useType(CONTENT_DATA_USE_TYPES::CONTENT_DATA_USE_TYPE_SHARED),
       m_loaded(false)
    {
-      m_sharedBuffer = new SHARED_CONTENT_ENTRY(*b);
+      m_sharedBuffer = new SHARED_CONTENT_ENTRY(sharedPath);
       m_buffer = nullptr;
    }
 

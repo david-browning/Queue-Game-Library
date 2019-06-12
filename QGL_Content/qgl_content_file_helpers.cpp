@@ -37,57 +37,6 @@ namespace qgl::content::content_file_helpers
                             out_p);
    }
 
-   HRESULT load_content_data(const file_handle& hndl,
-                             const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
-                             DATA_CONTENT_ENTRY* out_p) noexcept
-   {
-      auto entrySize = entry.size();
-      std::vector<uint8_t> ret;
-      ret.resize(entrySize);
-      auto hr = read_file_sync(&hndl,
-                               entrySize,
-                               entry.offset(),
-                               ret.data());
-      if (FAILED(hr))
-      {
-         return hr;
-      }
-
-      *out_p = DATA_CONTENT_ENTRY(ret.data(), ret.size());
-      return S_OK;
-   }
-
-   HRESULT load_shared_data_path(const file_handle& hndl,
-                                 const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
-                                 SHARED_CONTENT_ENTRY* out_p) noexcept
-   {
-      //First 8 bytes are the number of characters in the path.
-      //Next bytes is the path. It is a wide string. Not null-terminated.
-      NumCharsType numChars = 0;
-      auto hr = read_file_sync(&hndl,
-                               sizeof(numChars),
-                               entry.offset(),
-                               &numChars);
-      if (FAILED(hr))
-      {
-         return hr;
-      }
-
-      std::wstring path(numChars, L'\0');
-      hr = read_file_sync(&hndl,
-                          numChars * sizeof(wchar_t),
-                          entry.offset() + sizeof(numChars),
-                          path.data());
-      if (FAILED(hr))
-      {
-         return hr;
-      }
-
-      *out_p = SHARED_CONTENT_ENTRY(path.c_str());
-
-      return S_OK;
-   }
-
    HRESULT write_header(
       const file_handle& hndl,
       const CONTENT_FILE_HEADER_BUFFER& hdr) noexcept
@@ -163,9 +112,10 @@ namespace qgl::content::content_file_helpers
    }
 
    size_t shared_entry_data_size(
-      const SHARED_CONTENT_ENTRY* data)
+      const content_variant_entry* e)
    {
-      return sizeof(NumCharsType) + (sizeof(wchar_t) * data->size());
+      return sizeof(NumCharsType) + (sizeof(wchar_t) *
+                                     e->shared_buffer().size());
    }
 
    bool valid_content_file_size(const file_handle& hndl)

@@ -4,7 +4,6 @@
 #include "include/qgl_file_helpers.h"
 #include "include/Interfaces/qgl_ifile_buffer.h"
 
-
 namespace qgl::content
 {
    HRESULT compile_content_project(const icontent_project* proj,
@@ -25,10 +24,9 @@ namespace qgl::content
          }
 
          auto safeBuffer = qgl::make_unique<ifile_buffer>(buff);
-
-         DATA_CONTENT_ENTRY buffer(safeBuffer->const_data(),
-                                   safeBuffer->size());
-         cf->push_data_entry(&entry.first, &buffer);
+         cf->push_data_entry(&entry.first, 
+                             safeBuffer->const_data(),
+                             safeBuffer->size());
       }
 
       return cf->flush();

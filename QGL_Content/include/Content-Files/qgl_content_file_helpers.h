@@ -38,28 +38,6 @@ namespace qgl::content::content_file_helpers
       CONTENT_DICTIONARY_ENTRY_BUFFER* out_p) noexcept;
 
    /*
-    Reads the content data from a content file. The data is accessed using the
-    dictionary entry. Returns a vector of bytes.
-    The file must be opened with read permissions.
-    This does not validate the data read.
-    */
-   extern HRESULT load_content_data(
-      const file_handle& hndl,
-      const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
-      DATA_CONTENT_ENTRY* out_p) noexcept;
-
-   /*
-    Reads the shared entry from a content file. The path is access using the
-    dictionary entry. Returns the shared entry path.
-    The file must be opened with read permissions.
-    This does not validate the data read.
-    */
-   extern HRESULT load_shared_data_path(
-      const file_handle& hndl,
-      const CONTENT_DICTIONARY_ENTRY_BUFFER& entry,
-      SHARED_CONTENT_ENTRY* out_p) noexcept;
-
-   /*
     Writes a file header to a content file.
     The file must be opened with write permissions.
     */
@@ -114,7 +92,7 @@ namespace qgl::content::content_file_helpers
     Gets the size of the buffer. The buffer is the size of an 8 byte integer
     and sizeof(wchar_t) * number of characters in the path.
     */
-   extern size_t shared_entry_data_size(const SHARED_CONTENT_ENTRY* data);
+   extern size_t shared_entry_data_size(const content_variant_entry* e);
 
    extern bool valid_content_file_size(const file_handle& hndl);
 }
