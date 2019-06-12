@@ -20,7 +20,7 @@ namespace qgl::content
       /*
        Flushes any changes to the content file to the disk.
        Returns:
-         Error codes returned by file reading and writing functions. 
+         Error codes returned by file reading and writing functions.
             See qgl_file_helpers.h
          S_OK if success.
        */
@@ -30,21 +30,24 @@ namespace qgl::content
        The metadata and buffer are copied and can go out of scope after calling
        this.
        */
-      virtual void push_back(const CONTENT_METADATA_BUFFER* meta,
-                             const DATA_CONTENT_ENTRY* buff) noexcept = 0;
+      virtual void push_data_entry(
+         const CONTENT_METADATA_BUFFER* meta,
+         const DATA_CONTENT_ENTRY* buff) noexcept = 0;
 
       /*
        The metadata and buffer are copied and can go out of scope after calling
        this.
        */
-      virtual void push_back(const CONTENT_METADATA_BUFFER* meta,
-                             const SHARED_CONTENT_ENTRY* buff) noexcept = 0;
+      virtual void push_shared_entry(
+         const CONTENT_METADATA_BUFFER* meta,
+         const SHARED_CONTENT_ENTRY* buff) noexcept = 0;
 
       /*
        Returns a const reference to the file's header.
        Do not free or reallocate the returned pointer.
        */
-      virtual const CONTENT_FILE_HEADER_BUFFER* header() const noexcept = 0;
+      virtual const CONTENT_FILE_HEADER_BUFFER* const_header()
+         const noexcept = 0;
 
       /*
        Returns a reference to the file's header.
@@ -75,7 +78,7 @@ namespace qgl::content
        Does not bounds checking.
        Do not free or reallocate the returned pointer.
        */
-      virtual const CONTENT_DICTIONARY_ENTRY_BUFFER* at(
+      virtual const CONTENT_DICTIONARY_ENTRY_BUFFER* const_at(
          size_t idx) const noexcept = 0;
    };
 

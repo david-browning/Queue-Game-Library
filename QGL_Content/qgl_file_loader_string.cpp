@@ -11,7 +11,7 @@ namespace qgl::content
                                                      const id_t newID)
    {
       //Make sure the string file has the correct loader.
-      auto headerInfo = f->header()->metadata();
+      auto headerInfo = f->const_header()->metadata();
       check_loader_and_resource<RESOURCE_TYPES::RESOURCE_TYPE_STRING,
          CONTENT_LOADER_IDS::CONTENT_LOADER_ID_STRING>(headerInfo);
 
@@ -23,7 +23,7 @@ namespace qgl::content
       }
 
       static string_importer sImporter;
-      auto entry = f->at(0);
+      auto entry = f->const_at(0);
       check_loader_and_resource<RESOURCE_TYPES::RESOURCE_TYPE_STRING,
          CONTENT_LOADER_IDS::CONTENT_LOADER_ID_STRING>(entry->metadata());
 

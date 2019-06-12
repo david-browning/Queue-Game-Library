@@ -25,7 +25,7 @@ namespace qgl::content
 
          file_buffer rawBuffer(&bufferHandle);
          DATA_CONTENT_ENTRY buffer(rawBuffer.data(), rawBuffer.size());
-         cf->push_back(&entry.first, &buffer);
+         cf->push_data_entry(&entry.first, &buffer);
       }
 
       return cf->flush();

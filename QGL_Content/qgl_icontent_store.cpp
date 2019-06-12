@@ -170,7 +170,7 @@ namespace qgl::content
          //m_fileIDMapReverse.erase(id);
       }
 
-      virtual const content_item* get(id_t id) const noexcept
+      virtual const content_item* const_get(id_t id) const noexcept
       {
          if (m_IDContentMap.count(id) > 0)
          {

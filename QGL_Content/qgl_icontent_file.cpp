@@ -102,14 +102,14 @@ namespace qgl::content
             if (entryIt->shared())
             {
                hr = write_shared_data_path(m_handle,
-                                      *entryIt,
-                                      contentIt->shared_buffer());
+                                           *entryIt,
+                                           contentIt->shared_buffer());
             }
             else
             {
                hr = write_content_data(m_handle,
-                                  *entryIt,
-                                  contentIt->buffer());
+                                       *entryIt,
+                                       contentIt->buffer());
             }
 
             if (FAILED(hr))
@@ -125,8 +125,9 @@ namespace qgl::content
          return S_OK;
       }
 
-      virtual void push_back(const CONTENT_METADATA_BUFFER* meta,
-                             const DATA_CONTENT_ENTRY* buff) noexcept
+      virtual void push_data_entry(
+         const CONTENT_METADATA_BUFFER* meta,
+         const DATA_CONTENT_ENTRY* buff) noexcept
       {
          content_variant_entry cont(buff);
          CONTENT_DICTIONARY_ENTRY_BUFFER entry(buff->size(), meta);
@@ -136,8 +137,9 @@ namespace qgl::content
          m_dict.push_back(std::move(entry));
       }
 
-      virtual void push_back(const CONTENT_METADATA_BUFFER* meta,
-                             const SHARED_CONTENT_ENTRY* buff) noexcept
+      virtual void push_shared_entry(
+         const CONTENT_METADATA_BUFFER* meta,
+         const SHARED_CONTENT_ENTRY* buff) noexcept
       {
          content_variant_entry cont(buff);
          CONTENT_DICTIONARY_ENTRY_BUFFER entry(shared_entry_data_size(buff),
@@ -148,7 +150,7 @@ namespace qgl::content
          m_dict.push_back(std::move(entry));
       }
 
-      virtual const CONTENT_FILE_HEADER_BUFFER* header() const noexcept
+      virtual const CONTENT_FILE_HEADER_BUFFER* const_header() const noexcept
       {
          return &m_header;
       }
@@ -174,7 +176,7 @@ namespace qgl::content
          return &m_dict[idx];
       }
 
-      virtual const CONTENT_DICTIONARY_ENTRY_BUFFER* at(
+      virtual const CONTENT_DICTIONARY_ENTRY_BUFFER* const_at(
          size_t idx) const noexcept
       {
          return &m_dict[idx];
@@ -221,7 +223,7 @@ namespace qgl::content
             if (dictEntry.shared())
             {
                SHARED_CONTENT_ENTRY sharedContent;
-               hr = load_shared_data_path(m_handle, 
+               hr = load_shared_data_path(m_handle,
                                           dictEntry,
                                           &sharedContent);
                if (FAILED(hr))

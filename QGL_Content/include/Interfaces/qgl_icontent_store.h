@@ -94,7 +94,7 @@ namespace qgl::content
        The content store manages the pointer's memory. Do not free or 
        reallocate the memory.
        */
-      virtual const content_item* get(id_t id) const noexcept = 0;
+      virtual const content_item* const_get(id_t id) const noexcept = 0;
 
       /*
        Returns a const pointer to content.

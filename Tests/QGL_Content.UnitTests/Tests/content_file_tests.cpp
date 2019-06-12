@@ -72,13 +72,13 @@ namespace QGL_Content_UnitTests
                                       CONTENT_LOADER_ID_BRUSH,
                                       L"Brush");
          SHARED_CONTENT_ENTRY sharedPathEntry(L"Q:Shared Path");
-         cf->push_back(&meta, &sharedPathEntry);
+         cf->push_shared_entry(&meta, &sharedPathEntry);
          Assert::AreEqual(static_cast<size_t>(1), cf->size(),
                           L"The size should be 1.");
 
          uint8_t buffData[8] = { 0 };
          DATA_CONTENT_ENTRY dataBuffer(buffData, 8);
-         cf->push_back(&meta, &dataBuffer);
+         cf->push_data_entry(&meta, &dataBuffer);
          Assert::AreEqual(static_cast<size_t>(2), cf->size(),
                           L"The size should be 2.");
          cf->release();
@@ -105,7 +105,7 @@ namespace QGL_Content_UnitTests
                                       CONTENT_LOADER_ID_BRUSH,
                                       L"Brush");
 
-         cf->push_back(&meta, &dataBuffer1);
+         cf->push_data_entry(&meta, &dataBuffer1);
 
          Assert::IsTrue(*(cf->at(0)->metadata()) == meta,
                         L"The metadata should be equal.");
@@ -135,12 +135,12 @@ namespace QGL_Content_UnitTests
                                        CONTENT_LOADER_ID_CAMERA,
                                        L"Camera");
 
-         cf->push_back(&meta1, &dataBuffer1);
-         cf->push_back(&meta2, &dataBuffer2);
+         cf->push_data_entry(&meta1, &dataBuffer1);
+         cf->push_data_entry(&meta2, &dataBuffer2);
          SHARED_CONTENT_ENTRY sharedPath1(L"Q:Shared Path 1");
          SHARED_CONTENT_ENTRY sharedPath2(L"V:Shared Path 2");
-         cf->push_back(&meta1, &sharedPath1);
-         cf->push_back(&meta2, &sharedPath2);
+         cf->push_shared_entry(&meta1, &sharedPath1);
+         cf->push_shared_entry(&meta2, &sharedPath2);
 
          for (size_t i = 0; i < cf->size(); i++)
          {
@@ -188,12 +188,12 @@ namespace QGL_Content_UnitTests
                                        CONTENT_LOADER_ID_CAMERA,
                                        L"Camera");
 
-         cf->push_back(&meta1, &buffData);
-         cf->push_back(&meta2, &buffData);
+         cf->push_data_entry(&meta1, &buffData);
+         cf->push_data_entry(&meta2, &buffData);
          SHARED_CONTENT_ENTRY sharedPath1(L"Q:Shared Path 1");
          SHARED_CONTENT_ENTRY sharedPath2(L"V:Shared Path 2");
-         cf->push_back(&meta1, &sharedPath1);
-         cf->push_back(&meta2, &sharedPath2);
+         cf->push_shared_entry(&meta1, &sharedPath1);
+         cf->push_shared_entry(&meta2, &sharedPath2);
 
          Assert::IsTrue(SUCCEEDED(cf->flush()), L"The HRESULT failed.");
 
@@ -225,8 +225,8 @@ namespace QGL_Content_UnitTests
                                        L"Green Value");
          SHARED_CONTENT_ENTRY sharedPath1(L"Q:Shared Path 1");
          SHARED_CONTENT_ENTRY sharedPath2(L"V:Shared Path 2");
-         cf->push_back(&meta1, &sharedPath1);
-         cf->push_back(&meta2, &sharedPath2);
+         cf->push_shared_entry(&meta1, &sharedPath1);
+         cf->push_shared_entry(&meta2, &sharedPath2);
 
          cf->flush();
 
@@ -271,8 +271,8 @@ namespace QGL_Content_UnitTests
          SHARED_CONTENT_ENTRY sharedPath1(L"Q:Shared Path 1");
          SHARED_CONTENT_ENTRY sharedPath2(L"V:Shared Path 2");
 
-         cf->push_back(&meta1, &sharedPath1);
-         cf->push_back(&meta2, &sharedPath2);
+         cf->push_shared_entry(&meta1, &sharedPath1);
+         cf->push_shared_entry(&meta2, &sharedPath2);
          cf->flush();
          cf->release();
 
@@ -287,7 +287,7 @@ namespace QGL_Content_UnitTests
             winrt::check_hresult(qgl_open_content_file(newFilePath.c_str(),
                                                        qgl::QGL_VERSION_0_1_WIN,
                                                        &cfOpen));
-            cfOpen->push_back(&meta3, &bluedata);
+            cfOpen->push_data_entry(&meta3, &bluedata);
             cfOpen->flush();
             cfOpen->release();
          }
