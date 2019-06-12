@@ -7,6 +7,7 @@ namespace qgl::content
     /*
      Dictionaries store entries, which map to content data.
      */
+   #pragma pack(push, 1)
    struct QGL_CONTENT_API CONTENT_DICTIONARY_ENTRY_BUFFER final
    {
       friend struct content_file;
@@ -126,4 +127,5 @@ namespace qgl::content
       static constexpr uint64_t IS_SHARED_FLAG =
          static_cast<uint64_t>(1 << 31);
    };
+   #pragma pack(pop)
 }

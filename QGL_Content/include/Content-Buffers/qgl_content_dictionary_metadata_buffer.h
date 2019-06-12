@@ -6,6 +6,7 @@ namespace qgl::content
     /*
      This is metadata for a content dictionary.
      */
+   #pragma pack(push, 1)
    struct QGL_CONTENT_API CONTENT_DICTIONARY_METADATA_BUFFER final
    {
       public:
@@ -89,4 +90,5 @@ namespace qgl::content
 
       uint64_t m_reserved1;
    };
+   #pragma pack(pop)
 }

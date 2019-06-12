@@ -11,6 +11,7 @@ namespace qgl::content
     Stores metadata about content. Content could be a texture, geometry, or
     other data used in the engine.
     */
+   #pragma pack(push, 1)
    struct QGL_CONTENT_API CONTENT_METADATA_BUFFER final
    {
       public:
@@ -203,6 +204,7 @@ namespace qgl::content
        */
       static constexpr uint8_t DEFAULT_FLAGS = 0b00001000;
    };
+   #pragma pack(pop)
 
    #ifndef QGL_CONTENT_METADATA_BUFFER_EXPORT
    #define QGL_CONTENT_METADATA_BUFFER_EXPORT

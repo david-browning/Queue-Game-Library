@@ -3,6 +3,7 @@
 
 namespace qgl::content::buffers
 {
+   #pragma pack(push, 1)
    struct QGL_GRAPHICS_API LIGHT_BUFFER final
    {
       public:
@@ -75,4 +76,5 @@ namespace qgl::content::buffers
       uint16_t Flags1;
       uint8_t Flags2;
    };
+   #pragma pack(pop)
 }

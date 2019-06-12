@@ -3,6 +3,7 @@
 
 namespace qgl::content::buffers
 {
+   #pragma pack(push, 1)
    struct QGL_GRAPHICS_API GRAPHICS_CONFIG_BUFFER final
    {
       public:
@@ -64,4 +65,5 @@ namespace qgl::content::buffers
       uint8_t IsHDR;
       uint8_t IsEnableInterlacing;
    };
+   #pragma pack(pop)
 }

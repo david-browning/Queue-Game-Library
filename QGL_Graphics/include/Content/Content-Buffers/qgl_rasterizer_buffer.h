@@ -3,6 +3,7 @@
 
 namespace qgl::content::buffers
 {
+   #pragma pack(push, 1)
    struct QGL_GRAPHICS_API RASTERIZER_BUFFER final
    {
       public:
@@ -155,4 +156,5 @@ namespace qgl::content::buffers
        */
       uint8_t IsAntialiasedLine;
    };
+   #pragma pack(pop)
 }

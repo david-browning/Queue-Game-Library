@@ -3,6 +3,7 @@
 
 namespace qgl::content::buffers
 {
+   #pragma pack(push, 1)
    struct QGL_GRAPHICS_API SAMPLER_BUFFER final
    {
       public:
@@ -131,4 +132,5 @@ namespace qgl::content::buffers
       uint8_t Reserved2;
       uint8_t Reserved3;
    };
+   #pragma pack(pop)
 }

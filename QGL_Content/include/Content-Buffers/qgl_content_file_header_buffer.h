@@ -8,6 +8,7 @@ namespace qgl::content
      The file header is the first bytes of any content file. QGL inspects the 
      header.
      */
+   #pragma pack(push, 1)
    struct QGL_CONTENT_API CONTENT_FILE_HEADER_BUFFER final
    {
       public:
@@ -88,4 +89,5 @@ namespace qgl::content
       //Offset to the dictionary.
       uint64_t m_offset;
    };
+   #pragma pack(pop)
 }

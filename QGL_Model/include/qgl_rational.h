@@ -9,6 +9,7 @@ namespace qgl::math
       return a == 0 ? a : gcd(b, a % b);
    }
 
+   #pragma pack(push, 1)
    struct QGL_MODEL_API rational
    {
       public:
@@ -58,4 +59,5 @@ namespace qgl::math
       number_t m_num;
       number_t m_den;
    };
+   #pragma pack(pop)
 }

@@ -3,10 +3,10 @@
 
 namespace qgl::content::buffers
 {
+   #pragma pack(push, 1)
    struct QGL_GRAPHICS_API CAMERA_BUFFER final
    {
       public:
-
       /*
        Default constructor.
        */
@@ -97,4 +97,5 @@ namespace qgl::content::buffers
 
       uint32_t Reserved2;
    };
+   #pragma pack(pop)
 }

@@ -7,6 +7,7 @@ namespace qgl::content::buffers
    static constexpr size_t MAX_FONT_CHARS = 32;
 
    using text_enum_t = int8_t;
+   #pragma pack(push, 1)
    struct QGL_GRAPHICS_API TEXT_FORMAT_BUFFER final
    {
       public:
@@ -155,4 +156,5 @@ namespace qgl::content::buffers
       
       text_enum_t DrawTextOptions;
    };
+   #pragma pack(pop)
 }

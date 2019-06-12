@@ -24,6 +24,7 @@ namespace qgl
    /*
     Bit layout: {2 OS Flag} { 14 Flags} {8 Major} {8 Minor}
     */
+   #pragma pack(push, 1)
    struct QGL_MODEL_API qgl_version_t
    {
       constexpr qgl_version_t(uint8_t major, uint8_t minor,
@@ -61,6 +62,7 @@ namespace qgl
             l.Minor == r.Minor;
       }
    };
+   #pragma pack(pop)
 
    constexpr uint8_t version_major(qgl_version_t version)
    {

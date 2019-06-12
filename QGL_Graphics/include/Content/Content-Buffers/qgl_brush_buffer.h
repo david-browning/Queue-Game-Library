@@ -12,6 +12,7 @@ namespace qgl::content::buffers
 
    static constexpr size_t BRUSH_FORMAT_BUFFER_MAX_GRADIANT_STOPS = 16;
 
+   #pragma pack(push, 1)
    struct QGL_GRAPHICS_API BRUSH_BUFFER final
    {
       public:
@@ -123,4 +124,5 @@ namespace qgl::content::buffers
 
       D2D1_GRADIENT_STOP Stops[BRUSH_FORMAT_BUFFER_MAX_GRADIANT_STOPS];
    };
+   #pragma pack(pop)
 }

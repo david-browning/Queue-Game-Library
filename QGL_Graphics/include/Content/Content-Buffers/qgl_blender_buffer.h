@@ -15,6 +15,7 @@ namespace qgl::content::buffers
     Describes a blender which is used by a graphics pipeline state.
     https://tinyurl.com/d3d12-blend-desc
     */
+   #pragma pack(push, 1)
    struct QGL_GRAPHICS_API BLENDER_BUFFER final
    {
       public:
@@ -106,4 +107,5 @@ namespace qgl::content::buffers
 
       static constexpr uint16_t DEFAULT_FLAGS = 0xEEEE;
    };
+   #pragma pack(pop)
 }
