@@ -6,11 +6,11 @@
 
 namespace qgl::graphics
 {
-   static constexpr DXGI_FORMAT FORMAT_16_BIT_HDR = 
+   static constexpr DXGI_FORMAT FORMAT_16_BIT_HDR =
       DXGI_FORMAT_R16G16B16A16_FLOAT;
-   static constexpr DXGI_FORMAT FORMAT_10_BIT_HDR = 
+   static constexpr DXGI_FORMAT FORMAT_10_BIT_HDR =
       DXGI_FORMAT_R10G10B10A2_UNORM;
-   static constexpr DXGI_FORMAT FORMAT_8_BIT_NO_HDR = 
+   static constexpr DXGI_FORMAT FORMAT_8_BIT_NO_HDR =
       DXGI_FORMAT_R8G8B8A8_UNORM;
 
    struct graphics_device_0_1 : public igraphics_device
@@ -502,14 +502,37 @@ namespace qgl::graphics
       }
    };
 
-
-   igraphics_device* make_graphics_device(
-      const content::graphics_config* config,
-      window* wnd,
-      qgl_version_t v)
+   HRESULT make_graphics_device(const content::graphics_config* config,
+                                window* wnd,
+                                qgl_version_t v,
+                                igraphics_device** out_p)
    {
+      if (out_p == nullptr)
+      {
+         return E_INVALIDARG;
+      }
 
+      igraphics_device* ret = nullptr;
+      switch (std::hash<qgl_version_t>{}(v))
+      {
+         case qgl::hashes::VERSION_0_1_HASH:
+         case qgl::hashes::VERSION_0_2_HASH:
+         {
+            ret = new graphics_device_0_1(config, wnd);
+            break;
+         }
+         default:
+         {
+            return E_NOINTERFACE;
+         }
+      }
 
-      return nullptr;
+      if (ret == nullptr)
+      {
+         return E_OUTOFMEMORY;
+      }
+
+      *out_p = ret;
+      return S_OK;
    }
 }
