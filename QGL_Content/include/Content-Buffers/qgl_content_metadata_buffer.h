@@ -7,6 +7,8 @@ namespace qgl::content
    static constexpr size_t CONTENT_MAX_NAME_LEN = 40;
    static constexpr size_t QGL_GUID_STR_LEN = 36;
 
+
+
    /*
     Stores metadata about content. Content could be a texture, geometry, or
     other data used in the engine.
@@ -103,7 +105,7 @@ namespace qgl::content
        Returns the compiler version this content was compiled for.
        */
       qgl::qgl_version_t version() const noexcept;
-            
+
       /*
        Returns the compiler version this content was compiled for.
        */
@@ -205,10 +207,4 @@ namespace qgl::content
       static constexpr uint8_t DEFAULT_FLAGS = 0b00001000;
    };
    #pragma pack(pop)
-
-   #ifndef QGL_CONTENT_METADATA_BUFFER_EXPORT
-   #define QGL_CONTENT_METADATA_BUFFER_EXPORT
-   QGL_CONTENT_TEMPLATE template class QGL_CONTENT_API
-      std::allocator<CONTENT_METADATA_BUFFER>;
-   #endif
 }
