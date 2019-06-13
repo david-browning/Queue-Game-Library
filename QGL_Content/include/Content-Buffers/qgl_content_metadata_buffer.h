@@ -116,6 +116,8 @@ namespace qgl::content
        */
       const GUID* guid() const noexcept;
 
+      bool shared() const noexcept;
+
       /*
        Returns the content's GUID as a string.
        Throws if the GUID cannot be converted to a string.

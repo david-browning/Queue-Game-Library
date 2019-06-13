@@ -163,6 +163,11 @@ namespace qgl::content
       return &m_guid;
    }
 
+   bool CONTENT_METADATA_BUFFER::shared() const noexcept
+   {
+      return (m_flags1 & 0x80) != 0;
+   }
+
    winrt::hstring CONTENT_METADATA_BUFFER::guid_str() const
    {
       OLECHAR* guidStr = nullptr;
