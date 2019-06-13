@@ -247,8 +247,15 @@ namespace qgl::content
                   return hr;
                }
 
-               entries::content_variant_entry cbt(path.c_str());
-               m_entryDataToWrite.push_back(cbt);
+               try
+               {
+                  entries::content_variant_entry cbt(path.c_str());
+                  m_entryDataToWrite.push_back(cbt);
+               }
+               catch (std::invalid_argument&)
+               {
+                  return E_INVALIDARG;
+               }
             }
             else
             {

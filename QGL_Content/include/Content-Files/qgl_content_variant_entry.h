@@ -44,6 +44,7 @@ namespace qgl::content::entries
       /*
        Constructs a variant so it references an external content file.
        Copies the buffer. The buffer can be freed after constructing this.
+       Throws std::invalid_argument if the string is not a correct form.
        */
       content_variant_entry(const wchar_t* sharedPath);
 
