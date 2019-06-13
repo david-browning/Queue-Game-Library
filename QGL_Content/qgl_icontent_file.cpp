@@ -130,7 +130,7 @@ namespace qgl::content
          const void* buff,
          size_t buffBytes) noexcept
       {
-         content_variant_entry cont(buff, buffBytes);
+         entries::content_variant_entry cont(buff, buffBytes);
          CONTENT_DICTIONARY_ENTRY_BUFFER entry(buffBytes, meta);
          entry.shared(false);
 
@@ -142,7 +142,7 @@ namespace qgl::content
          const CONTENT_METADATA_BUFFER* meta,
          const wchar_t* str) noexcept
       {
-         content_variant_entry cont(str);
+         entries::content_variant_entry cont(str);
          CONTENT_DICTIONARY_ENTRY_BUFFER entry(shared_entry_data_size(&cont),
                                                meta);
          entry.shared(true);
@@ -247,7 +247,7 @@ namespace qgl::content
                   return hr;
                }
 
-               content_variant_entry cbt(path.c_str());
+               entries::content_variant_entry cbt(path.c_str());
                m_entryDataToWrite.push_back(cbt);
             }
             else
@@ -264,7 +264,7 @@ namespace qgl::content
                   return hr;
                }
 
-               content_variant_entry cbt(ret.data(), ret.size());
+               entries::content_variant_entry cbt(ret.data(), ret.size());
                m_entryDataToWrite.push_back(cbt);
             }
 
@@ -293,7 +293,7 @@ namespace qgl::content
        An array of pointers to data that is pending writes to the content file.
        This is only populated when the content file is in write mode.
        */
-      std::vector<content_variant_entry> m_entryDataToWrite;
+      std::vector<entries::content_variant_entry> m_entryDataToWrite;
 
       /*
        File handle.

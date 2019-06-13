@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "include\Content-Files\qgl_content_variant_entry.h"
 
-namespace qgl::content
+namespace qgl::content::entries
 {
 
-   qgl::content::content_variant_entry::content_variant_entry() :
+   content_variant_entry::content_variant_entry() :
       m_useType(CONTENT_DATA_USE_TYPES::CONTENT_DATA_USE_TYPE_UNKNOWN),
       m_buffer(nullptr),
       m_sharedBuffer(nullptr),
@@ -38,7 +38,7 @@ namespace qgl::content
       m_buffer = nullptr;
    }
 
-   qgl::content::content_variant_entry::content_variant_entry(
+   content_variant_entry::content_variant_entry(
       const content_variant_entry& r) :
       m_useType(r.m_useType),
       m_loaded(r.m_loaded)

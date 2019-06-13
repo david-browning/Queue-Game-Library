@@ -92,7 +92,8 @@ namespace qgl::content::content_file_helpers
     Gets the size of the buffer. The buffer is the size of an 8 byte integer
     and sizeof(wchar_t) * number of characters in the path.
     */
-   extern size_t shared_entry_data_size(const content_variant_entry* e);
+   extern size_t shared_entry_data_size(
+      const entries::content_variant_entry* e);
 
    extern bool valid_content_file_size(const file_handle& hndl);
 }

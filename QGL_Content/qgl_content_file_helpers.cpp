@@ -113,7 +113,7 @@ namespace qgl::content::content_file_helpers
    }
 
    size_t shared_entry_data_size(
-      const content_variant_entry* e)
+      const entries::content_variant_entry* e)
    {
       return sizeof(NumCharsType) + (sizeof(wchar_t) *
                                      e->shared_buffer().size());

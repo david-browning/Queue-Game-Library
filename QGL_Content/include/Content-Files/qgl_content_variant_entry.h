@@ -4,10 +4,10 @@
 #include "include/Content-Files/qgl_shared_content_entry.h"
 #include <variant>
 
-namespace qgl::content
+namespace qgl::content::entries
 {
-   template class QGL_CONTENT_API std::shared_ptr<entries::data_content_entry>;
-   template class QGL_CONTENT_API std::shared_ptr<entries::shared_content_entry>;
+   //template class QGL_CONTENT_API std::shared_ptr<entries::data_content_entry>;
+   //template class QGL_CONTENT_API std::shared_ptr<entries::shared_content_entry>;
 
    /*
     Content data can either be a buffer, baked into the file, or a shared
@@ -23,7 +23,7 @@ namespace qgl::content
    /*
     Stores either a content buffer, or information about an external file.
     */
-   class QGL_CONTENT_API content_variant_entry
+   class content_variant_entry
    {
       public:
 
