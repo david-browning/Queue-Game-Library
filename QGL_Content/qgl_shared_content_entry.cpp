@@ -26,7 +26,6 @@ namespace qgl::content::entries
          throw std::invalid_argument("The metadata string is not correct.");
       }
 
-      auto relativePathLen = m_completeStr.size() - colonIdx;
       m_relativeStr = m_completeStr.substr(colonIdx + 1);
    }
 
