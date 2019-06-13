@@ -118,9 +118,6 @@
     <ClCompile Include="qgl_file_handle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="qgl_content_accessor.cpp">
-      <Filter>Source Files\Content-Store</Filter>
-    </ClCompile>
     <ClCompile Include="qgl_content_item.cpp">
       <Filter>Source Files\Content-Items</Filter>
     </ClCompile>
@@ -217,9 +214,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="include\Content-Store\qgl_content_accessor.h">
-      <Filter>Header Files\Content Store</Filter>
-    </ClInclude>
     <ClInclude Include="include\Content-Items\qgl_content_item.h">
       <Filter>Header Files\Content-Items</Filter>
     </ClInclude>

@@ -1,7 +1,6 @@
 #pragma once
 #include "include/qgl_content_include.h"
 #include "include/Interfaces/qgl_icontent_file.h"
-#include "include/Content-Store/qgl_content_accessor.h"
 
 namespace qgl::content
 {

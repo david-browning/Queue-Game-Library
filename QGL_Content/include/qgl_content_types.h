@@ -3,6 +3,9 @@
 
 namespace qgl::content
 {
+   using id_t = uint64_t;
+   static constexpr id_t INVALID_CONTENT_ID = static_cast<id_t>(-1);
+
    static constexpr uint64_t QGL_CONTENT_PROJECT_MAGIC_NUMBER =
       0x8A473F4DB11D8CE7;
 
