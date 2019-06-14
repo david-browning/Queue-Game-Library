@@ -2,6 +2,7 @@
 #include "include/Interfaces/qgl_icontent_project.h"
 #include "include/qgl_file_handle.h"
 #include "include/qgl_file_helpers.h"
+#include "include/Content-Files/qgl_shared_content_entry.h"
 
 namespace qgl::content
 {
@@ -152,11 +153,74 @@ namespace qgl::content
          return m_entries.size();
       }
 
-      virtual void emplace_back(
+      virtual HRESULT insert_shared_entry(
          const content_project_entry_pair::first_type* entry,
-         const wchar_t* absPath)
+         const wchar_t* str,
+         size_t idx) noexcept
       {
-         m_entries.emplace_back(*entry, winrt::to_hstring(absPath));
+         if (idx >= m_entries.size())
+         {
+            return E_BOUNDS;
+         }
+
+         try
+         {
+            //Construct a shared content entry. This checks if str is valid.
+            entries::shared_content_entry sharedEntry(str);
+         }
+         catch (std::invalid_argument&)
+         {
+            return E_INVALIDARG;
+         }
+
+         m_entries[idx] = { *entry, winrt::to_hstring(str) };
+
+         return S_OK;
+      }
+
+      virtual HRESULT insert_data_entry(
+         const content_project_entry_pair::first_type* entry,
+         const wchar_t* str,
+         size_t idx) noexcept
+      {
+         if (idx >= m_entries.size())
+         {
+            return E_BOUNDS;
+         }
+
+         m_entries[idx] = { *entry, winrt::to_hstring(str) };
+
+         return S_OK;
+      }
+
+      virtual HRESULT emplace_shared_back(
+         const content_project_entry_pair::first_type* entry,
+         const wchar_t* str)
+      {
+         try
+         {
+            //Construct a shared content entry. This checks if str is valid.
+            entries::shared_content_entry sharedEntry(str);
+         }
+         catch (std::invalid_argument&)
+         {
+            return E_INVALIDARG;
+         }
+
+         m_entries.emplace_back(*entry,
+                                winrt::to_hstring(str));
+
+         return S_OK;
+      }
+
+      virtual HRESULT emplace_data_back(
+         const content_project_entry_pair::first_type* entry,
+         const wchar_t* str)
+      {
+         m_entries.emplace_back(*entry,
+                                winrt::to_hstring(str));
+
+         return S_OK;
       }
 
       virtual content_project_entry_pair* at(size_t idx) noexcept
@@ -164,34 +228,21 @@ namespace qgl::content
          return &m_entries[idx];
       }
 
-      /*
-       Returns a const reference to the idx'th project entry.
-       This throws out_of_range if the index is out of bounds.
-       */
       virtual const content_project_entry_pair* at(size_t idx) const noexcept
       {
          return &m_entries[idx];
       }
 
-      /*
-       Returns the project entry at the given position.
-       */
       virtual iterator erase(const_iterator position)
       {
          return m_entries.erase(position);
       }
 
-      /*
-       Removes the project entries between first and last, inclusive.
-       */
       virtual iterator erase(const_iterator first, const_iterator last)
       {
          return m_entries.erase(first, last);
       }
 
-      /*
-       Returns an iterator to the beginning of the project entries.
-       */
       virtual iterator begin() noexcept
       {
          return m_entries.begin();
@@ -336,7 +387,16 @@ namespace qgl::content
             offset += numChars * sizeof(wchar_t);
 
             //Emplace back a new entry.
-            emplace_back(&meta, path.c_str());
+            if (meta.shared())
+            {
+               emplace_shared_back(&meta,
+                                   path.c_str());
+            }
+            else
+            {
+               emplace_data_back(&meta,
+                                 path.c_str());
+            }
 
             numEntries--;
          }

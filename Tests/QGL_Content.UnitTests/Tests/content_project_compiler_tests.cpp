@@ -42,7 +42,7 @@ namespace QGL_Content_UnitTests
                newFilePath.c_str(),
                qgl::QGL_VERSION_0_1_WIN,
                &project));
-            project->emplace_back(&entry1Meta, entry1Path.c_str());
+            project->emplace_data_back(&entry1Meta, entry1Path.c_str());
             winrt::check_hresult(project->flush());
 
             //Compile the project file.
@@ -101,8 +101,8 @@ namespace QGL_Content_UnitTests
                qgl::QGL_VERSION_0_1_WIN,
                &project));
             *project->metadata() = projectMeta;
-            project->emplace_back(&entry1Meta, entry1Path.c_str());
-            project->emplace_back(&entry1Meta, entry1Path.c_str());
+            project->emplace_data_back(&entry1Meta, entry1Path.c_str());
+            project->emplace_data_back(&entry1Meta, entry1Path.c_str());
             project->flush();
 
             //Compile it

@@ -34,11 +34,49 @@ namespace qgl::content
       virtual size_t size() const noexcept = 0;
 
       /*
-       Constructs and places a project entry at the end.
+       Constructs a shared entry and inserts it at the position.
+       Returns:
+         E_INVALIDARG if the string is not well formed. See qgl::content::
+            entries::shared_content_entry for information about good strings.
+         E_BOUNDS if the position is invalid.
+         S_OK on success.
        */
-      virtual void emplace_back(
+      virtual HRESULT insert_shared_entry(
          const content_project_entry_pair::first_type* entry,
-         const wchar_t* absPath) = 0;
+         const wchar_t* str,
+         size_t idx) noexcept = 0;
+
+      /*
+       Constructs a data entry in the content project. str must be an absolute
+       path. This function does not check if the string points to a valid file.
+       Returns:
+         E_BOUNDS if the position is invalid.
+         S_OK on success.
+       */
+      virtual HRESULT insert_data_entry(
+         const content_project_entry_pair::first_type* entry,
+         const wchar_t* str,
+         size_t idx) noexcept = 0;
+
+      /*
+       Constructs a shared entry and inserts it at the end.
+       Returns:
+         E_INVALIDARG if the string is not well formed. See qgl::content::
+            entries::shared_content_entry for information about good strings.
+         S_OK on success.
+       */
+      virtual HRESULT emplace_shared_back(
+         const content_project_entry_pair::first_type* entry,
+         const wchar_t* str) = 0;
+
+      /*
+       Constructs a shared entry and inserts it at the end.
+       Returns:
+         S_OK on success.
+       */
+      virtual HRESULT emplace_data_back(
+         const content_project_entry_pair::first_type* entry,
+         const wchar_t* str) = 0;
 
       /*
        Returns a reference to the idx'th project entry.
