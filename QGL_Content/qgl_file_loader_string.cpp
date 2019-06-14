@@ -30,8 +30,6 @@ namespace qgl::content::loaders
       auto str = sImporter.load(*f->handle(), *entry);
       return std::make_unique<string_item>(str.c_str(),
                                            headerInfo->name(),
-                                           newID,
-                                           RESOURCE_TYPE_STRING,
-                                           CONTENT_LOADER_ID_STRING);
+                                           newID);
    }
 }

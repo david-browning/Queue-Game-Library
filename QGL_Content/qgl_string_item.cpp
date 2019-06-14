@@ -27,10 +27,10 @@ namespace qgl::content
 
    string_item::string_item(const char* str, 
                             const wchar_t* name, 
-                            content_id id, 
-                            RESOURCE_TYPES rType, 
-                            CONTENT_LOADER_IDS loaderID) :
-      content_item(name, id, rType, loaderID),
+                            content_id id) :
+      content_item(name, id,
+                   RESOURCE_TYPES::RESOURCE_TYPE_STRING, 
+                   CONTENT_LOADER_IDS::CONTENT_LOADER_ID_STRING),
       m_impl_p(new impl(str))
    {
    }

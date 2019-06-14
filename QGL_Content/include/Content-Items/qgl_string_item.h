@@ -12,9 +12,7 @@ namespace qgl::content
        */
       string_item(const char* str,
                   const wchar_t* name,
-                  content_id id,
-                  RESOURCE_TYPES rType,
-                  CONTENT_LOADER_IDS loaderID);
+                  content_id id);
 
       /*
        Copy constructor.

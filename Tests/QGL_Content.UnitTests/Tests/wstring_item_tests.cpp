@@ -13,9 +13,7 @@ namespace QGL_Content_UnitTests
       {
          wstring_item item(L"Test",
                            L"Name",
-                           0,
-                           RESOURCE_TYPES::RESOURCE_TYPE_BRUSH,
-                           CONTENT_LOADER_IDS::CONTENT_LOADER_ID_BRUSH);
+                           0);
 
          Assert::AreEqual(0, wcscmp(L"Test", item.c_str()),
                           L"The data string is not correct.");
@@ -23,11 +21,11 @@ namespace QGL_Content_UnitTests
          Assert::AreEqual(0, wcscmp(L"Name", item.name()),
                           L"The name is not correct.");
 
-         Assert::AreEqual(RESOURCE_TYPES::RESOURCE_TYPE_BRUSH,
+         Assert::AreEqual(RESOURCE_TYPES::RESOURCE_TYPE_STRING,
                           item.resource_type(),
                           L"The resource type is not correct.");
 
-         Assert::AreEqual(CONTENT_LOADER_IDS::CONTENT_LOADER_ID_BRUSH,
+         Assert::AreEqual(CONTENT_LOADER_IDS::CONTENT_LOADER_ID_WSTRING,
                           item.loader_id(),
                           L"The content loader id is not correct.");
 
@@ -40,9 +38,7 @@ namespace QGL_Content_UnitTests
       {
          wstring_item item(L"Test",
                            L"Name",
-                           0,
-                           RESOURCE_TYPES::RESOURCE_TYPE_BRUSH,
-                           CONTENT_LOADER_IDS::CONTENT_LOADER_ID_BRUSH);
+                           0);
 
          wstring_item itemCopy(item);
          Assert::AreEqual(item.id(), itemCopy.id(),
@@ -69,9 +65,7 @@ namespace QGL_Content_UnitTests
       {
          wstring_item item(L"Test",
                            L"Name",
-                           0,
-                           RESOURCE_TYPES::RESOURCE_TYPE_BRUSH,
-                           CONTENT_LOADER_IDS::CONTENT_LOADER_ID_BRUSH);
+                           0);
 
          wstring_item itemCopy(item);
          wstring_item itemMove(std::move(itemCopy));
@@ -95,9 +89,7 @@ namespace QGL_Content_UnitTests
       {
          wstring_item item(L"Test",
                            L"Name",
-                           0,
-                           RESOURCE_TYPES::RESOURCE_TYPE_BRUSH,
-                           CONTENT_LOADER_IDS::CONTENT_LOADER_ID_BRUSH);
+                           0);
 
 
          wstring_item itemCopy = item;
@@ -121,9 +113,7 @@ namespace QGL_Content_UnitTests
       {
          wstring_item item(L"Test",
                            L"Name",
-                           0,
-                           RESOURCE_TYPES::RESOURCE_TYPE_BRUSH,
-                           CONTENT_LOADER_IDS::CONTENT_LOADER_ID_BRUSH);
+                           0);
 
          item.data()[0] = L'B';
 
@@ -138,9 +128,7 @@ namespace QGL_Content_UnitTests
       {
          wstring_item item(L"Test",
                            L"Name",
-                           0,
-                           RESOURCE_TYPES::RESOURCE_TYPE_BRUSH,
-                           CONTENT_LOADER_IDS::CONTENT_LOADER_ID_BRUSH);
+                           0);
 
          wstring_item itemCopy = item;
          Assert::IsTrue(item == itemCopy,
@@ -148,18 +136,14 @@ namespace QGL_Content_UnitTests
 
          wstring_item itemNE(L"Test",
                              L"Name2",
-                             0,
-                             RESOURCE_TYPES::RESOURCE_TYPE_BRUSH,
-                             CONTENT_LOADER_IDS::CONTENT_LOADER_ID_BRUSH);
+                             0);
 
          Assert::IsFalse(item == itemNE,
                          L"The items should not be equal.");
 
          wstring_item itemNE2(L"Test2",
                               L"Name",
-                              0,
-                              RESOURCE_TYPES::RESOURCE_TYPE_BRUSH,
-                              CONTENT_LOADER_IDS::CONTENT_LOADER_ID_BRUSH);
+                              0);
 
          Assert::IsFalse(item == itemNE2,
                          L"The itemNE 2 should not be equal.");
