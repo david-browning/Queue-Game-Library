@@ -5,7 +5,7 @@
 #include "include/Content-Items/qgl_string_item.h"
 
 
-namespace qgl::content
+namespace qgl::content::loaders
 {
    std::unique_ptr<string_item> qgl_load_string_file(const icontent_file* f,
                                                      const id_t newID)

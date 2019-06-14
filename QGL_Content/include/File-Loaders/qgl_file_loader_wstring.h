@@ -5,7 +5,10 @@
 namespace qgl::content
 {
    class wstring_item;
+}
 
+namespace qgl::content::loaders
+{
    extern QGL_CONTENT_API std::unique_ptr<wstring_item> qgl_load_wstring_file(
       const icontent_file* f,
       const id_t newID);

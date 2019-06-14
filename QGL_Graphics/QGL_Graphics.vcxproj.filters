@@ -453,6 +453,30 @@
     <ClInclude Include="qgl.graphics.window_rt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Content\FIle-Loaders\qgl_brush_file_loader.h">
+      <Filter>Header Files\Content\File-Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\FIle-Loaders\qgl_camera_file_loader.h">
+      <Filter>Header Files\Content\File-Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\FIle-Loaders\qgl_depth_stencil_file_loader.h">
+      <Filter>Header Files\Content\File-Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\FIle-Loaders\qgl_graphics_config_file_loader.h">
+      <Filter>Header Files\Content\File-Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\FIle-Loaders\qgl_light_file_loader.h">
+      <Filter>Header Files\Content\File-Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\FIle-Loaders\qgl_rasterizer_file_loader.h">
+      <Filter>Header Files\Content\File-Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\FIle-Loaders\qgl_sampler_file_loader.h">
+      <Filter>Header Files\Content\File-Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\FIle-Loaders\qgl_text_format_file_loader.h">
+      <Filter>Header Files\Content\File-Loaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="QGL_Graphics.def">
