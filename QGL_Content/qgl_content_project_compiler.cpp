@@ -17,10 +17,12 @@ namespace qgl::content
          if (entry.first.shared())
          {
             //Create a shared entry using the file path.
+            cf->push_shared_entry(&entry.first,
+                                  entry.second.c_str());
          }
          else
          {
-         //Load the entry's file into memory.
+            //Load the entry's file into memory.
             ifile_buffer* buff = nullptr;
             auto hr = qgl_open_file_buffer(entry.second.c_str(),
                                            hdr.metadata()->version(),
@@ -32,6 +34,7 @@ namespace qgl::content
 
             auto safeBuffer = qgl::make_unique<ifile_buffer>(buff);
 
+            //Add its data to the content file.
             cf->push_data_entry(&entry.first,
                                 safeBuffer->const_data(),
                                 safeBuffer->size());
