@@ -107,6 +107,9 @@
     <Filter Include="Source Files\Interfaces">
       <UniqueIdentifier>{570add9b-fba5-4a56-96e3-70168e1c2d1b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Content\File-Loaders">
+      <UniqueIdentifier>{2436f53a-0de4-4761-9d85-8bb8e79c5bcd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
@@ -252,6 +255,9 @@
     </ClCompile>
     <ClCompile Include="qgl.graphics.window_rt.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_brush_file_loader.cpp">
+      <Filter>Source Files\Content\File-Loaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

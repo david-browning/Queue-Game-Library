@@ -43,4 +43,13 @@ namespace qgl::content
                                                 offset);
       }
    };
+
+   template<
+      typename StructT,
+      RESOURCE_TYPES ResourceType,
+      CONTENT_LOADER_IDS LoaderID>
+      using struct_importer = ientry_importer < StructT,
+      LoaderID,
+      struct_load_entry_fn<StructT>,
+      struct_dict_export_fn<StructT, ResourceType, LoaderID>>;
 }

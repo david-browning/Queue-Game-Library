@@ -260,6 +260,7 @@
     <ClCompile Include="qgl_blender_desc_buffer.cpp" />
     <ClCompile Include="qgl_brush.cpp" />
     <ClCompile Include="qgl_brush_buffer.cpp" />
+    <ClCompile Include="qgl_brush_file_loader.cpp" />
     <ClCompile Include="qgl_camera_buffer.cpp" />
     <ClCompile Include="qgl_cbv_descriptor_heap.cpp" />
     <ClCompile Include="qgl_cpy_cmd_list.cpp" />

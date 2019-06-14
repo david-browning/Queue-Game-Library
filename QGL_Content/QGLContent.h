@@ -15,6 +15,7 @@
 #include "include/Content-Items/qgl_string_item.h"
 #include "include/Content-Items/qgl_wstring_item.h"
 
+#include "include/Content-Importers/qgl_import_helpers.h"
 #include "include/Content-Importers/qgl_iimporter.h"
 #include "include/Content-Importers/qgl_importer_struct.h"
 #include "include/Content-Importers/qgl_importer_string.h"
