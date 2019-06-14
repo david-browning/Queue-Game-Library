@@ -22,9 +22,7 @@ namespace QGL_Content_UnitTests
       TEST_METHOD(Constructor)
       {
          CONTENT_DICTIONARY_METADATA_BUFFER
-            m(8,
-              sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER),
-              1);
+            m(8, sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER));
 
          Assert::AreEqual(static_cast<size_t>(8), m.count(),
                           L"The number of entries is not correct.");
@@ -33,17 +31,15 @@ namespace QGL_Content_UnitTests
                           m.entry_size(),
                           L"The entry size is not correct.");
 
-         Assert::AreEqual(static_cast<uint64_t>(1), 
-                          m.flags(), 
+         Assert::AreEqual(static_cast<uint64_t>(0),
+                          m.flags(),
                           L"The flags are not correct.");
       }
 
       TEST_METHOD(CopyConstructor)
       {
          CONTENT_DICTIONARY_METADATA_BUFFER
-            m(8,
-              sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER),
-              1);
+            m(8, sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER));
 
          CONTENT_DICTIONARY_METADATA_BUFFER mCopy(m);
          Assert::AreEqual(static_cast<size_t>(8), mCopy.count(),
@@ -53,7 +49,7 @@ namespace QGL_Content_UnitTests
                           mCopy.entry_size(),
                           L"The entry size is not correct.");
 
-         Assert::AreEqual(static_cast<uint64_t>(1),
+         Assert::AreEqual(static_cast<uint64_t>(0),
                           mCopy.flags(),
                           L"The flags are not correct.");
       }
@@ -61,9 +57,7 @@ namespace QGL_Content_UnitTests
       TEST_METHOD(MoveConstructor)
       {
          CONTENT_DICTIONARY_METADATA_BUFFER
-            m(8,
-              sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER),
-              1);
+            m(8, sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER));
 
          CONTENT_DICTIONARY_METADATA_BUFFER mMove(std::move(m));
          Assert::AreEqual(static_cast<size_t>(8), mMove.count(),
@@ -73,7 +67,7 @@ namespace QGL_Content_UnitTests
                           mMove.entry_size(),
                           L"The entry size is not correct.");
 
-         Assert::AreEqual(static_cast<uint64_t>(1),
+         Assert::AreEqual(static_cast<uint64_t>(0),
                           mMove.flags(),
                           L"The flags are not correct.");
       }
@@ -81,9 +75,7 @@ namespace QGL_Content_UnitTests
       TEST_METHOD(CountCorrect)
       {
          CONTENT_DICTIONARY_METADATA_BUFFER
-            m(8,
-              sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER),
-              1);
+            m(8, sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER));
 
          CONTENT_DICTIONARY_METADATA_BUFFER mCopy(m);
          Assert::AreEqual(static_cast<size_t>(8), mCopy.count(),
@@ -93,9 +85,7 @@ namespace QGL_Content_UnitTests
       TEST_METHOD(EntrySizeCorrect)
       {
          CONTENT_DICTIONARY_METADATA_BUFFER
-            m(8,
-              sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER),
-              1);
+            m(8, sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER));
 
          Assert::AreEqual(sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER),
                           m.entry_size(),
@@ -106,11 +96,9 @@ namespace QGL_Content_UnitTests
       TEST_METHOD(FlagsCorrect)
       {
          CONTENT_DICTIONARY_METADATA_BUFFER
-            m(8,
-              sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER),
-              1);
+            m(8, sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER));
 
-         Assert::AreEqual(static_cast<uint64_t>(1),
+         Assert::AreEqual(static_cast<uint64_t>(0),
                           m.flags(),
                           L"The flags are not correct.");
       }
@@ -118,9 +106,7 @@ namespace QGL_Content_UnitTests
       TEST_METHOD(AssignOperator)
       {
          CONTENT_DICTIONARY_METADATA_BUFFER
-            m(8,
-              sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER),
-              1);
+            m(8, sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER));
 
          CONTENT_DICTIONARY_METADATA_BUFFER mCopy = m;
          Assert::AreEqual(static_cast<size_t>(8), mCopy.count(),
@@ -130,7 +116,7 @@ namespace QGL_Content_UnitTests
                           mCopy.entry_size(),
                           L"The entry size is not correct.");
 
-         Assert::AreEqual(static_cast<uint64_t>(1),
+         Assert::AreEqual(static_cast<uint64_t>(0),
                           mCopy.flags(),
                           L"The flags are not correct.");
       }
@@ -138,9 +124,7 @@ namespace QGL_Content_UnitTests
       TEST_METHOD(EqualityOperator)
       {
          CONTENT_DICTIONARY_METADATA_BUFFER
-            m(8,
-              sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER),
-              1);
+            m(8, sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER));
 
          CONTENT_DICTIONARY_METADATA_BUFFER mCopy(m);
          Assert::IsTrue(m == mCopy,

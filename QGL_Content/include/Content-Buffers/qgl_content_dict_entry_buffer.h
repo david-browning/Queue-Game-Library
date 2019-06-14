@@ -119,9 +119,6 @@ namespace qgl::content
        Information about the object that this dictionary entry points to.
        */
       CONTENT_METADATA_BUFFER m_info;
-
-      static constexpr uint64_t DEFAULT_FLAGS = 0;
-
    };
    #pragma pack(pop)
 }

@@ -78,15 +78,7 @@ namespace qgl::content
          }
 
          private:
-         #ifdef WIN32
-         static constexpr file_handle_t INVALID_FILE_HANDLE = 
-            INVALID_HANDLE_VALUE;
-         #else
-         //'nix OSes use -1 as invalid file handle.
-         static constexpr file_handle_t INVALID_FILE_HANDLE = -1;
-         #endif
-
-         file_handle_t m_handle = INVALID_FILE_HANDLE;
+         file_handle_t m_handle;
       };
    }
 }

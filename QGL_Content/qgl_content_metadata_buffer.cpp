@@ -4,6 +4,12 @@
 
 namespace qgl::content
 {
+
+   /*
+    Content is visible.
+    */
+   static constexpr uint8_t DEFAULT_FLAGS = 0b00001000;
+
    static constexpr uint8_t IS_SHARED_FLAG = 0x80;
 
    CONTENT_METADATA_BUFFER::CONTENT_METADATA_BUFFER() :

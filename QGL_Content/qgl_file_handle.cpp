@@ -3,6 +3,14 @@
 
 namespace qgl::content
 {
+   #ifdef WIN32
+   static const file_handle_t INVALID_FILE_HANDLE = INVALID_FILE_HANDLE;
+   #else
+   //'nix OSes use -1 as invalid file handle.
+   static constexpr file_handle_t INVALID_FILE_HANDLE = -1;
+   #endif
+
+
    file_handle::file_handle() noexcept :
       m_handle(INVALID_FILE_HANDLE)
    {

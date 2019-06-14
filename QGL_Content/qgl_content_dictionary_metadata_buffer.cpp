@@ -3,6 +3,7 @@
 
 namespace qgl::content
 {
+   static constexpr uint64_t DEFAULT_FLAGS = 0;
 
    CONTENT_DICTIONARY_METADATA_BUFFER::CONTENT_DICTIONARY_METADATA_BUFFER() :
       m_count(0),
@@ -14,12 +15,11 @@ namespace qgl::content
 
    CONTENT_DICTIONARY_METADATA_BUFFER::CONTENT_DICTIONARY_METADATA_BUFFER(
       size_t count,
-      size_t entrySize,
-      uint64_t flags) :
+      size_t entrySize) :
       m_count(count),
       m_entrySize(entrySize),
       m_reserved1(0),
-      m_flags(flags)
+      m_flags(DEFAULT_FLAGS)
    {
    }
 

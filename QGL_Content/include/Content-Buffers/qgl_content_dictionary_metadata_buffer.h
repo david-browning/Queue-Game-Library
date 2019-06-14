@@ -10,8 +10,6 @@ namespace qgl::content
    struct QGL_CONTENT_API CONTENT_DICTIONARY_METADATA_BUFFER final
    {
       public:
-      static constexpr uint64_t DEFAULT_FLAGS = 0;
-
       /*
        Default constructor.
        This metadata buffer has no dictionary entries, default flags, and
@@ -20,8 +18,7 @@ namespace qgl::content
       CONTENT_DICTIONARY_METADATA_BUFFER();
 
       CONTENT_DICTIONARY_METADATA_BUFFER(size_t count,
-                                         size_t entrySize,
-                                         uint64_t flags = DEFAULT_FLAGS);
+                                         size_t entrySize);
 
       CONTENT_DICTIONARY_METADATA_BUFFER(
          const CONTENT_DICTIONARY_METADATA_BUFFER& r) = default;

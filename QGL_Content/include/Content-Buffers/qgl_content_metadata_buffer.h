@@ -204,11 +204,6 @@ namespace qgl::content
        Name of this content object.
        */
       wchar_t m_name[CONTENT_MAX_NAME_LEN] = { 0 };
-
-      /*
-       Content is visible.
-       */
-      static constexpr uint8_t DEFAULT_FLAGS = 0b00001000;
    };
    #pragma pack(pop)
 }

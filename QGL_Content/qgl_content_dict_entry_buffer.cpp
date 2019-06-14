@@ -3,6 +3,8 @@
 
 namespace qgl::content
 {
+   static constexpr uint64_t DEFAULT_FLAGS = 0;
+
    CONTENT_DICTIONARY_ENTRY_BUFFER::CONTENT_DICTIONARY_ENTRY_BUFFER() :
       m_offset(static_cast<uint64_t>(-1)),
       m_flags(DEFAULT_FLAGS),
