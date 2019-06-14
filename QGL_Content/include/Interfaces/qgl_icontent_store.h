@@ -45,14 +45,21 @@ namespace qgl::content
                        load_function fn) noexcept = 0;
 
       /*
-       Loads the content from the relative path and returns an ID that can be
+       Loads the content from the relative path and sets the ID that can be
        used to lookup a pointer to the loaded item. If the file is already 
-       loaded, this returns the existing content's ID.
-       Returns INVALID_CONTENT_ID if the loader is not mapped or the content
-       file cannot be opened.
+       loaded, this sets id_p to the existing content's ID.
+       Returns:
+         S_OK if the file was loaded.
+         S_ALREADYMAPPED if the file was already loaded. This is not an error.
+         Failed HRESULT if the file cannot be opened.
+         E_NOLOADER if there is no loader with the correct resource type or 
+            loader ID.
+         E_UNEXPECTED if the content file cannot be loaded. This most likely
+            indicates a problem with the content file.
        This operation is thread-safe.
        */
-      virtual id_t load(const wchar_t* relative) noexcept = 0;
+      virtual HRESULT load(const wchar_t* relative,
+                           id_t* id_p) noexcept = 0;
 
       /*
        Enqueues a content file to be loaded in parallel with other queued 

@@ -76,21 +76,22 @@ namespace qgl::content
          m_loadFunctionMap[h] = fn;
       }
 
-      virtual id_t load(const wchar_t* relative) noexcept
+      virtual HRESULT load(const wchar_t* relative,
+                           id_t* id_p) noexcept
       {
          //Get an ID for the file.
-         auto retID = reserve(relative);
+         *id_p = reserve(relative);
 
          //The id may have just been reserved or it was previously unloaded.
          //Check if the ID maps to loaded content. The content is loaded if the
          //optional has a value. When unloaded, the optional value is destroyed.
 
          //If the content is already loaded:
-         if (m_IDContentMap.count(retID) > 0 &&
-             m_IDContentMap.at(retID).has_value())
+         if (m_IDContentMap.count(*id_p) > 0 &&
+             m_IDContentMap.at(*id_p).has_value())
          {
             //Return the ID for the already loaded content.
-            return retID;
+            return S_ALREADYMAPPED;
          }
          //Else, continue to load the content.
 
@@ -102,10 +103,9 @@ namespace qgl::content
                                          m_version,
                                          &filePtr);
          auto fileSafe = qgl::make_unique<icontent_file>(filePtr);
-
          if (FAILED(hr))
          {
-            return INVALID_CONTENT_ID;
+            return hr;
          }
 
          const auto meta = fileSafe->header()->metadata();
@@ -114,21 +114,25 @@ namespace qgl::content
          auto loaderHash = hash(meta->resource_type(), meta->loader_id());
          if (m_loadFunctionMap.count(loaderHash) <= 0)
          {
-            return INVALID_CONTENT_ID;
+            return E_NOLOADER;
          }
          auto loaderFn = m_loadFunctionMap.at(loaderHash);
 
          //Load the content using the file loader.
-         auto contentPtr = loaderFn(fileSafe.get(), retID);
+         auto contentPtr = loaderFn(fileSafe.get(), *id_p);
+         if (contentPtr == nullptr)
+         {
+            return E_UNEXPECTED;
+         }
 
          //Lock the mutex until done mapping
          std::lock_guard<std::mutex>lock(m_mappingMutex);
 
          //Save the unique pointer in the map.
-         m_IDContentMap[retID] = std::make_optional(std::move(contentPtr));
+         m_IDContentMap[*id_p] = std::make_optional(std::move(contentPtr));
 
          //Return the loaded content's ID.
-         return retID;
+         return S_OK;
       }
 
       virtual void queue_load(const wchar_t* relative) noexcept
@@ -216,7 +220,8 @@ namespace qgl::content
                        m_pendingLoads.end(),
                        [&](const file_string& p)
          {
-            load(p.c_str());
+            id_t id; //Allow this to get lost.
+            auto hr = load(p.c_str(), &id);
          });
 
          m_pendingLoads.clear();

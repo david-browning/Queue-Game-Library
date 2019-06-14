@@ -71,6 +71,14 @@ static constexpr HRESULT E_BADMAGIC = MAKE_HRESULT(1,
                                                    FACILITY_QGL,
                                                    BAD_MAGIC_NUMBER);
 
+static constexpr HRESULT S_ALREADYMAPPED = MAKE_HRESULT(0,
+                                                        FACILITY_QGL,
+                                                        ERROR_ALREADY_EXISTS);
+
+static constexpr HRESULT E_NOLOADER = MAKE_HRESULT(1,
+                                                   FACILITY_QGL,
+                                                   ERROR_NOT_FOUND);
+
 #else
 
 typedef void* thread_handle_t;
