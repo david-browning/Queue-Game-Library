@@ -4,6 +4,8 @@
 
 namespace qgl::content
 {
+   static constexpr uint8_t IS_SHARED_FLAG = 0x80;
+
    CONTENT_METADATA_BUFFER::CONTENT_METADATA_BUFFER() :
       m_flags1(DEFAULT_FLAGS),
       m_reserved1(0),
@@ -165,7 +167,14 @@ namespace qgl::content
 
    bool CONTENT_METADATA_BUFFER::shared() const noexcept
    {
-      return (m_flags1 & 0x80) != 0;
+      return (m_flags1 & IS_SHARED_FLAG) != 0;
+   }
+
+   void CONTENT_METADATA_BUFFER::shared(bool v) noexcept
+   {
+      auto bit = static_cast<uint8_t>(v ? 1 : 0);
+      uint8_t oldFlags = m_flags1 & ~IS_SHARED_FLAG;
+      m_flags1 = oldFlags | (bit << 7);
    }
 
    winrt::hstring CONTENT_METADATA_BUFFER::guid_str() const

@@ -60,14 +60,12 @@ namespace qgl::content
        */
       uint64_t flags() const noexcept;
 
-      bool shared() const noexcept;
-
-      void shared(bool value) noexcept;
-
       /*
        Returns a reference to the content's metadata.
        */
       const CONTENT_METADATA_BUFFER* metadata() const noexcept;
+
+      CONTENT_METADATA_BUFFER* metadata() noexcept;
 
       friend void swap(CONTENT_DICTIONARY_ENTRY_BUFFER& first,
                        CONTENT_DICTIONARY_ENTRY_BUFFER& second) noexcept
@@ -124,8 +122,6 @@ namespace qgl::content
 
       static constexpr uint64_t DEFAULT_FLAGS = 0;
 
-      static constexpr uint64_t IS_SHARED_FLAG =
-         static_cast<uint64_t>(1 << 31);
    };
    #pragma pack(pop)
 }

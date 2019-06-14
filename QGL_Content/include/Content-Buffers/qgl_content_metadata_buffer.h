@@ -118,6 +118,8 @@ namespace qgl::content
 
       bool shared() const noexcept;
 
+      void shared(bool v) noexcept;
+
       /*
        Returns the content's GUID as a string.
        Throws if the GUID cannot be converted to a string.

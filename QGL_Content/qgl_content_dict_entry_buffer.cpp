@@ -40,20 +40,14 @@ namespace qgl::content
       return m_flags;
    }
 
-   bool CONTENT_DICTIONARY_ENTRY_BUFFER::shared() const noexcept
-   {
-      return (m_flags & IS_SHARED_FLAG) != 0;
-   }
-
-   void CONTENT_DICTIONARY_ENTRY_BUFFER::shared(bool value) noexcept
-   {
-      auto bit = static_cast<uint32_t>(value ? 1 : 0);
-      auto oldFlags = m_flags & ~IS_SHARED_FLAG;
-      m_flags = oldFlags | (bit << 31);
-   }
-
-   const CONTENT_METADATA_BUFFER* CONTENT_DICTIONARY_ENTRY_BUFFER::metadata() 
+   const CONTENT_METADATA_BUFFER* CONTENT_DICTIONARY_ENTRY_BUFFER::metadata()
       const noexcept
+   {
+      return &m_info;
+   }
+
+   CONTENT_METADATA_BUFFER* CONTENT_DICTIONARY_ENTRY_BUFFER::metadata()
+      noexcept
    {
       return &m_info;
    }

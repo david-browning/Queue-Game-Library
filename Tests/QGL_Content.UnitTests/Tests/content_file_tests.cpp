@@ -128,18 +128,19 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER meta2(RESOURCE_TYPE_CAMERA,
                                        CONTENT_LOADER_ID_CAMERA,
                                        L"Camera");
+         meta2.shared(true);
 
          cf->push_data_entry(&meta1, rawBuffData, 8);
-         cf->push_data_entry(&meta2, rawBuffData, 8);
+         cf->push_data_entry(&meta1, rawBuffData, 8);
          auto sharedPath1 = L"Q:Shared Path 1";
          auto sharedPath2 = L"V:Shared Path 2";
-         cf->push_shared_entry(&meta1, sharedPath1);
+         cf->push_shared_entry(&meta2, sharedPath1);
          cf->push_shared_entry(&meta2, sharedPath2);
 
          for (size_t i = 0; i < cf->size(); i++)
          {
             auto entry = cf->at(i);
-            if (i & 1)
+            if (i > 1)
             {
                Assert::IsTrue(meta2 == *entry->metadata(),
                               L"Entry should be meta2.");
@@ -148,11 +149,6 @@ namespace QGL_Content_UnitTests
             {
                Assert::IsTrue(meta1 == *entry->metadata(),
                               L"Entry should be meta1.");
-            }
-            if (i > 1)
-            {
-               Assert::IsTrue(entry->shared(),
-                              L"Entry should be shared.");
             }
 
             i++;

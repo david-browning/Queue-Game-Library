@@ -99,7 +99,7 @@ namespace qgl::content
             entryIt->m_offset = contentDataOffset;
             hr = write_dictionary_entry(m_handle, *entryIt, dictEntryOffset);
 
-            if (entryIt->shared())
+            if (entryIt->metadata()->shared())
             {
                hr = write_shared_data_path(m_handle,
                                            *entryIt,
@@ -132,7 +132,7 @@ namespace qgl::content
       {
          entries::content_variant_entry cont(buff, buffBytes);
          CONTENT_DICTIONARY_ENTRY_BUFFER entry(buffBytes, meta);
-         entry.shared(false);
+         entry.metadata()->shared(false);
 
          m_entryDataToWrite.push_back(std::move(cont));
          m_dict.push_back(std::move(entry));
@@ -145,7 +145,7 @@ namespace qgl::content
          entries::content_variant_entry cont(str);
          CONTENT_DICTIONARY_ENTRY_BUFFER entry(shared_entry_data_size(&cont),
                                                meta);
-         entry.shared(true);
+         entry.metadata()->shared(true);
 
          m_entryDataToWrite.push_back(std::move(cont));
          m_dict.push_back(std::move(entry));
@@ -221,12 +221,13 @@ namespace qgl::content
 
             m_dict.push_back(dictEntry);
 
-            if (dictEntry.shared())
+            if (dictEntry.metadata()->shared())
             {
                using NumCharsType = uint16_t;
 
                //First bytes are the number of characters in the path.
-               //Next bytes is the path. It is a wide string. Not null-terminated.
+               //Next bytes is the path. It is a wide string. 
+               //Not null-terminated.
                NumCharsType numChars = 0;
                hr = read_file_sync(&m_handle,
                                    sizeof(numChars),

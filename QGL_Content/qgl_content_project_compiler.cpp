@@ -14,21 +14,32 @@ namespace qgl::content
 
       for (const auto& entry : *proj)
       {
-         ifile_buffer* buff = nullptr;
-         auto hr = qgl_open_file_buffer(entry.second.c_str(),
-                                        hdr.metadata()->version(),
-                                        &buff);
-         if (FAILED(hr))
+         if (entry.first.shared())
          {
-            return hr;
+            //Create a shared entry using the file path.
          }
+         else
+         {
+         //Load the entry's file into memory.
+            ifile_buffer* buff = nullptr;
+            auto hr = qgl_open_file_buffer(entry.second.c_str(),
+                                           hdr.metadata()->version(),
+                                           &buff);
+            if (FAILED(hr))
+            {
+               return hr;
+            }
 
-         auto safeBuffer = qgl::make_unique<ifile_buffer>(buff);
-         cf->push_data_entry(&entry.first, 
-                             safeBuffer->const_data(),
-                             safeBuffer->size());
+            auto safeBuffer = qgl::make_unique<ifile_buffer>(buff);
+
+            cf->push_data_entry(&entry.first,
+                                safeBuffer->const_data(),
+                                safeBuffer->size());
+         }
       }
 
+      //Transfered all entries from the project to the content file.
+      //Flush the content file to save.
       return cf->flush();
    }
 }
