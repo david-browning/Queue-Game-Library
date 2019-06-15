@@ -33,6 +33,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QGL_ContentBuilder", "Tools\QGL_ContentBuilder\QGL_ContentBuilder.csproj", "{78588705-9BA1-4BB1-A588-A99A8EFE46F9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{9718F640-752B-4ABA-9F50-C436F93092F6}"
+	ProjectSection(SolutionItems) = preProject
+		Docs\Error-Handling.md = Docs\Error-Handling.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content Files", "Content Files", "{775AA850-7C18-4FAA-AE27-B6E06FE18BD4}"
 	ProjectSection(SolutionItems) = preProject
@@ -74,8 +77,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content Importers", "Conten
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Style", "Style", "{16173FAD-3448-497F-9A65-F3070F7F3255}"
+	ProjectSection(SolutionItems) = preProject
+		Docs\Style\Naming.md = Docs\Style\Naming.md
+		Docs\Style\Spacing.md = Docs\Style\Spacing.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Interfaces", "Interfaces", "{2309D387-6A17-4E9E-87D4-B85CFEC32706}"
+	ProjectSection(SolutionItems) = preProject
+		Docs\Interfaces\Interface-Design.md = Docs\Interfaces\Interface-Design.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
