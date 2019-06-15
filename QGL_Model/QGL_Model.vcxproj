@@ -191,7 +191,6 @@
     <ClCompile Include="qgl_version.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="include\qgl_icomponent.h.vsspell" />
     <None Include="packages.config" />
     <None Include="QGL_Model.def" />
   </ItemGroup>
