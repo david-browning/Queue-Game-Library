@@ -37,6 +37,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content Files", "Content Files", "{775AA850-7C18-4FAA-AE27-B6E06FE18BD4}"
 	ProjectSection(SolutionItems) = preProject
 		Docs\Content Files\String-File.md = Docs\Content Files\String-File.md
+		Docs\Content Files\WString-File.md = Docs\Content Files\WString-File.md
 	EndProjectSection
 EndProject
 Global
