@@ -213,10 +213,11 @@ namespace qgl::graphics::gpu
                                           D3D12_RESOURCE_STATES oldState,
                                           D3D12_RESOURCE_STATES newState)
    {
-      get()->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(
+      auto transition = CD3DX12_RESOURCE_BARRIER::Transition(
          resource,
          oldState,
-         newState));
+         newState);
+      get()->ResourceBarrier(1, &transition);
    }
 
    void graphics_command_list::transition_queue(d3d_resource* resource,

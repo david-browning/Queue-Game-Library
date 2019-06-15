@@ -36,10 +36,46 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{9718F640-7
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content Files", "Content Files", "{775AA850-7C18-4FAA-AE27-B6E06FE18BD4}"
 	ProjectSection(SolutionItems) = preProject
+		Docs\Content Files\Brush-file.md = Docs\Content Files\Brush-file.md
+		Docs\Content Files\DepthStencil-File.md = Docs\Content Files\DepthStencil-File.md
 		Docs\Content Files\GraphicsConfig-File.md = Docs\Content Files\GraphicsConfig-File.md
+		Docs\Content Files\Light-File.md = Docs\Content Files\Light-File.md
+		Docs\Content Files\Model-File.md = Docs\Content Files\Model-File.md
+		Docs\Content Files\Rasterizer-File.md = Docs\Content Files\Rasterizer-File.md
+		Docs\Content Files\README.md = Docs\Content Files\README.md
+		Docs\Content Files\Sampler-File.md = Docs\Content Files\Sampler-File.md
+		Docs\Content Files\Shader-File.md = Docs\Content Files\Shader-File.md
 		Docs\Content Files\String-File.md = Docs\Content Files\String-File.md
+		Docs\Content Files\TextFormat-File.md = Docs\Content Files\TextFormat-File.md
+		Docs\Content Files\Texture-File.md = Docs\Content Files\Texture-File.md
 		Docs\Content Files\WString-File.md = Docs\Content Files\WString-File.md
+		Docs\Content Files\WText-File.md = Docs\Content Files\WText-File.md
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content Importers", "Content Importers", "{0FAE883C-7C9D-4E89-92F9-6F8C089CD8FC}"
+	ProjectSection(SolutionItems) = preProject
+		Docs\Content Importers\Array-Importer.md = Docs\Content Importers\Array-Importer.md
+		Docs\Content Importers\BlenderDescBuffer-Importer.md = Docs\Content Importers\BlenderDescBuffer-Importer.md
+		Docs\Content Importers\BrushBuffer-Importer.md = Docs\Content Importers\BrushBuffer-Importer.md
+		Docs\Content Importers\CameraBuffer-Importer.md = Docs\Content Importers\CameraBuffer-Importer.md
+		Docs\Content Importers\CompiledShader-Importer.md = Docs\Content Importers\CompiledShader-Importer.md
+		Docs\Content Importers\DepthStencilBuffer-Importer.md = Docs\Content Importers\DepthStencilBuffer-Importer.md
+		Docs\Content Importers\Floating-Importer.md = Docs\Content Importers\Floating-Importer.md
+		Docs\Content Importers\GraphicsConfigBuffer-Importer.md = Docs\Content Importers\GraphicsConfigBuffer-Importer.md
+		Docs\Content Importers\Integral-Importer.md = Docs\Content Importers\Integral-Importer.md
+		Docs\Content Importers\LightBuffer-Importer.md = Docs\Content Importers\LightBuffer-Importer.md
+		Docs\Content Importers\RasterizerBuffer-Importer.md = Docs\Content Importers\RasterizerBuffer-Importer.md
+		Docs\Content Importers\Rectangle-Importer.md = Docs\Content Importers\Rectangle-Importer.md
+		Docs\Content Importers\SamplerBuffer-Importer.md = Docs\Content Importers\SamplerBuffer-Importer.md
+		Docs\Content Importers\SharedData-Importer.md = Docs\Content Importers\SharedData-Importer.md
+		Docs\Content Importers\SourceShader-Importer.md = Docs\Content Importers\SourceShader-Importer.md
+		Docs\Content Importers\String-Importer.md = Docs\Content Importers\String-Importer.md
+		Docs\Content Importers\WString-Importer.md = Docs\Content Importers\WString-Importer.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Style", "Style", "{16173FAD-3448-497F-9A65-F3070F7F3255}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Interfaces", "Interfaces", "{2309D387-6A17-4E9E-87D4-B85CFEC32706}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -256,6 +292,9 @@ Global
 		{F8F7655F-2088-4CA8-B61C-F241721AD587} = {6C38A12A-8D5C-4D44-9668-5668B1E737B5}
 		{78588705-9BA1-4BB1-A588-A99A8EFE46F9} = {AC65AAA5-BAEF-4715-8276-3D3E3E2D2E74}
 		{775AA850-7C18-4FAA-AE27-B6E06FE18BD4} = {9718F640-752B-4ABA-9F50-C436F93092F6}
+		{0FAE883C-7C9D-4E89-92F9-6F8C089CD8FC} = {9718F640-752B-4ABA-9F50-C436F93092F6}
+		{16173FAD-3448-497F-9A65-F3070F7F3255} = {9718F640-752B-4ABA-9F50-C436F93092F6}
+		{2309D387-6A17-4E9E-87D4-B85CFEC32706} = {9718F640-752B-4ABA-9F50-C436F93092F6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A08B76B9-FEFF-4534-9D3E-580AA23B371B}
