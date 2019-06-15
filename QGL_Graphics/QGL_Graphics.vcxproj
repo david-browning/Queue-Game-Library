@@ -190,6 +190,14 @@
     <ClInclude Include="include\Content\Content-Buffers\qgl_rasterizer_buffer.h" />
     <ClInclude Include="include\Content\Content-Buffers\qgl_sampler_buffer.h" />
     <ClInclude Include="include\Content\Content-Buffers\qgl_text_format_buffer.h" />
+    <ClInclude Include="include\Content\Content-Loaders\qgl_brush_importer.h" />
+    <ClInclude Include="include\Content\Content-Loaders\qgl_camera_importer.h" />
+    <ClInclude Include="include\Content\Content-Loaders\qgl_depth_stencil_importer.h" />
+    <ClInclude Include="include\Content\Content-Loaders\qgl_graphics_config_importer.h" />
+    <ClInclude Include="include\Content\Content-Loaders\qgl_light_importer.h" />
+    <ClInclude Include="include\Content\Content-Loaders\qgl_rasterizer_importer.h" />
+    <ClInclude Include="include\Content\Content-Loaders\qgl_sampler_importer.h" />
+    <ClInclude Include="include\Content\Content-Loaders\qgl_text_format_importer.h" />
     <ClInclude Include="include\Content\FIle-Loaders\qgl_brush_file_loader.h" />
     <ClInclude Include="include\Content\FIle-Loaders\qgl_camera_file_loader.h" />
     <ClInclude Include="include\Content\FIle-Loaders\qgl_depth_stencil_file_loader.h" />
@@ -276,7 +284,7 @@
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
     <ClCompile Include="qgl_graphics_cmd_list.cpp" />
     <ClCompile Include="qgl_graphics_config.cpp" />
-    <ClCompile Include="qgl_graphics_device.cpp" />
+    <ClCompile Include="qgl_graphics_config_file_loader.cpp" />
     <ClCompile Include="qgl_graphics_device_helpers.cpp" />
     <ClCompile Include="qgl_graphic_config_buffer.cpp" />
     <ClCompile Include="qgl_icmd_list.cpp" />

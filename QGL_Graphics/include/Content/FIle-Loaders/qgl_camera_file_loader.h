@@ -2,6 +2,7 @@
 #include "include/qgl_graphics_include.h"
 #include "include/Content/qgl_camera.h"
 #include "include/Content/Content-Buffers/qgl_camera_buffer.h"
+#include "include/Content/Content-Loaders/qgl_camera_importer.h"
 
 namespace qgl::content::loaders
 {
@@ -42,9 +43,7 @@ namespace qgl::content::loaders
          check_loader_and_resource<RESOURCE_TYPE_DESCRIPTION,
             CONTENT_LOADER_ID_CAMERA>(entry->metadata());
 
-         static struct_importer<buffers::CAMERA_BUFFER,
-            RESOURCE_TYPE_DESCRIPTION,
-            CONTENT_LOADER_ID_CAMERA> importer;
+         static camera_buffer_importer importer;
 
          auto buffer = importer.load(*f->handle(), *entry);
          return std::make_unique<camera<RightHandMode>>(&buffer,

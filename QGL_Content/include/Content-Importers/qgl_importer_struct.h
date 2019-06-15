@@ -3,7 +3,7 @@
 #include "include/Content-Importers/qgl_iimporter.h"
 #include "include/qgl_file_helpers.h"
 
-namespace qgl::content
+namespace qgl::content::loaders
 {
    template<typename StructT>
    class struct_load_entry_fn

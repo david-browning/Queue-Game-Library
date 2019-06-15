@@ -34,6 +34,9 @@ namespace qgl::content
       RESOURCE_TYPE_CAMERA = 0x0032,
       RESOURCE_TYPE_BRUSH = 0x0033,
 
+
+
+
       //Physics Types
 
 
@@ -42,6 +45,8 @@ namespace qgl::content
       //AI Types
 
       //Other Types
+      RESOURCE_TYPE_GRAPHICS_CONFIG,
+
    };
 
    enum CONTENT_LOADER_IDS : uint16_t
@@ -85,6 +90,10 @@ namespace qgl::content
       CONTENT_LOADER_ID_WTEXT,
       CONTENT_LOADER_ID_DEPTH_STENCIL,
       CONTENT_LOADER_ID_RASTERIZER,
+      CONTENT_LOADER_ID_GRAPHICS_CONFIG,
+
+
+
 
       CONTENT_LOADER_ID_TEXT_FORMAT,
       CONTENT_LOADER_ID_BRUSH,
@@ -92,6 +101,8 @@ namespace qgl::content
 
       CONTENT_LOADER_ID_SHADER_SOURCE,
       CONTENT_LOADER_ID_SHADER_COMPILED,
+
+
 
       //Physics Types
       //CONTENT_LOADER_ID_AABB,
@@ -101,10 +112,7 @@ namespace qgl::content
 
       //AI Types
 
-
       //Other Types
-      CONTENT_LOADER_ID_GRAPHICS_CONFIG = 0x1401,
-      CONTENT_LOADER_ID_STORE_CONFIG = 0x1402,
-      CONTENT_LOADER_ID_BLENDER_CONFIG = 0x1403,
+      CONTENT_LOADER_ID_STRUCT,
    };
 }

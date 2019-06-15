@@ -5,7 +5,7 @@
 #include "include/Content-Buffers/qgl_content_dict_entry_buffer.h"
 #include <type_traits>
 
-namespace qgl::content
+namespace qgl::content::loaders
 {
    #ifdef DEBUG
    //These structs only exist to instantiate a template at design time.

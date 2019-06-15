@@ -1,5 +1,5 @@
-String Content File
-===================
+WString Content File
+====================
 
 ## Header Metadata Requirements:
 Resource Type: RESOURCE_TYPE_STRING  
