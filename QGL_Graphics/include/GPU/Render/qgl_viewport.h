@@ -9,7 +9,7 @@ namespace qgl::content
 
 namespace qgl::graphics
 {
-   struct window;
+   class window;
 }
 
 namespace qgl::graphics::gpu::render

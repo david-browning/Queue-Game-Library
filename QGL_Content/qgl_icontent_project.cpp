@@ -6,8 +6,9 @@
 
 namespace qgl::content
 {
-   struct content_project : public icontent_project
+   class content_project : public icontent_project
    {
+      public:
       content_project(const wchar_t* filePath)
       {
          auto exists = file_exists(filePath);

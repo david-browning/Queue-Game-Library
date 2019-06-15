@@ -11,8 +11,9 @@ namespace qgl::content::loaders
    /*
     Functor used to load a brush from a content file.
     */
-   struct QGL_GRAPHICS_API brush_file_loader
+   class QGL_GRAPHICS_API brush_file_loader
    {
+      public:
       brush_file_loader(graphics::d2d_context* devContext_p);
 
       std::unique_ptr<brush> operator()(const icontent_file* f,

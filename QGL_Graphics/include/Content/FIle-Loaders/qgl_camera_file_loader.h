@@ -8,7 +8,7 @@ namespace qgl::content::loaders
    /*
     Functor for loading a camera from a camera content file.
     */
-   struct QGL_GRAPHICS_API camera_file_loader
+   class QGL_GRAPHICS_API camera_file_loader
    {
       public:
       camera_file_loader(float viewWidth,

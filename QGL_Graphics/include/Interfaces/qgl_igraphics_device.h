@@ -8,10 +8,11 @@ namespace qgl::content
 
 namespace qgl::graphics
 {
-   struct window;
+   class window;
 
-   struct igraphics_device : public iqgl
+   class igraphics_device : public iqgl
    {
+      public:
       /*
        Updates the graphics device and swap chain with the new config.
        All render targets must be released before calling this.

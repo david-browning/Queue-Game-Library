@@ -228,7 +228,6 @@
     <ClInclude Include="include\GPU\Descriptors\qgl_srv_descriptor_heap.h" />
     <ClInclude Include="include\GPU\Descriptors\qgl_uav_descriptor_heap.h" />
     <ClInclude Include="include\GPU\Memory\qgl_igpu_memory_allocator.h" />
-    <ClInclude Include="include\GPU\qgl_graphics_device.h" />
     <ClInclude Include="include\GPU\qgl_graphics_device_helpers.h" />
     <ClInclude Include="include\GPU\qgl_pso.h" />
     <ClInclude Include="include\GPU\Render\qgl_blender.h" />

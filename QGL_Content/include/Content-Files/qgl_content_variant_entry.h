@@ -6,9 +6,6 @@
 
 namespace qgl::content::entries
 {
-   //template class QGL_CONTENT_API std::shared_ptr<entries::data_content_entry>;
-   //template class QGL_CONTENT_API std::shared_ptr<entries::shared_content_entry>;
-
    /*
     Content data can either be a buffer, baked into the file, or a shared
     entry that references an external file.

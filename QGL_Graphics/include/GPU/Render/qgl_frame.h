@@ -6,8 +6,8 @@
 
 namespace qgl::graphics
 {
-   struct igraphics_device;
-   struct window;
+   class igraphics_device;
+   class window;
 }
 
 

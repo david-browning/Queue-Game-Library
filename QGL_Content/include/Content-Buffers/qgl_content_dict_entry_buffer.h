@@ -10,7 +10,7 @@ namespace qgl::content
    #pragma pack(push, 1)
    struct QGL_CONTENT_API CONTENT_DICTIONARY_ENTRY_BUFFER final
    {
-      friend struct content_file;
+      friend class content_file;
 
       public:
       /*

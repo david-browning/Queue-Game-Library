@@ -3,8 +3,9 @@
 
 namespace qgl
 {
-   struct iqgl
+   class iqgl
    {
+      public:
       virtual void release() = 0;
 
       template<class T>
@@ -14,7 +15,7 @@ namespace qgl
       }
    };
 
-   struct iqgl_impl : public iqgl
+   class iqgl_impl : public iqgl
    {
 
    };

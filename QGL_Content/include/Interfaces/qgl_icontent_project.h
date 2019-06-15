@@ -4,8 +4,9 @@
 
 namespace qgl::content
 {
-   struct icontent_project : public iqgl
+   class icontent_project : public iqgl
    {
+      public:
       using content_project_entry_pair =
          std::pair<CONTENT_METADATA_BUFFER, file_string>;
       using cpep = content_project_entry_pair;

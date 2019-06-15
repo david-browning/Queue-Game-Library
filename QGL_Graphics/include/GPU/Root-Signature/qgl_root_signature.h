@@ -1,6 +1,6 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include "include/GPU/qgl_graphics_device.h"
+#include "include/Interfaces/qgl_igraphics_device.h"
 #include "include/GPU/Root-Signature/qgl_ibindable.h"
 
 namespace qgl::graphics::gpu

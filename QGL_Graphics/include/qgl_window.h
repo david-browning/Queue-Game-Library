@@ -4,7 +4,7 @@
 
 namespace qgl::graphics
 {
-   struct QGL_GRAPHICS_API window
+   class QGL_GRAPHICS_API window
    {
       public:
       /*

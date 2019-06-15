@@ -5,8 +5,9 @@
 
 namespace qgl::content
 {
-   struct wstring_load_entry_fn
+   class wstring_load_entry_fn
    {
+      public:
       std::wstring operator()(
          const file_handle& fileHandle,
                               const CONTENT_DICTIONARY_ENTRY_BUFFER& lookup) const
@@ -21,8 +22,9 @@ namespace qgl::content
       }
    };
 
-   struct wstring_dict_export_fn
+   class wstring_dict_export_fn
    {
+      public:
       CONTENT_DICTIONARY_ENTRY_BUFFER operator()(const std::wstring& data,
                                                  const wchar_t* objName,
                                                  size_t offset) const

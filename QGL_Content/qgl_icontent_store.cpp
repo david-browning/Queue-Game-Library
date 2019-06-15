@@ -4,8 +4,9 @@
 
 namespace qgl::content
 {
-   struct content_store_1_0 : public icontent_store
+   class content_store_1_0 : public icontent_store
    {
+      public:
       using resource_loader_hash_t = uint32_t;
       resource_loader_hash_t hash(RESOURCE_TYPES r,
                                   CONTENT_LOADER_IDS c)

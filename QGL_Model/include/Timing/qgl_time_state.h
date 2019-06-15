@@ -4,7 +4,7 @@
 namespace qgl
 {
    template<typename TickT>
-   class time_state
+   struct time_state
    {
       public:
       time_state(const TickT& deltaT,

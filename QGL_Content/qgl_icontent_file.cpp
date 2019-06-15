@@ -8,8 +8,9 @@ namespace qgl::content
 {
    using namespace content_file_helpers;
 
-   struct content_file : public icontent_file
+   class content_file : public icontent_file
    {
+      public:
       content_file(const wchar_t* filePath)
       {
          bool existingFile = file_exists(filePath);

@@ -309,9 +309,6 @@
     <ClInclude Include="include\Content\Content-Buffers\qgl_blender_desc_buffer.h">
       <Filter>Header Files\Content\Content-Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="include\GPU\qgl_graphics_device.h">
-      <Filter>Header Files\GPU</Filter>
-    </ClInclude>
     <ClInclude Include="include\GPU\qgl_graphics_device_helpers.h">
       <Filter>Header Files\GPU</Filter>
     </ClInclude>

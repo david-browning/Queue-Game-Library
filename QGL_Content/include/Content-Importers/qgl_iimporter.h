@@ -9,8 +9,9 @@ namespace qgl::content
 {
    #ifdef DEBUG
    //These structs only exist to instantiate a template at design time.
-   struct test_entry_loader
+   class test_entry_loader
    {
+      public:
       int operator()(const file_handle&,
                      const CONTENT_DICTIONARY_ENTRY_BUFFER&) const
       {
@@ -18,8 +19,9 @@ namespace qgl::content
       }
    };
 
-   struct test_dict_export
+   class test_dict_export
    {
+      public:
       CONTENT_DICTIONARY_ENTRY_BUFFER operator()(const int&,
                                                  const wchar_t*,
                                                  size_t) const
@@ -39,7 +41,7 @@ namespace qgl::content
       CONTENT_LOADER_IDS LoaderID,
       typename LoadFunctor,
       typename DictMakeFunctor>
-   struct ientry_importer
+   class ientry_importer
    {
       public:
       constexpr ientry_importer(LoadFunctor lf = LoadFunctor(),

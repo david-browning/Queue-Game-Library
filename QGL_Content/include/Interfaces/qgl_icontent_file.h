@@ -13,8 +13,9 @@ namespace qgl::content
     is addressed using a dictionary. The dictionary can be iterated through
     using the begin() and end() functions.
     */
-   struct icontent_file : public iqgl
+   class icontent_file : public iqgl
    {
+      public:
       /*
        Flushes any changes to the content file to the disk.
        Returns:

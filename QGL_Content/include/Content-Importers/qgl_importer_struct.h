@@ -6,8 +6,9 @@
 namespace qgl::content
 {
    template<typename StructT>
-   struct struct_load_entry_fn
+   class struct_load_entry_fn
    {
+      public:
       StructT operator()(const file_handle& fileHandle,
                          const CONTENT_DICTIONARY_ENTRY_BUFFER& lookup) const
       {
@@ -24,8 +25,9 @@ namespace qgl::content
       typename StructT,
       RESOURCE_TYPES ResourceType,
       CONTENT_LOADER_IDS LoaderID>
-   struct struct_dict_export_fn
+   class struct_dict_export_fn
    {
+      public:
       CONTENT_DICTIONARY_ENTRY_BUFFER operator()(const StructT& data,
                                                  const wchar_t* objName,
                                                  size_t offset) const

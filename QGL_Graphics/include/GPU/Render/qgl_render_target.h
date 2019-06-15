@@ -4,7 +4,7 @@
 
 namespace qgl::graphics
 {
-   struct igraphics_device;
+   class igraphics_device;
 }
 
 namespace qgl::graphics::gpu
