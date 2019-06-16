@@ -149,13 +149,19 @@ namespace qgl::math
       /*
        Returns true if the value of l is less than or equal to the value of r.
        */
-      //friend bool operator<=(const rational& l, rational& r) noexcept;
+      friend bool operator<=(const rational& l, rational& r) noexcept
+      {
+         return !(l > r);
+      }
 
       /*
        Returns true if the value of l is greater than or equal to the value
        of r.
        */
-       //friend bool operator>=(const rational& l, rational& r) noexcept;
+      friend bool operator>=(const rational& l, rational& r) noexcept
+      {
+         return  !(l < r);
+      }
 
       private:
 
