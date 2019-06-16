@@ -14,7 +14,7 @@ namespace qgl::math
    template<typename NumberT>
    struct rational
    {
-      static_assert(std::is_integral<NumberT>::value, 
+      static_assert(std::is_integral<NumberT>::value,
                     "NumberT must be integral.");
 
       static_assert(std::is_signed<NumberT>::value,
@@ -83,8 +83,8 @@ namespace qgl::math
       /*
        Move assign operator.
        */
-      rational& operator=(rational&& r) = default;  
-      
+      rational& operator=(rational&& r) = default;
+
       /*
        Returns a floating point representation of the rational number.
        */
@@ -140,19 +140,19 @@ namespace qgl::math
        Returns true if the value of l is less than the value of r.
        */
       //friend bool operator<(const rational& l, rational& r) noexcept;
-      
+
       /*
        Returns true if the value of l is greater than the value of r.
        */
       //friend bool operator>(const rational& l, rational& r) noexcept;
-      
+
       /*
        Returns true if the value of l is less than or equal to the value of r.
        */
       //friend bool operator<=(const rational& l, rational& r) noexcept;
-      
+
       /*
-       Returns true if the value of l is greater than or equal to the value 
+       Returns true if the value of l is greater than or equal to the value
        of r.
        */
        //friend bool operator>=(const rational& l, rational& r) noexcept;
@@ -168,9 +168,14 @@ namespace qgl::math
          m_num = m_num / g;
          m_den = m_den / g;
       }
-      
+
       NumberT m_num;
       NumberT m_den;
    };
    #pragma pack(pop)
+
+   template<> struct QGL_MODEL_API rational<int8_t>;
+   template<> struct QGL_MODEL_API rational<int16_t>;
+   template<> struct QGL_MODEL_API rational<int32_t>;
+   template<> struct QGL_MODEL_API rational<int64_t>;
 }
