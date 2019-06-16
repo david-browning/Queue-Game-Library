@@ -68,6 +68,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content Importers", "Conten
 		Docs\Content Importers\GraphicsConfigBuffer-Importer.md = Docs\Content Importers\GraphicsConfigBuffer-Importer.md
 		Docs\Content Importers\Integral-Importer.md = Docs\Content Importers\Integral-Importer.md
 		Docs\Content Importers\LightBuffer-Importer.md = Docs\Content Importers\LightBuffer-Importer.md
+		Docs\Content Importers\OBJ-Importer.md = Docs\Content Importers\OBJ-Importer.md
 		Docs\Content Importers\RasterizerBuffer-Importer.md = Docs\Content Importers\RasterizerBuffer-Importer.md
 		Docs\Content Importers\Rectangle-Importer.md = Docs\Content Importers\Rectangle-Importer.md
 		Docs\Content Importers\SamplerBuffer-Importer.md = Docs\Content Importers\SamplerBuffer-Importer.md

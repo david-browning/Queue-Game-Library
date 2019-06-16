@@ -29,3 +29,4 @@
   loaders leaking exceptions? Return bool or HRESULT?
 * Before returning from a function with a failed HRESULT, print a message to
   the debug console only in DEBUG mode.
+* OBJ Importer.
