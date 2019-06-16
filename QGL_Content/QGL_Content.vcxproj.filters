@@ -241,6 +241,9 @@
     <ClInclude Include="include\Content-Importers\qgl_importer_integral.h">
       <Filter>Header Files\Content-Importers</Filter>
     </ClInclude>
+    <ClInclude Include="include\Content-Importers\qgl_importer_rational.h">
+      <Filter>Header Files\Content-Importers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="QGL_Content.def">

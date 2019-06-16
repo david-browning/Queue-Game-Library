@@ -39,8 +39,9 @@ namespace qgl::content
       RESOURCE_TYPE_TEXT_FORMAT = 0x0035,
       RESOURCE_TYPE_DEPTH_STENCIL = 0x0036,
       RESOURCE_TYPE_RASTERIZER = 0x0037,
+      RESOURCE_TYPE_GRAPHICS_CONFIG = 0x0038,
 
-      RESOURCE_TYPE_SHAPE = 0x0038,
+      RESOURCE_TYPE_SHAPE = 0x0041,
 
 
       //Physics Types
@@ -51,7 +52,6 @@ namespace qgl::content
       //AI Types
 
       //Other Types
-      RESOURCE_TYPE_GRAPHICS_CONFIG,
 
    };
 
@@ -59,10 +59,14 @@ namespace qgl::content
    {
       CONTENT_LOADER_ID_UNKNOWN = 0,
 
-      //Basic Types
+      #pragma region Basic datatypes
       CONTENT_LOADER_ID_STRING = 0x1101,
       CONTENT_LOADER_ID_WSTRING = 0x1102,
+      CONTENT_LOADER_ID_BOOL = 0x1103,
+      CONTENT_LOADER_ID_STRUCT = 0x1104,
+      #pragma endregion
 
+      #pragma region Numeric datatypes.
       CONTENT_LOADER_ID_INT8 = 0x1201,
       CONTENT_LOADER_ID_INT16 = 0x1202,
       CONTENT_LOADER_ID_INT32 = 0x1203,
@@ -75,15 +79,7 @@ namespace qgl::content
 
       CONTENT_LOADER_ID_FLOAT32 = 0x1301,
       CONTENT_LOADER_ID_FLOAT64 = 0x1302,
-
-      //CONTENT_LOADER_ID_FLOAT2,
-      //CONTENT_LOADER_ID_FLOAT3,
-      //CONTENT_LOADER_ID_FLOAT4,
-      //CONTENT_LOADER_ID_FLOAT2_LIST,
-      //CONTENT_LOADER_ID_FLOAT3_LIST,
-      //CONTENT_LOADER_ID_FLOAT4_LIST,
-
-      CONTENT_LOADER_ID_BOOL = 0x1401,
+      #pragma endregion
 
 
       //Graphics Types
@@ -95,18 +91,19 @@ namespace qgl::content
       //CONTENT_LOADER_ID_FBX,
       CONTENT_LOADER_ID_LIGHT,
       CONTENT_LOADER_ID_CAMERA,
+      CONTENT_LOADER_ID_BRUSH,
+
+
       CONTENT_LOADER_ID_WTEXT,
+
+      CONTENT_LOADER_ID_SAMPLER,
+      CONTENT_LOADER_ID_TEXT_FORMAT,
       CONTENT_LOADER_ID_DEPTH_STENCIL,
       CONTENT_LOADER_ID_RASTERIZER,
       CONTENT_LOADER_ID_GRAPHICS_CONFIG,
 
 
-
-
-      CONTENT_LOADER_ID_TEXT_FORMAT,
-      CONTENT_LOADER_ID_BRUSH,
-      CONTENT_LOADER_ID_SAMPLER,
-
+      
       CONTENT_LOADER_ID_SHADER_SOURCE,
       CONTENT_LOADER_ID_SHADER_COMPILED,
 
@@ -121,6 +118,5 @@ namespace qgl::content
       //AI Types
 
       //Other Types
-      CONTENT_LOADER_ID_STRUCT,
    };
 }
