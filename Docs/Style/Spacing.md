@@ -1,5 +1,6 @@
 ## Indentation
 Each level is indented with 3 spaces. Tabs are not allowed.
+
 ### Special Indentation Rules
 * Case labels are indented.
 * Case contents are indented.
@@ -10,3 +11,4 @@ Each level is indented with 3 spaces. Tabs are not allowed.
   Ex: "i++;"
 
 ## Wrapping
+* Lines cannot be more than 80 characters. 
