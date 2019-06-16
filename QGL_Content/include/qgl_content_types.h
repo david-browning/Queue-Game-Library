@@ -24,6 +24,7 @@ namespace qgl::content
       RESOURCE_TYPE_INTEGER = 0x0012,
       RESOURCE_TYPE_FLOAT = 0x0013,
       RESOURCE_TYPE_DESCRIPTION = 0x0014,
+      RESOURCE_TYPE_BOOL = 0x0015,
 
       //Graphics Types
       RESOURCE_TYPE_GEOMETRY = 0x0021,
@@ -38,6 +39,8 @@ namespace qgl::content
       RESOURCE_TYPE_TEXT_FORMAT = 0x0035,
       RESOURCE_TYPE_DEPTH_STENCIL = 0x0036,
       RESOURCE_TYPE_RASTERIZER = 0x0037,
+
+      RESOURCE_TYPE_SHAPE = 0x0038,
 
 
       //Physics Types
@@ -80,6 +83,8 @@ namespace qgl::content
       //CONTENT_LOADER_ID_FLOAT3_LIST,
       //CONTENT_LOADER_ID_FLOAT4_LIST,
 
+      CONTENT_LOADER_ID_BOOL = 0x1401,
+
 
       //Graphics Types
       CONTENT_LOADER_ID_DDS = 0x2201,
@@ -105,7 +110,7 @@ namespace qgl::content
       CONTENT_LOADER_ID_SHADER_SOURCE,
       CONTENT_LOADER_ID_SHADER_COMPILED,
 
-
+      CONTENT_LOADER_ID_SCREEN_RECTANGLE,
 
       //Physics Types
       //CONTENT_LOADER_ID_AABB,

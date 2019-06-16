@@ -40,6 +40,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content Files", "Content Files", "{775AA850-7C18-4FAA-AE27-B6E06FE18BD4}"
 	ProjectSection(SolutionItems) = preProject
 		Docs\Content Files\Brush-file.md = Docs\Content Files\Brush-file.md
+		Docs\Content Files\Camera-File.md = Docs\Content Files\Camera-File.md
 		Docs\Content Files\DepthStencil-File.md = Docs\Content Files\DepthStencil-File.md
 		Docs\Content Files\GraphicsConfig-File.md = Docs\Content Files\GraphicsConfig-File.md
 		Docs\Content Files\Light-File.md = Docs\Content Files\Light-File.md
@@ -70,6 +71,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content Importers", "Conten
 		Docs\Content Importers\RasterizerBuffer-Importer.md = Docs\Content Importers\RasterizerBuffer-Importer.md
 		Docs\Content Importers\Rectangle-Importer.md = Docs\Content Importers\Rectangle-Importer.md
 		Docs\Content Importers\SamplerBuffer-Importer.md = Docs\Content Importers\SamplerBuffer-Importer.md
+		Docs\Content Importers\ScreenRectangle-Importer.md = Docs\Content Importers\ScreenRectangle-Importer.md
 		Docs\Content Importers\SharedData-Importer.md = Docs\Content Importers\SharedData-Importer.md
 		Docs\Content Importers\SourceShader-Importer.md = Docs\Content Importers\SourceShader-Importer.md
 		Docs\Content Importers\String-Importer.md = Docs\Content Importers\String-Importer.md
