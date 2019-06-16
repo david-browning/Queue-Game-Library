@@ -10,7 +10,7 @@ namespace qgl::content::loaders
       public:
       std::wstring operator()(
          const file_handle& fileHandle,
-                              const CONTENT_DICTIONARY_ENTRY_BUFFER& lookup) const
+         const CONTENT_DICTIONARY_ENTRY_BUFFER& lookup) const
       {
          auto numChars = lookup.size() / sizeof(wchar_t);
          std::wstring ret(numChars, L'\0');
@@ -29,11 +29,9 @@ namespace qgl::content::loaders
                                                  const wchar_t* objName,
                                                  size_t offset) const
       {
-         static constexpr RESOURCE_TYPES rType =
-            RESOURCE_TYPES::RESOURCE_TYPE_STRING;
-         static CONTENT_METADATA_BUFFER info(rType,
-                                             CONTENT_LOADER_ID_WSTRING,
-                                             objName);
+         CONTENT_METADATA_BUFFER info(RESOURCE_TYPE_STRING,
+                                      CONTENT_LOADER_ID_WSTRING,
+                                      objName);
 
          return CONTENT_DICTIONARY_ENTRY_BUFFER(data.size(), &info, offset);
       }

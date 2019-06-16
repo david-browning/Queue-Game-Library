@@ -182,6 +182,8 @@
     <ClInclude Include="include\Content-Files\qgl_data_content_entry.h" />
     <ClInclude Include="include\Content-Files\qgl_shared_content_entry.h" />
     <ClInclude Include="include\Content-Importers\qgl_iimporter.h" />
+    <ClInclude Include="include\Content-Importers\qgl_importer_bool.h" />
+    <ClInclude Include="include\Content-Importers\qgl_importer_integral.h" />
     <ClInclude Include="include\Content-Importers\qgl_importer_string.h" />
     <ClInclude Include="include\Content-Importers\qgl_importer_struct.h" />
     <ClInclude Include="include\Content-Importers\qgl_import_helpers.h" />

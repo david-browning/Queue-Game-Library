@@ -12,6 +12,12 @@ namespace qgl::content::loaders
       StructT operator()(const file_handle& fileHandle,
                          const CONTENT_DICTIONARY_ENTRY_BUFFER& lookup) const
       {
+         if (sizeof(StructT) != lookup.size())
+         {
+            throw std::invalid_argument("StructT is not the same size as the "
+                                        "dictionary entry excepts.");
+         }
+
          StructT ret;
          read_file_sync<StructT>(&fileHandle,
                                  lookup.size(),
@@ -32,7 +38,7 @@ namespace qgl::content::loaders
                                                  const wchar_t* objName,
                                                  size_t offset) const
       {
-         static CONTENT_METADATA_BUFFER info(ResourceType, LoaderID, objName);
+         CONTENT_METADATA_BUFFER info(ResourceType, LoaderID, objName);
 
          return CONTENT_DICTIONARY_ENTRY_BUFFER(sizeof(StructT),
                                                 &info,

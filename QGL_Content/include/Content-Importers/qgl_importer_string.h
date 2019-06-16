@@ -28,11 +28,9 @@ namespace qgl::content::loaders
                                                  const wchar_t* objName,
                                                  size_t offset) const
       {
-         static constexpr RESOURCE_TYPES rType =
-            RESOURCE_TYPES::RESOURCE_TYPE_STRING;
-         static CONTENT_METADATA_BUFFER info(rType,
-                                             CONTENT_LOADER_ID_STRING,
-                                             objName);
+         CONTENT_METADATA_BUFFER info(RESOURCE_TYPE_STRING,
+                                      CONTENT_LOADER_ID_STRING,
+                                      objName);
 
          return CONTENT_DICTIONARY_ENTRY_BUFFER(data.size(), &info, offset);
       }
