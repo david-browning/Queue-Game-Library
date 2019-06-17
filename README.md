@@ -29,3 +29,4 @@
 * Before returning from a function with a failed HRESULT, print a message to
   the debug console only in DEBUG mode.
 * OBJ Importer.
+* Move math stuff out of annotations.h
