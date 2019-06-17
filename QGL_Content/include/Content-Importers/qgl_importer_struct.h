@@ -31,7 +31,7 @@ namespace qgl::content::loaders
       typename StructT,
       RESOURCE_TYPES ResourceType,
       CONTENT_LOADER_IDS LoaderID>
-   class struct_dict_export_fn
+      class struct_dict_export_fn
    {
       public:
       CONTENT_DICTIONARY_ENTRY_BUFFER operator()(const StructT& data,
@@ -47,11 +47,10 @@ namespace qgl::content::loaders
    };
 
    template<
-      typename StructT,
-      RESOURCE_TYPES ResourceType,
+      typename StructT, 
+      RESOURCE_TYPES ResourceType, 
       CONTENT_LOADER_IDS LoaderID>
-      using struct_importer = ientry_importer < StructT,
-      LoaderID,
+   using struct_importer = ientry_importer<StructT,
       struct_load_entry_fn<StructT>,
       struct_dict_export_fn<StructT, ResourceType, LoaderID>>;
 }

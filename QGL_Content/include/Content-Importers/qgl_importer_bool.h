@@ -48,7 +48,6 @@ namespace qgl::content::loaders
 
    using bool_importer = ientry_importer<
       bool,
-      CONTENT_LOADER_ID_BOOL,
       bool_load_entry_fn,
       bool_dict_export_fn>;
 }

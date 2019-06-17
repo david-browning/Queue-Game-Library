@@ -37,10 +37,7 @@ namespace qgl::content::loaders
     Overload load and dict_entry when implementing this class.
     LoadT: object that this importer returns.
     */
-   template<class LoadT,
-      CONTENT_LOADER_IDS LoaderID,
-      typename LoadFunctor,
-      typename DictMakeFunctor>
+   template<class LoadT, typename LoadFunctor, typename DictMakeFunctor>
    class ientry_importer
    {
       public:
