@@ -1,3 +1,6 @@
+Error Handling
+==============
+
 ## Overview:
 While the preferred error handling in C++ is exceptions, they are a poor choice 
 for DLLs. Exceptions do not translate across the ABI. DLL exported functions 

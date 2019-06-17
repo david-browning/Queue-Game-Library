@@ -81,6 +81,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content Importers", "Conten
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Style", "Style", "{16173FAD-3448-497F-9A65-F3070F7F3255}"
 	ProjectSection(SolutionItems) = preProject
+		Docs\Style\Comments.md = Docs\Style\Comments.md
 		Docs\Style\Naming.md = Docs\Style\Naming.md
 		Docs\Style\Spacing.md = Docs\Style\Spacing.md
 	EndProjectSection
