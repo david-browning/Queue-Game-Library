@@ -38,10 +38,10 @@ namespace qgl::content::loaders
     LoadT: object that this importer returns.
     */
    template<class LoadT, typename LoadFunctor, typename DictMakeFunctor>
-   class ientry_importer
+   class entry_importer
    {
       public:
-      constexpr ientry_importer(LoadFunctor lf = LoadFunctor(),
+      constexpr entry_importer(LoadFunctor lf = LoadFunctor(),
                                 DictMakeFunctor df = DictMakeFunctor()) :
          m_loadFunctor(lf),
          m_dictMakeFunctor(df)

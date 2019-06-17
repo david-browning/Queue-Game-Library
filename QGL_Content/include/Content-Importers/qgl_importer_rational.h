@@ -85,7 +85,7 @@ namespace qgl::content::loaders
    };
 
    template<typename NumberT>
-   using rational_importer = ientry_importer<
+   using rational_importer = entry_importer<
       math::rational<NumberT>,
       rational_load_entry_fn<NumberT>,
       rational_dict_export_fn<NumberT>>;

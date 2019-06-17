@@ -37,7 +37,7 @@ namespace qgl::content::loaders
       }
    };
 
-   using wstring_importer = ientry_importer<
+   using wstring_importer = entry_importer<
       std::wstring,
       wstring_load_entry_fn,
       wstring_dict_export_fn>;

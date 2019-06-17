@@ -53,7 +53,7 @@ namespace qgl::content::loaders
    };
 
    template<typename T, CONTENT_LOADER_IDS LoaderID>
-   using integral_importer = ientry_importer<
+   using integral_importer = entry_importer<
       T,
       CONTENT_LOADER_ID_INT8,
       integral_load_entry_fn<T>,

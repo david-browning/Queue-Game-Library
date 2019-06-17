@@ -37,7 +37,7 @@ namespace qgl::content::loaders
    };
 
 
-   using string_importer = ientry_importer<
+   using string_importer = entry_importer<
       std::string,
       string_load_entry_fn,
       string_dict_export_fn>;

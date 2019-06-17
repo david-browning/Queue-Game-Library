@@ -46,7 +46,7 @@ namespace qgl::content::loaders
       }
    };
 
-   using bool_importer = ientry_importer<
+   using bool_importer = entry_importer<
       bool,
       bool_load_entry_fn,
       bool_dict_export_fn>;
