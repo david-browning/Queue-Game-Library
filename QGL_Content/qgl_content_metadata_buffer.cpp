@@ -22,7 +22,7 @@ namespace qgl::content
       m_loaderID(CONTENT_LOADER_IDS::CONTENT_LOADER_ID_UNKNOWN),
       m_compilerVersion(qgl::QGL_VERSION_LATEST)
    {
-      MemorySet(m_name, L'\0', CONTENT_MAX_NAME_LEN);
+      set_memory(m_name, L'\0', CONTENT_MAX_NAME_LEN);
       winrt::check_hresult(CoCreateGuid(&m_guid));
    }
 
@@ -39,10 +39,10 @@ namespace qgl::content
       m_loaderID(loaderID),
       m_compilerVersion(qgl::QGL_VERSION_LATEST)
    {
-      auto nameLength = MemoryLength(name, L'\0');
+      auto nameLength = mem_length(name, L'\0');
       if (nameLength <= CONTENT_MAX_NAME_LEN)
       {
-         MemoryCopy(m_name, name, nameLength);
+         copy_elements(m_name, name, nameLength);
          m_name[nameLength] = L'\0';
       }
       else
@@ -64,8 +64,8 @@ namespace qgl::content
       m_loaderID(r.m_loaderID),
       m_compilerVersion(r.version())
    {
-      MemoryCopy<wchar_t>(m_name, r.m_name, CONTENT_MAX_NAME_LEN);
-      MemoryCopy<GUID>(&m_guid, &r.m_guid, 1);
+      copy_elements<wchar_t>(m_name, r.m_name, CONTENT_MAX_NAME_LEN);
+      copy_elements<GUID>(&m_guid, &r.m_guid, 1);
    }
 
    CONTENT_METADATA_BUFFER::CONTENT_METADATA_BUFFER(
@@ -79,8 +79,8 @@ namespace qgl::content
       m_loaderID(r.m_loaderID),
       m_compilerVersion(r.version())
    {
-      MemoryCopy<wchar_t>(m_name, r.m_name, CONTENT_MAX_NAME_LEN);
-      MemoryCopy<GUID>(&m_guid, &r.m_guid, 1);
+      copy_elements<wchar_t>(m_name, r.m_name, CONTENT_MAX_NAME_LEN);
+      copy_elements<GUID>(&m_guid, &r.m_guid, 1);
    }
 
    bool CONTENT_METADATA_BUFFER::content_visible() const noexcept
@@ -127,7 +127,7 @@ namespace qgl::content
       auto len = wcslen(n);
       if (len <= CONTENT_MAX_NAME_LEN)
       {
-         MemoryCopy<wchar_t>(m_name, n, len);
+         copy_elements<wchar_t>(m_name, n, len);
          m_name[len] = L'\0';
       }
       else

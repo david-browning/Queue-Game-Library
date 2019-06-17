@@ -20,9 +20,9 @@ namespace qgl::content::buffers
       FarPlane(10000.0f),
       FOV(1.0f)
    {
-      MemoryCopy<float>(Position, DEFAULT_CAMERA_POSITION, 4);
-      MemoryCopy<float>(LookAt, DEFAULT_CAMERA_LOOK_AT, 4);
-      MemoryCopy<float>(Up, DEFAULT_CAMERA_LOOK_AT, 4);
+      copy_elements<float>(Position, DEFAULT_CAMERA_POSITION, 4);
+      copy_elements<float>(LookAt, DEFAULT_CAMERA_LOOK_AT, 4);
+      copy_elements<float>(Up, DEFAULT_CAMERA_LOOK_AT, 4);
    }
 
    const float* CAMERA_BUFFER::position() const

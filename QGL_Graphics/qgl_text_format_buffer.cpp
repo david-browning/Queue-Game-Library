@@ -7,7 +7,7 @@ namespace qgl::content::buffers
 
    static constexpr const wchar_t* DEFAULT_FONT_LOCALE = L"en-us";
 
-	TEXT_FORMAT_BUFFER::TEXT_FORMAT_BUFFER() :
+   TEXT_FORMAT_BUFFER::TEXT_FORMAT_BUFFER() :
       FontSize(32.0f),
       TabStop(1.0f),
       FontWeight(DWRITE_FONT_WEIGHT::DWRITE_FONT_WEIGHT_NORMAL),
@@ -21,16 +21,16 @@ namespace qgl::content::buffers
       MeasuringMode(DWRITE_MEASURING_MODE::DWRITE_MEASURING_MODE_GDI_NATURAL),
       DrawTextOptions(D2D1_DRAW_TEXT_OPTIONS::D2D1_DRAW_TEXT_OPTIONS_NONE),
       Reserved1(0)
-	{
-      MemorySet<wchar_t>(FontFamilyName, 0, MAX_FONT_CHARS);
-      MemorySet<wchar_t>(FontLocaleName, 0, MAX_LANGUAGE_CHARS);
-      MemoryCopy(FontFamilyName, 
-                 DEFAULT_FONT_FAMILY, 
-                 MemoryLength(DEFAULT_FONT_FAMILY));
-      MemoryCopy(FontLocaleName, 
-                 DEFAULT_FONT_LOCALE, 
-                 MemoryLength(DEFAULT_FONT_LOCALE));
-	}
+   {
+      set_memory<wchar_t>(FontFamilyName, 0, MAX_FONT_CHARS);
+      set_memory<wchar_t>(FontLocaleName, 0, MAX_LANGUAGE_CHARS);
+      copy_elements(FontFamilyName,
+                    DEFAULT_FONT_FAMILY,
+                    mem_length(DEFAULT_FONT_FAMILY));
+      copy_elements(FontLocaleName,
+                    DEFAULT_FONT_LOCALE,
+                    mem_length(DEFAULT_FONT_LOCALE));
+   }
 
    DWRITE_FONT_WEIGHT TEXT_FORMAT_BUFFER::weight() const noexcept
    {

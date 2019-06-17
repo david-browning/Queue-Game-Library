@@ -18,15 +18,15 @@ namespace qgl::content::buffers
       1.0f, 1.0f, 1.0f, 1.0f
    };
 
-	LIGHT_BUFFER::LIGHT_BUFFER() :
+   LIGHT_BUFFER::LIGHT_BUFFER() :
       Flags1(0),
       Flags2(0),
       Intensity(1.0f)
-	{
-      MemoryCopy(Position, LIGHT_DEFAULT_POS, 4);
-      MemoryCopy(LookAt, LIGHT_DEFAULT_LOOK_AT, 4);
-      MemoryCopy(Color, LIGHT_DEFAULT_COLOR, 4);
-	}
+   {
+      copy_elements(Position, LIGHT_DEFAULT_POS, 4);
+      copy_elements(LookAt, LIGHT_DEFAULT_LOOK_AT, 4);
+      copy_elements(Color, LIGHT_DEFAULT_COLOR, 4);
+   }
 
    const float* LIGHT_BUFFER::color() const noexcept
    {

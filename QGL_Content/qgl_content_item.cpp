@@ -13,7 +13,7 @@ namespace qgl::content
    {
       auto len = wcslen(name);
       m_name = new wchar_t[len + 1];
-      MemoryCopy(m_name, name, len);
+      copy_elements(m_name, name, len);
       m_name[len] = L'\0';
    }
 
@@ -22,9 +22,9 @@ namespace qgl::content
       m_loaderID(r.m_loaderID),
       m_rType(r.m_rType)
    {
-      auto nameLen = MemoryLength(r.m_name, L'\0');
+      auto nameLen = mem_length(r.m_name, L'\0');
       m_name = new wchar_t[nameLen + 1];
-      MemoryCopy(m_name, r.m_name, nameLen);
+      copy_elements(m_name, r.m_name, nameLen);
       m_name[nameLen] = L'\0';
    }
 

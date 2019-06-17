@@ -8,7 +8,7 @@ namespace qgl::content::buffers
       0.0f, 0.0f, 0.0f, 0.0f
    };
 
-	SAMPLER_BUFFER::SAMPLER_BUFFER() :
+   SAMPLER_BUFFER::SAMPLER_BUFFER() :
       MipLODBias(0.0f),
       MaxLOD(0.0f),
       MinLOD(0.0f),
@@ -18,24 +18,24 @@ namespace qgl::content::buffers
       Reserved1(0),
       Reserved2(0),
       Reserved3(0)
-	{
+   {
       AddressU = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
       AddressV = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
       AddressW = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
-      MemoryCopy<float>(BorderColor, 
-                        DEFAULT_SAMPLER_BORDER_COLOR, 
-                        4);
+      copy_elements<float>(BorderColor,
+                           DEFAULT_SAMPLER_BORDER_COLOR,
+                           4);
    }
 
-	D3D12_FILTER SAMPLER_BUFFER::filter() const noexcept
-	{
-		return static_cast<D3D12_FILTER>(Filter);
-	}
+   D3D12_FILTER SAMPLER_BUFFER::filter() const noexcept
+   {
+      return static_cast<D3D12_FILTER>(Filter);
+   }
 
-	D3D12_TEXTURE_ADDRESS_MODE SAMPLER_BUFFER::address_u() const noexcept
-	{
-		return static_cast<D3D12_TEXTURE_ADDRESS_MODE>(AddressU);
-	}
+   D3D12_TEXTURE_ADDRESS_MODE SAMPLER_BUFFER::address_u() const noexcept
+   {
+      return static_cast<D3D12_TEXTURE_ADDRESS_MODE>(AddressU);
+   }
 
    D3D12_TEXTURE_ADDRESS_MODE SAMPLER_BUFFER::address_v() const noexcept
    {
