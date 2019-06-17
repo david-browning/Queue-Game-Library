@@ -1,15 +1,10 @@
 #pragma once
 #include "include/qgl_model_include.h"
+#include <numeric>
 #include <type_traits>
 
 namespace qgl::math
 {
-   template<typename NumberT>
-   constexpr NumberT gcd(NumberT a, NumberT b)
-   {
-      return a == 0 ? a : gcd(b, a % b);
-   }
-
    #pragma pack(push, 1)
    template<typename NumberT>
    struct rational
@@ -60,6 +55,16 @@ namespace qgl::math
        Destructor
        */
       ~rational() noexcept = default;
+
+      NumberT numerator() const noexcept
+      {
+         return m_num;
+      }
+
+      NumberT denominator() const noexcept
+      {
+         return m_den;
+      }
 
       /*
        Swaps the content of l and r.
@@ -170,7 +175,7 @@ namespace qgl::math
        */
       constexpr void simplify()
       {
-         auto g = gcd(m_num, m_den);
+         auto g = std::gcd(m_num, m_den);
          m_num = m_num / g;
          m_den = m_den / g;
       }
