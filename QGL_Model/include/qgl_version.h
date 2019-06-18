@@ -64,21 +64,6 @@ namespace qgl
    };
    #pragma pack(pop)
 
-   constexpr uint8_t version_major(qgl_version_t version)
-   {
-      return version.Major;
-   }
-
-   constexpr uint8_t version_minor(qgl_version_t version)
-   {
-      return version.Minor;
-   }
-
-   constexpr uint16_t version_flags(qgl_version_t version)
-   {
-      return version.Flags;
-   }
-
    constexpr QGL_OS_VERSION_FLAGS version_os(qgl_version_t version)
    {
       return static_cast<QGL_OS_VERSION_FLAGS>((version.Flags & 0xC000) >>
