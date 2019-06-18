@@ -253,6 +253,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tests\icommand_tests.cpp" />
+    <ClCompile Include="Tests\Math\comparison_function_tests.cpp" />
+    <ClCompile Include="Tests\Math\math_function_tests.cpp" />
+    <ClCompile Include="Tests\Math\rational_number_tests.cpp" />
     <ClCompile Include="Tests\Observer-Observable\callback_observer-tests.cpp" />
     <ClCompile Include="Tests\Observer-Observable\observer_out_of_scope_tests.cpp" />
     <ClCompile Include="Tests\Observer-Observable\subject_constructor_tests.cpp" />
@@ -260,7 +263,6 @@
     <ClCompile Include="Tests\Observer-Observable\subject_out_of_scope_tests.cpp" />
     <ClCompile Include="Tests\Observer-Observable\subject_remove_tests.cpp" />
     <ClCompile Include="Tests\qgl_version_tests.cpp" />
-    <ClCompile Include="Tests\rational_number_tests.cpp" />
     <ClCompile Include="Tests\Timing\timer_tests.cpp" />
     <ClCompile Include="Tests\Timing\time_helper_tests.cpp" />
     <ClCompile Include="Tests\Timing\time_state_tests.cpp" />

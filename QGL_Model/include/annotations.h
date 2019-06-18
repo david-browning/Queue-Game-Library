@@ -9,15 +9,7 @@
    Author:				David Browning
 */
 #pragma once
-#include <cstdio>
-#include <cstdint>
-#include <cstring>
-#include <cmath>
-#include <memory>
-#include <stdexcept>
 
-static constexpr double PI_D = 3.14159265358979323846;
-static constexpr double PI_F = 3.14159265358979323846f;
 
 #ifdef _WIN32
 
@@ -182,61 +174,3 @@ static constexpr double PI_F = 3.14159265358979323846f;
 #define _IN_FUNCTION_ARR_Z_
 
 #define _IN_HANDLE_
-
-
-#ifdef _WIN32
-#pragma warning(push)
-#pragma warning(disable: 4275)
-#endif
-class file_not_found_exception : public std::exception
-{
-   public:
-   file_not_found_exception() :
-      std::exception("The file was not found.")
-   {
-
-   }
-};
-#ifdef _WIN32
-#pragma warning(pop)
-#endif
-
-template<typename T>
-constexpr T logbn(const T base, const T n)
-{
-   return (n > base - 1) ? 1 + logbn(n / base, base) : 0;
-}
-
-template<typename T>
-constexpr T RoundUp(_IN_ const T val, _IN_ const T nearest)
-{
-   T remainder = val % nearest;
-   return remainder == 0 ? val : val + nearest - remainder;
-}
-
-template<typename T>
-constexpr T GetMin(T value)
-{
-   return value;
-}
-
-template<typename T, typename... Tlist>
-constexpr T GetMin(T value, Tlist... list)
-{
-   T min = GetMin<T>(list...);
-   return value < min ? value : min;
-}
-
-inline bool approx_equal(float expected,
-                         float actual,
-                         float tolerance = FLT_EPSILON)
-{
-   return abs(expected - actual) < tolerance;
-}
-
-inline bool approx_equal(double expected,
-                         double actual,
-                         double tolerance = DBL_EPSILON)
-{
-   return abs(expected - actual) < tolerance;
-}

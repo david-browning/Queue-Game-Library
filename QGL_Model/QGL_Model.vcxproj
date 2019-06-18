@@ -163,6 +163,11 @@
     <ClInclude Include="include\annotations.h" />
     <ClInclude Include="include\Interfaces\qgl_icommand.h" />
     <ClInclude Include="include\Interfaces\qgl_interface.h" />
+    <ClInclude Include="include\Math\qgl_math.h" />
+    <ClInclude Include="include\Math\qgl_math_compare.h" />
+    <ClInclude Include="include\Math\qgl_math_consts.h" />
+    <ClInclude Include="include\Math\qgl_math_funcs.h" />
+    <ClInclude Include="include\Math\qgl_rational.h" />
     <ClInclude Include="include\Memory\qgl_mem.h" />
     <ClInclude Include="include\Memory\qgl_mem_tmpl.h" />
     <ClInclude Include="include\Observer-Observable\qgl_callback_observer.h" />
@@ -172,7 +177,6 @@
     <ClInclude Include="include\qgl_icomponent.h" />
     <ClInclude Include="include\qgl_model_include.h" />
     <ClInclude Include="include\qgl_platform_abstraction.h" />
-    <ClInclude Include="include\qgl_rational.h" />
     <ClInclude Include="include\qgl_version.h" />
     <ClInclude Include="include\Timing\qgl_timer.h" />
     <ClInclude Include="include\Timing\qgl_time_helpers.h" />

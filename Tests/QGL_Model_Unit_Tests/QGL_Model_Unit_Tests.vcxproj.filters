@@ -17,6 +17,9 @@
     <Filter Include="Tests\Timing">
       <UniqueIdentifier>{7bb116f0-cf25-4a67-9353-3d9a11c1edc8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\Math">
+      <UniqueIdentifier>{e4d4d9d6-c1ba-465d-828c-716276a90135}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="UnitTestApp.xaml" />
@@ -51,13 +54,19 @@
     <ClCompile Include="Tests\Timing\timer_tests.cpp">
       <Filter>Tests\Timing</Filter>
     </ClCompile>
-    <ClCompile Include="Tests\qgl_version_tests.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Tests\rational_number_tests.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
     <ClCompile Include="Tests\icommand_tests.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Math\comparison_function_tests.cpp">
+      <Filter>Tests\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Math\math_function_tests.cpp">
+      <Filter>Tests\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Math\rational_number_tests.cpp">
+      <Filter>Tests\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\qgl_version_tests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
   </ItemGroup>

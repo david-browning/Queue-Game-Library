@@ -41,6 +41,9 @@
     <Filter Include="Source Files\Interfaces">
       <UniqueIdentifier>{1904813c-45f7-43fd-aa9a-4e494fd468a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Math">
+      <UniqueIdentifier>{eed28c86-9716-4f73-b1da-2393d36a8d60}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLModel.h">
@@ -91,9 +94,6 @@
     <ClInclude Include="include\qgl_platform_abstraction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_rational.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Physical\qgl_body.h">
       <Filter>Header Files\Physical</Filter>
     </ClInclude>
@@ -102,6 +102,21 @@
     </ClInclude>
     <ClInclude Include="include\Interfaces\qgl_icommand.h">
       <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Math\qgl_math.h">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Math\qgl_rational.h">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Math\qgl_math_compare.h">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Math\qgl_math_funcs.h">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Math\qgl_math_consts.h">
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
