@@ -15,26 +15,6 @@ namespace qgl::content::buffers
 
       ~SAMPLER_BUFFER() noexcept = default;
 
-      D3D12_FILTER filter() const noexcept;
-
-      D3D12_TEXTURE_ADDRESS_MODE address_u() const noexcept;
-
-      D3D12_TEXTURE_ADDRESS_MODE address_v() const noexcept;
-
-      D3D12_TEXTURE_ADDRESS_MODE address_w() const noexcept;
-
-      float mip_lod_bias() const noexcept;
-
-      D3D12_COMPARISON_FUNC comparision() const noexcept;
-
-      const float* border_color() const noexcept;
-
-      float min_lod() const noexcept;
-
-      float max_lod() const noexcept;
-
-      uint32_t max_anisotropy() const noexcept;
-
       friend void swap(SAMPLER_BUFFER& l,
                        SAMPLER_BUFFER& r) noexcept
       {
@@ -65,14 +45,14 @@ namespace qgl::content::buffers
        for AddressU, AddressV, or AddressW. Range must be between 0.0 and 1.0 
        inclusive.
        */
-      float BorderColor[4];
+      math::rational<int32_t> BorderColor[4];
       
       /*
        Offset from the calculated mipmap level. For example, if the runtime 
        calculates that a texture should be sampled at mipmap level 3 and
        MipLODBias is 2, the texture will be sampled at mipmap level 5.
        */
-      float MipLODBias;
+      math::rational<int32_t> MipLODBias;
       
       /*
        Upper end of the mipmap range to clamp access to, where 0 is the largest 
@@ -80,14 +60,14 @@ namespace qgl::content::buffers
        detailed. This value must be greater than or equal to MinLOD. To have no 
        upper limit on LOD, set this member to a large value.
        */
-      float MaxLOD;
+      math::rational<int32_t> MaxLOD;
 
       /*
        Lower end of the mipmap range to clamp access to, where 0 is the largest
        and most detailed mipmap level and any level higher than that is less 
        detailed.
        */
-      float MinLOD;
+      math::rational<int32_t> MinLOD;
 
       /*
        Clamping value used if D3D12_FILTER_ANISOTROPIC or 

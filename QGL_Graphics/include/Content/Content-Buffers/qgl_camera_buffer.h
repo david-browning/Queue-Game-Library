@@ -27,16 +27,6 @@ namespace qgl::content::buffers
        */
       ~CAMERA_BUFFER() noexcept = default;
 
-      const float* position() const;
-
-      const float* up() const;
-
-      const float* look_at() const;
-
-      float near_plane() const;
-
-      float far_plane() const;
-
       /*
        Returns the field of view.
        */
@@ -64,34 +54,34 @@ namespace qgl::content::buffers
       /*
        Spawn location
        */
-      float Position[4];
+      math::rational<int32_t> Position[4];
 
       /*
        Spawn up
        */
-      float Up[4];
+      math::rational<int32_t> Up[4];
 
       /*
        Spawn look at.
        */
-      float LookAt[4];
+      math::rational<int32_t> LookAt[4];
 
       /*
        Field of view.
        */
-      float FOV;
+      math::rational<int32_t> FOV;
 
       /*
        How close things can be to be rendered. Anything less than this 
        is not rendered.
        */
-      float NearPlane;
+      math::rational<int32_t> NearPlane;
 
       /*
        How far away things can be rendered. Anything greater than this is not
        rendered.
        */
-      float FarPlane;
+      math::rational<int32_t> FarPlane;
 
       uint32_t Reserved1;
 

@@ -3,27 +3,33 @@
 
 namespace qgl::content
 {
-   sampler::sampler(const content::buffers::SAMPLER_BUFFER* buffer, 
+   sampler::sampler(const content::buffers::SAMPLER_BUFFER* buffer,
                     const wchar_t* name,
                     const qgl::content::content_id id) :
       content_item(name, id,
                    qgl::content::RESOURCE_TYPES::RESOURCE_TYPE_DESCRIPTION,
                    qgl::content::CONTENT_LOADER_IDS::CONTENT_LOADER_ID_SAMPLER)
    {
-      m_samplerDesc.AddressU = buffer->address_u();
-      m_samplerDesc.AddressV = buffer->address_v();
-      m_samplerDesc.AddressW = buffer->address_w();
+      m_samplerDesc.AddressU =
+         static_cast<D3D12_TEXTURE_ADDRESS_MODE>(buffer->AddressU);
+      m_samplerDesc.AddressV =
+         static_cast<D3D12_TEXTURE_ADDRESS_MODE>(buffer->AddressV);
+      m_samplerDesc.AddressW =
+         static_cast<D3D12_TEXTURE_ADDRESS_MODE>(buffer->AddressW);
 
-      memcpy(&m_samplerDesc.BorderColor, 
-             buffer->border_color(), 
-             sizeof(float) * 4);
+      for (auto i = 0; i < 4; i++)
+      {
+         m_samplerDesc.BorderColor[i] = buffer->BorderColor[i];
+      }
 
-      m_samplerDesc.ComparisonFunc = buffer->comparision();
-      m_samplerDesc.Filter = buffer->filter();
-      m_samplerDesc.MaxAnisotropy = buffer->max_anisotropy();
-      m_samplerDesc.MaxLOD = buffer->max_lod();
-      m_samplerDesc.MinLOD = buffer->min_lod();
-      m_samplerDesc.MipLODBias = buffer->mip_lod_bias();
+      m_samplerDesc.ComparisonFunc =
+         static_cast<D3D12_COMPARISON_FUNC>(buffer->ComparisonFunction);
+      m_samplerDesc.Filter =
+         static_cast<D3D12_FILTER>(buffer->Filter);
+      m_samplerDesc.MaxAnisotropy = buffer->MaxAnisotropy;
+      m_samplerDesc.MaxLOD = buffer->MaxLOD;
+      m_samplerDesc.MinLOD = buffer->MinLOD;
+      m_samplerDesc.MipLODBias = buffer->MipLODBias;
    }
 
    const sampler::ResourceDescriptionT* sampler::description() const

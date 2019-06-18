@@ -21,26 +21,33 @@ namespace qgl::content
 
       void create_text_format(IDWriteFactory* factory_p)
       {
-         winrt::check_hresult(factory_p->CreateTextFormat(Buffer.family(),
-                                                          nullptr,
-                                                          Buffer.weight(),
-                                                          Buffer.style(),
-                                                          Buffer.stretch(),
-                                                          Buffer.size(),
-                                                          Buffer.locale(),
-                                                          Format.put()));
+         winrt::check_hresult(factory_p->CreateTextFormat(
+            Buffer.FontFamilyName,
+            nullptr,
+            static_cast<DWRITE_FONT_WEIGHT>(Buffer.FontWeight),
+            static_cast<DWRITE_FONT_STYLE>(Buffer.Style),
+            static_cast<DWRITE_FONT_STRETCH>(Buffer.Stretch),
+            Buffer.FontSize,
+            Buffer.FontLocaleName,
+            Format.put()));
 
-         winrt::check_hresult(
-            Format->SetFlowDirection(Buffer.flow_direction()));
-         winrt::check_hresult(
-            Format->SetIncrementalTabStop(Buffer.tab_stop()));
-         winrt::check_hresult(
-            Format->SetParagraphAlignment(Buffer.paragraph_alignment()));
-         winrt::check_hresult(
-            Format->SetReadingDirection(Buffer.reading_direction()));
-         winrt::check_hresult(
-            Format->SetTextAlignment(Buffer.text_alignment()));
-         winrt::check_hresult(Format->SetWordWrapping(Buffer.wrapping()));
+         winrt::check_hresult(Format->SetFlowDirection(
+            static_cast<DWRITE_FLOW_DIRECTION>(Buffer.FlowDirection)));
+
+         winrt::check_hresult(Format->SetIncrementalTabStop(Buffer.TabStop));
+
+         winrt::check_hresult(Format->SetParagraphAlignment(
+            static_cast<DWRITE_PARAGRAPH_ALIGNMENT>(
+               Buffer.ParagraphAlignment)));
+
+         winrt::check_hresult(Format->SetReadingDirection(
+            static_cast<DWRITE_READING_DIRECTION>(Buffer.ReadingDirection)));
+
+         winrt::check_hresult(Format->SetTextAlignment(
+            static_cast<DWRITE_TEXT_ALIGNMENT>(Buffer.TextAlignment)));
+
+         winrt::check_hresult(Format->SetWordWrapping(
+            static_cast<DWRITE_WORD_WRAPPING>(Buffer.Wrapping)));
       }
 
       content::buffers::TEXT_FORMAT_BUFFER Buffer;

@@ -29,29 +29,6 @@ namespace qgl::content::buffers
 
       ~RASTERIZER_BUFFER() noexcept = default;
 
-      D3D12_FILL_MODE fill_mode() const noexcept;
-
-      D3D12_CULL_MODE cull_mode() const noexcept;
-
-      BOOL front_counter_clockwise() const noexcept;
-
-      INT depth_bias() const noexcept;
-
-      FLOAT depth_bias_clamp() const noexcept;
-
-      FLOAT slope_scaled_depth_bias() const noexcept;
-
-      BOOL depth_clip() const noexcept;
-
-      BOOL multisample() const noexcept;
-
-      BOOL antialiased_lines() const noexcept;
-
-      UINT forced_sample_counit() const noexcept;
-
-      D3D12_CONSERVATIVE_RASTERIZATION_MODE conservative_rasterization_mode()
-         const noexcept;
-
       friend void swap(RASTERIZER_BUFFER& l,
                        RASTERIZER_BUFFER& r) noexcept
       {
@@ -79,13 +56,13 @@ namespace qgl::content::buffers
        Maximum depth bias of a pixel. 
        For info about depth bias, see https://tinyurl.com/d3d-depth-bias
        */
-      float DepthBiasClamp;
+      math::rational<int32_t> DepthBiasClamp;
 
       /*
        Scalar on a given pixel's slope.
        For info about depth bias, see https://tinyurl.com/d3d-depth-bias
        */
-      float SlopeScaledDepthBias;
+      math::rational<int32_t> SlopeScaledDepthBias;
 
       /*
        Depth value added to a given pixel. 

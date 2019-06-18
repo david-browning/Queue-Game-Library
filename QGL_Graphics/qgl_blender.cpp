@@ -16,10 +16,10 @@ namespace qgl::graphics::gpu::render
       m_desc(),
       m_mask(UINT_MAX)
    {
-      m_desc.AlphaToCoverageEnable = buff->alpha_coverage();
-      m_desc.IndependentBlendEnable = buff->independent_blend();
+      m_desc.AlphaToCoverageEnable = buff->IsAlphaToCoverage;
+      m_desc.IndependentBlendEnable = buff->IsIndependentBlend;
 
-      auto descs = buff->blend_descs();
+      auto descs = buff->BlendDescriptions;
       for (size_t i = 0;
            i < content::buffers::NUM_RENDER_TARGETS;
            i++)
@@ -27,7 +27,10 @@ namespace qgl::graphics::gpu::render
          m_desc.RenderTarget[i] = descs[i].d3d_version();
       }
 
-      memcpy(m_blendFactor, buff->blend_factor(), sizeof(float) * 4);
+      for (auto i = 0; i < 4; i++)
+      {
+         m_blendFactor[i] = buff->BlendFactor[i];
+      }
    }
 
    const D3D12_BLEND_DESC* blender::description() const

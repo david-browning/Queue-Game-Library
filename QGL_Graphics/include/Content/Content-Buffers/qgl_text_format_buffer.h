@@ -19,6 +19,7 @@ namespace qgl::content::buffers
 
       ~TEXT_FORMAT_BUFFER() noexcept = default;
 
+      /*
       DWRITE_FONT_WEIGHT weight() const noexcept;
 
       DWRITE_FONT_STYLE style() const noexcept;
@@ -42,6 +43,7 @@ namespace qgl::content::buffers
       DWRITE_TEXT_ALIGNMENT text_alignment() const noexcept;
 
       DWRITE_WORD_WRAPPING wrapping() const noexcept;
+      */
 
       friend void swap(TEXT_FORMAT_BUFFER& l,
                        TEXT_FORMAT_BUFFER& r) noexcept
@@ -83,13 +85,13 @@ namespace qgl::content::buffers
        A DIP equals 1/96 inch.
        Cannot be zero!
        */
-      float FontSize;
+      qgl::math::rational<int32_t> FontSize;
 
       /*
        The fixed distance between two adjacent tab stops.
        Cannot be zero!
        */
-      float TabStop;
+      qgl::math::rational<int32_t> TabStop;
 
       /*
        A value that indicates the font weight for the text.
@@ -150,9 +152,7 @@ namespace qgl::content::buffers
        */
       text_enum_t Wrapping;
       
-      
       text_enum_t MeasuringMode;
-      
       
       text_enum_t DrawTextOptions;
    };

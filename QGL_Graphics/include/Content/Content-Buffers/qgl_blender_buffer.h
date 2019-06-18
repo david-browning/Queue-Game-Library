@@ -42,18 +42,6 @@ namespace qgl::content::buffers
        */
       ~BLENDER_BUFFER() noexcept = default;
 
-      bool alpha_coverage() const noexcept;
-
-      bool independent_blend() const noexcept;
-
-      const float* blend_factor() const noexcept;
-
-      /*
-       Returns a pointer to an array of blend descriptions. The array has 
-       NUM_RENDER_TARGETS entries.
-       */
-      const BLEND_DESC* blend_descs() const noexcept;
-
       /*
        Swaps the contents of first with the contents of second.
        */
@@ -96,7 +84,7 @@ namespace qgl::content::buffers
        */
       uint8_t IsIndependentBlend;
 
-      float BlendFactor[4];
+      math::rational<int32_t> BlendFactor[4];
 
       /*
        An array of D3D12_RENDER_TARGET_BLEND_DESC structures that describe the 

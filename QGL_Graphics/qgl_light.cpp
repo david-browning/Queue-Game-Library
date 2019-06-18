@@ -12,7 +12,7 @@ namespace qgl::content
                    qgl::content::RESOURCE_TYPES::RESOURCE_TYPE_LIGHT,
                    qgl::content::CONTENT_LOADER_IDS::CONTENT_LOADER_ID_LIGHT)
    {
-      intensity(lBuffer->intensity());
+      intensity(lBuffer->Intensity);
 
       color(DirectX::XMVectorSet(lBuffer->Color[0],
                                  lBuffer->Color[1],

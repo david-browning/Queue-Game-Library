@@ -88,7 +88,7 @@ namespace qgl::math
       /*
        Move assign operator.
        */
-      rational& operator=(rational&& r) = default;
+      //rational& operator=(rational&& r) = default;
 
       /*
        Returns a floating point representation of the rational number.
@@ -185,8 +185,8 @@ namespace qgl::math
    };
    #pragma pack(pop)
 
-   template<> struct QGL_MODEL_API rational<int8_t>;
+  /* template<> struct QGL_MODEL_API rational<int8_t>;
    template<> struct QGL_MODEL_API rational<int16_t>;
    template<> struct QGL_MODEL_API rational<int32_t>;
-   template<> struct QGL_MODEL_API rational<int64_t>;
+   template<> struct QGL_MODEL_API rational<int64_t>;*/
 }

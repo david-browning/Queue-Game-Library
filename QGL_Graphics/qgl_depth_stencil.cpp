@@ -19,13 +19,13 @@ namespace qgl::graphics::gpu::render
       m_rects(nullptr),
       m_numRects(0)
    {
-      m_clearValue.Format = m_buffer.format();
-      m_clearValue.DepthStencil.Depth = m_buffer.depth();
-      m_clearValue.DepthStencil.Stencil = m_buffer.stencil();
+      m_clearValue.Format = static_cast<DXGI_FORMAT>(m_buffer.Format);
+      m_clearValue.DepthStencil.Depth = m_buffer.Depth;
+      m_clearValue.DepthStencil.Stencil = m_buffer.Stencil;
 
       m_cpuHandle = dsvHeap->at_cpu(frameIndex);
 
-      m_viewDesc.Format = m_buffer.format();
+      m_viewDesc.Format = static_cast<DXGI_FORMAT>(m_buffer.Format);
       m_viewDesc.Flags = D3D12_DSV_FLAG_NONE;
       m_viewDesc.ViewDimension =
          D3D12_DSV_DIMENSION::D3D12_DSV_DIMENSION_TEXTURE2D;
@@ -52,7 +52,7 @@ namespace qgl::graphics::gpu::render
 
    DXGI_FORMAT depth_stencil::format() const noexcept
    {
-      return m_buffer.format();
+      return static_cast<DXGI_FORMAT>(m_buffer.Format);
    }
 
    const D3D12_DEPTH_STENCIL_DESC* depth_stencil::depth_desc() const noexcept
@@ -62,12 +62,12 @@ namespace qgl::graphics::gpu::render
 
    float depth_stencil::depth() const noexcept
    {
-      return m_buffer.depth();
+      return m_buffer.Depth;
    }
 
    uint8_t depth_stencil::stencil() const noexcept
    {
-      return m_buffer.stencil();
+      return m_buffer.Stencil;
    }
 
    D3D12_CPU_DESCRIPTOR_HANDLE depth_stencil::where() const noexcept
@@ -104,7 +104,7 @@ namespace qgl::graphics::gpu::render
          static_cast<UINT>(m_height),
          1,
          1,
-         m_buffer.format(),
+         static_cast<DXGI_FORMAT>(m_buffer.Format),
          1,
          0,
          D3D12_TEXTURE_LAYOUT_UNKNOWN,

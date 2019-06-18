@@ -8,8 +8,8 @@ namespace qgl::content::buffers
    static constexpr const wchar_t* DEFAULT_FONT_LOCALE = L"en-us";
 
    TEXT_FORMAT_BUFFER::TEXT_FORMAT_BUFFER() :
-      FontSize(32.0f),
-      TabStop(1.0f),
+      FontSize(32, 1),
+      TabStop(1, 1),
       FontWeight(DWRITE_FONT_WEIGHT::DWRITE_FONT_WEIGHT_NORMAL),
       Style(DWRITE_FONT_STYLE::DWRITE_FONT_STYLE_NORMAL),
       Stretch(DWRITE_FONT_STRETCH::DWRITE_FONT_STRETCH_NORMAL),
@@ -30,54 +30,5 @@ namespace qgl::content::buffers
       copy_elements(FontLocaleName,
                     DEFAULT_FONT_LOCALE,
                     mem_length(DEFAULT_FONT_LOCALE));
-   }
-
-   DWRITE_FONT_WEIGHT TEXT_FORMAT_BUFFER::weight() const noexcept
-   {
-      return DWRITE_FONT_WEIGHT();
-   }
-   DWRITE_FONT_STYLE TEXT_FORMAT_BUFFER::style() const noexcept
-   {
-      return DWRITE_FONT_STYLE();
-   }
-   DWRITE_FONT_STRETCH TEXT_FORMAT_BUFFER::stretch() const noexcept
-   {
-      return DWRITE_FONT_STRETCH();
-   }
-   float TEXT_FORMAT_BUFFER::size() const noexcept
-   {
-      return 0.0f;
-   }
-   const wchar_t * TEXT_FORMAT_BUFFER::locale() const noexcept
-   {
-      return nullptr;
-   }
-   const wchar_t * TEXT_FORMAT_BUFFER::family() const noexcept
-   {
-      return nullptr;
-   }
-   DWRITE_FLOW_DIRECTION TEXT_FORMAT_BUFFER::flow_direction() const noexcept
-   {
-      return DWRITE_FLOW_DIRECTION();
-   }
-   float TEXT_FORMAT_BUFFER::tab_stop() const noexcept
-   {
-      return 0.0f;
-   }
-   DWRITE_PARAGRAPH_ALIGNMENT TEXT_FORMAT_BUFFER::paragraph_alignment() const noexcept
-   {
-      return DWRITE_PARAGRAPH_ALIGNMENT();
-   }
-   DWRITE_READING_DIRECTION TEXT_FORMAT_BUFFER::reading_direction() const noexcept
-   {
-      return DWRITE_READING_DIRECTION();
-   }
-   DWRITE_TEXT_ALIGNMENT TEXT_FORMAT_BUFFER::text_alignment() const noexcept
-   {
-      return DWRITE_TEXT_ALIGNMENT();
-   }
-   DWRITE_WORD_WRAPPING TEXT_FORMAT_BUFFER::wrapping() const noexcept
-   {
-      return DWRITE_WORD_WRAPPING();
    }
 }

@@ -28,29 +28,6 @@ namespace qgl::content::buffers
        */
       ~LIGHT_BUFFER() noexcept = default;
 
-      /*
-       Returns a pointer to an array of 4 floats. Each float represents the
-       R, G, B, and A color values. Values must be between 0 and 1.0.
-       */
-      const float* color() const noexcept;
-
-      /*
-       Returns a pointer to an array of 4 floats. Each float represents the 
-       X, Y, and Z components. The last value is unused.
-       */
-      const float* look_at() const noexcept;
-
-      /*
-       Returns a pointer to an array of 4 floats. Each float represents the 
-       X, Y, and Z components. The last value is unused.
-       */
-      const float* position() const noexcept;
-
-      /*
-       Returns the light intensity. Value must be between 0 and 1.0;
-       */
-      float intensity() const noexcept;
-
       friend void swap(LIGHT_BUFFER& l,
                        LIGHT_BUFFER& r) noexcept
       {
@@ -69,12 +46,30 @@ namespace qgl::content::buffers
          return *this;
       }
 
-      float Color[4];
-      float LookAt[4];
-      float Position[4];
-      float Intensity;
-      uint16_t Flags1;
-      uint8_t Flags2;
+      /*
+       Array of 4 rational numbers. Each number represents the R, G, B, and A 
+       color values. Values must be between 0 and 1.0.
+       */
+      math::rational<int32_t> Color[4];
+
+      /*
+       Array of 4 rational numbers. Each number represents the X, Y, and Z 
+       components. The last value is unused.
+       */
+      math::rational<int32_t> LookAt[4];
+
+      /*
+       Array of 4 rational numbers. Each number represents the X, Y, and Z 
+       components. The last value is unused.
+       */
+      math::rational<int32_t> Position[4];
+
+      /*
+       Light intensity. Value must be between 0 and 1.0;
+       */
+      math::rational<int32_t> Intensity;
+      uint32_t Flags1;
+      uint32_t Flags2;
    };
    #pragma pack(pop)
 }

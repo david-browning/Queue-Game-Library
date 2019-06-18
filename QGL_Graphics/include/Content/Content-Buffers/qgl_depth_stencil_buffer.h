@@ -3,7 +3,6 @@
 
 namespace qgl::content::buffers
 {
-
    #pragma pack(push, 1)
    struct QGL_GRAPHICS_API DEPTH_STENCIL_BUFFER final
    {
@@ -15,16 +14,6 @@ namespace qgl::content::buffers
       constexpr DEPTH_STENCIL_BUFFER(DEPTH_STENCIL_BUFFER&&) = default;
 
       ~DEPTH_STENCIL_BUFFER() noexcept = default;
-
-      DXGI_FORMAT format() const;
-
-      const float& depth() const;
-
-      float& depth();
-
-      const uint8_t& stencil() const;
-
-      uint8_t& stencil();
 
       friend void swap(DEPTH_STENCIL_BUFFER& first, 
                        DEPTH_STENCIL_BUFFER& second) noexcept
@@ -42,7 +31,7 @@ namespace qgl::content::buffers
          return *this;
       }
 
-      float Depth;
+      math::rational<int32_t> Depth;
       uint16_t Format;
       uint8_t Stencil;
       uint8_t Flags1;

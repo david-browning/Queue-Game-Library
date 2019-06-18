@@ -10,24 +10,4 @@ namespace qgl::content::buffers
    {
       //Array items are default constructed.
    }
-
-   bool BLENDER_BUFFER::alpha_coverage() const noexcept
-   {
-      return static_cast<bool>(IsAlphaToCoverage);
-   }
-
-   bool BLENDER_BUFFER::independent_blend() const noexcept
-   {
-      return static_cast<bool>(IsIndependentBlend);
-   }
-
-   const float* BLENDER_BUFFER::blend_factor() const noexcept
-   {
-      return BlendFactor;
-   }
-
-   const BLEND_DESC* BLENDER_BUFFER::blend_descs() const noexcept
-   {
-      return BlendDescriptions;
-   }
 }
