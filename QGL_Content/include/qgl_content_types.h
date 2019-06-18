@@ -25,6 +25,7 @@ namespace qgl::content
       RESOURCE_TYPE_FLOAT = 0x0013,
       RESOURCE_TYPE_DESCRIPTION = 0x0014,
       RESOURCE_TYPE_BOOL = 0x0015,
+      RESOURCE_TYPE_GUID = 0x0016,
 
       //Graphics Types
       RESOURCE_TYPE_GEOMETRY = 0x0021,
@@ -119,5 +120,8 @@ namespace qgl::content
       //AI Types
 
       //Other Types
+
+      //Components
+      CONTENT_LOADER_ID_RENDER_COMPONENT,
    };
 }

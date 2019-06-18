@@ -6,10 +6,11 @@ the text. It only defines the text and where to draw the text.
 
 ## Header Metadata Requirements:
 Resource Type: RESOURCE_TYPE_STRING  
-Content Loader ID: CONTENT_LOADER_ID_WTEXT
+Content Loader ID: CONTENT_LOADER_ID_WTEXT  
+Renderable: Yes  
 
 ## Dictionary Requirement:
-Max dictionary entries: 2
+Max dictionary entries: 3
 Supports shared entries: Yes
 
 ### Entry Requirements:
@@ -20,3 +21,6 @@ Supports shared entries: Yes
 * Resource Type: RESOURCE_TYPE_SHAPE
   Content Loader ID: CONTENT_LOADER_ID_SCREEN_RECTANGLE
   Uses screen_rectangle_importer.
+
+* Resource Type: RESOURCE_TYPE_GUID  
+  Content Loader ID: CONTENT_LOADER_ID_RENDER_COMPONENT  

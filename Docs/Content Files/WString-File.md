@@ -4,13 +4,14 @@ WString Content File
 
 ## Header Metadata Requirements:
 Resource Type: RESOURCE_TYPE_STRING  
-Content Loader ID: CONTENT_LOADER_ID_WSTRING
+Content Loader ID: CONTENT_LOADER_ID_WSTRING  
 
 ## Dictionary Requirement:
-Max dictionary entries: 1
-Supports shared entries: No
+Max dictionary entries: 1  
+Supports shared entries: No  
+Renderable: No  
 
 ### Entry Requirements:
-* Resource Type: RESOURCE_TYPE_STRING
-  Content Loader ID: CONTENT_LOADER_ID_WSTRING
-  Uses wstring_importer.
+* Resource Type: RESOURCE_TYPE_STRING  
+  Content Loader ID: CONTENT_LOADER_ID_WSTRING  
+  Uses wstring_importer.  
