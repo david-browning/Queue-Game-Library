@@ -33,7 +33,9 @@ namespace qgl::content::loaders
                                       CONTENT_LOADER_ID_WSTRING,
                                       objName);
 
-         return CONTENT_DICTIONARY_ENTRY_BUFFER(data.size(), &info, offset);
+         return CONTENT_DICTIONARY_ENTRY_BUFFER(data.size() * sizeof(wchar_t), 
+                                                &info, 
+                                                offset);
       }
    };
 
