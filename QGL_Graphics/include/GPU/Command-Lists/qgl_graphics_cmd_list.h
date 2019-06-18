@@ -56,15 +56,15 @@ namespace qgl::graphics::gpu
       /*
        Clears the render targets.
        Set the clear color using clear_color().
-       DBC: Call frame_buffer() before calling this.
+       Call frame_buffer() before calling this.
        */
-      _DBC_ void clear_frame();
+      void clear_frame();
 
       /*
        Clears the depth stencils.
-       DBC: Call frame_buffer() before calling this.
+       Call frame_buffer() before calling this.
        */
-      _DBC_ void clear_depth();
+      void clear_depth();
 
       /*
        Sets the blend factor that modulate values for a pixel shader, 

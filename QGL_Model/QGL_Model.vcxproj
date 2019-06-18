@@ -160,7 +160,6 @@
     </Midl>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\annotations.h" />
     <ClInclude Include="include\Interfaces\qgl_icommand.h" />
     <ClInclude Include="include\Interfaces\qgl_interface.h" />
     <ClInclude Include="include\Math\qgl_math.h" />

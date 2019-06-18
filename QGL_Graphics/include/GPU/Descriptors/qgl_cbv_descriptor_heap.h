@@ -36,9 +36,9 @@ namespace qgl::graphics::gpu
       unknown size to not appear to overlap. For example, for SRVs, by extending the example in the
       BaseShaderRegister member description, 5 maps to ": register(t3,space5);" in HLSL.
 
-      DBC: numDescriptors must be at least 1.
+      numDescriptors must be at least 1.
       */
-      _DBC_ virtual descriptor_table table(
+      virtual descriptor_table table(
          size_t startIndex,
          size_t numDescriptors,
          UINT rootIndex,

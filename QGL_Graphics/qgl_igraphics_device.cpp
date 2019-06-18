@@ -337,7 +337,7 @@ namespace qgl::graphics
        and command queue.
        Assume the factories have already been made.
        */
-      _DBC_ void p_make_graphics()
+      void p_make_graphics()
       {
          m_d3d12Device_p = nullptr;
          m_d3d11On12Device_p = nullptr;

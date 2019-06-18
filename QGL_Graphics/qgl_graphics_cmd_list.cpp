@@ -163,7 +163,7 @@ namespace qgl::graphics::gpu
                                 m_impl_p->DSVHandles.data());
    }
 
-   _DBC_ void graphics_command_list::clear_frame()
+   void graphics_command_list::clear_frame()
    {
       for (auto target : m_impl_p->RenderTargets_ps)
       {
@@ -175,7 +175,7 @@ namespace qgl::graphics::gpu
       }
    }
 
-   _DBC_ void graphics_command_list::clear_depth()
+   void graphics_command_list::clear_depth()
    {
       for (auto stencil : m_impl_p->DepthStencil_ps)
       {
