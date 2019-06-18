@@ -17,6 +17,6 @@ namespace qgl::graphics::gpu
 
       dsv_descriptor_heap(dsv_descriptor_heap&&) = default;
 
-      virtual ~dsv_descriptor_heap() = default;
+      virtual ~dsv_descriptor_heap() noexcept = default;
    };
 }

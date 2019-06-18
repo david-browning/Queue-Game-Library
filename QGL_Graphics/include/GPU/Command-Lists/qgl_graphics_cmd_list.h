@@ -23,7 +23,7 @@ namespace qgl::graphics::gpu
 
       graphics_command_list(graphics_command_list&&);
 
-      virtual ~graphics_command_list();
+      virtual ~graphics_command_list() noexcept;
 
       virtual void begin();
 

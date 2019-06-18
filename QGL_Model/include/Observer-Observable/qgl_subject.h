@@ -84,7 +84,7 @@ namespace qgl
       /*
       Destructor
       */
-      virtual ~subject() noexcept
+      ~subject() noexcept
       {
          //When this is destroyed, make sure all the observers are no longer
          //linked to this.

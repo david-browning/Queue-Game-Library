@@ -14,7 +14,7 @@ namespace qgl::graphics::gpu::render
 
       scissor(scissor&&) = default;
 
-      virtual ~scissor() noexcept = default;
+      ~scissor() noexcept = default;
 
       const D3D12_RECT* get() const noexcept;
 

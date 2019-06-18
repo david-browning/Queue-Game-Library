@@ -18,7 +18,7 @@ namespace qgl::graphics::gpu
 
       srv_descriptor_heap(srv_descriptor_heap&&) = default;
 
-      virtual ~srv_descriptor_heap() = default;
+      virtual ~srv_descriptor_heap() noexcept = default;
 
      /*
       startIndex: The index where to start in this descriptor table.

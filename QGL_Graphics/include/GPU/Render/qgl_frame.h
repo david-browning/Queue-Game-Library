@@ -48,7 +48,7 @@ namespace qgl::graphics::gpu::render
       /*
        Destructor.
        */
-      virtual ~frame();
+      ~frame();
 
       /*
        Returns a pointer to the render target.

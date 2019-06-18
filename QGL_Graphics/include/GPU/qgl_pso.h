@@ -51,7 +51,7 @@ namespace qgl::graphics::gpu
       /*
        Destructor.
        */
-      virtual ~pipeline_state() noexcept;
+      ~pipeline_state() noexcept;
 
       /*
        Sets the depth stencil state, format, and render target views. If the 

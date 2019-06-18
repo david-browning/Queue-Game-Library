@@ -25,7 +25,7 @@ namespace qgl::graphics
       /*
        Destructor
        */
-      virtual ~window() noexcept;
+      ~window() noexcept;
 
       /*
        Returns true if the window is in full screen.

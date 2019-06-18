@@ -18,7 +18,7 @@ namespace qgl::graphics::gpu
 
       cbv_descriptor_heap(cbv_descriptor_heap&&) = default;
 
-      virtual ~cbv_descriptor_heap() = default;
+      virtual ~cbv_descriptor_heap() noexcept = default;
 
      /*
       startIndex: The index where to start in this descriptor table.

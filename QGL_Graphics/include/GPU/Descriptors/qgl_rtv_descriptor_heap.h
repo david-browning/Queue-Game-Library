@@ -17,7 +17,7 @@ namespace qgl::graphics::gpu
 
       rtv_descriptor_heap(rtv_descriptor_heap&&) = default;
 
-      virtual ~rtv_descriptor_heap() = default;
+      virtual ~rtv_descriptor_heap() noexcept = default;
    };
 
 }

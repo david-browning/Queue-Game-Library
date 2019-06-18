@@ -34,7 +34,7 @@ namespace qgl::graphics::gpu::render
 
       viewport(viewport&&) = default;
 
-      virtual ~viewport() noexcept = default;
+      ~viewport() noexcept = default;
 
       const D3D12_VIEWPORT* get() const noexcept;
 

@@ -18,7 +18,7 @@ namespace qgl::graphics::gpu
 
       uav_descriptor_heap(uav_descriptor_heap&&) = default;
 
-      virtual ~uav_descriptor_heap() = default;
+      virtual ~uav_descriptor_heap() noexcept = default;
 
      /*
       startIndex: The index where to start in this descriptor table.

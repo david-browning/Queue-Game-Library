@@ -53,7 +53,7 @@ namespace qgl::graphics::sync
         Destructor signals one more time and waits until the event has
         completed before destroying everything.
        */
-      virtual ~fence()
+      ~fence()
       {
          //Lock the mutex.
          m_mutex.lock();

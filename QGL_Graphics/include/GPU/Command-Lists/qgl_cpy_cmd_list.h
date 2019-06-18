@@ -15,7 +15,7 @@ namespace qgl::graphics::gpu
 
       copy_command_list(copy_command_list&&);
 
-      virtual ~copy_command_list();
+      virtual ~copy_command_list() noexcept;
 
       /*
        Throws exception.

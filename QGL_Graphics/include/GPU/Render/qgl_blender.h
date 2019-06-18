@@ -33,7 +33,7 @@ namespace qgl::graphics::gpu::render
       /*
        Destructor.
        */
-      virtual ~blender() noexcept = default;
+      ~blender() noexcept = default;
 
       /*
        Returns a description of the blender.

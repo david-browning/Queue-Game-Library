@@ -31,7 +31,7 @@ namespace qgl::graphics::gpu
       /*
        Destructor.
        */
-      virtual ~root_signature() noexcept;
+      ~root_signature() noexcept;
 
       /*
        Returns a const pointer to the D3D root signature.

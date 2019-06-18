@@ -38,7 +38,7 @@ namespace qgl::graphics::gpu
       /*
        Destructor.
        */
-      virtual ~descriptor_range() noexcept = default;
+      ~descriptor_range() noexcept = default;
 
       /*
        Returns a const pointer to the range.

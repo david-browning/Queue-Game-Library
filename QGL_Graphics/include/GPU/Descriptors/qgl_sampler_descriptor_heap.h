@@ -18,7 +18,7 @@ namespace qgl::graphics::gpu
 
       sampler_descriptor_heap(sampler_descriptor_heap&&) = default;
 
-      virtual ~sampler_descriptor_heap() = default;
+      virtual ~sampler_descriptor_heap() noexcept = default;
 
      /*
       startIndex: The index where to start in this descriptor table.
