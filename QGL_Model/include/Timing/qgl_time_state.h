@@ -7,8 +7,8 @@ namespace qgl
    struct time_state
    {
       public:
-      time_state(const TickT& deltaT,
-                 const TickT& totalT,
+      time_state(TickT deltaT,
+                 TickT totalT,
                  UINT framesps) :
          m_deltaTicks(deltaT),
          m_totalTicks(totalT),
@@ -30,23 +30,36 @@ namespace qgl
       /*
        Destructor
        */
-      virtual ~time_state() noexcept = default;
+      ~time_state() noexcept = default;
 
-      inline const TickT& delta_t() const
+      /*
+       Returns the number of ticks between the last two times the timer was
+       updated.
+       */
+      TickT delta_t() const noexcept
       {
          return m_deltaTicks;
       }
 
-      inline const TickT& ticks() const
+      /*
+       Returns the total number of ticks that the timer has been running.
+       */
+      TickT ticks() const noexcept
       {
          return m_totalTicks;
       }
 
-      inline UINT fps() const
+      /*
+       Returns the frames per second.
+       */
+      UINT fps() const noexcept
       {
          return m_fps;
       }
 
+      /*
+       Swaps the contents of first and last.
+       */
       friend void swap(time_state& first,
                        time_state& second) noexcept
       {
@@ -55,6 +68,9 @@ namespace qgl
          swap(first.m_totalTicks, second.m_totalTicks);
       }
 
+      /*
+       Assignment operator.
+       */
       time_state& operator=(time_state r) noexcept
       {
          swap(*this, r);

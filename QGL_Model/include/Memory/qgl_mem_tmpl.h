@@ -13,8 +13,8 @@ constexpr uintptr_t align_address(const uintptr_t addr,
  */
 template<typename T>
 constexpr void set_memory(T* const ptr,
-                         T val,
-                         size_t numElements)
+                          T val,
+                          size_t numElements)
 {
    if (numElements > 0 && ptr != nullptr)
    {
@@ -34,8 +34,8 @@ void copy_elements(T* const dest,
                    const T* source,
                    SizeT numElements)
 {
-   for(SizeT i = 0; i < numElements; i++)
-   { 
+   for (SizeT i = 0; i < numElements; i++)
+   {
       dest[i] = source[i];
    }
 }
@@ -62,8 +62,8 @@ constexpr size_t mem_length(const T* str,
  */
 template<typename T, typename SizeT = size_t>
 constexpr void reverse_elements(T* const mem,
-                           const SizeT start,
-                           const SizeT end)
+                                const SizeT start,
+                                const SizeT end)
 {
    if (start < end)
    {
@@ -77,7 +77,7 @@ constexpr void reverse_elements(T* const mem,
  */
 template<typename T, typename SizeT = size_t>
 constexpr void reverse_elements(T* const mem,
-                           const SizeT elementCount)
+                                const SizeT elementCount)
 {
    reverse_elements(mem, 0, elementCount - 1);
 }

@@ -3,11 +3,11 @@
 
 namespace qgl
 {
-    /*
-     A callback observer is a concrete version of iobserver. Instead of
-     listening to a subject using the update function, this raises a callback
-     when the subject notifies this observer.
-     */
+   /*
+    A callback observer is a concrete version of iobserver. Instead of
+    listening to a subject using the update function, this raises a callback
+    when the subject notifies this observer.
+    */
    template<class MessageT>
    class callback_observer : public iobserver<MessageT>
    {

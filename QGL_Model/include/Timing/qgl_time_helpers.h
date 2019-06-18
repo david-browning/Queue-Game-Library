@@ -13,15 +13,22 @@ namespace qgl
     */
    static constexpr uint64_t TICKS_PER_SECOND = TICKS_PER_MILLISECOND * 1000;
 
+   /*
+    Converts a number of ticks to milliseconds. Milliseconds should be a 
+    floating point type to avoid truncation.. 
+    */
    template<typename MillisecondsT, typename TickT>
-   inline static MillisecondsT ticks_to_milliseconds(TickT t)
+   constexpr MillisecondsT ticks_to_milliseconds(TickT t)
    {
       return static_cast<MillisecondsT>(t) /
          static_cast<MillisecondsT>(TICKS_PER_MILLISECOND);
    }
 
+   /*
+    Converts milliseconds to ticks.
+    */
    template<typename MillisecondsT, typename TickT>
-   inline static TickT milliseconds_to_ticks(MillisecondsT ms)
+   constexpr TickT milliseconds_to_ticks(MillisecondsT ms)
    {
       return static_cast<TickT>(ms *
                                 static_cast<MillisecondsT>(
@@ -30,20 +37,22 @@ namespace qgl
    }
 
    /*
-    Converts t ticks into seconds.
+    Converts t ticks into seconds. Seconds should be a floating point type to
+    avoid truncation.
     */
    template<typename SecondsT, typename TickT>
-   inline static SecondsT ticks_to_seconds(TickT t)
+   constexpr SecondsT ticks_to_seconds(TickT t)
    {
       return static_cast<SecondsT>(t) /
          static_cast<SecondsT>(TICKS_PER_SECOND);
    }
 
    /*
-    Converts s seconds to ticks.
+    Converts s seconds to ticks. Seconds should be a floating point type to 
+    avoid truncation.
     */
    template<typename SecondsT, typename TickT>
-   inline static TickT seconds_to_ticks(SecondsT s)
+   constexpr TickT seconds_to_ticks(SecondsT s)
    {
       return static_cast<TickT>(s *
                                 static_cast<SecondsT>(TICKS_PER_SECOND));

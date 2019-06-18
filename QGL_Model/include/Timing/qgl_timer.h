@@ -6,9 +6,9 @@
 namespace qgl
 {
    /*
-    SecondsT must be a floating-point type like float or double. Using an
+    SecondsT should be a floating-point type like float or double. Using an
     integral type will cause elapsed seconds to be zero due to truncation.
-    TickT must be integral because ticks are whole numbers.
+    TickT should be integral because ticks are whole numbers.
     */
    template<typename TickT>
    class timer
@@ -71,22 +71,18 @@ namespace qgl
        is running quickly.
        Set the tolerance using target_tolerance().
        */
-      inline const TickT& target_tps() const noexcept
+      TickT target_tps() const noexcept
       {
          return m_targetTicks;
       }
 
-      inline TickT& target_tps() noexcept
-      {
-         return m_targetTicks;
-      }
-
-      inline const TickT& target_tolerance() const noexcept
-      {
-         return m_targetTolerance;
-      }
-
-      inline TickT& target_tolerance() noexcept
+      /*
+       The tolerance of how close elapsed ticks can be to the target elapsed 
+       ticks.
+       If the elapsed ticks is within the tolerance of the target, then the
+       elapsed ticks are clamped.
+       */
+      TickT target_tolerance() const noexcept
       {
          return m_targetTolerance;
       }
@@ -97,18 +93,7 @@ namespace qgl
        This is useful to keep the timer from suddenly jumping after the
        engine was paused.
        */
-      inline const TickT& max_ticks() const noexcept
-      {
-         return m_maxDelta;
-      }
-
-      /*
-       Gets or sets the maximum number of ticks that can pass between two
-       calls to tick().
-       This is useful to keep the timer from suddenly jumping after the
-       engine was paused.
-       */
-      inline TickT& max_ticks() noexcept
+      TickT max_ticks() const noexcept
       {
          return m_maxDelta;
       }
@@ -116,12 +101,15 @@ namespace qgl
       /*
        Returns the number of ticks between the last two calls to tick().
        */
-      inline TickT deltaT() const noexcept
+      TickT deltaT() const noexcept
       {
          return m_elapsedTicks;
       }
 
-      inline UINT fps() const noexcept
+      /*
+       Returns the number of frames per second.
+       */
+      UINT fps() const noexcept
       {
          return m_framesPerSecond;
       }
@@ -130,11 +118,15 @@ namespace qgl
        Returns the number of ticks between when tick() was first called to
        when it was last called.
        */
-      inline TickT ticks() const noexcept
+      TickT ticks() const noexcept
       {
          return m_totalTicks;
       }
 
+      /*
+       Returns the state of the timer since it was last updated. 
+       The state is updated by calling tick().
+       */
       time_state<TickT> state() const
       {
          return time_state<TickT>(m_elapsedTicks,
@@ -198,6 +190,9 @@ namespace qgl
          }
       }
 
+      /*
+       Swaps the contents of first and second.
+       */
       friend void swap(timer& first,
                        timer& second) noexcept
       {
@@ -216,6 +211,9 @@ namespace qgl
          swap(first.m_framesThisSecond, second.m_framesThisSecond);
       }
 
+      /*
+       Assignment operator.
+       */
       timer& operator=(timer r) noexcept
       {
          swap(*this, r);
@@ -253,10 +251,10 @@ namespace qgl
       TickT m_targetTicks;
 
       /*
-       The tolerance of how close elapsed ticks to the target elapsed ticks.
-       If the elapsed ticks is withing the tolerance of the target, then the
-       elapsed
-       ticks are clamped.
+       The tolerance of how close elapsed ticks can be to the target elapsed 
+       ticks.
+       If the elapsed ticks is within the tolerance of the target, then the
+       elapsed ticks are clamped.
        */
       TickT m_targetTolerance;
 

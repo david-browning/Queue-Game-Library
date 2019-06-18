@@ -5,11 +5,11 @@
 
 namespace qgl
 {
-    /*
-     A subject sends messages to observers using the notify method.
-     MessageT: Type of message to pass to the observers. Recommend keeping
-     MessageT <= 8 bytes because it cannot be passed by reference.
-     */
+   /*
+    A subject sends messages to observers using the notify method.
+    MessageT: Type of message to pass to the observers. Recommend keeping
+    MessageT <= 8 bytes because it cannot be passed by reference.
+    */
    template<class MessageT>
    class subject
    {
@@ -86,8 +86,8 @@ namespace qgl
       */
       virtual ~subject() noexcept
       {
-          //When this is destroyed, make sure all the observers are no longer
-          //linked to this.
+         //When this is destroyed, make sure all the observers are no longer
+         //linked to this.
          for (auto observer : m_observer_ps)
          {
             observer->unsubscribe(this);
@@ -96,7 +96,7 @@ namespace qgl
 
       void add(iobserver<MessageT>* const observer_p)
       {
-          //This keeps track of the observer.
+         //This keeps track of the observer.
          m_observer_ps.insert(observer_p);
 
          //Observer keeps track of it's subjects.
@@ -105,7 +105,7 @@ namespace qgl
 
       void remove(iobserver<MessageT>* const observer_p)
       {
-          //This no longer notifies the observer.
+         //This no longer notifies the observer.
          m_observer_ps.erase(observer_p);
 
          //Observer is no longer linked to this.

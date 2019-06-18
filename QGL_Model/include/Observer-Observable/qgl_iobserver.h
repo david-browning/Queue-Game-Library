@@ -17,27 +17,27 @@ namespace qgl
    {
       public:
 
-        /*
-         Forward declaration of a subject.
-         This is so we can mark subject as a friend of iobservable and make
-         iobservable::update(), subscribe, and unsubscribe private.
-         This prevents programmers from calling update outside of its intended
-         scope.
-         */
+      /*
+       Forward declaration of a subject.
+       This is so we can mark subject as a friend of iobservable and make
+       iobservable::update(), subscribe, and unsubscribe private.
+       This prevents programmers from calling update outside of its intended
+       scope.
+       */
       template<class msgt>
       friend class subject;
 
-    /*
-     Constructor
-     */
+      /*
+       Constructor
+       */
       iobserver()
       {
 
       }
 
-    /*
-     Copy constructor.
-     */
+      /*
+       Copy constructor.
+       */
       iobserver(const iobserver& c) :
          m_notifier_s(c.m_notifier_s)
       {
