@@ -4,6 +4,7 @@
 * Test qgl::content:: entry importers
 * Test qgl::content:: file loaders
 * Test qgl::qgl_version_t
+* Test qgl::icommand
 * Verify or implement iterators for icontent_file, icontent_store, and 
   icontent_project.
 * icontent_project and icontent_file must support erasing. 

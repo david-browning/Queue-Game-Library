@@ -38,6 +38,9 @@
     <Filter Include="Header Files\Interfaces">
       <UniqueIdentifier>{ca2b5dc4-045b-45e2-9c54-c02b0e26146a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Interfaces">
+      <UniqueIdentifier>{1904813c-45f7-43fd-aa9a-4e494fd468a2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLModel.h">
@@ -97,6 +100,9 @@
     <ClInclude Include="include\Interfaces\qgl_interface.h">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
+    <ClInclude Include="include\Interfaces\qgl_icommand.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="QGL_Model.def">
@@ -119,6 +125,9 @@
     </ClCompile>
     <ClCompile Include="qgl_version.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_icommand.cpp">
+      <Filter>Source Files\Interfaces</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
