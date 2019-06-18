@@ -57,8 +57,12 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER entryMeta(RESOURCE_TYPE_BRUSH,
                                            CONTENT_LOADER_ID_BRUSH,
                                            L"Brush");
-         projectWrite->emplace_data_back(&entryMeta, L"C:\\SomeFile.txt");
-         projectWrite->emplace_data_back(&entryMeta, L"C:\\SomeFile.txt");
+         winrt::check_hresult(projectWrite->emplace_data_back(
+            &entryMeta,
+            L"C:\\SomeFile.txt"));
+         winrt::check_hresult(projectWrite->emplace_data_back(
+            &entryMeta,
+            L"C:\\SomeFile.txt"));
 
          projectWrite->flush();
 
@@ -105,8 +109,12 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER entryMeta(RESOURCE_TYPE_BRUSH,
                                            CONTENT_LOADER_ID_BRUSH,
                                            L"Brush");
-         projectWrite->emplace_data_back(&entryMeta, L"C:\\SomeFile.txt");
-         projectWrite->emplace_data_back(&entryMeta, L"C:\\SomeFile2.txt");
+         winrt::check_hresult(projectWrite->emplace_data_back(
+            &entryMeta,
+            L"C:\\SomeFile.txt"));
+         winrt::check_hresult(projectWrite->emplace_data_back(
+            &entryMeta,
+            L"C:\\SomeFile2.txt"));
 
          //Flush it
          projectWrite->flush();
@@ -193,8 +201,12 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER entryMeta(RESOURCE_TYPE_BRUSH,
                                            CONTENT_LOADER_ID_BRUSH,
                                            L"Brush");
-         projectWrite->emplace_data_back(&entryMeta, L"C:\\SomeFile.txt");
-         projectWrite->emplace_data_back(&entryMeta, L"C:\\SomeFile2.txt");
+         winrt::check_hresult(projectWrite->emplace_data_back(
+            &entryMeta,
+            L"C:\\SomeFile.txt"));
+         winrt::check_hresult(projectWrite->emplace_data_back(
+            &entryMeta,
+            L"C:\\SomeFile2.txt"));
 
          Assert::IsTrue(projectWrite->at(0)->first == entryMeta,
                         L"The metadata is not correct for entry 0.");
@@ -238,11 +250,11 @@ namespace QGL_Content_UnitTests
                         L"The size should be 0.");
 
          CONTENT_METADATA_BUFFER def;
-         projectWrite->emplace_data_back(&def, L"0");
+         winrt::check_hresult(projectWrite->emplace_data_back(&def, L"0"));
          Assert::IsTrue(1 == projectWrite->size(),
                         L"The size should be 1.");
 
-         projectWrite->emplace_data_back(&def, L"2");
+         winrt::check_hresult(projectWrite->emplace_data_back(&def, L"2"));
          Assert::IsTrue(2 == projectWrite->size(),
                         L"The size should be 2.");
          projectWrite->release();
@@ -268,7 +280,9 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER entry3;
 
          //Insert an item.
-         projectWrite->emplace_data_back(&entry1, L"Str0");
+         winrt::check_hresult(projectWrite->emplace_data_back(
+            &entry1,
+            L"Str0"));
 
          //Erase it.
          projectWrite->erase(projectWrite->cbegin());
@@ -283,9 +297,15 @@ namespace QGL_Content_UnitTests
                         L"The iterators should be equal");
 
          //Insert 3 items
-         projectWrite->emplace_data_back(&entry1, L"Str1");
-         projectWrite->emplace_data_back(&entry2, L"Str2");
-         projectWrite->emplace_data_back(&entry3, L"Str3");
+         winrt::check_hresult(projectWrite->emplace_data_back(
+            &entry1,
+            L"Str1"));
+         winrt::check_hresult(projectWrite->emplace_data_back(
+            &entry2,
+            L"Str2"));
+         winrt::check_hresult(projectWrite->emplace_data_back(
+            &entry3,
+            L"Str3"));
 
          //Verify size is 3.
          Assert::AreEqual(static_cast<size_t>(3),
@@ -342,8 +362,9 @@ namespace QGL_Content_UnitTests
 
          for (size_t i = 0; i < metaDatas.size(); i++)
          {
-            projectWrite->emplace_data_back(&metaDatas[i],
-                                       paths[i].c_str());
+            winrt::check_hresult(projectWrite->emplace_data_back(
+               &metaDatas[i],
+               paths[i].c_str()));
          }
 
          size_t i = 0;
@@ -460,8 +481,12 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER entryMeta(RESOURCE_TYPE_BRUSH,
                                            CONTENT_LOADER_ID_BRUSH,
                                            L"Brush");
-         projectWrite->emplace_data_back(&entryMeta, L"C:\\SomeFile.txt");
-         projectWrite->emplace_data_back(&entryMeta, L"C:\\SomeFile2.txt");
+         winrt::check_hresult(projectWrite->emplace_data_back(
+            &entryMeta, 
+            L"C:\\SomeFile.txt"));
+         winrt::check_hresult(projectWrite->emplace_data_back(
+            &entryMeta, 
+            L"C:\\SomeFile2.txt"));
 
          //Flush it
          projectWrite->flush();

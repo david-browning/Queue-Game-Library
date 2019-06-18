@@ -5,57 +5,55 @@
 
 namespace qgl::content
 {
-   extern "C"
+   struct file_buffer_1_0 : public ifile_buffer
    {
-      struct file_buffer_1_0 : public ifile_buffer
+      HRESULT make(const wchar_t* absPath)
       {
-         HRESULT make(const wchar_t* absPath)
+         auto hr = open_file_read(absPath, &m_hndl);
+         if (FAILED(hr))
          {
-            auto hr = open_file_read(absPath, &m_hndl);
-            if (FAILED(hr))
-            {
-               return hr;
-            }
-
-            size_t sz = 0;
-            hr = file_size(&m_hndl, &sz);
-            if (FAILED(hr))
-            {
-               return hr;
-            }
-
-            m_buffer.resize(sz);
-            return read_file_sync(&m_hndl, sz, 0, m_buffer.data());
+            return hr;
          }
 
-         virtual void release()
+         size_t sz = 0;
+         hr = file_size(&m_hndl, &sz);
+         if (FAILED(hr))
          {
-            //Calls the destructor.
-            delete this;
+            return hr;
          }
 
-         virtual const void* const_data() const noexcept
-         {
-            return m_buffer.data();
-         }
+         m_buffer.resize(sz);
+         return read_file_sync(&m_hndl, sz, 0, m_buffer.data());
+      }
 
-         virtual size_t size() const noexcept
-         {
-            return m_buffer.size();
-         }
+      virtual void release()
+      {
+         //Calls the destructor.
+         delete this;
+      }
 
-         virtual const file_handle* handle() const noexcept
-         {
-            return &m_hndl;
-         }
+      virtual const void* const_data() const noexcept
+      {
+         return m_buffer.data();
+      }
 
-         private:
-         file_handle m_hndl;
-         std::vector<uint8_t> m_buffer;
-      };
-   }
+      virtual size_t size() const noexcept
+      {
+         return m_buffer.size();
+      }
 
-   HRESULT qgl_open_file_buffer(const wchar_t* filePath, 
+      virtual const file_handle* handle() const noexcept
+      {
+         return &m_hndl;
+      }
+
+      private:
+      file_handle m_hndl;
+      std::vector<uint8_t> m_buffer;
+   };
+
+
+   HRESULT qgl_open_file_buffer(const wchar_t* filePath,
                                 qgl::qgl_version_t v,
                                 ifile_buffer** out_p) noexcept
    {

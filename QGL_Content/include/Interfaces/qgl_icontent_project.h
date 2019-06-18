@@ -42,7 +42,7 @@ namespace qgl::content
          E_BOUNDS if the position is invalid.
          S_OK on success.
        */
-      virtual HRESULT insert_shared_entry(
+      [[nodiscard]] virtual HRESULT insert_shared_entry(
          const content_project_entry_pair::first_type* entry,
          const wchar_t* str,
          size_t idx) noexcept = 0;
@@ -54,7 +54,7 @@ namespace qgl::content
          E_BOUNDS if the position is invalid.
          S_OK on success.
        */
-      virtual HRESULT insert_data_entry(
+      [[nodiscard]] virtual HRESULT insert_data_entry(
          const content_project_entry_pair::first_type* entry,
          const wchar_t* str,
          size_t idx) noexcept = 0;
@@ -66,7 +66,7 @@ namespace qgl::content
             entries::shared_content_entry for information about good strings.
          S_OK on success.
        */
-      virtual HRESULT emplace_shared_back(
+      [[nodiscard]] virtual HRESULT emplace_shared_back(
          const content_project_entry_pair::first_type* entry,
          const wchar_t* str) = 0;
 
@@ -75,7 +75,7 @@ namespace qgl::content
        Returns:
          S_OK on success.
        */
-      virtual HRESULT emplace_data_back(
+      [[nodiscard]] virtual HRESULT emplace_data_back(
          const content_project_entry_pair::first_type* entry,
          const wchar_t* str) = 0;
 
@@ -146,29 +146,31 @@ namespace qgl::content
       E_BADMAGIC if the file is not correct.
       S_OK if the pointer was constructed.
     */
-   extern "C" QGL_CONTENT_API HRESULT QGL_CC qgl_open_content_project(
-      const wchar_t* filePath,
-      qgl_version_t v,
-      icontent_project** out_p);
+   extern "C"[[nodiscard]] QGL_CONTENT_API HRESULT QGL_CC 
+      qgl_open_content_project(
+         const wchar_t* filePath,
+         qgl_version_t v,
+         icontent_project** out_p);
 
-   /*
-    Opens a content project file in read-write mode. The storage file must
-    allow write permissions.
-    If the file does not exist, this creates a new one.
-    When creating a new file, the content metadata is default and the list
-    of project entries is empty.
+      /*
+       Opens a content project file in read-write mode. The storage file must
+       allow write permissions.
+       If the file does not exist, this creates a new one.
+       When creating a new file, the content metadata is default and the list
+       of project entries is empty.
 
-    Be sure to call release on the returned pointer or wrap it
-    using make_unique.
-    Returns:
-      E_INVALIDARG if out_p is nullptr.
-      E_OUTOFMEMORY if memory cannot be allocated.
-      E_NOINTERFACE if the version is not correct.
-      E_BADMAGIC if the file is not correct.
-      S_OK if the pointer was constructed.
-    */
-   extern "C" QGL_CONTENT_API HRESULT QGL_CC qgl_open_content_project_sf(
-      const winrt::Windows::Storage::StorageFile& f,
-      qgl_version_t v,
-      icontent_project** out_p);
+       Be sure to call release on the returned pointer or wrap it
+       using make_unique.
+       Returns:
+         E_INVALIDARG if out_p is nullptr.
+         E_OUTOFMEMORY if memory cannot be allocated.
+         E_NOINTERFACE if the version is not correct.
+         E_BADMAGIC if the file is not correct.
+         S_OK if the pointer was constructed.
+       */
+   extern "C"[[nodiscard]] QGL_CONTENT_API HRESULT QGL_CC
+      qgl_open_content_project_sf(
+         const winrt::Windows::Storage::StorageFile& f,
+         qgl_version_t v,
+         icontent_project** out_p);
 }

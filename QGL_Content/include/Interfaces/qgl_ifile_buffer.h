@@ -31,8 +31,9 @@ namespace qgl::content
       };
    }
 
-   extern "C" QGL_CONTENT_API HRESULT QGL_CC qgl_open_file_buffer(
-      const wchar_t* filePath,
-      qgl::qgl_version_t v,
-      ifile_buffer** out_p) noexcept;
+   extern "C"[[nodiscard]] QGL_CONTENT_API HRESULT QGL_CC
+      qgl_open_file_buffer(
+         const wchar_t* filePath,
+         qgl::qgl_version_t v,
+         ifile_buffer** out_p) noexcept;
 }

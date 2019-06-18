@@ -34,7 +34,7 @@ namespace qgl::content
       virtual bool loaded(id_t id) const noexcept = 0;
 
       /*
-       Maps a resource type and loader ID to a loader function. 
+       Maps a resource type and loader ID to a loader function.
        The content store looks up the loader function when loading a file
        into memory. The loader function must be mapped or the file cannot be
        loaded.
@@ -46,23 +46,26 @@ namespace qgl::content
 
       /*
        Loads the content from the relative path and sets the ID that can be
-       used to lookup a pointer to the loaded item. If the file is already 
+       used to lookup a pointer to the loaded item. If the file is already
        loaded, this sets id_p to the existing content's ID.
        Returns:
          S_OK if the file was loaded.
          S_ALREADYMAPPED if the file was already loaded. This is not an error.
          Failed HRESULT if the file cannot be opened.
-         E_NOLOADER if there is no loader with the correct resource type or 
+         E_NOLOADER if there is no loader with the correct resource type or
             loader ID.
          E_UNEXPECTED if the content file cannot be loaded. This most likely
             indicates a problem with the content file.
        This operation is thread-safe.
+       If this function fails to load content, the ID will be allocated, but 
+       does not point to any content file. Attempting to load the file again 
+       will use the same ID.
        */
-      virtual HRESULT load(const wchar_t* relative,
-                           id_t* id_p) noexcept = 0;
+      [[nodiscard]] virtual HRESULT load(const wchar_t* relative,
+                                         id_t* id_p) noexcept = 0;
 
       /*
-       Enqueues a content file to be loaded in parallel with other queued 
+       Enqueues a content file to be loaded in parallel with other queued
        files. Call flush_loads to load all queued files on a background thread.
        There are two ways to obtain the content files' IDs:
         1. Reserve the IDs before calling flush_loads and store the returned ID
@@ -71,7 +74,7 @@ namespace qgl::content
            finished.
        This operation is thread-safe.
        If you call this while the queue is being flushed, this will block until
-       the queue is empty. When this returns, the file will be added to the 
+       the queue is empty. When this returns, the file will be added to the
        queue for flushing next time.
        */
       virtual void queue_load(const wchar_t* relative) noexcept = 0;
@@ -86,7 +89,7 @@ namespace qgl::content
       /*
        Unloads the memory associated with the given content ID. After unloaded,
        the content ID is not valid, meaning you cannot lookup the content item
-       pointer using the ID. 
+       pointer using the ID.
        The content can be loaded again, but it will most likely have a new
        ID and a new pointer.
        Does nothing if there is no loaded content with the given ID.
@@ -94,10 +97,10 @@ namespace qgl::content
       virtual void unload(id_t id) noexcept = 0;
 
       /*
-       Returns a const pointer to content. 
-       Returns nullptr if the content ID is not mapped in the store. 
+       Returns a const pointer to content.
+       Returns nullptr if the content ID is not mapped in the store.
        Returns nullptr if the content is valid, but not loaded.
-       The content store manages the pointer's memory. Do not free or 
+       The content store manages the pointer's memory. Do not free or
        reallocate the memory.
        */
       virtual const content_item* const_get(id_t id) const noexcept = 0;
@@ -125,7 +128,7 @@ namespace qgl::content
    }
 
    /*
-    Be sure to call release on the returned pointer or wrap it 
+    Be sure to call release on the returned pointer or wrap it
     using make_unique.
     Returns:
       E_INVALIDARG if out_p is nullptr.
@@ -133,8 +136,9 @@ namespace qgl::content
       E_NOINTERFACE if the version is not correct.
       S_OK if the pointer was constructed.
     */
-   extern "C" QGL_CONTENT_API HRESULT QGL_CC qgl_create_content_store(
-      const wchar_t* storePath, 
-      qgl_version_t v,
-      icontent_store** out_p) noexcept;
+   extern "C"[[nodiscard]] QGL_CONTENT_API HRESULT QGL_CC
+      qgl_create_content_store(
+         const wchar_t* storePath,
+         qgl_version_t v,
+         icontent_store** out_p) noexcept;
 }

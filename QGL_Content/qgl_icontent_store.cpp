@@ -100,7 +100,7 @@ namespace qgl::content
          //This loads the file's header and dictionary.
          auto absPath = abs_path(relative);
          icontent_file* filePtr = nullptr;
-         auto hr = qgl_open_content_file(relative,
+         auto hr = qgl_open_content_file(absPath.c_str(),
                                          m_version,
                                          &filePtr);
          auto fileSafe = qgl::make_unique<icontent_file>(filePtr);

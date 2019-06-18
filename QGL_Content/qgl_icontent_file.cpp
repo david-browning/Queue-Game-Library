@@ -251,8 +251,8 @@ namespace qgl::content
 
                try
                {
-                  entries::content_variant_entry cbt(path.c_str());
-                  m_entryDataToWrite.push_back(cbt);
+                  m_entryDataToWrite.push_back(
+                     entries::content_variant_entry(path.c_str()));
                }
                catch (std::invalid_argument&)
                {
@@ -273,8 +273,8 @@ namespace qgl::content
                   return hr;
                }
 
-               entries::content_variant_entry cbt(ret.data(), ret.size());
-               m_entryDataToWrite.push_back(cbt);
+               m_entryDataToWrite.push_back(
+                  entries::content_variant_entry(ret.data(), ret.size()));
             }
 
             dictEntryOffset += sizeof(CONTENT_DICTIONARY_ENTRY_BUFFER);
