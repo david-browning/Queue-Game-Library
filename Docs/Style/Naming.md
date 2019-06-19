@@ -19,6 +19,7 @@
   with "_rt". Ex: "file_metadata_rt".
 
 ## Structs
+* Structs use all capital letters, with words separated by underscores.
 
 ## Interfaces
 * Interfaces are classes that provide at least 1 pure abstract function.
@@ -76,7 +77,6 @@ required to describe the purpose of the variable.
   Ex: "p_construct()".
 
 ## Function Parameters
-
 
 ## Template Parameters
 

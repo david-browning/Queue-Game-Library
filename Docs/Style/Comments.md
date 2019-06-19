@@ -43,24 +43,24 @@ Definitions do not need to be commented if the declaration is commented.
 
 Ex:
 
-/*
- Compiles a content project into a content file and saves it at the location
- pointed to by handle_p.
- Returns:
-    E_ACCESS if access is denied to the file.
-    E_UNEXPECTED if the project contains invalid data.
-    S_OK on success.
- */
-HRESULT compile_file(const icontent_project* proj_p,
-                     const file_handle* handle_p) noexcept;
+/*  
+ Compiles a content project into a content file and saves it at the location  
+ pointed to by handle_p.  
+ Returns:  
+    E_ACCESS if access is denied to the file.  
+    E_UNEXPECTED if the project contains invalid data.  
+    S_OK on success.  
+ */  
+HRESULT compile_file(const icontent_project* proj_p,  
+                     const file_handle* handle_p) noexcept;  
 
-/*
- Number of characters in the wide string, not including null.
- */
-size_t m_numChars;
+/*  
+ Number of characters in the wide string, not including null.  
+ */  
+size_t m_numChars;  
 
-/*
- Abstracts a QGL content file located on disk. Provides functions for reading 
- and writing data to the file.
- */
-class icontent_file : public iqgl;
+/*  
+ Abstracts a QGL content file located on disk. Provides functions for reading   
+ and writing data to the file.  
+ */  
+class icontent_file : public iqgl;  
