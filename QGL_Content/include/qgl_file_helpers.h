@@ -36,6 +36,12 @@ namespace qgl::content
          auto lastError = GetLastError();
          if (lastError != ERROR_IO_PENDING)
          {
+            #ifdef DEBUG
+            std::wstringstream ws;
+            ws << L"Could not read the file. Last error was " << lastError <<
+               std::endl;
+            OutputDebugString(ws.str().c_str());
+            #endif
             return HRESULT_FROM_WIN32(lastError);
          }
       }
@@ -66,6 +72,12 @@ namespace qgl::content
          auto lastError = GetLastError();
          if (lastError != ERROR_IO_PENDING)
          {
+            #ifdef DEBUG
+            std::wstringstream ws;
+            ws << L"Could not write to the file. Last error was " <<
+               lastError << std::endl;
+            OutputDebugString(ws.str().c_str());
+            #endif
             return HRESULT_FROM_WIN32(lastError);
          }
       }

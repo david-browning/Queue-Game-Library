@@ -509,6 +509,9 @@ namespace qgl::graphics
    {
       if (out_p == nullptr)
       {
+         #ifdef DEBUG
+         OutputDebugString(L"out_p cannot be nullptr.");
+         #endif
          return E_INVALIDARG;
       }
 
@@ -523,12 +526,18 @@ namespace qgl::graphics
          }
          default:
          {
+            #ifdef DEBUG
+            OutputDebugString(L"This QGL version is not supported.");
+            #endif
             return E_NOINTERFACE;
          }
       }
 
       if (ret == nullptr)
       {
+         #ifdef DEBUG
+         OutputDebugString(L"Out of memory!");
+         #endif
          return E_OUTOFMEMORY;
       }
 

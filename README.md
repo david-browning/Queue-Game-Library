@@ -57,8 +57,6 @@
   leaking exceptions? Return bool or HRESULT?
 * Change qgl::content::check_loader_and_resource to noexcept to avoid file 
   loaders leaking exceptions? Return bool or HRESULT?
-* Before returning from a function with a failed HRESULT, print a message to
-  the debug console only in DEBUG mode.
 * Define vertex layout in content. Needs entry importer and file loader.
 * OBJ Importer. Needs to be aware of the vertex layout.
 * Define a component-like class for use in rendering, handling input, and 

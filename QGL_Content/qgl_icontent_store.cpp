@@ -92,6 +92,9 @@ namespace qgl::content
              m_IDContentMap.at(*id_p).has_value())
          {
             //Return the ID for the already loaded content.
+            #ifdef DEBUG
+            OutputDebugString(L"This content ID is already mapped.");
+            #endif
             return S_ALREADYMAPPED;
          }
          //Else, continue to load the content.
@@ -123,6 +126,9 @@ namespace qgl::content
          auto contentPtr = loaderFn(fileSafe.get(), *id_p);
          if (contentPtr == nullptr)
          {
+            #ifdef DEBUG
+            OutputDebugString(L"The content loader failed.");
+            #endif
             return E_UNEXPECTED;
          }
 
@@ -264,8 +270,11 @@ namespace qgl::content
                                     qgl_version_t v,
                                     icontent_store** out_p) noexcept
    {
-      if (out_p == nullptr)
+      if (out_p == nullptr || storePath == nullptr)
       {
+         #ifdef DEBUG
+         OutputDebugString(L"out_p cannot be nullptr.");
+         #endif
          return E_INVALIDARG;
       }
 
@@ -281,12 +290,18 @@ namespace qgl::content
          }
          default:
          {
+            #ifdef DEBUG
+            OutputDebugString(L"This QGL version is not supported.");
+            #endif
             return E_NOINTERFACE;
          }
       }
 
       if (ret == nullptr)
       {
+         #ifdef DEBUG
+         OutputDebugString(L"Out of memory!");
+         #endif
          return E_OUTOFMEMORY;
       }
 

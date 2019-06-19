@@ -46,7 +46,13 @@ HRESULT qgl::content::open_file_read(const wchar_t* filePath,
                         &params);
    if (h == INVALID_HANDLE_VALUE)
    {
-      return HRESULT_FROM_WIN32(GetLastError());
+      auto lastError = GetLastError();
+      #ifdef DEBUG
+      std::wstringstream ws;
+      ws << "Could not open file. Last error is " << lastError << std::endl;
+      OutputDebugString(ws.str().c_str());
+      #endif
+      return HRESULT_FROM_WIN32(lastError);
    }
 
    out_p->attach(h);
@@ -61,6 +67,9 @@ HRESULT qgl::content::open_file_read_sf(
       f.try_as<IStorageItemHandleAccess>();
    if (!handleAccess)
    {
+      #ifdef DEBUG
+      OutputDebugString(L"Could not cast the StorageFile.\n");
+      #endif
       return E_UNEXPECTED;
    }
 
@@ -86,7 +95,13 @@ HRESULT qgl::content::open_file_write(const wchar_t* filePath,
 
    if (h == INVALID_HANDLE_VALUE)
    {
-      return HRESULT_FROM_WIN32(GetLastError());
+      auto lastError = GetLastError();
+      #ifdef DEBUG
+      std::wstringstream ws;
+      ws << "Could not open file. Last error is " << lastError << std::endl;
+      OutputDebugString(ws.str().c_str());
+      #endif
+      return HRESULT_FROM_WIN32(lastError);
    }
 
    out_p->attach(h);
@@ -101,6 +116,9 @@ HRESULT qgl::content::open_file_write_sf(
       f.try_as<IStorageItemHandleAccess>();
    if (!handleAccess)
    {
+      #ifdef DEBUG
+      OutputDebugString(L"Could not cast the StorageFile.\n");
+      #endif
       return E_UNEXPECTED;
    }
 
@@ -126,7 +144,13 @@ HRESULT qgl::content::open_file_readwrite(const wchar_t* filePath,
 
    if (h == INVALID_HANDLE_VALUE)
    {
-      return HRESULT_FROM_WIN32(GetLastError());
+      auto lastError = GetLastError();
+      #ifdef DEBUG
+      std::wstringstream ws;
+      ws << "Could not open file. Last error is " << lastError << std::endl;
+      OutputDebugString(ws.str().c_str());
+      #endif
+      return HRESULT_FROM_WIN32(lastError);
    }
 
    out_p->attach(h);
@@ -141,6 +165,9 @@ HRESULT qgl::content::open_file_readwrite_sf(
       f.try_as<IStorageItemHandleAccess>();
    if (!handleAccess)
    {
+      #ifdef DEBUG
+      OutputDebugString(L"Could not cast the StorageFile.\n");
+      #endif
       return E_UNEXPECTED;
    }
 
@@ -162,13 +189,27 @@ HRESULT qgl::content::truncate_file(const file_handle* hdnl_p) noexcept
                                nullptr, FILE_BEGIN);
    if (!ret)
    {
-      return E_UNEXPECTED;
+      auto lastError = GetLastError();
+      #ifdef DEBUG
+      std::wstringstream ws;
+      ws << "Could not set file pointer. Last error is " << lastError << 
+         std::endl;
+      OutputDebugString(ws.str().c_str());
+      #endif
+      return HRESULT_FROM_WIN32(lastError);
    }
 
    ret = SetEndOfFile(hdnl_p->get());
    if (!ret)
    {
-      return E_UNEXPECTED;
+      auto lastError = GetLastError();
+      #ifdef DEBUG
+      std::wstringstream ws;
+      ws << "Could not set end of file. Last error is " << lastError <<
+         std::endl;
+      OutputDebugString(ws.str().c_str());
+      #endif
+      return HRESULT_FROM_WIN32(lastError);
    }
 
    return S_OK;
@@ -179,6 +220,9 @@ HRESULT qgl::content::file_size(const file_handle* hdnl_p,
 {
    if (out_p == nullptr)
    {
+      #ifdef DEBUG
+      OutputDebugString(L"out_p cannot be nullptr.\n");
+      #endif
       return E_INVALIDARG;
    }
 
@@ -192,7 +236,14 @@ HRESULT qgl::content::file_size(const file_handle* hdnl_p,
 
    if (!res)
    {
-      return HRESULT_FROM_WIN32(GetLastError());
+      auto lastError = GetLastError();
+      #ifdef DEBUG
+      std::wstringstream ws;
+      ws << "Could not get file info. Last error is " << lastError <<
+         std::endl;
+      OutputDebugString(ws.str().c_str());
+      #endif
+      return HRESULT_FROM_WIN32(lastError);
    }
 
    *out_p = static_cast<size_t>(fileInfo.EndOfFile.QuadPart);

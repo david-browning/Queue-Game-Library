@@ -161,6 +161,9 @@ namespace qgl::content
       {
          if (idx >= m_entries.size())
          {
+            #ifdef DEBUG
+            OutputDebugString(L"Index is out of bounds.");
+            #endif
             return E_BOUNDS;
          }
 
@@ -171,6 +174,9 @@ namespace qgl::content
          }
          catch (std::invalid_argument&)
          {
+            #ifdef DEBUG
+            OutputDebugString(L"The shared entry string is ill-formed.");
+            #endif
             return E_INVALIDARG;
          }
 
@@ -186,6 +192,9 @@ namespace qgl::content
       {
          if (idx >= m_entries.size())
          {
+            #ifdef DEBUG
+            OutputDebugString(L"Index is out of bounds.");
+            #endif
             return E_BOUNDS;
          }
 
@@ -205,6 +214,9 @@ namespace qgl::content
          }
          catch (std::invalid_argument&)
          {
+            #ifdef DEBUG
+            OutputDebugString(L"The shared entry string is ill-formed.");
+            #endif
             return E_INVALIDARG;
          }
 
@@ -427,6 +439,9 @@ namespace qgl::content
    {
       if (out_p == nullptr)
       {
+         #ifdef DEBUG
+         OutputDebugString(L"out_p cannot be nullptr.");
+         #endif
          return E_INVALIDARG;
       }
 
@@ -442,12 +457,18 @@ namespace qgl::content
          }
          default:
          {
+            #ifdef DEBUG
+            OutputDebugString(L"This QGL version is not supported.");
+            #endif
             return E_NOINTERFACE;
          }
       }
 
       if (ret == nullptr)
       {
+         #ifdef DEBUG
+         OutputDebugString(L"Out of memory!");
+         #endif
          return E_OUTOFMEMORY;
       }
 
@@ -462,6 +483,9 @@ namespace qgl::content
    {
       if (out_p == nullptr)
       {
+         #ifdef DEBUG
+         OutputDebugString(L"out_p cannot be nullptr.");
+         #endif
          return E_INVALIDARG;
       }
 
@@ -477,12 +501,18 @@ namespace qgl::content
          }
          default:
          {
+            #ifdef DEBUG
+            OutputDebugString(L"This QGL version is not supported.");
+            #endif
             return E_NOINTERFACE;
          }
       }
 
       if (ret == nullptr)
       {
+         #ifdef DEBUG
+         OutputDebugString(L"Out of memory!");
+         #endif
          return E_OUTOFMEMORY;
       }
 
