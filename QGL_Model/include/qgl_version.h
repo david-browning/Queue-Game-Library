@@ -64,6 +64,9 @@ namespace qgl
    };
    #pragma pack(pop)
 
+   static_assert(sizeof(qgl_version_t) == 4,
+                 "QGL versions must be 4 bytes.");
+
    constexpr QGL_OS_VERSION_FLAGS version_os(qgl_version_t version)
    {
       return static_cast<QGL_OS_VERSION_FLAGS>((version.Flags & 0xC000) >>

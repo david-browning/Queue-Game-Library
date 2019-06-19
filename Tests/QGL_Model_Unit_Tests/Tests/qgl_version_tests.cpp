@@ -16,15 +16,6 @@ namespace QGL_Model_Unit_Tests
       {
 
       }
-
-      /*
-       Test that the size of a version is 32 bits.
-       */
-      TEST_METHOD(SizeCorrect)
-      {
-
-      }
-
       /*
        Create a version, create a copy using the copy constructor.
        Check that the members are equal.
