@@ -4,6 +4,7 @@
 #include "include/GPU/Render/qgl_blender.h"
 #include "include/Content/qgl_rasterizer.h"
 #include "include/Content/qgl_shader.h"
+#include "include/Content/qgl_vert_description.h"
 
 namespace qgl::graphics::gpu::render
 {
@@ -87,11 +88,9 @@ namespace qgl::graphics::gpu
       /*
        Sets the vertex layout and topology for the input assembler.
        Most likely, it will contain a POSITION, NORMAL, TEXCOORD, TANGENT
-       The description array is copied so descs can go out of scope after 
-       calling this.
+       The description is copied so it can go out of scope after calling this.
        */
-      void layout(const D3D12_INPUT_ELEMENT_DESC* descs,
-                  size_t numDescs,
+      void layout(const content::vertex_description* description,
                   D3D12_PRIMITIVE_TOPOLOGY_TYPE topo,
                   D3D12_INDEX_BUFFER_STRIP_CUT_VALUE = 
                   D3D12_INDEX_BUFFER_STRIP_CUT_VALUE_DISABLED);

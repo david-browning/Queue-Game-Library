@@ -158,15 +158,14 @@ namespace qgl::graphics::gpu
       m_impl_p->PSODesc.SampleDesc.Quality = msaaQuality;
    }
 
-   void pipeline_state::layout(const D3D12_INPUT_ELEMENT_DESC* descs,
-                               size_t numDescs,
+   void pipeline_state::layout(const content::vertex_description* description,
                                D3D12_PRIMITIVE_TOPOLOGY_TYPE topo,
                                D3D12_INDEX_BUFFER_STRIP_CUT_VALUE)
    {
-      m_impl_p->m_inputLayout.resize(numDescs);
+      m_impl_p->m_inputLayout.resize(description->size());
       memcpy(m_impl_p->m_inputLayout.data(),
-             descs,
-             sizeof(D3D12_INPUT_ELEMENT_DESC) * numDescs);
+             description->data(),
+             sizeof(D3D12_INPUT_ELEMENT_DESC) * description->size());
       m_impl_p->PSODesc.InputLayout.NumElements =
          static_cast<UINT>(m_impl_p->m_inputLayout.size());
       m_impl_p->PSODesc.InputLayout.pInputElementDescs =
