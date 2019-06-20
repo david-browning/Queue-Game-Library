@@ -13,8 +13,7 @@ A pipeline state must have a vertex and pixel shader.
 
 ## Header Metadata Requirements:
 Resourece Type: RESOURCE_TYPE_SHADER  
-Content Loader ID:  CONTENT_LOADER_ID_SHADER_SOURCE or 
-CONTENT_LOADER_ID_SHADER_COMPILED  
+Content Loader ID: CONTENT_LOADER_ID_UNKNOWN  
 Renderable: No  
 
 ## Dictionary Requirements:

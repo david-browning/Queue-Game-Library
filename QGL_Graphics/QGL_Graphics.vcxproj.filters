@@ -268,6 +268,12 @@
     <ClCompile Include="qgl_vert_desc_file_loader.cpp">
       <Filter>Source Files\Content\File-Loaders</Filter>
     </ClCompile>
+    <ClCompile Include="qgl_shader_header_buffer.cpp">
+      <Filter>Source Files\Content\Content-Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_shader_file_loader.cpp">
+      <Filter>Source Files\Content\File-Loaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLGraphics.h">
@@ -526,6 +532,15 @@
       <Filter>Header Files\Content</Filter>
     </ClInclude>
     <ClInclude Include="include\Content\FIle-Loaders\qgl_vert_desc_file_loader.h">
+      <Filter>Header Files\Content\File-Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\Content-Buffers\qgl_shader_header_buffer.h">
+      <Filter>Header Files\Content\Content-Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\Content-Loaders\qgl_shader_importer.h">
+      <Filter>Header Files\Content\Content-Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\FIle-Loaders\qgl_shader_file_loader.h">
       <Filter>Header Files\Content\File-Loaders</Filter>
     </ClInclude>
   </ItemGroup>

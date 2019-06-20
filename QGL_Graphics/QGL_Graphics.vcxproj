@@ -189,6 +189,7 @@
     <ClInclude Include="include\Content\Content-Buffers\qgl_light_buffer.h" />
     <ClInclude Include="include\Content\Content-Buffers\qgl_rasterizer_buffer.h" />
     <ClInclude Include="include\Content\Content-Buffers\qgl_sampler_buffer.h" />
+    <ClInclude Include="include\Content\Content-Buffers\qgl_shader_header_buffer.h" />
     <ClInclude Include="include\Content\Content-Buffers\qgl_text_format_buffer.h" />
     <ClInclude Include="include\Content\Content-Buffers\qgl_vert_elem_buffer.h" />
     <ClInclude Include="include\Content\Content-Loaders\qgl_brush_importer.h" />
@@ -198,6 +199,7 @@
     <ClInclude Include="include\Content\Content-Loaders\qgl_light_importer.h" />
     <ClInclude Include="include\Content\Content-Loaders\qgl_rasterizer_importer.h" />
     <ClInclude Include="include\Content\Content-Loaders\qgl_sampler_importer.h" />
+    <ClInclude Include="include\Content\Content-Loaders\qgl_shader_importer.h" />
     <ClInclude Include="include\Content\Content-Loaders\qgl_text_format_importer.h" />
     <ClInclude Include="include\Content\Content-Loaders\qgl_vert_desc_importer.h" />
     <ClInclude Include="include\Content\Content-Loaders\qgl_vert_elem_importer.h" />
@@ -208,6 +210,7 @@
     <ClInclude Include="include\Content\FIle-Loaders\qgl_light_file_loader.h" />
     <ClInclude Include="include\Content\FIle-Loaders\qgl_rasterizer_file_loader.h" />
     <ClInclude Include="include\Content\FIle-Loaders\qgl_sampler_file_loader.h" />
+    <ClInclude Include="include\Content\FIle-Loaders\qgl_shader_file_loader.h" />
     <ClInclude Include="include\Content\FIle-Loaders\qgl_text_format_file_loader.h" />
     <ClInclude Include="include\Content\FIle-Loaders\qgl_vert_desc_file_loader.h" />
     <ClInclude Include="include\Content\qgl_brush.h" />
@@ -307,6 +310,8 @@
     <ClCompile Include="qgl_sampler_descriptor_heap.cpp" />
     <ClCompile Include="qgl_scissor.cpp" />
     <ClCompile Include="qgl_shader.cpp" />
+    <ClCompile Include="qgl_shader_file_loader.cpp" />
+    <ClCompile Include="qgl_shader_header_buffer.cpp" />
     <ClCompile Include="qgl_shader_meta.cpp" />
     <ClCompile Include="qgl_srv_descriptor_heap.cpp" />
     <ClCompile Include="qgl_texture.cpp" />
