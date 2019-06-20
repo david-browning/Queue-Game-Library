@@ -50,6 +50,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content Files", "Content Fi
 		Docs\Content Files\String-File.md = Docs\Content Files\String-File.md
 		Docs\Content Files\TextFormat-File.md = Docs\Content Files\TextFormat-File.md
 		Docs\Content Files\Texture-File.md = Docs\Content Files\Texture-File.md
+		Docs\Content Files\VertexDescription-File.md = Docs\Content Files\VertexDescription-File.md
 		Docs\Content Files\WString-File.md = Docs\Content Files\WString-File.md
 		Docs\Content Files\WText-File.md = Docs\Content Files\WText-File.md
 	EndProjectSection
@@ -74,6 +75,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content Importers", "Conten
 		Docs\Content Importers\SharedData-Importer.md = Docs\Content Importers\SharedData-Importer.md
 		Docs\Content Importers\SourceShader-Importer.md = Docs\Content Importers\SourceShader-Importer.md
 		Docs\Content Importers\String-Importer.md = Docs\Content Importers\String-Importer.md
+		Docs\Content Importers\VertexDescription-Importer.md = Docs\Content Importers\VertexDescription-Importer.md
+		Docs\Content Importers\VertexT-Importer.md = Docs\Content Importers\VertexT-Importer.md
 		Docs\Content Importers\WString-Importer.md = Docs\Content Importers\WString-Importer.md
 	EndProjectSection
 EndProject

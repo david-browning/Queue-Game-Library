@@ -259,6 +259,15 @@
     <ClCompile Include="qgl_graphics_config_file_loader.cpp">
       <Filter>Source Files\Content\File-Loaders</Filter>
     </ClCompile>
+    <ClCompile Include="qgl_vert_elem_buffer.cpp">
+      <Filter>Source Files\Content\Content-Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_vert_description.cpp">
+      <Filter>Source Files\Content</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_vert_desc_file_loader.cpp">
+      <Filter>Source Files\Content\File-Loaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLGraphics.h">
@@ -503,6 +512,21 @@
     </ClInclude>
     <ClInclude Include="include\Content\Content-Loaders\qgl_text_format_importer.h">
       <Filter>Header Files\Content\Content-Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\Content-Buffers\qgl_vert_elem_buffer.h">
+      <Filter>Header Files\Content\Content-Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\Content-Loaders\qgl_vert_desc_importer.h">
+      <Filter>Header Files\Content\Content-Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\Content-Loaders\qgl_vert_elem_importer.h">
+      <Filter>Header Files\Content\Content-Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\qgl_vert_description.h">
+      <Filter>Header Files\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\FIle-Loaders\qgl_vert_desc_file_loader.h">
+      <Filter>Header Files\Content\File-Loaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

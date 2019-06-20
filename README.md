@@ -107,7 +107,6 @@ familiar.
   leaking exceptions? Return bool or HRESULT?
 * Change qgl::content::check_loader_and_resource to noexcept to avoid file 
   loaders leaking exceptions? Return bool or HRESULT?
-* Define vertex layout in content. Needs entry importer and file loader.
 * OBJ Importer. Needs to be aware of the vertex layout.
 * Define a component-like class for use in rendering, handling input, and 
   physics updating. Components need to be type safe and allow programmers to 

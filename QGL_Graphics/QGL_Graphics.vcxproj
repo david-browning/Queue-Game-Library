@@ -190,6 +190,7 @@
     <ClInclude Include="include\Content\Content-Buffers\qgl_rasterizer_buffer.h" />
     <ClInclude Include="include\Content\Content-Buffers\qgl_sampler_buffer.h" />
     <ClInclude Include="include\Content\Content-Buffers\qgl_text_format_buffer.h" />
+    <ClInclude Include="include\Content\Content-Buffers\qgl_vert_elem_buffer.h" />
     <ClInclude Include="include\Content\Content-Loaders\qgl_brush_importer.h" />
     <ClInclude Include="include\Content\Content-Loaders\qgl_camera_importer.h" />
     <ClInclude Include="include\Content\Content-Loaders\qgl_depth_stencil_importer.h" />
@@ -198,6 +199,8 @@
     <ClInclude Include="include\Content\Content-Loaders\qgl_rasterizer_importer.h" />
     <ClInclude Include="include\Content\Content-Loaders\qgl_sampler_importer.h" />
     <ClInclude Include="include\Content\Content-Loaders\qgl_text_format_importer.h" />
+    <ClInclude Include="include\Content\Content-Loaders\qgl_vert_desc_importer.h" />
+    <ClInclude Include="include\Content\Content-Loaders\qgl_vert_elem_importer.h" />
     <ClInclude Include="include\Content\FIle-Loaders\qgl_brush_file_loader.h" />
     <ClInclude Include="include\Content\FIle-Loaders\qgl_camera_file_loader.h" />
     <ClInclude Include="include\Content\FIle-Loaders\qgl_depth_stencil_file_loader.h" />
@@ -206,6 +209,7 @@
     <ClInclude Include="include\Content\FIle-Loaders\qgl_rasterizer_file_loader.h" />
     <ClInclude Include="include\Content\FIle-Loaders\qgl_sampler_file_loader.h" />
     <ClInclude Include="include\Content\FIle-Loaders\qgl_text_format_file_loader.h" />
+    <ClInclude Include="include\Content\FIle-Loaders\qgl_vert_desc_file_loader.h" />
     <ClInclude Include="include\Content\qgl_brush.h" />
     <ClInclude Include="include\Content\qgl_camera.h" />
     <ClInclude Include="include\Content\qgl_graphics_config.h" />
@@ -216,6 +220,7 @@
     <ClInclude Include="include\Content\qgl_sampler.h" />
     <ClInclude Include="include\Content\qgl_texture.h" />
     <ClInclude Include="include\Content\qgl_text_format.h" />
+    <ClInclude Include="include\Content\qgl_vert_description.h" />
     <ClInclude Include="include\Content\qgl_wtext.h" />
     <ClInclude Include="include\GPU\Buffers\igpu_buffer.h" />
     <ClInclude Include="include\GPU\Buffers\qgl_const_buffer.h" />
@@ -309,6 +314,9 @@
     <ClCompile Include="qgl_text_format_buffer.cpp" />
     <ClCompile Include="qgl_text_render_component.cpp" />
     <ClCompile Include="qgl_uav_descriptor_heap.cpp" />
+    <ClCompile Include="qgl_vert_description.cpp" />
+    <ClCompile Include="qgl_vert_desc_file_loader.cpp" />
+    <ClCompile Include="qgl_vert_elem_buffer.cpp" />
     <ClCompile Include="qgl_viewport.cpp" />
     <ClCompile Include="qgl_window.cpp" />
     <ClCompile Include="qgl_wtext.cpp" />
