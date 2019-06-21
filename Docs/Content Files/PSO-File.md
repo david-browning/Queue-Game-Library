@@ -4,8 +4,8 @@ Pipeline State File
 Configures the graphics pipeline. 
 
 ## Header Metadata Requirements:
-Resource Type: RESOURCE_TYPE_
-Content Loader ID: CONTENT_LOADER_ID_
+Resource Type: RESOURCE_TYPE_PSO
+Content Loader ID: CONTENT_LOADER_ID_PSO
 Renderable: No  
 
 ## Dictionary Requirements:

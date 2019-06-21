@@ -15,7 +15,7 @@ namespace qgl::graphics::gpu
    {
       public:
       graphics_command_list(d3d_device* dev_p,
-                            pipeline_state* pipelineState_p,
+                            content::ipso* pipelineState_p,
                             UINT nodeMask = 0);
 
       graphics_command_list(const graphics_command_list&) = delete;

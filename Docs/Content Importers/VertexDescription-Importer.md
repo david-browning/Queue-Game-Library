@@ -7,9 +7,10 @@ collection of vertex elements.
 
 ## Binary Layout:
 Bytes 00   : Number of vertex elements.  
-Byte  01   : Reserved 1  
-Bytes 02-03: Reserved 2  
-Bytes 04-07: Reserved 3  
+Byte  01   : Primitive topology type.  
+Bytes 02   : Index strip cut  
+Byte  03   : Reserved 1
+Bytes 04-07: Reserved 2  
 Bytes 8+   : Array of vertex elements.  
 
 ## Importer: 

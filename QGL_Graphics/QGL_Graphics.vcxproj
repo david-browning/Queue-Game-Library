@@ -192,6 +192,7 @@
     <ClInclude Include="include\Content\Content-Buffers\qgl_sampler_buffer.h" />
     <ClInclude Include="include\Content\Content-Buffers\qgl_shader_header_buffer.h" />
     <ClInclude Include="include\Content\Content-Buffers\qgl_text_format_buffer.h" />
+    <ClInclude Include="include\Content\Content-Buffers\qgl_vertex_desc_header.h" />
     <ClInclude Include="include\Content\Content-Buffers\qgl_vert_elem_buffer.h" />
     <ClInclude Include="include\Content\Content-Loaders\qgl_blender_importer.h" />
     <ClInclude Include="include\Content\Content-Loaders\qgl_brush_importer.h" />
@@ -329,6 +330,7 @@
     <ClCompile Include="qgl_text_format_buffer.cpp" />
     <ClCompile Include="qgl_text_render_component.cpp" />
     <ClCompile Include="qgl_uav_descriptor_heap.cpp" />
+    <ClCompile Include="qgl_vertex_desc_header.cpp" />
     <ClCompile Include="qgl_vert_description.cpp" />
     <ClCompile Include="qgl_vert_desc_file_loader.cpp" />
     <ClCompile Include="qgl_vert_elem_buffer.cpp" />

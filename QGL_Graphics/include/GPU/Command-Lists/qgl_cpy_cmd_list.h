@@ -8,8 +8,8 @@ namespace qgl::graphics::gpu
    {
       public:
       copy_command_list(d3d_device* dev_p,
-                            pipeline_state* pipelineState_p,
-                            UINT nodeMask = 0);
+                        content::ipso* pipelineState_p,
+                        UINT nodeMask = 0);
 
       copy_command_list(const copy_command_list&) = delete;
 

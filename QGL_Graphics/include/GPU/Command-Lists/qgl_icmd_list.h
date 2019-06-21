@@ -17,7 +17,7 @@ namespace qgl::graphics::gpu
       public:
       icommand_list(d3d_device* dev_p,
                     D3D12_COMMAND_LIST_TYPE listT,
-                    pipeline_state* pipelineState_p,
+                    content::ipso* pipelineState_p,
                     UINT nodeMask = 0);
 
       /*
@@ -75,7 +75,7 @@ namespace qgl::graphics::gpu
        Note that bundles don't inherit the pipeline state set by previous
        calls in direct command lists that are their parents.
        */
-      void pso(pipeline_state* pipeline_p);
+      void pso(content::ipso* pipeline_p);
 
       /*
        Sets the descriptor heaps. This should only be called once because the

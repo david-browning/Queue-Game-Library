@@ -10,7 +10,7 @@ Content Loader ID:  CONTENT_LOADER_ID_VERTEX_DESCRIPTION
 Renderable: No  
 
 ## Dictionary Requirements:
-Min dictionary entries: 1  
+Min dictionary entries: 2  
 Max dictionary entries: 255  
 Supports shared entries: No
 
@@ -18,3 +18,6 @@ Supports shared entries: No
 * Resource Type: RESOURCE_TYPE_DESCRIPTION  
   Content Loader ID: CONTENT_LOADER_ID_VERTEX_ELEMENT  
   Uses vert_elem_importer.  
+
+* Resource Type: RESOURCE_TYPE_DESCRIPTION  
+  Content Loader ID: CONTENT_LOADER_ID_HEADER  

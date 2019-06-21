@@ -7,7 +7,7 @@ namespace qgl::graphics::gpu
    {
       impl(d3d_device* dev_p,
            D3D12_COMMAND_LIST_TYPE listT,
-           pipeline_state* pipelineState_p,
+           content::ipso* pipelineState_p,
            UINT nodeMask) :
          Allocator(nullptr),
          CmdList(nullptr),
@@ -16,7 +16,8 @@ namespace qgl::graphics::gpu
          make_allocator(dev_p, listT);
          make_cmd_list(dev_p, listT, nodeMask);
       }
-      void pso(pipeline_state* pipeline_p)
+
+      void pso(content::ipso* pipeline_p)
       {
          Pipeline_p = pipeline_p;
          CmdList->SetPipelineState(Pipeline_p->get());
@@ -117,7 +118,7 @@ namespace qgl::graphics::gpu
       }
 
 
-      pipeline_state* Pipeline_p;
+      content::ipso* Pipeline_p;
       winrt::com_ptr<d3d_cmd_allocator> Allocator;
       winrt::com_ptr<d3d_command_list> CmdList;
 
@@ -138,7 +139,7 @@ namespace qgl::graphics::gpu
 
    icommand_list::icommand_list(d3d_device* dev_p,
                                 D3D12_COMMAND_LIST_TYPE listT,
-                                pipeline_state* pipelineState_p,
+                                content::ipso* pipelineState_p,
                                 UINT nodeMask) :
       m_impl_p(new impl(dev_p, listT, pipelineState_p, nodeMask))
    {
@@ -163,7 +164,7 @@ namespace qgl::graphics::gpu
       m_impl_p->close();
    }
 
-   void icommand_list::pso(pipeline_state* pipeline_p)
+   void icommand_list::pso(content::ipso* pipeline_p)
    {
       m_impl_p->pso(pipeline_p);
    }

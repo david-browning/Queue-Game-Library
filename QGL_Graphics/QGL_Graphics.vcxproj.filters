@@ -286,6 +286,9 @@
     <ClCompile Include="qgl_multisample_desc.cpp">
       <Filter>Source Files\Content</Filter>
     </ClCompile>
+    <ClCompile Include="qgl_vertex_desc_header.cpp">
+      <Filter>Source Files\Content\Content-Buffers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLGraphics.h">
@@ -571,6 +574,9 @@
       <Filter>Header Files\Content</Filter>
     </ClInclude>
     <ClInclude Include="include\Content\Content-Buffers\qgl_multisample_desc_buffer.h">
+      <Filter>Header Files\Content\Content-Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\Content-Buffers\qgl_vertex_desc_header.h">
       <Filter>Header Files\Content\Content-Buffers</Filter>
     </ClInclude>
   </ItemGroup>

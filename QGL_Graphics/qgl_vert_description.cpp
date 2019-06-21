@@ -5,16 +5,17 @@ namespace qgl::content
 {
    struct vertex_description::impl
    {
-      impl(const buffers::VERTEX_ELEMENT_BUFFER* elements,
-           size_t numElements)
+      impl(const buffers::VERTEX_DESC_HEADER* hdr_p,
+           const buffers::VERTEX_ELEMENT_BUFFER* elements) :
+         Header(*hdr_p)
       {
-         Elements.resize(numElements);
-         SemanticNames.resize(numElements);
+         Elements.resize(Header.Elements);
+         SemanticNames.resize(Header.Elements);
          
          //Keep track of any elements trying to occupy the same index.
          std::set<size_t> seenIndices;
 
-         for (size_t i = 0; i < numElements; i++)
+         for (size_t i = 0; i < Header.Elements; i++)
          {
             auto e = elements + i;
             auto position = e->Index;
@@ -46,7 +47,7 @@ namespace qgl::content
          }
 
          //Verify there are no holes.
-         for (size_t i = 0; i < numElements; i++)
+         for (size_t i = 0; i < Header.Elements; i++)
          {
             if (seenIndices.count(i) == 0)
             {
@@ -63,14 +64,16 @@ namespace qgl::content
 
       std::vector<D3D12_INPUT_ELEMENT_DESC> Elements;
       std::vector<std::string> SemanticNames;
+
+      const buffers::VERTEX_DESC_HEADER Header;
    };
 
    vertex_description::vertex_description(
+      const buffers::VERTEX_DESC_HEADER* hdr_p,
       const buffers::VERTEX_ELEMENT_BUFFER* elements, 
-      size_t numElements,
       const wchar_t* name, 
       const qgl::content::content_id id) :
-      m_impl(new impl(elements, numElements)),
+      m_impl(new impl(hdr_p, elements)),
       content_item(name, id,
                    RESOURCE_TYPE_DESCRIPTION,
                    CONTENT_LOADER_ID_VERTEX_DESCRIPTION)
@@ -106,5 +109,17 @@ namespace qgl::content
    const D3D12_INPUT_ELEMENT_DESC* vertex_description::data() const noexcept
    {
       return m_impl->Elements.data();
+   }
+
+   D3D12_INDEX_BUFFER_STRIP_CUT_VALUE vertex_description::strip_cut() const noexcept
+   {
+      return static_cast<D3D12_INDEX_BUFFER_STRIP_CUT_VALUE>(
+         m_impl->Header.StripCut);
+   }
+
+   D3D12_PRIMITIVE_TOPOLOGY_TYPE vertex_description::topology() const noexcept
+   {
+      return static_cast<D3D12_PRIMITIVE_TOPOLOGY_TYPE>(
+         m_impl->Header.Topology);
    }
 }

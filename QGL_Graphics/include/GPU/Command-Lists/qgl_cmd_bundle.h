@@ -8,9 +8,9 @@ namespace qgl::graphics::gpu
    {
       public:
       cmd_bundle(d3d_device* dev_p,
-                 pipeline_state* pipelineState_p,
+                 content::ipso* pipelineState_p,
                  UINT nodeMask = 0) :
-         icommand_list(dev_p, 
+         icommand_list(dev_p,
                        D3D12_COMMAND_LIST_TYPE_BUNDLE,
                        pipelineState_p,
                        nodeMask)

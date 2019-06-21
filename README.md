@@ -112,3 +112,4 @@ familiar.
   physics updating. Components need to be type safe and allow programmers to 
   define new functionality. Components are functors with additional 
   requirements?
+* PSO supports steam output?

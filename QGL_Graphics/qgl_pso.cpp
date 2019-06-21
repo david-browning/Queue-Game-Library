@@ -2,68 +2,140 @@
 #include "include/GPU/qgl_pso.h"
 #include "include/GPU/Render/qgl_frame.h"
 
-namespace qgl::graphics::gpu
+namespace qgl::content
 {
-   struct pipeline_state::impl
+   class pipeline_state_1_0 : public ipso 
    {
-      impl(d3d_device* dev_p) :
-         m_pipelineState(nullptr),
-         m_isFinalized(false),
-         PSODesc(),
-         m_dev(dev_p)
+      public:
+      #ifdef DEBUG
+      static constexpr D3D12_PIPELINE_STATE_FLAGS PSO_DEFAULT_FLAG =
+         D3D12_PIPELINE_STATE_FLAG_NONE;
+      #else
+      static constexpr D3D12_PIPELINE_STATE_FLAGS PSO_DEFAULT_FLAG =
+         D3D12_PIPELINE_STATE_FLAG_NONE;
+      #endif
+
+      pipeline_state_1_0()
       {
 
       }
 
-      impl(const impl& r) :
-         PSODesc(r.PSODesc),
-         m_pipelineState(nullptr),
-         m_inputLayout(r.m_inputLayout),
-         m_isFinalized(false),
-         m_dev(r.m_dev)
+      virtual ~pipeline_state_1_0() noexcept = default;
+
+      virtual void release()
       {
-         //Set m_isFinalized to false so that the PSO will be reconstructed in 
-         //new GPU memory.
+         //Calls the destructor.
+         delete this;
       }
 
-      impl(impl&& r) :
-         PSODesc(std::move(r.PSODesc)),
-         m_pipelineState(nullptr),
-         m_inputLayout(std::move(r.m_inputLayout)),
-         m_isFinalized(false),
-         m_dev(r.m_dev)
+      HRESULT make(graphics::d3d_device* dev_p,
+                   const IPSO_CREATION_PARAMS* params_p) noexcept
       {
-         //Set m_isFinalized to false so that the PSO will be reconstructed in 
-         //new GPU memory.
-      }
+         m_dev = dev_p;
 
-      ~impl() noexcept = default;
+         //Set the shaders. Keep track that no shader is set twice.
+         std::set<buffers::SHADER_TYPES> seenShaders;
 
-      ID3D12PipelineState* get_and_finalize() const
-      {
-         if (!m_isFinalized)
+         for (size_t i = 0; i < params_p->NumShaders; i++)
          {
-            //Check that a vertex shader is set.
-            if (PSODesc.VS.pShaderBytecode != nullptr)
-            {
-               auto hr = m_dev->CreateGraphicsPipelineState(
-                  &PSODesc,
-                  IID_PPV_ARGS(m_pipelineState.put()));
+            auto shdr_p = params_p->Shaders[i];
+            auto type = shdr_p->type();
 
-               winrt::check_hresult(hr);
-               m_isFinalized = true;
-            }
-            else
+            //Make sure we haven't seen this shader before.
+            if (seenShaders.count(type) > 0)
             {
-               throw std::runtime_error("No vertex shader is set.");
+               #ifdef DEBUG
+               OutputDebugString(
+                  L"Two shaders of the same type were specified.");
+               #endif
+               return E_INVALIDARG;
+            }
+
+            seenShaders.insert(type);
+
+            //Depending on the type of shader, set the appropriate parameters
+            //for the pipeline state.
+            switch (type)
+            {
+               case buffers::SHADER_TYPES::SHADER_TYPE_DS :
+               {
+                  m_psoDesc.DS = *shdr_p->byte_code();
+                  break;
+               }
+               case buffers::SHADER_TYPES::SHADER_TYPE_GS:
+               {
+                  m_psoDesc.GS = *shdr_p->byte_code();
+                  break;
+               }
+               case buffers::SHADER_TYPES::SHADER_TYPE_HS:
+               {
+                  m_psoDesc.HS = *shdr_p->byte_code();
+                  break;
+               }
+               case buffers::SHADER_TYPES::SHADER_TYPE_VS:
+               {
+                  m_psoDesc.VS = *shdr_p->byte_code();
+                  break;
+               }
+               case buffers::SHADER_TYPES::SHADER_TYPE_PS:
+               {
+                  m_psoDesc.PS = *shdr_p->byte_code();
+                  break;
+               }
+               default:
+               {
+                  #ifdef DEBUG
+                  OutputDebugString(L"A shader has an unknown type.");
+                  #endif
+                  return E_UNEXPECTED;
+               }
+            }
+
+            //Make sure we have a PS and VS as they are required.
+            if (seenShaders.count(buffers::SHADER_TYPES::SHADER_TYPE_VS) == 0 ||
+                seenShaders.count(buffers::SHADER_TYPES::SHADER_TYPE_PS) == 0)
+            {
+               #ifdef DEBUG
+               OutputDebugString(L"No vertex or pixel shader was found.");
+               #endif
+               return E_INVALIDARG;
             }
          }
 
-         return m_pipelineState.get();
+         //Set the flags.
+         m_psoDesc.Flags = PSO_DEFAULT_FLAG;
+
+         //Set the blender
+         m_psoDesc.BlendState = *params_p->Blender->description();
+         m_psoDesc.SampleMask = params_p->Blender->mask();
+
+         //Set the sampling.
+         m_psoDesc.SampleDesc.Count = params_p->Sampler->count();
+         m_psoDesc.SampleDesc.Quality = params_p->Sampler->quality();
+
+         //Set the rasterizer.
+         m_psoDesc.RasterizerState = *params_p->Rasterizer->description();
+
+
+         //Set the vertex layout
+         m_psoDesc.PrimitiveTopologyType = params_p->VertexDesc->topology();
+         m_psoDesc.IBStripCutValue = params_p->VertexDesc->strip_cut();
+         m_psoDesc.InputLayout.NumElements =
+            static_cast<UINT>(params_p->VertexDesc->size());
+         m_psoDesc.InputLayout.pInputElementDescs = 
+            params_p->VertexDesc->data();
+
+         //Set the root signature.
+         m_psoDesc.pRootSignature = params_p->RootSignature->get();
+
+         //TODO: Add support for stream output?
+         //m_psoDesc.StreamOutput;
+
+         return S_OK;
       }
 
-      void frames(const render::frame* frms,
-                  size_t numFrames)
+      virtual void frames(const graphics::gpu::render::frame* frms,
+                          size_t numFrames)
       {
          static constexpr auto maxRTVs =
             sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC::RTVFormats) /
@@ -74,137 +146,115 @@ namespace qgl::graphics::gpu
             throw std::invalid_argument("Maximum of 8 RTVs allowed.");
          }
 
-         PSODesc.NumRenderTargets = static_cast<UINT>(numFrames);
+         m_psoDesc.NumRenderTargets = static_cast<UINT>(numFrames);
          for (size_t i = 0; i < numFrames; i++)
          {
             auto stncl = frms[i].frame_stencil();
             auto renderTarget = frms[i].frame_buffer();
 
-            PSODesc.RTVFormats[i] = renderTarget->format();
-            PSODesc.DSVFormat = stncl->format();
-            PSODesc.DepthStencilState = *stncl->depth_desc();
+            m_psoDesc.RTVFormats[i] = renderTarget->format();
+            m_psoDesc.DSVFormat = stncl->format();
+            m_psoDesc.DepthStencilState = *stncl->depth_desc();
             i++;
          }
       }
 
-      mutable winrt::com_ptr<ID3D12PipelineState> m_pipelineState;
-      mutable bool m_isFinalized;
+      virtual const ID3D12PipelineState* const_get() const
+      {
+         return get_and_finalize();
+      }
+
+      virtual ID3D12PipelineState* get()
+      {
+         return get_and_finalize();
+      }
+
+      private:
+      ID3D12PipelineState* get_and_finalize() const
+      {
+         if (!m_isFinalized)
+         {
+            auto hr = m_dev->CreateGraphicsPipelineState(
+               &m_psoDesc,
+               IID_PPV_ARGS(m_pipelineState.put()));
+
+            if (FAILED(hr))
+            {
+               return nullptr;
+            }
+
+            m_isFinalized = true;
+         }
+
+         return m_pipelineState.get();
+      }
 
       /*
-       Layout of the vertices that get passed to the input assembler.
-       Most likely, it will contain a POSITION, NORMAL, TEXCOORD, TANGENT
+       The D3D12 pipeline state.
        */
-      std::vector<D3D12_INPUT_ELEMENT_DESC> m_inputLayout;
+      mutable winrt::com_ptr<ID3D12PipelineState> m_pipelineState;
+
+      /*
+       True if the pipeline state has been constructed.
+       */
+      mutable bool m_isFinalized;
 
       /*
        The description used to create the pipeline state.
        */
-      D3D12_GRAPHICS_PIPELINE_STATE_DESC PSODesc;
+      D3D12_GRAPHICS_PIPELINE_STATE_DESC m_psoDesc;
 
-      d3d_device* m_dev;
+      graphics::d3d_device* m_dev;
    };
 
-   pipeline_state::pipeline_state(d3d_device* dev_p) :
-      m_impl_p(new impl(dev_p))
+   HRESULT qgl_make_pipeline(graphics::d3d_device* dev_p,
+                             const IPSO_CREATION_PARAMS* params_p,
+                             qgl_version_t v,
+                             ipso** out_p) noexcept
    {
-   }
+      if (out_p == nullptr)
+      {
+         #ifdef DEBUG
+         OutputDebugString(L"out_p cannot be nullptr.");
+         #endif
+         return E_INVALIDARG;
+      }
 
-   pipeline_state::pipeline_state(const pipeline_state& r)
-   {
-      delete m_impl_p;
-      m_impl_p = new impl(*r.m_impl_p);
-   }
+      ipso* ret = nullptr;
 
-   pipeline_state::pipeline_state(pipeline_state&& m)
-   {
-      delete m_impl_p;
-      m_impl_p = m.m_impl_p;
-      m.m_impl_p = nullptr;
-   }
+      switch (std::hash<qgl_version_t>{}(v))
+      {
+         case qgl::hashes::VERSION_0_1_HASH:
+         case qgl::hashes::VERSION_0_2_HASH:
+         {
+            ret = new(std::nothrow)pipeline_state_1_0();
 
-   pipeline_state::~pipeline_state() noexcept
-   {
-      delete m_impl_p;
-      m_impl_p = nullptr;
-   }
+            if (ret == nullptr)
+            {
+               #ifdef DEBUG
+               OutputDebugString(L"Out of memory!");
+               #endif
+               return E_OUTOFMEMORY;
+            }
 
-   void pipeline_state::frames(const render::frame* frms, 
-                               size_t numFrames)
-   {
-      m_impl_p->frames(frms, numFrames);
-   }
+            auto hr = (dynamic_cast<pipeline_state_1_0*>(ret))->make(dev_p,
+                                                                     params_p);
+            if (FAILED(hr))
+            {
+               return hr;
+            }
+            break;
+         }
+         default:
+         {
+            #ifdef DEBUG
+            OutputDebugString(L"This QGL version is not supported.");
+            #endif
+            return E_NOINTERFACE;
+         }
+      }
 
-   const ID3D12PipelineState* pipeline_state::get() const
-   {
-      return m_impl_p->get_and_finalize();
-   }
-
-   ID3D12PipelineState * pipeline_state::get()
-   {
-      return m_impl_p->get_and_finalize();
-   }
-
-   void pipeline_state::sample_description(DXGI_SAMPLE_DESC desc)
-   {
-      m_impl_p->PSODesc.SampleDesc = desc;
-   }
-
-   void pipeline_state::sample_description(UINT msaaCount,
-                                           UINT msaaQuality)
-   {
-      m_impl_p->PSODesc.SampleDesc.Count = msaaCount;
-      m_impl_p->PSODesc.SampleDesc.Quality = msaaQuality;
-   }
-
-   void pipeline_state::layout(const content::vertex_description* description,
-                               D3D12_PRIMITIVE_TOPOLOGY_TYPE topo,
-                               D3D12_INDEX_BUFFER_STRIP_CUT_VALUE)
-   {
-      m_impl_p->m_inputLayout.resize(description->size());
-      memcpy(m_impl_p->m_inputLayout.data(),
-             description->data(),
-             sizeof(D3D12_INPUT_ELEMENT_DESC) * description->size());
-      m_impl_p->PSODesc.InputLayout.NumElements =
-         static_cast<UINT>(m_impl_p->m_inputLayout.size());
-      m_impl_p->PSODesc.InputLayout.pInputElementDescs =
-         m_impl_p->m_inputLayout.data();
-
-      m_impl_p->PSODesc.PrimitiveTopologyType = topo;
-   }
-
-   void pipeline_state::vs(const content::shader* shdr)
-   {
-      m_impl_p->PSODesc.VS = *shdr->byte_code();
-   }
-
-   void pipeline_state::ps(const content::shader* shdr)
-   {
-      m_impl_p->PSODesc.PS = *shdr->byte_code();
-   }
-
-   void pipeline_state::gs(const content::shader* shdr)
-   {
-      m_impl_p->PSODesc.GS = *shdr->byte_code();
-   }
-
-   void pipeline_state::ds(const content::shader* shdr)
-   {
-      m_impl_p->PSODesc.DS = *shdr->byte_code();
-   }
-
-   void pipeline_state::hs(const content::shader* shdr)
-   {
-      m_impl_p->PSODesc.HS = *shdr->byte_code();
-   }
-
-   void pipeline_state::rasterizer_state(const content::rasterizer* rstzr)
-   {
-      m_impl_p->PSODesc.RasterizerState = *rstzr->description();
-   }
-
-   void pipeline_state::blend_state(const content::blender* blndr)
-   {
-      m_impl_p->PSODesc.BlendState = *blndr->description();
-      m_impl_p->PSODesc.SampleMask = blndr->mask();
+      *out_p = ret;
+      return S_OK;
    }
 }

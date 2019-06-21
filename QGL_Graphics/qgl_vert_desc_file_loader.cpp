@@ -16,22 +16,32 @@ namespace qgl::content::loaders
 
       static const vert_elem_importer elemImporter;
 
+      buffers::VERTEX_DESC_HEADER hdr;
       auto numElements = f->size();
       std::vector<buffers::VERTEX_ELEMENT_BUFFER> elements;
 
       for (size_t i = 0; i < numElements; i++)
       {
          auto entry = f->const_at(i);
-         check_loader_and_resource<RESOURCE_TYPE_DESCRIPTION,
-            CONTENT_LOADER_ID_VERTEX_ELEMENT>(entry->metadata());
+         if (entry->metadata()->loader_id() != CONTENT_LOADER_ID_HEADER)
+         {
+            check_loader_and_resource<RESOURCE_TYPE_DESCRIPTION,
+               CONTENT_LOADER_ID_VERTEX_ELEMENT>(entry->metadata());
 
-         elements.push_back(elemImporter.load(*f->handle(),
-                                              *entry));
-
+            elements.push_back(elemImporter.load(*f->handle(),
+                                                 *entry));
+         }
+         else
+         {
+            winrt::check_hresult(read_file_sync(f->handle(),
+                                                sizeof(hdr),
+                                                entry->offset(),
+                                                &hdr));
+         }
       }
 
-      return std::make_unique<vertex_description>(elements.data(),
-                                                  elements.size(),
+      return std::make_unique<vertex_description>(&hdr,
+                                                  elements.data(),
                                                   headerInfo->name(),
                                                   newID);
    }

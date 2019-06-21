@@ -1,6 +1,7 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
 #include "include/Content/qgl_vert_description.h"
+#include "include/Content/Content-Buffers/qgl_vertex_desc_header.h"
 
 namespace qgl::content::loaders
 {
@@ -11,30 +12,30 @@ namespace qgl::content::loaders
          const file_handle& fileHandle,
          const CONTENT_DICTIONARY_ENTRY_BUFFER& lookup) const
       {
-         //Read the first byte which is the number of vertex elements.
-         uint8_t numElements = 0;
+         buffers::VERTEX_DESC_HEADER hdr;
          winrt::check_hresult(read_file_sync(&fileHandle,
-                                             sizeof(numElements),
+                                             sizeof(hdr),
                                              lookup.offset(),
-                                             &numElements));
+                                             &hdr));
 
          //Allocate a vector to store the elements.
          std::vector<buffers::VERTEX_ELEMENT_BUFFER> elements;
-         elements.resize(numElements);
+         elements.resize(hdr.Elements);
 
          //Read the elements into the vector.
          winrt::check_hresult(
             read_file_sync(&fileHandle,
-                           sizeof(buffers::VERTEX_ELEMENT_BUFFER) * numElements,
-                           lookup.offset() + 8,
+                           sizeof(buffers::VERTEX_ELEMENT_BUFFER) *
+                           hdr.Elements,
+                           lookup.offset() + sizeof(hdr),
                            elements.data()));
 
          //This won't be stored in the content store, so it does not need to be
-         //addressable by a content ID. Its ok to give it an invalid ID.
-         return vertex_description(elements.data(),
-                                   elements.size(),
+         //addressable by a content ID. Its OK to give it an invalid ID.
+         return vertex_description(&hdr,
+                                   elements.data(),
                                    lookup.metadata()->name(),
-                                   INVALID_CONTENT_ID); 
+                                   INVALID_CONTENT_ID);
       }
    };
 
@@ -50,7 +51,7 @@ namespace qgl::content::loaders
                                       CONTENT_LOADER_ID_VERTEX_DESCRIPTION,
                                       name);
 
-         const size_t vertDescSize = 8 +
+         const size_t vertDescSize = sizeof(buffers::VERTEX_DESC_HEADER) +
             (vertDesc.size() * sizeof(buffers::VERTEX_ELEMENT_BUFFER));
 
          return CONTENT_DICTIONARY_ENTRY_BUFFER(vertDescSize,
