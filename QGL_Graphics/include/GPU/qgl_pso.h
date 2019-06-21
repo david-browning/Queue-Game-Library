@@ -1,7 +1,7 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
 #include "include/GPU/Root-Signature/qgl_root_signature.h"
-#include "include/GPU/Render/qgl_blender.h"
+#include "include/Content/qgl_blender.h"
 #include "include/Content/qgl_rasterizer.h"
 #include "include/Content/qgl_shader.h"
 #include "include/Content/qgl_vert_description.h"
@@ -9,7 +9,6 @@
 namespace qgl::graphics::gpu::render
 {
    class frame;
-   class blender;
 }
 
 namespace qgl::graphics::gpu
@@ -128,7 +127,7 @@ namespace qgl::graphics::gpu
       /*
        Sets the blend state. Do not allow the pointer to go out of scope.
        */
-      void blend_state(const render::blender* blndr);
+      void blend_state(const content::blender* blndr);
 
       private:
       struct impl;

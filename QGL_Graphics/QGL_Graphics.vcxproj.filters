@@ -229,9 +229,6 @@
     <ClCompile Include="qgl_shader_meta.cpp">
       <Filter>Source Files\Metrics</Filter>
     </ClCompile>
-    <ClCompile Include="qgl_blender.cpp">
-      <Filter>Source Files\GPU\Render</Filter>
-    </ClCompile>
     <ClCompile Include="qgl_graphics_cmd_list.cpp">
       <Filter>Source Files\GPU\Command-Lists</Filter>
     </ClCompile>
@@ -272,6 +269,12 @@
       <Filter>Source Files\Content\Content-Buffers</Filter>
     </ClCompile>
     <ClCompile Include="qgl_shader_file_loader.cpp">
+      <Filter>Source Files\Content\File-Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_blender.cpp">
+      <Filter>Source Files\Content</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_blender_file_loader.cpp">
       <Filter>Source Files\Content\File-Loaders</Filter>
     </ClCompile>
   </ItemGroup>
@@ -444,9 +447,6 @@
     <ClInclude Include="include\GPU\Command-Lists\qgl_graphics_cmd_list.h">
       <Filter>Header Files\GPU\Command-Lists</Filter>
     </ClInclude>
-    <ClInclude Include="include\GPU\Render\qgl_blender.h">
-      <Filter>Header Files\GPU\Render</Filter>
-    </ClInclude>
     <ClInclude Include="include\Scene\qgl_scene.h">
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
@@ -542,6 +542,15 @@
     </ClInclude>
     <ClInclude Include="include\Content\FIle-Loaders\qgl_shader_file_loader.h">
       <Filter>Header Files\Content\File-Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\FIle-Loaders\qgl_blender_file_loader.h">
+      <Filter>Header Files\Content\File-Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\Content-Loaders\qgl_blender_importer.h">
+      <Filter>Header Files\Content\Content-Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\qgl_blender.h">
+      <Filter>Header Files\Content</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

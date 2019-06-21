@@ -2,23 +2,26 @@
 #include "include/qgl_graphics_include.h"
 #include "include/Content/Content-Buffers/qgl_blender_buffer.h"
 
-namespace qgl::graphics::gpu::render
+namespace qgl::content
 {
    /*
     The blender provides the parameters describing how to blend pixels.
     */
-   class QGL_GRAPHICS_API blender
+   class QGL_GRAPHICS_API blender : public content_item
    {
       public:
       /*
        Constructs a blender with default parameters.
        */
-      blender();
+      blender(const wchar_t* name,
+              id_t id);
 
       /*
        Constructs a blend using the given buffer.
        */
-      blender(const content::buffers::BLENDER_BUFFER* buff);
+      blender(const buffers::BLENDER_BUFFER* buff,
+              const wchar_t* name,
+              id_t id);
 
       /*
        Copy constructor.
@@ -42,7 +45,7 @@ namespace qgl::graphics::gpu::render
       const D3D12_BLEND_DESC* description() const;
 
       /*
-       The sample mask for the blend state. 
+       The sample mask for the blend state.
        Used by a pipeline state object.
        */
       UINT mask() const noexcept;

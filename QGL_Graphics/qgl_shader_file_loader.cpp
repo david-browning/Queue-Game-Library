@@ -16,6 +16,24 @@ namespace qgl::content::loaders
 
       auto entry = f->const_at(0);
       check_resource_type<RESOURCE_TYPE_SHADER>(entry->metadata());
+
+      //Read the shader header.
+      buffers::SHADER_HEADER_BUFFER hdr;
+      winrt::check_hresult(read_file_sync(f->handle(),
+                                          sizeof(hdr),
+                                          entry->offset(),
+                                          &hdr));
+
+      //Allocate memory to store the shader data.
+      std::vector<std::byte> shaderData;
+      shaderData.resize(entry->size() - sizeof(hdr));
+
+      //Read the shader data.
+      winrt::check_hresult(read_file_sync(f->handle(),
+                                          shaderData.size(),
+                                          entry->offset() + sizeof(hdr),
+                                          shaderData.data()));
+
       if (entry->metadata()->loader_id() == CONTENT_LOADER_ID_SHADER_SOURCE)
       {
          throw std::invalid_argument(
@@ -24,15 +42,15 @@ namespace qgl::content::loaders
       else if (entry->metadata()->loader_id() ==
                CONTENT_LOADER_ID_SHADER_COMPILED)
       {
-         static shader_importer importer;
-         return std::make_unique<shader>(importer.load(*f->handle(),
-                                                       *entry));
+         return std::make_unique<shader>(&hdr,
+                                         shaderData.data(),
+                                         shaderData.size(),
+                                         headerInfo->name(),
+                                         newID);
       }
       else
       {
          throw std::runtime_error("The entry's loader ID is not correct.");
       }
-
-      return nullptr;
    }
 }

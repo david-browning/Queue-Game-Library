@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "include/GPU/qgl_pso.h"
-#include "include\GPU\qgl_pso.h"
 #include "include/GPU/Render/qgl_frame.h"
-#include "include/GPU/Render/qgl_blender.h"
 
 namespace qgl::graphics::gpu
 {
@@ -204,7 +202,7 @@ namespace qgl::graphics::gpu
       m_impl_p->PSODesc.RasterizerState = *rstzr->description();
    }
 
-   void pipeline_state::blend_state(const render::blender* blndr)
+   void pipeline_state::blend_state(const content::blender* blndr)
    {
       m_impl_p->PSODesc.BlendState = *blndr->description();
       m_impl_p->PSODesc.SampleMask = blndr->mask();

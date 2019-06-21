@@ -6,7 +6,6 @@
 
 namespace qgl::graphics::gpu::render
 {
-   class blender;
    class frame;
 }
 
@@ -70,7 +69,7 @@ namespace qgl::graphics::gpu
        Sets the blend factor that modulate values for a pixel shader, 
        render target, or both.
        */
-      void blend_factor(const render::blender* blndr);
+      void blend_factor(const content::blender* blndr);
 
       /*
        Sets the reference value for depth stencil tests.

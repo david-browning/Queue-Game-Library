@@ -192,6 +192,7 @@
     <ClInclude Include="include\Content\Content-Buffers\qgl_shader_header_buffer.h" />
     <ClInclude Include="include\Content\Content-Buffers\qgl_text_format_buffer.h" />
     <ClInclude Include="include\Content\Content-Buffers\qgl_vert_elem_buffer.h" />
+    <ClInclude Include="include\Content\Content-Loaders\qgl_blender_importer.h" />
     <ClInclude Include="include\Content\Content-Loaders\qgl_brush_importer.h" />
     <ClInclude Include="include\Content\Content-Loaders\qgl_camera_importer.h" />
     <ClInclude Include="include\Content\Content-Loaders\qgl_depth_stencil_importer.h" />
@@ -203,6 +204,7 @@
     <ClInclude Include="include\Content\Content-Loaders\qgl_text_format_importer.h" />
     <ClInclude Include="include\Content\Content-Loaders\qgl_vert_desc_importer.h" />
     <ClInclude Include="include\Content\Content-Loaders\qgl_vert_elem_importer.h" />
+    <ClInclude Include="include\Content\FIle-Loaders\qgl_blender_file_loader.h" />
     <ClInclude Include="include\Content\FIle-Loaders\qgl_brush_file_loader.h" />
     <ClInclude Include="include\Content\FIle-Loaders\qgl_camera_file_loader.h" />
     <ClInclude Include="include\Content\FIle-Loaders\qgl_depth_stencil_file_loader.h" />
@@ -213,6 +215,7 @@
     <ClInclude Include="include\Content\FIle-Loaders\qgl_shader_file_loader.h" />
     <ClInclude Include="include\Content\FIle-Loaders\qgl_text_format_file_loader.h" />
     <ClInclude Include="include\Content\FIle-Loaders\qgl_vert_desc_file_loader.h" />
+    <ClInclude Include="include\Content\qgl_blender.h" />
     <ClInclude Include="include\Content\qgl_brush.h" />
     <ClInclude Include="include\Content\qgl_camera.h" />
     <ClInclude Include="include\Content\qgl_graphics_config.h" />
@@ -246,7 +249,6 @@
     <ClInclude Include="include\GPU\Memory\qgl_igpu_memory_allocator.h" />
     <ClInclude Include="include\GPU\qgl_graphics_device_helpers.h" />
     <ClInclude Include="include\GPU\qgl_pso.h" />
-    <ClInclude Include="include\GPU\Render\qgl_blender.h" />
     <ClInclude Include="include\GPU\Render\qgl_depth_stencil.h" />
     <ClInclude Include="include\GPU\Render\qgl_frame.h" />
     <ClInclude Include="include\GPU\Render\qgl_render_target.h" />
@@ -273,6 +275,7 @@
     <ClCompile Include="qgl_blender.cpp" />
     <ClCompile Include="qgl_blender_buffer.cpp" />
     <ClCompile Include="qgl_blender_desc_buffer.cpp" />
+    <ClCompile Include="qgl_blender_file_loader.cpp" />
     <ClCompile Include="qgl_brush.cpp" />
     <ClCompile Include="qgl_brush_buffer.cpp" />
     <ClCompile Include="qgl_brush_file_loader.cpp" />
