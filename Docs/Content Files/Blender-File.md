@@ -15,5 +15,5 @@ Supports shared entries: No
 ### Entry Requirements:
 * Blender description  
   Resource Type: RESOURCE_TYPE_BLENDER  
-  Content Loader ID: CONTENT_LOADER_ID_STRUCT  
+  Content Loader ID: CONTENT_LOADER_ID_BLENDER  
   Uses blender_importer.  

@@ -37,7 +37,7 @@ namespace qgl::content::loaders
          size_t offset) const
       {
          CONTENT_METADATA_BUFFER info(RESOURCE_TYPE_BLENDER,
-                                      CONTENT_LOADER_ID_STRUCT,
+                                      CONTENT_LOADER_ID_BLENDER,
                                       name);
 
          return CONTENT_DICTIONARY_ENTRY_BUFFER(

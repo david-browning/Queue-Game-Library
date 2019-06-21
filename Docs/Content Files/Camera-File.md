@@ -14,7 +14,7 @@ Supports shared entries: No
 ### Entry Requirements:
 * Camera Buffer  
   Resource Type: RESOURCE_TYPE_CAMERA  
-  Content Loader ID: CONTENT_LOADER_ID_STRUCT  
+  Content Loader ID: CONTENT_LOADER_ID_CAMERA  
   Uses camera_buffer_importer.  
 
 * Use Right Hand Coordinate System  

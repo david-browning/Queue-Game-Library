@@ -19,6 +19,15 @@ Supports shared entries: Yes
   Content Loader ID: CONTENT_LOADER_ID_VERTEX_DESCRIPTION  
   Uses vert_desc_importer  
 
+* Sampler
+
+* Rasterizer description  
+  Resource Type: RESOURCE_TYPE_RASTERIZER  
+  Content Loader ID: CONTENT_LOADER_ID_RASTERIZER  
+  Uses rasterizer_importer.  
+
+* Blender
+
 * Vertex shader  
   Resource Type: RESOURCE_TYPE_SHADER  
   Content Loader ID: CONTENT_LOADER_ID_SHADER_SOURCE or 

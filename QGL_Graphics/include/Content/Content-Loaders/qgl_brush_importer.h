@@ -7,5 +7,5 @@ namespace qgl::content::loaders
    using brush_buffer_importer = struct_importer<
       buffers::BRUSH_BUFFER,
       RESOURCE_TYPE_BRUSH,
-      CONTENT_LOADER_ID_STRUCT>;
+      CONTENT_LOADER_ID_BRUSH>;
 }

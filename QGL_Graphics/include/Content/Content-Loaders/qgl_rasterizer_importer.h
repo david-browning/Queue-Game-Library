@@ -37,7 +37,7 @@ namespace qgl::content::loaders
          size_t offset) const
       {
          CONTENT_METADATA_BUFFER info(RESOURCE_TYPE_RASTERIZER,
-                                      CONTENT_LOADER_ID_STRUCT,
+                                      CONTENT_LOADER_ID_RASTERIZER,
                                       name);
 
          return CONTENT_DICTIONARY_ENTRY_BUFFER(

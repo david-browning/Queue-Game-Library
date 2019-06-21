@@ -7,5 +7,5 @@ namespace qgl::content::loaders
    using graphics_config_buffer_importer = struct_importer<
       buffers::GRAPHICS_CONFIG_BUFFER,
       RESOURCE_TYPE_GRAPHICS_CONFIG,
-      CONTENT_LOADER_ID_STRUCT>;
+      CONTENT_LOADER_ID_GRAPHICS_CONFIG>;
 }

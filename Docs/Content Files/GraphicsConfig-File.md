@@ -13,5 +13,5 @@ Supports shared entries: No
 
 ### Entry Requirements:
 * Resource Type: RESOURCE_TYPE_GRAPHICS_CONFIG  
-  Content Loader ID: CONTENT_LOADER_ID_STRUCT  
+  Content Loader ID: CONTENT_LOADER_ID_GRAPHICS_CONFIG  
   Uses graphics_config_importer.  

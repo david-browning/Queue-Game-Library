@@ -7,5 +7,5 @@ namespace qgl::content::loaders
    using depth_stencil_buffer_importer = struct_importer<
       buffers::DEPTH_STENCIL_BUFFER,
       RESOURCE_TYPE_DEPTH_STENCIL,
-      CONTENT_LOADER_ID_STRUCT>;
+      CONTENT_LOADER_ID_DEPTH_STENCIL>;
 }

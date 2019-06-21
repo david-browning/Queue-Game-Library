@@ -13,5 +13,5 @@ Supports shared entries: No
 
 ### Entry Requirements:
 * Resource Type: RESOURCE_TYPE_DEPTH_STENCIL  
-  Content Loader ID: CONTENT_LOADER_ID_STRUCT  
+  Content Loader ID: CONTENT_LOADER_ID_DEPTH_STENCIL  
   Uses depth_stencil_buffer_importer.  

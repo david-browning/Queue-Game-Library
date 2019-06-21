@@ -13,5 +13,5 @@ Supports shared entries: No
 
 ### Entry Requirements:
 * Resource Type: RESOURCE_TYPE_BRUSH  
-  Content Loader ID: CONTENT_LOADER_ID_STRUCT  
+  Content Loader ID: CONTENT_LOADER_ID_BRUSH  
   Uses brush_buffer_importer.  

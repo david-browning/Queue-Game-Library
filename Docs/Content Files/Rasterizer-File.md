@@ -13,5 +13,5 @@ Supports shared entries: No
 
 ### Entry Requirements:
 * Resource Type: RESOURCE_TYPE_RASTERIZER  
-  Content Loader ID: CONTENT_LOADER_ID_STRUCT  
-  Uses rasterizer_buffer_importer.  
+  Content Loader ID: CONTENT_LOADER_ID_RASTERIZER  
+  Uses rasterizer_importer.  
