@@ -18,7 +18,7 @@ namespace qgl::content::loaders
 
          buffers::RASTERIZER_BUFFER buff;
          winrt::check_hresult(read_file_sync(&fileHandle,
-                                             lookup.size(),
+                                             sizeof(buffers::RASTERIZER_BUFFER),
                                              lookup.offset(),
                                              &buff));
 

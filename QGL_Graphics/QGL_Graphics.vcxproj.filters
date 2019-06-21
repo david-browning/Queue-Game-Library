@@ -280,11 +280,11 @@
     <ClCompile Include="qgl_multisample_desc_buffer.cpp">
       <Filter>Source Files\Content\Content-Buffers</Filter>
     </ClCompile>
-    <ClCompile Include="qgl_multisample_desc.cpp">
-      <Filter>Header Files\Content</Filter>
-    </ClCompile>
     <ClCompile Include="qgl_multisample_desc_file_loader.cpp">
       <Filter>Source Files\Content\File-Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_multisample_desc.cpp">
+      <Filter>Source Files\Content</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
