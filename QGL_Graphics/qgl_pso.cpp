@@ -15,7 +15,9 @@ namespace qgl::content
          D3D12_PIPELINE_STATE_FLAG_NONE;
       #endif
 
-      pipeline_state_1_0()
+      pipeline_state_1_0(const wchar_t* name,
+                         id_t id) :
+         ipso(name, id)
       {
 
       }
@@ -33,6 +35,84 @@ namespace qgl::content
       {
          m_dev = dev_p;
 
+         auto hr = set_shaders(params_p);
+         if (FAILED(hr))
+         {
+            return hr;
+         }
+
+         //Set the flags.
+         m_psoDesc.Flags = PSO_DEFAULT_FLAG;
+
+         //Set the blender
+         m_psoDesc.BlendState = *params_p->Blender->description();
+         m_psoDesc.SampleMask = params_p->Blender->mask();
+
+         //Set the sampling.
+         m_psoDesc.SampleDesc.Count = params_p->Sampler->count();
+         m_psoDesc.SampleDesc.Quality = params_p->Sampler->quality();
+
+         //Set the rasterizer.
+         m_psoDesc.RasterizerState = *params_p->Rasterizer->description();
+
+         //Set the vertex layout
+         m_psoDesc.PrimitiveTopologyType = params_p->VertexDesc->topology();
+         m_psoDesc.IBStripCutValue = params_p->VertexDesc->strip_cut();
+         m_psoDesc.InputLayout.NumElements =
+            static_cast<UINT>(params_p->VertexDesc->size());
+         m_psoDesc.InputLayout.pInputElementDescs = 
+            params_p->VertexDesc->data();
+
+         //Set the root signature.
+         m_psoDesc.pRootSignature = params_p->RootSignature->get();
+
+         //Set the node mask
+         m_psoDesc.NodeMask = params_p->NodeMask;
+
+         //TODO: Add support for stream output?
+         //m_psoDesc.StreamOutput;
+
+         return S_OK;
+      }
+
+      virtual void frames(const graphics::gpu::render::frame* frms,
+                          size_t numFrames)
+      {
+         static constexpr auto maxRTVs =
+            sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC::RTVFormats) /
+            sizeof(DXGI_FORMAT);
+
+         if (numFrames > maxRTVs)
+         {
+            throw std::invalid_argument("Maximum of 8 RTVs allowed.");
+         }
+
+         m_psoDesc.NumRenderTargets = static_cast<UINT>(numFrames);
+         for (size_t i = 0; i < numFrames; i++)
+         {
+            auto stncl = frms[i].frame_stencil();
+            auto renderTarget = frms[i].frame_buffer();
+
+            m_psoDesc.RTVFormats[i] = renderTarget->format();
+            m_psoDesc.DSVFormat = stncl->format();
+            m_psoDesc.DepthStencilState = *stncl->depth_desc();
+            i++;
+         }
+      }
+
+      virtual const ID3D12PipelineState* const_get() const
+      {
+         return get_and_finalize();
+      }
+
+      virtual ID3D12PipelineState* get()
+      {
+         return get_and_finalize();
+      }
+
+      private:
+      HRESULT set_shaders(const IPSO_CREATION_PARAMS* params_p)
+      {
          //Set the shaders. Keep track that no shader is set twice.
          std::set<buffers::SHADER_TYPES> seenShaders;
 
@@ -57,7 +137,7 @@ namespace qgl::content
             //for the pipeline state.
             switch (type)
             {
-               case buffers::SHADER_TYPES::SHADER_TYPE_DS :
+               case buffers::SHADER_TYPES::SHADER_TYPE_DS:
                {
                   m_psoDesc.DS = *shdr_p->byte_code();
                   break;
@@ -102,74 +182,9 @@ namespace qgl::content
             }
          }
 
-         //Set the flags.
-         m_psoDesc.Flags = PSO_DEFAULT_FLAG;
-
-         //Set the blender
-         m_psoDesc.BlendState = *params_p->Blender->description();
-         m_psoDesc.SampleMask = params_p->Blender->mask();
-
-         //Set the sampling.
-         m_psoDesc.SampleDesc.Count = params_p->Sampler->count();
-         m_psoDesc.SampleDesc.Quality = params_p->Sampler->quality();
-
-         //Set the rasterizer.
-         m_psoDesc.RasterizerState = *params_p->Rasterizer->description();
-
-
-         //Set the vertex layout
-         m_psoDesc.PrimitiveTopologyType = params_p->VertexDesc->topology();
-         m_psoDesc.IBStripCutValue = params_p->VertexDesc->strip_cut();
-         m_psoDesc.InputLayout.NumElements =
-            static_cast<UINT>(params_p->VertexDesc->size());
-         m_psoDesc.InputLayout.pInputElementDescs = 
-            params_p->VertexDesc->data();
-
-         //Set the root signature.
-         m_psoDesc.pRootSignature = params_p->RootSignature->get();
-
-         //TODO: Add support for stream output?
-         //m_psoDesc.StreamOutput;
-
          return S_OK;
       }
 
-      virtual void frames(const graphics::gpu::render::frame* frms,
-                          size_t numFrames)
-      {
-         static constexpr auto maxRTVs =
-            sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC::RTVFormats) /
-            sizeof(DXGI_FORMAT);
-
-         if (numFrames > maxRTVs)
-         {
-            throw std::invalid_argument("Maximum of 8 RTVs allowed.");
-         }
-
-         m_psoDesc.NumRenderTargets = static_cast<UINT>(numFrames);
-         for (size_t i = 0; i < numFrames; i++)
-         {
-            auto stncl = frms[i].frame_stencil();
-            auto renderTarget = frms[i].frame_buffer();
-
-            m_psoDesc.RTVFormats[i] = renderTarget->format();
-            m_psoDesc.DSVFormat = stncl->format();
-            m_psoDesc.DepthStencilState = *stncl->depth_desc();
-            i++;
-         }
-      }
-
-      virtual const ID3D12PipelineState* const_get() const
-      {
-         return get_and_finalize();
-      }
-
-      virtual ID3D12PipelineState* get()
-      {
-         return get_and_finalize();
-      }
-
-      private:
       ID3D12PipelineState* get_and_finalize() const
       {
          if (!m_isFinalized)
@@ -207,8 +222,18 @@ namespace qgl::content
       graphics::d3d_device* m_dev;
    };
 
+   ipso::ipso(const wchar_t * n, id_t i) :
+      content_item(n, i,
+                   RESOURCE_TYPE_PSO,
+                   CONTENT_LOADER_ID_PSO)
+   {
+
+   }
+
    HRESULT qgl_make_pipeline(graphics::d3d_device* dev_p,
                              const IPSO_CREATION_PARAMS* params_p,
+                             const wchar_t* name,
+                             id_t id,
                              qgl_version_t v,
                              ipso** out_p) noexcept
    {
@@ -227,7 +252,7 @@ namespace qgl::content
          case qgl::hashes::VERSION_0_1_HASH:
          case qgl::hashes::VERSION_0_2_HASH:
          {
-            ret = new(std::nothrow)pipeline_state_1_0();
+            ret = new(std::nothrow)pipeline_state_1_0(name, id);
 
             if (ret == nullptr)
             {
@@ -257,4 +282,5 @@ namespace qgl::content
       *out_p = ret;
       return S_OK;
    }
+
 }

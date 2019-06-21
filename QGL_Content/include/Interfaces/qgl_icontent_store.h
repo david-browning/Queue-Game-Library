@@ -11,8 +11,9 @@ namespace qgl::content
     After loading, content pointers can be accessed by using a content ID.
     The content ID is assigned when a content file is loaded.
     */
-   struct icontent_store : public iqgl
+   class icontent_store : public iqgl
    {
+      public:
       using content_ptr_t = std::unique_ptr<content_item>;
 
       using load_function =

@@ -289,6 +289,9 @@
     <ClCompile Include="qgl_vertex_desc_header.cpp">
       <Filter>Source Files\Content\Content-Buffers</Filter>
     </ClCompile>
+    <ClCompile Include="qgl_pso_file_loader.cpp">
+      <Filter>Source Files\Content\File-Loaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLGraphics.h">
@@ -578,6 +581,9 @@
     </ClInclude>
     <ClInclude Include="include\Content\Content-Buffers\qgl_vertex_desc_header.h">
       <Filter>Header Files\Content\Content-Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\File-Loaders\qgl_pso_file_loader.h">
+      <Filter>Header Files\Content\File-Loaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

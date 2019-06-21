@@ -21,9 +21,11 @@ namespace qgl::content
     Creating the pipeline state object is deferred until calling get(). The
     pipeline state parameters must be set first.
     */
-   class ipso : public iqgl
+   class ipso : public iqgl, public content_item
    {
       public:
+      ipso(const wchar_t* n, id_t i);
+
       /*
        Returns a pointer to the D3D pipeline state.
        If the pipeline state has not been created, this creates it before
@@ -60,11 +62,14 @@ namespace qgl::content
       rasterizer* Rasterizer;
       vertex_description* VertexDesc;
       graphics::gpu::root_signature* RootSignature;
+      UINT NodeMask;
    };
 
    extern "C"[[nodiscard]] QGL_GRAPHICS_API HRESULT QGL_CC
       qgl_make_pipeline(graphics::d3d_device* dev_p,
                         const IPSO_CREATION_PARAMS* params_p,
+                        const wchar_t* name,
+                        id_t id,
                         qgl_version_t v,
                         ipso** out_p) noexcept;
 }

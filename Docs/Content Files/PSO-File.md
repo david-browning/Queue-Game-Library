@@ -9,8 +9,8 @@ Content Loader ID: CONTENT_LOADER_ID_PSO
 Renderable: No  
 
 ## Dictionary Requirements:
-Min dictionary entries:
-Max dictionary entries:
+Min dictionary entries: 6
+Max dictionary entries: 9
 Supports shared entries: Yes
 
 ### Entry Requirements:

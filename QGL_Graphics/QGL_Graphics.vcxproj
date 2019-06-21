@@ -214,6 +214,7 @@
     <ClInclude Include="include\Content\FIle-Loaders\qgl_graphics_config_file_loader.h" />
     <ClInclude Include="include\Content\FIle-Loaders\qgl_light_file_loader.h" />
     <ClInclude Include="include\Content\FIle-Loaders\qgl_multisample_desc_file_loader.h" />
+    <ClInclude Include="include\Content\File-Loaders\qgl_pso_file_loader.h" />
     <ClInclude Include="include\Content\FIle-Loaders\qgl_rasterizer_file_loader.h" />
     <ClInclude Include="include\Content\FIle-Loaders\qgl_sampler_file_loader.h" />
     <ClInclude Include="include\Content\FIle-Loaders\qgl_shader_file_loader.h" />
@@ -311,6 +312,7 @@
     <ClCompile Include="qgl_multisample_desc_buffer.cpp" />
     <ClCompile Include="qgl_multisample_desc_file_loader.cpp" />
     <ClCompile Include="qgl_pso.cpp" />
+    <ClCompile Include="qgl_pso_file_loader.cpp" />
     <ClCompile Include="qgl_rasterizer.cpp" />
     <ClCompile Include="qgl_rasterizer_buffer.cpp" />
     <ClCompile Include="qgl_render_target.cpp" />
