@@ -187,6 +187,7 @@
     <ClInclude Include="include\Content\Content-Buffers\qgl_depth_stencil_buffer.h" />
     <ClInclude Include="include\Content\Content-Buffers\qgl_graphic_config_buffer.h" />
     <ClInclude Include="include\Content\Content-Buffers\qgl_light_buffer.h" />
+    <ClInclude Include="include\Content\Content-Buffers\qgl_multisample_desc_buffer.h" />
     <ClInclude Include="include\Content\Content-Buffers\qgl_rasterizer_buffer.h" />
     <ClInclude Include="include\Content\Content-Buffers\qgl_sampler_buffer.h" />
     <ClInclude Include="include\Content\Content-Buffers\qgl_shader_header_buffer.h" />
@@ -198,6 +199,7 @@
     <ClInclude Include="include\Content\Content-Loaders\qgl_depth_stencil_importer.h" />
     <ClInclude Include="include\Content\Content-Loaders\qgl_graphics_config_importer.h" />
     <ClInclude Include="include\Content\Content-Loaders\qgl_light_importer.h" />
+    <ClInclude Include="include\Content\Content-Loaders\qgl_multisample_desc_importer.h" />
     <ClInclude Include="include\Content\Content-Loaders\qgl_rasterizer_importer.h" />
     <ClInclude Include="include\Content\Content-Loaders\qgl_sampler_importer.h" />
     <ClInclude Include="include\Content\Content-Loaders\qgl_shader_importer.h" />
@@ -210,6 +212,7 @@
     <ClInclude Include="include\Content\FIle-Loaders\qgl_depth_stencil_file_loader.h" />
     <ClInclude Include="include\Content\FIle-Loaders\qgl_graphics_config_file_loader.h" />
     <ClInclude Include="include\Content\FIle-Loaders\qgl_light_file_loader.h" />
+    <ClInclude Include="include\Content\FIle-Loaders\qgl_multisample_desc_file_loader.h" />
     <ClInclude Include="include\Content\FIle-Loaders\qgl_rasterizer_file_loader.h" />
     <ClInclude Include="include\Content\FIle-Loaders\qgl_sampler_file_loader.h" />
     <ClInclude Include="include\Content\FIle-Loaders\qgl_shader_file_loader.h" />
@@ -220,6 +223,7 @@
     <ClInclude Include="include\Content\qgl_camera.h" />
     <ClInclude Include="include\Content\qgl_graphics_config.h" />
     <ClInclude Include="include\Content\qgl_model.h" />
+    <ClInclude Include="include\Content\qgl_multisample_desc.h" />
     <ClInclude Include="include\Content\qgl_shader.h" />
     <ClInclude Include="include\Content\qgl_light.h" />
     <ClInclude Include="include\Content\qgl_rasterizer.h" />
@@ -302,6 +306,9 @@
     <ClCompile Include="qgl_igraphics_device.cpp" />
     <ClCompile Include="qgl_light.cpp" />
     <ClCompile Include="qgl_light_buffer.cpp" />
+    <ClCompile Include="qgl_multisample_desc.cpp" />
+    <ClCompile Include="qgl_multisample_desc_buffer.cpp" />
+    <ClCompile Include="qgl_multisample_desc_file_loader.cpp" />
     <ClCompile Include="qgl_pso.cpp" />
     <ClCompile Include="qgl_rasterizer.cpp" />
     <ClCompile Include="qgl_rasterizer_buffer.cpp" />

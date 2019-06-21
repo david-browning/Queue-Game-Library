@@ -277,6 +277,15 @@
     <ClCompile Include="qgl_blender_file_loader.cpp">
       <Filter>Source Files\Content\File-Loaders</Filter>
     </ClCompile>
+    <ClCompile Include="qgl_multisample_desc_buffer.cpp">
+      <Filter>Source Files\Content\Content-Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_multisample_desc.cpp">
+      <Filter>Header Files\Content</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_multisample_desc_file_loader.cpp">
+      <Filter>Source Files\Content\File-Loaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLGraphics.h">
@@ -551,6 +560,18 @@
     </ClInclude>
     <ClInclude Include="include\Content\qgl_blender.h">
       <Filter>Header Files\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\Content-Loaders\qgl_multisample_desc_importer.h">
+      <Filter>Header Files\Content\Content-Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\FIle-Loaders\qgl_multisample_desc_file_loader.h">
+      <Filter>Header Files\Content\File-Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\qgl_multisample_desc.h">
+      <Filter>Header Files\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\Content-Buffers\qgl_multisample_desc_buffer.h">
+      <Filter>Header Files\Content\Content-Buffers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
