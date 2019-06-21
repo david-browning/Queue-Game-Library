@@ -13,12 +13,12 @@ Bootstrapper file must be named "boot.qgl".
 14 Bytes: Reserved.
 XX Bytes: Preferences directory. This can be an absolute path or a relative 
     path beginning with a valid relative specifier. The path may or may not 
-    include a null terminator.
+    include a null terminator. These are two byte characters.
 02 Bytes: Number of characters for the content directory.
 14 Bytes: Reserved.
 YY Bytes: Content store directory. This can be an absolute path or a relative 
     path beginning with a valid relative specifier. The path may or may not 
-    include a null terminator.
+    include a null terminator. These are two byte characters.
 
 
 ## Relative Specifiers:
