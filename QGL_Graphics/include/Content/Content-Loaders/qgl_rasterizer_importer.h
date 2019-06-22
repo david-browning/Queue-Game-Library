@@ -4,6 +4,11 @@
 
 namespace qgl::content::loaders
 {
+   using rasterizer_buffer_importer = struct_importer<
+      buffers::RASTERIZER_BUFFER,
+      RESOURCE_TYPE_RASTERIZER,
+      CONTENT_LOADER_ID_RASTERIZER>;
+
    class rasterizer_entry_load_functor
    {
       public:
@@ -16,11 +21,9 @@ namespace qgl::content::loaders
             throw std::invalid_argument("The lookup size is not expected.");
          }
 
-         buffers::RASTERIZER_BUFFER buff;
-         winrt::check_hresult(read_file_sync(&fileHandle,
-                                             sizeof(buffers::RASTERIZER_BUFFER),
-                                             lookup.offset(),
-                                             &buff));
+         static rasterizer_buffer_importer importer;
+         auto buff = importer.load(fileHandle,
+                                   lookup);
 
          return rasterizer(&buff,
                            lookup.metadata()->name(),
@@ -32,7 +35,7 @@ namespace qgl::content::loaders
    {
       public:
       CONTENT_DICTIONARY_ENTRY_BUFFER operator()(
-         const rasterizer& rstr,
+         [[maybe_unused]] const rasterizer& rstr,
          const wchar_t* name,
          size_t offset) const
       {

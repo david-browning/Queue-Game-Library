@@ -87,10 +87,7 @@ familiar.
 * Verify or implement iterators for icontent_file, icontent_store, and 
   icontent_project.
 * icontent_project and icontent_file must support erasing. 
-* Implement qgl_load_sampler_file
 * Implement text_format_file_loader
-* Implement qgl_load_rasterizer_file
-* Implement depth_stencil_file_loader
 * Implement light_file_loader
 * Implement depth_stencil_file_loader
 * Wrap all file loaders as functors?

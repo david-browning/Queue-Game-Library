@@ -4,6 +4,11 @@
 
 namespace qgl::content::loaders
 {
+   using blender_buffer_importer = struct_importer<
+      buffers::BLENDER_BUFFER,
+      RESOURCE_TYPE_BLENDER,
+      CONTENT_LOADER_ID_BLENDER>;
+
    class blender_entry_load_functor
    {
       public:
@@ -16,11 +21,9 @@ namespace qgl::content::loaders
             throw std::invalid_argument("The lookup size is not expected.");
          }
 
-         buffers::BLENDER_BUFFER buff;
-         winrt::check_hresult(read_file_sync(&fileHandle,
-                                             sizeof(buffers::BLENDER_BUFFER),
-                                             lookup.offset(),
-                                             &buff));
+         static blender_buffer_importer importer;
+         auto buff = importer.load(fileHandle,
+                                   lookup);
 
          return blender(&buff,
                         lookup.metadata()->name(),

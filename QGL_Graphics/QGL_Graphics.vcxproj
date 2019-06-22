@@ -308,6 +308,7 @@
     <ClCompile Include="qgl_igraphics_device.cpp" />
     <ClCompile Include="qgl_light.cpp" />
     <ClCompile Include="qgl_light_buffer.cpp" />
+    <ClCompile Include="qgl_light_file_loader.cpp" />
     <ClCompile Include="qgl_multisample_desc.cpp" />
     <ClCompile Include="qgl_multisample_desc_buffer.cpp" />
     <ClCompile Include="qgl_multisample_desc_file_loader.cpp" />
@@ -315,12 +316,14 @@
     <ClCompile Include="qgl_pso_file_loader.cpp" />
     <ClCompile Include="qgl_rasterizer.cpp" />
     <ClCompile Include="qgl_rasterizer_buffer.cpp" />
+    <ClCompile Include="qgl_rasterizer_file_loader.cpp" />
     <ClCompile Include="qgl_render_target.cpp" />
     <ClCompile Include="qgl_root_signature.cpp" />
     <ClCompile Include="qgl_rtv_descriptor_heap.cpp" />
     <ClCompile Include="qgl_sampler.cpp" />
     <ClCompile Include="qgl_sampler_buffer.cpp" />
     <ClCompile Include="qgl_sampler_descriptor_heap.cpp" />
+    <ClCompile Include="qgl_sampler_file_loader.cpp" />
     <ClCompile Include="qgl_scissor.cpp" />
     <ClCompile Include="qgl_shader.cpp" />
     <ClCompile Include="qgl_shader_file_loader.cpp" />

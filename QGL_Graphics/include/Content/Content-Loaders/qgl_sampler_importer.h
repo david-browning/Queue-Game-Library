@@ -7,5 +7,5 @@ namespace qgl::content::loaders
    using sampler_buffer_importer = struct_importer<
       buffers::SAMPLER_BUFFER,
       RESOURCE_TYPE_SAMPLER,
-      CONTENT_LOADER_ID_SAMPLER>;
+      CONTENT_LOADER_ID_STRUCT>;
 }

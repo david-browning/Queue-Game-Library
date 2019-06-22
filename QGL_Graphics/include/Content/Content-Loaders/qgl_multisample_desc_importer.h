@@ -4,6 +4,11 @@
 
 namespace qgl::content::loaders
 {
+   using multisample_desc_buffer_importer = struct_importer<
+      buffers::MULTISAMPLE_DESC_BUFFER,
+      RESOURCE_TYPE_DESCRIPTION,
+      CONTENT_LOADER_ID_MULTISAMPLE_DESCRIPTION>;
+
    class multisample_desc_load_functor
    {
       public:
@@ -16,13 +21,9 @@ namespace qgl::content::loaders
             throw std::invalid_argument("The lookup size is not expected.");
          }
 
-         buffers::MULTISAMPLE_DESC_BUFFER buff;
-         winrt::check_hresult(
-            read_file_sync(
-               &fileHandle,
-               sizeof(buffers::MULTISAMPLE_DESC_BUFFER),
-               lookup.offset(),
-               &buff));
+         static multisample_desc_buffer_importer importer;
+         auto buff = importer.load(fileHandle,
+                                   lookup);
 
          return multisample_desc(&buff,
                                  lookup.metadata()->name(),

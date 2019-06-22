@@ -13,5 +13,5 @@ Supports shared entries: No
 
 ### Entry Requirements:
 * Resource Type: RESOURCE_TYPE_LIGHT  
-  Content Loader ID: CONTENT_LOADER_ID_LIGHT  
+  Content Loader ID: CONTENT_LOADER_ID_STRUCT  
   Uses light_buffer_importer.  

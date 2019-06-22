@@ -13,5 +13,5 @@ Supports shared entries: No
 
 ### Entry Requirements:
 * Resource Type: RESOURCE_TYPE_SAMPLER  
-  Content Loader ID: CONTENT_LOADER_ID_SAMPLER  
+  Content Loader ID: CONTENT_LOADER_ID_STRUCT  
   Uses sampler_buffer_importer.  
