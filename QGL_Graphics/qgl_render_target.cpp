@@ -8,8 +8,8 @@ using namespace winrt::Windows::Graphics;
 namespace qgl::graphics::gpu::render
 {
    render_target::render_target(graphics::igraphics_device* dev,
-                                size_t frameIndex,
-                                const rtv_descriptor_heap* rtvHeap) :
+                                const rtv_descriptor_heap* rtvHeap,
+                                size_t frameIndex) :
       m_rects(nullptr),
       m_numRects(0),
       m_acquired(false)
@@ -29,6 +29,21 @@ namespace qgl::graphics::gpu::render
                 dev->d2d1_context(),
                 displayProps.RawDpiX(),
                 displayProps.RawDpiY());
+   }
+
+   render_target::render_target(render_target&& r) :
+      m_d2dTarget_p(std::move(r.m_d2dTarget_p)),
+      m_wrappedRenderTarget_p(std::move(r.m_wrappedRenderTarget_p)),
+      m_numRects(r.m_numRects),
+      m_handle(std::move(r.m_handle)),
+      m_frameIndex(r.m_frameIndex),
+      m_swapChainDesc(std::move(m_swapChainDesc)),
+      m_viewDesc(std::move(m_viewDesc)),
+      m_acquired(r.m_acquired)
+   {
+      delete[] m_rects;
+      m_rects = r.m_rects;
+      r.m_rects = nullptr;
    }
 
    render_target::~render_target()

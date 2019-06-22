@@ -2,7 +2,7 @@
 #include "include/qgl_graphics_include.h"
 #include "include/Content/qgl_sampler.h"
 #include "include/Content/qgl_texture.h"
-#include "include/GPU/Render/qgl_depth_stencil.h"
+#include "include/Content/qgl_depth_stencil.h"
 #include "include/GPU/Buffers/qgl_const_buffer.h"
 #include "include/GPU/Render/qgl_render_target.h"
 
@@ -108,7 +108,7 @@ namespace qgl::graphics::gpu
        */
       void insert(d3d_device* dev_p,
                   size_t idx,
-                  render::depth_stencil* depthStencil)
+                  content::depth_stencil* depthStencil)
       {
          auto handle = at_cpu(idx);
          auto v = depthStencil->view();

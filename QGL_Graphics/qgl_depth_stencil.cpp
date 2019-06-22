@@ -1,23 +1,28 @@
 #include "pch.h"
-#include "include/GPU/Render/qgl_depth_stencil.h"
-#include "include/qgl_window.h"
+#include "include/Content/qgl_depth_stencil.h"
 #include "include/Interfaces/qgl_igraphics_device.h"
 #include "include/GPU/Descriptors/qgl_dsv_descriptor_heap.h"
 
-namespace qgl::graphics::gpu::render
+namespace qgl::content
 {
    depth_stencil::depth_stencil(
-      const content::buffers::DEPTH_STENCIL_BUFFER* buffer,
+      const buffers::DEPTH_STENCIL_BUFFER* buffer,
       graphics::igraphics_device* dev_p,
-      const graphics::window* wnd,
+      const graphics::gpu::dsv_descriptor_heap* dsvHeap,
+      const graphics::window* wnd_p,
       UINT frameIndex,
-      const graphics::gpu::dsv_descriptor_heap* dsvHeap) :
+      const wchar_t* name,
+      id_t id) :
       m_buffer(*buffer),
-      m_width(wnd->width()),
-      m_height(wnd->height()),
+      m_width(wnd_p->width()),
+      m_height(wnd_p->height()),
       m_frameIndex(frameIndex),
       m_rects(nullptr),
-      m_numRects(0)
+      m_numRects(0),
+      content_item(name,
+                   id,
+                   RESOURCE_TYPE_DEPTH_STENCIL,
+                   CONTENT_LOADER_ID_DEPTH_STENCIL)
    {
       m_clearValue.Format = static_cast<DXGI_FORMAT>(m_buffer.Format);
       m_clearValue.DepthStencil.Depth = m_buffer.Depth;
@@ -97,19 +102,18 @@ namespace qgl::graphics::gpu::render
 
    void depth_stencil::construct(graphics::d3d_device* dev_p)
    {
-      m_desc = CD3DX12_RESOURCE_DESC(
-         D3D12_RESOURCE_DIMENSION_TEXTURE2D,
-         0,
-         static_cast<UINT>(m_width),
-         static_cast<UINT>(m_height),
-         1,
-         1,
-         static_cast<DXGI_FORMAT>(m_buffer.Format),
-         1,
-         0,
-         D3D12_TEXTURE_LAYOUT_UNKNOWN,
-         D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL |
-         D3D12_RESOURCE_FLAG_DENY_SHADER_RESOURCE);
+      m_desc = CD3DX12_RESOURCE_DESC(D3D12_RESOURCE_DIMENSION_TEXTURE2D,
+                                     0,
+                                     static_cast<UINT>(m_width),
+                                     static_cast<UINT>(m_height),
+                                     1,
+                                     1,
+                                     static_cast<DXGI_FORMAT>(m_buffer.Format),
+                                     1,
+                                     0,
+                                     D3D12_TEXTURE_LAYOUT_UNKNOWN,
+                                     D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL |
+                                     D3D12_RESOURCE_FLAG_DENY_SHADER_RESOURCE);
 
       auto heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
 
@@ -125,7 +129,6 @@ namespace qgl::graphics::gpu::render
       std::wstringstream nameStream;
       nameStream << L"Depth Stencil " << m_frameIndex;
       graphics::name_d3d(this->get(), nameStream.str().c_str());
-
       #endif
    }
 }

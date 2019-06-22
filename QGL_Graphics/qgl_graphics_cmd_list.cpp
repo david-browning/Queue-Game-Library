@@ -19,7 +19,7 @@ namespace qgl::graphics::gpu
       float ClearColorRGBA[4];
 
 
-      std::vector<render::depth_stencil*> DepthStencil_ps;
+      std::vector<content::depth_stencil*> DepthStencil_ps;
       std::vector<render::render_target*> RenderTargets_ps;
       std::vector<D3D12_CPU_DESCRIPTOR_HANDLE> RTVHandles;
       std::vector<D3D12_CPU_DESCRIPTOR_HANDLE> DSVHandles;

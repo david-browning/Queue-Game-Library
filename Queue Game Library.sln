@@ -42,6 +42,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content Files", "Content Fi
 		Docs\Content Files\Brush-file.md = Docs\Content Files\Brush-file.md
 		Docs\Content Files\Camera-File.md = Docs\Content Files\Camera-File.md
 		Docs\Content Files\DepthStencil-File.md = Docs\Content Files\DepthStencil-File.md
+		Docs\Content Files\FrameConfig-File.md = Docs\Content Files\FrameConfig-File.md
 		Docs\Content Files\GraphicsConfig-File.md = Docs\Content Files\GraphicsConfig-File.md
 		Docs\Content Files\Light-File.md = Docs\Content Files\Light-File.md
 		Docs\Content Files\Model-File.md = Docs\Content Files\Model-File.md

@@ -32,8 +32,8 @@ namespace qgl::graphics::gpu::render
        render?
        */
       render_target(graphics::igraphics_device* dev,
-                    size_t frameIndex,
-                    const rtv_descriptor_heap* rtvHeap);
+                    const rtv_descriptor_heap* rtvHeap,
+                    size_t frameIndex);
 
       /*
        Copy constructor.
@@ -43,7 +43,7 @@ namespace qgl::graphics::gpu::render
       /*
        Move constructor.
        */
-      render_target(render_target&&) = delete;
+      render_target(render_target&&);
 
       /*
        Destructor.
@@ -78,6 +78,9 @@ namespace qgl::graphics::gpu::render
 
       D3D12_CPU_DESCRIPTOR_HANDLE where() const;
       
+      /*
+       Returns the 2D render target used for Direct2D.
+       */
       const d2d_render_target* d2d_target() const noexcept;
 
       private:

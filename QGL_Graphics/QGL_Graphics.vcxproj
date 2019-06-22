@@ -223,6 +223,7 @@
     <ClInclude Include="include\Content\qgl_blender.h" />
     <ClInclude Include="include\Content\qgl_brush.h" />
     <ClInclude Include="include\Content\qgl_camera.h" />
+    <ClInclude Include="include\Content\qgl_depth_stencil.h" />
     <ClInclude Include="include\Content\qgl_graphics_config.h" />
     <ClInclude Include="include\Content\qgl_model.h" />
     <ClInclude Include="include\Content\qgl_multisample_desc.h" />
@@ -255,7 +256,6 @@
     <ClInclude Include="include\GPU\Memory\qgl_igpu_memory_allocator.h" />
     <ClInclude Include="include\GPU\qgl_graphics_device_helpers.h" />
     <ClInclude Include="include\GPU\qgl_pso.h" />
-    <ClInclude Include="include\GPU\Render\qgl_depth_stencil.h" />
     <ClInclude Include="include\GPU\Render\qgl_frame.h" />
     <ClInclude Include="include\GPU\Render\qgl_render_target.h" />
     <ClInclude Include="include\GPU\Render\qgl_scissor.h" />

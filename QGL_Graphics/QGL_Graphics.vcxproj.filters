@@ -220,9 +220,6 @@
     <ClCompile Include="qgl_render_target.cpp">
       <Filter>Source Files\GPU\Render</Filter>
     </ClCompile>
-    <ClCompile Include="qgl_depth_stencil.cpp">
-      <Filter>Source Files\GPU\Render</Filter>
-    </ClCompile>
     <ClCompile Include="qgl_frame.cpp">
       <Filter>Source Files\GPU\Render</Filter>
     </ClCompile>
@@ -300,6 +297,9 @@
     </ClCompile>
     <ClCompile Include="qgl_light_file_loader.cpp">
       <Filter>Source Files\Content\File-Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_depth_stencil.cpp">
+      <Filter>Source Files\Content</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -447,9 +447,6 @@
     <ClInclude Include="include\GPU\Command-Lists\qgl_icmd_list.h">
       <Filter>Header Files\GPU\Command-Lists</Filter>
     </ClInclude>
-    <ClInclude Include="include\GPU\Render\qgl_depth_stencil.h">
-      <Filter>Header Files\GPU\Render</Filter>
-    </ClInclude>
     <ClInclude Include="include\GPU\Render\qgl_frame.h">
       <Filter>Header Files\GPU\Render</Filter>
     </ClInclude>
@@ -593,6 +590,9 @@
     </ClInclude>
     <ClInclude Include="include\Content\File-Loaders\qgl_pso_file_loader.h">
       <Filter>Header Files\Content\File-Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\qgl_depth_stencil.h">
+      <Filter>Header Files\Content</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

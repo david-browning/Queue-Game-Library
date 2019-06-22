@@ -110,3 +110,5 @@ familiar.
   define new functionality. Components are functors with additional 
   requirements?
 * PSO supports steam output?
+* Resize frame? This resized render targets and depth stencils?
+* Provide CPU access to depth-stencil buffer.
