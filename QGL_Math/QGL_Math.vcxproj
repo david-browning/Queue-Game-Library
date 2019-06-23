@@ -160,6 +160,7 @@
     <ClInclude Include="include\qgl_math_funcs.h" />
     <ClInclude Include="include\qgl_math_includes.h" />
     <ClInclude Include="include\qgl_rational.h" />
+    <ClInclude Include="include\Shapes\qgl_rectangle.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="QGLMath.h" />
     <ClInclude Include="QGL_MathRT.h" />
@@ -170,6 +171,7 @@
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
     <ClCompile Include="QGL_MathRT.cpp" />
+    <ClCompile Include="qgl_rectangle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="QGL_MathRT.idl" />

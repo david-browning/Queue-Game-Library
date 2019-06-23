@@ -17,6 +17,12 @@
     <Filter Include="winrt_rt">
       <UniqueIdentifier>{bb1cd3d5-a3de-4d51-afae-52a7b5bafbe5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Shapes">
+      <UniqueIdentifier>{f10f7718-defd-4e62-b296-7a191c34a379}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shapes">
+      <UniqueIdentifier>{058d14eb-0c14-4d09-a8de-9582716bcc78}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
@@ -28,6 +34,9 @@
     <ClCompile Include="QGL_MathRT.cpp" />
     <ClCompile Include="QGL_MathRT.cpp">
       <Filter>winrt_rt</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_rectangle.cpp">
+      <Filter>Source Files\Shapes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -55,6 +64,9 @@
     </ClInclude>
     <ClInclude Include="QGLMath.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shapes\qgl_rectangle.h">
+      <Filter>Header Files\Shapes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
