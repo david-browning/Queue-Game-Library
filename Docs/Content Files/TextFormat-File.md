@@ -15,5 +15,5 @@ Supports shared entries: No
 
 ### Entry Requirements:
 * Resource Type: RESOURCE_TYPE_TEXT_FORMAT  
-  Content Loader ID: CONTENT_LOADER_ID_TEXT_FORMAT  
+  Content Loader ID: CONTENT_LOADER_ID_STRUCT  
   Uses text_format_buffer_importer.  

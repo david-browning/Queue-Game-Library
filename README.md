@@ -87,8 +87,7 @@ familiar.
 * Verify or implement iterators for icontent_file, icontent_store, and 
   icontent_project.
 * icontent_project and icontent_file must support erasing. 
-* Implement text_format_file_loader
-* Implement light_file_loader
+* Implement camera_file_loader
 * Implement depth_stencil_file_loader
 * Wrap all file loaders as functors?
 * qgl::content::buffers::BRUSH_BUFFER has floating point data types in it.
@@ -108,5 +107,6 @@ familiar.
   define new functionality. Components are functors with additional 
   requirements?
 * PSO supports steam output?
+* Finish PSO file loader.
 * Resize frame? This resized render targets and depth stencils?
 * Provide CPU access to depth-stencil buffer.

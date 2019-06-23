@@ -301,6 +301,12 @@
     <ClCompile Include="qgl_depth_stencil.cpp">
       <Filter>Source Files\Content</Filter>
     </ClCompile>
+    <ClCompile Include="qgl_text_format_file_loader.cpp">
+      <Filter>Source Files\Content\File-Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_depth_stencil_file_loader.cpp">
+      <Filter>Source Files\Content\File-Loaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLGraphics.h">
