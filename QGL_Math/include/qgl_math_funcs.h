@@ -1,4 +1,5 @@
 #pragma once
+#include "include/qgl_math_includes.h"
 
 namespace qgl::math
 {

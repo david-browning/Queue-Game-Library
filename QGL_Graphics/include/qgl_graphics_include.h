@@ -3,6 +3,7 @@
 
 #include <QGLModel.h>
 #include <QGLContent.h>
+#include <QGLMath.h>
 
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN

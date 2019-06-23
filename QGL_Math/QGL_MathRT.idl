@@ -1,0 +1,8 @@
+namespace QGL_Math
+{
+    [default_interface]
+    runtimeclass QGL_MathRT
+    {
+        QGL_MathRT();
+    }
+}

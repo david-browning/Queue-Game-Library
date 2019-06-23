@@ -76,7 +76,7 @@ namespace QGL_Model_Unit_Tests
        */
       TEST_METHOD(HashesCorrect)
       {
-         size_t expectedHash;
+         
       }
    };
 }

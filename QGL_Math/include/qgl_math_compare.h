@@ -1,6 +1,5 @@
 #pragma once
-#include <cmath>
-#include <limits>
+#include "include/qgl_math_includes.h"
 
 namespace qgl::math
 {

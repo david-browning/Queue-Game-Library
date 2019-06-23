@@ -6,6 +6,26 @@ using namespace qgl;
 
 namespace QGL_Model_Unit_Tests
 {
+   /*
+    Specialization of approx_equal for floats.
+    */
+   inline bool approx_equal(float expected,
+                            float actual,
+                            float tolerance = FLT_EPSILON)
+   {
+      return abs(expected - actual) < tolerance;
+   }
+
+   /*
+    Specialization of approx_equal for doubles.
+    */
+   inline bool approx_equal(double expected,
+                            double actual,
+                            double tolerance = DBL_EPSILON)
+   {
+      return abs(expected - actual) < tolerance;
+   }
+
    TEST_CLASS(time_convert_tests)
    {
       public:
@@ -37,7 +57,7 @@ namespace QGL_Model_Unit_Tests
          uint64_t wholeTicks = 20'000'000;
          float wholeSeconds = 2.0f;
          Assert::IsTrue(
-            math::approx_equal(wholeSeconds,
+            approx_equal(wholeSeconds,
                          qgl::ticks_to_seconds<decltype(wholeSeconds),
                          decltype(wholeTicks)>(wholeTicks)),
             L"Whole seconds does not fall in the allowed tolerance.");
@@ -45,7 +65,7 @@ namespace QGL_Model_Unit_Tests
          uint64_t fractionTicks = 12'345'678;
          float fractionSeconds = 1.2345678f;
          Assert::IsTrue(
-            math::approx_equal(fractionSeconds,
+            approx_equal(fractionSeconds,
                          qgl::ticks_to_seconds<decltype(fractionSeconds),
                          decltype(fractionTicks)>(fractionTicks)),
             L"Fraction seconds does not fall in the allowed tolerance.");
@@ -56,7 +76,7 @@ namespace QGL_Model_Unit_Tests
          uint64_t wholeTicks = 20'000;
          float wholeMilliseconds = 2.0f;
          Assert::IsTrue(
-            math::approx_equal(wholeMilliseconds,
+            approx_equal(wholeMilliseconds,
                          qgl::ticks_to_milliseconds<decltype(wholeMilliseconds),
                          decltype(wholeTicks)>(wholeTicks)),
             L"Whole milliseconds does not fall in the allowed tolerance.");
@@ -64,7 +84,7 @@ namespace QGL_Model_Unit_Tests
          uint64_t fractionTicks = 12'345;
          float fractionMilliseconds = 1.2345f;
          Assert::IsTrue(
-            math::approx_equal(fractionMilliseconds,
+            approx_equal(fractionMilliseconds,
                          qgl::ticks_to_milliseconds<decltype(fractionMilliseconds),
                          decltype(fractionTicks)>(fractionTicks)),
             L"Fraction milliseconds does not fall in the allowed tolerance.");

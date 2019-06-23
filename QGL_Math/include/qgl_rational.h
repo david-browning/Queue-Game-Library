@@ -1,6 +1,5 @@
 #pragma once
-#include "include/qgl_model_include.h"
-#include <numeric>
+#include "include/qgl_math_includes.h"
 #include <type_traits>
 
 namespace qgl::math

@@ -253,9 +253,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tests\icommand_tests.cpp" />
-    <ClCompile Include="Tests\Math\comparison_function_tests.cpp" />
-    <ClCompile Include="Tests\Math\math_function_tests.cpp" />
-    <ClCompile Include="Tests\Math\rational_number_tests.cpp" />
     <ClCompile Include="Tests\Observer-Observable\callback_observer-tests.cpp" />
     <ClCompile Include="Tests\Observer-Observable\observer_out_of_scope_tests.cpp" />
     <ClCompile Include="Tests\Observer-Observable\subject_constructor_tests.cpp" />
