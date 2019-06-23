@@ -96,8 +96,6 @@ familiar.
 * content_store_1_0::load leaks exceptions when calling loaderFn(). (Line 123)
   Either require all file loaders to be noexcept, or catch exceptions and
   translate to HRESULT.
-* Organize qgl::content::RESOURCE_TYPES
-* Organize qgl::content::CONTENT_LOADER_IDS
 * Change qgl::content::check_loader_id to noexcept to avoid file loaders 
   leaking exceptions? Return bool or HRESULT?
 * Change qgl::content::check_resource_type to noexcept to avoid file loaders 
