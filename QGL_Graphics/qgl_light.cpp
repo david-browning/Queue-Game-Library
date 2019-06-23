@@ -12,22 +12,22 @@ namespace qgl::content
                    qgl::content::RESOURCE_TYPES::RESOURCE_TYPE_LIGHT,
                    qgl::content::CONTENT_LOADER_IDS::CONTENT_LOADER_ID_LIGHT)
    {
-      intensity(lBuffer->Intensity);
+      intensity(static_cast<float>(lBuffer->Intensity));
 
-      color(DirectX::XMVectorSet(lBuffer->Color[0],
-                                 lBuffer->Color[1],
-                                 lBuffer->Color[2],
-                                 lBuffer->Color[3]));
+      color(DirectX::XMVectorSet(static_cast<float>(lBuffer->Color[0]),
+                                 static_cast<float>(lBuffer->Color[1]),
+                                 static_cast<float>(lBuffer->Color[2]),
+                                 static_cast<float>(lBuffer->Color[3])));
 
-      look_at(DirectX::XMVectorSet(lBuffer->LookAt[0],
-                                   lBuffer->LookAt[1],
-                                   lBuffer->LookAt[2],
-                                   lBuffer->LookAt[3]));
+      look_at(DirectX::XMVectorSet(static_cast<float>(lBuffer->LookAt[0]),
+                                   static_cast<float>(lBuffer->LookAt[1]),
+                                   static_cast<float>(lBuffer->LookAt[2]),
+                                   static_cast<float>(lBuffer->LookAt[3])));
 
-      position(DirectX::XMVectorSet(lBuffer->Position[0],
-                                    lBuffer->Position[1],
-                                    lBuffer->Position[2],
-                                    lBuffer->Position[3]));
+      position(DirectX::XMVectorSet(static_cast<float>(lBuffer->Position[0]),
+                                    static_cast<float>(lBuffer->Position[1]),
+                                    static_cast<float>(lBuffer->Position[2]),
+                                    static_cast<float>(lBuffer->Position[3])));
    }
 
    float light::intensity() const

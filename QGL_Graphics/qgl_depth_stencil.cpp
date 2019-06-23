@@ -25,7 +25,7 @@ namespace qgl::content
                    CONTENT_LOADER_ID_DEPTH_STENCIL)
    {
       m_clearValue.Format = static_cast<DXGI_FORMAT>(m_buffer.Format);
-      m_clearValue.DepthStencil.Depth = m_buffer.Depth;
+      m_clearValue.DepthStencil.Depth = static_cast<float>(m_buffer.Depth);
       m_clearValue.DepthStencil.Stencil = m_buffer.Stencil;
 
       m_cpuHandle = dsvHeap->at_cpu(frameIndex);
@@ -67,7 +67,7 @@ namespace qgl::content
 
    float depth_stencil::depth() const noexcept
    {
-      return m_buffer.Depth;
+      return static_cast<float>(m_buffer.Depth);
    }
 
    uint8_t depth_stencil::stencil() const noexcept

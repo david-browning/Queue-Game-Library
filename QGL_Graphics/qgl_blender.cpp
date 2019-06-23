@@ -39,7 +39,7 @@ namespace qgl::content
 
       for (auto i = 0; i < 4; i++)
       {
-         m_blendFactor[i] = buff->BlendFactor[i];
+         m_blendFactor[i] = static_cast<float>(buff->BlendFactor[i]);
       }
    }
 

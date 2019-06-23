@@ -177,6 +177,7 @@
     <ClInclude Include="include\Content-Buffers\qgl_content_dict_entry_buffer.h" />
     <ClInclude Include="include\Content-Buffers\qgl_content_file_header_buffer.h" />
     <ClInclude Include="include\Content-Buffers\qgl_content_metadata_buffer.h" />
+    <ClInclude Include="include\Content-Buffers\qgl_rectangle_buffer.h" />
     <ClInclude Include="include\Content-Files\qgl_content_variant_entry.h" />
     <ClInclude Include="include\Content-Files\qgl_content_file_helpers.h" />
     <ClInclude Include="include\Content-Files\qgl_data_content_entry.h" />
@@ -185,6 +186,7 @@
     <ClInclude Include="include\Content-Importers\qgl_importer_bool.h" />
     <ClInclude Include="include\Content-Importers\qgl_importer_integral.h" />
     <ClInclude Include="include\Content-Importers\qgl_importer_rational.h" />
+    <ClInclude Include="include\Content-Importers\qgl_importer_rectangle.h" />
     <ClInclude Include="include\Content-Importers\qgl_importer_string.h" />
     <ClInclude Include="include\Content-Importers\qgl_importer_struct.h" />
     <ClInclude Include="include\Content-Importers\qgl_import_helpers.h" />
@@ -218,6 +220,7 @@
     <ClCompile Include="qgl_icontent_project.cpp" />
     <ClCompile Include="qgl_icontent_store.cpp" />
     <ClCompile Include="qgl_ifile_buffer.cpp" />
+    <ClCompile Include="qgl_rectangle_buffer.cpp" />
     <ClCompile Include="qgl_string_item.cpp" />
     <ClCompile Include="qgl_wstring_item.cpp" />
     <ClInclude Include="pch.h" />

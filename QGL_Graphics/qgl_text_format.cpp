@@ -27,14 +27,15 @@ namespace qgl::content
             static_cast<DWRITE_FONT_WEIGHT>(Buffer.FontWeight),
             static_cast<DWRITE_FONT_STYLE>(Buffer.Style),
             static_cast<DWRITE_FONT_STRETCH>(Buffer.Stretch),
-            Buffer.FontSize,
+            static_cast<float>(Buffer.FontSize),
             Buffer.FontLocaleName,
             Format.put()));
 
          winrt::check_hresult(Format->SetFlowDirection(
             static_cast<DWRITE_FLOW_DIRECTION>(Buffer.FlowDirection)));
 
-         winrt::check_hresult(Format->SetIncrementalTabStop(Buffer.TabStop));
+         winrt::check_hresult(Format->SetIncrementalTabStop(
+            static_cast<float>(Buffer.TabStop)));
 
          winrt::check_hresult(Format->SetParagraphAlignment(
             static_cast<DWRITE_PARAGRAPH_ALIGNMENT>(

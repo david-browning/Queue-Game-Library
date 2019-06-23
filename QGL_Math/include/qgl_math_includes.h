@@ -14,6 +14,6 @@
 #define QGL_MATH_TEMPLATE
 #else
 #define QGL_MATH_API __declspec(dllimport)
-#define QGL_CONTENT_TEMPLATE extern
+#define QGL_MATH_TEMPLATE extern
 #endif
 

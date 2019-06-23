@@ -139,6 +139,9 @@
     <ClCompile Include="qgl_ifile_buffer.cpp">
       <Filter>Source Files\Interfaces</Filter>
     </ClCompile>
+    <ClCompile Include="qgl_rectangle_buffer.cpp">
+      <Filter>Source Files\Content-Buffers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLContent.h">
@@ -243,6 +246,12 @@
     </ClInclude>
     <ClInclude Include="include\Content-Importers\qgl_importer_rational.h">
       <Filter>Header Files\Content-Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content-Importers\qgl_importer_rectangle.h">
+      <Filter>Header Files\Content-Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content-Buffers\qgl_rectangle_buffer.h">
+      <Filter>Header Files\Content-Buffers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

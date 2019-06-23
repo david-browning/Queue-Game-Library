@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <QGLModel.h>
+#include <QGLMath.h>
 #include <winrt/base.h>
 #include <filesystem>
 #include <winrt/Windows.Storage.h>

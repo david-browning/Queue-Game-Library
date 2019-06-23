@@ -19,7 +19,8 @@ namespace qgl::content
 
       for (auto i = 0; i < 4; i++)
       {
-         m_samplerDesc.BorderColor[i] = buffer->BorderColor[i];
+         m_samplerDesc.BorderColor[i] = 
+            static_cast<float>(buffer->BorderColor[i]);
       }
 
       m_samplerDesc.ComparisonFunc =
@@ -27,9 +28,9 @@ namespace qgl::content
       m_samplerDesc.Filter =
          static_cast<D3D12_FILTER>(buffer->Filter);
       m_samplerDesc.MaxAnisotropy = buffer->MaxAnisotropy;
-      m_samplerDesc.MaxLOD = buffer->MaxLOD;
-      m_samplerDesc.MinLOD = buffer->MinLOD;
-      m_samplerDesc.MipLODBias = buffer->MipLODBias;
+      m_samplerDesc.MaxLOD = static_cast<float>(buffer->MaxLOD);
+      m_samplerDesc.MinLOD = static_cast<float>(buffer->MinLOD);
+      m_samplerDesc.MipLODBias = static_cast<float>(buffer->MipLODBias);
    }
 
    const sampler::ResourceDescriptionT* sampler::description() const

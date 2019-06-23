@@ -136,35 +136,35 @@
     <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)QGL_Content;$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math</IncludePath>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">

@@ -76,7 +76,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content Importers", "Conten
 		Docs\Content Importers\Rasterizer-Importer.md = Docs\Content Importers\Rasterizer-Importer.md
 		Docs\Content Importers\Rectangle-Importer.md = Docs\Content Importers\Rectangle-Importer.md
 		Docs\Content Importers\SamplerBuffer-Importer.md = Docs\Content Importers\SamplerBuffer-Importer.md
-		Docs\Content Importers\ScreenRectangle-Importer.md = Docs\Content Importers\ScreenRectangle-Importer.md
 		Docs\Content Importers\Shader-Importer.md = Docs\Content Importers\Shader-Importer.md
 		Docs\Content Importers\String-Importer.md = Docs\Content Importers\String-Importer.md
 		Docs\Content Importers\VertexDescription-Importer.md = Docs\Content Importers\VertexDescription-Importer.md
