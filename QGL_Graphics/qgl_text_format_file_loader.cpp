@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "include/Content/File-Loaders/qgl_text_format_file_loader.h"
 #include "include/Content/Content-Loaders/qgl_text_format_importer.h"
+#include "include/Content/qgl_text_format.h"
 
 namespace qgl::content::loaders
 {
@@ -19,11 +20,7 @@ namespace qgl::content::loaders
          CONTENT_LOADER_ID_TEXT_FORMAT>(headerInfo);
 
       //Only 1 dictionary entry.
-      const auto dictCount = f->size();
-      if (dictCount != 1)
-      {
-         throw std::runtime_error("The content file should only have 1 entry.");
-      }
+      check_dictionary_count<1>(f);
 
       auto entry = f->const_at(0);
       check_loader_and_resource<RESOURCE_TYPE_TEXT_FORMAT,

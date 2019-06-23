@@ -52,12 +52,12 @@ namespace qgl::content
        Returns:
          S_OK if the file was loaded.
          S_ALREADYMAPPED if the file was already loaded. This is not an error.
-         Failed HRESULT if the file cannot be opened.
          E_NOLOADER if there is no loader with the correct resource type or
             loader ID.
          E_UNEXPECTED if the content file cannot be loaded. This most likely
             indicates a problem with the content file.
        This operation is thread-safe.
+       E_HANDLE if the file cannot be opened or read.
        If this function fails to load content, the ID will be allocated, but 
        does not point to any content file. Attempting to load the file again 
        will use the same ID.

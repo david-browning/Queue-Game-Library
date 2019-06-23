@@ -91,16 +91,8 @@ familiar.
 * Implement depth_stencil_file_loader
 * Wrap all file loaders as functors?
 * qgl::content::buffers::BRUSH_BUFFER has floating point data types in it.
-* content_store_1_0::flush_loads_thread 
-* content_store_1_0::load leaks exceptions when calling loaderFn(). (Line 123)
-  Either require all file loaders to be noexcept, or catch exceptions and
-  translate to HRESULT.
-* Change qgl::content::check_loader_id to noexcept to avoid file loaders 
-  leaking exceptions? Return bool or HRESULT?
-* Change qgl::content::check_resource_type to noexcept to avoid file loaders 
-  leaking exceptions? Return bool or HRESULT?
-* Change qgl::content::check_loader_and_resource to noexcept to avoid file 
-  loaders leaking exceptions? Return bool or HRESULT?
+* content_store_1_0::flush_loads_thread does not do anything with failed 
+  HRESULTs.
 * OBJ Importer. Needs to be aware of the vertex layout.
 * Define a component-like class for use in rendering, handling input, and 
   physics updating. Components need to be type safe and allow programmers to 

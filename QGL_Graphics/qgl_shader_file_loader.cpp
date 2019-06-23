@@ -14,6 +14,9 @@ namespace qgl::content::loaders
       check_loader_and_resource<RESOURCE_TYPE_SHADER,
          CONTENT_LOADER_ID_UNKNOWN>(headerInfo);
 
+      //Only 1 dictionary entry.
+      check_dictionary_count<1>(f);
+
       auto entry = f->const_at(0);
       check_resource_type<RESOURCE_TYPE_SHADER>(entry->metadata());
 

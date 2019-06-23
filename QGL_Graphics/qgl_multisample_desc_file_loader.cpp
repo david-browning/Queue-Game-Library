@@ -14,11 +14,7 @@ namespace qgl::content::loaders
          CONTENT_LOADER_ID_MULTISAMPLE_DESCRIPTION>(headerInfo);
 
       //Only 1 dictionary entry.
-      const auto dictCount = f->size();
-      if (dictCount != 1)
-      {
-         throw std::runtime_error("The content file should only have 1 entry.");
-      }
+      check_dictionary_count<1>(f);
 
       auto entry = f->const_at(0);
       check_loader_and_resource<RESOURCE_TYPE_DESCRIPTION,

@@ -16,11 +16,7 @@ namespace qgl::content::loaders
          CONTENT_LOADER_IDS::CONTENT_LOADER_ID_WSTRING>(headerInfo);
 
        //WString files should only have 1 entry: the string's content.
-      const auto dictCount = f->size();
-      if (dictCount != 1)
-      {
-         throw std::runtime_error("The content file should only have 1 entry.");
-      }
+      check_dictionary_count<1>(f);
 
       static wstring_importer wsImporter;
 

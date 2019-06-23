@@ -123,7 +123,22 @@ namespace qgl::content
          auto loaderFn = m_loadFunctionMap.at(loaderHash);
 
          //Load the content using the file loader.
-         auto contentPtr = loaderFn(fileSafe.get(), *id_p);
+         content_ptr_t contentPtr = nullptr;
+         try
+         {
+            contentPtr = loaderFn(fileSafe.get(), *id_p);
+         }
+         catch (std::invalid_argument&)
+         {
+            //Most-likely, the file data was unexpected for the loader.
+            return E_UNEXPECTED;
+         }
+         catch (...)
+         {
+            //Probably a file reading error.
+            return E_HANDLE;
+         }
+
          if (contentPtr == nullptr)
          {
             #ifdef DEBUG
@@ -227,7 +242,9 @@ namespace qgl::content
                        m_pendingLoads.end(),
                        [&](const file_string& p)
          {
-            id_t id; //Allow this to get lost.
+            //Allow this to get lost. The caller can get the ID later by using
+            //reserve().
+            id_t id; 
             auto hr = load(p.c_str(), &id);
          });
 
