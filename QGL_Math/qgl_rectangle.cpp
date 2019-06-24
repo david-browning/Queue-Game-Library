@@ -58,4 +58,14 @@ namespace qgl::math
    {
       return m_norm;
    }
+
+   D2D_RECT_F rectangle::rect_2d() const noexcept
+   {
+      D2D_RECT_F ret;
+      ret.left = XMVectorGetX(m_ul);
+      ret.top = XMVectorGetY(m_ul);
+      ret.right = XMVectorGetX(m_br);
+      ret.bottom = XMVectorGetY(m_br);
+      return ret;
+   }
 }

@@ -4,7 +4,7 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace qgl::math;
 
-namespace QGL_Model_Unit_Tests
+namespace QGL_Math_Unit_Tests
 {
    TEST_CLASS(RationalTests)
    {
@@ -15,7 +15,12 @@ namespace QGL_Model_Unit_Tests
        */
       TEST_METHOD(Construct)
       {
+         rational<int> r(1, 1);
+         Assert::AreEqual(1, r.numerator(),
+                          L"The numerator is not 1.");
 
+         Assert::AreEqual(1, r.denominator(),
+                          L"The denominator is not 1.");
       }
 
       /*
@@ -24,7 +29,11 @@ namespace QGL_Model_Unit_Tests
        */
       TEST_METHOD(DefaultConstruct)
       {
-
+         rational<int> r;
+         Assert::AreEqual(0.0f, static_cast<float>(r),
+                          L"The number is not 0.");
+         Assert::AreEqual(0, r.numerator(),
+                          L"The numerator should be 0.");
       }
 
       /*
@@ -33,7 +42,16 @@ namespace QGL_Model_Unit_Tests
        */
       TEST_METHOD(ConstructWith0Denom)
       {
+         try
+         {
+            rational<int> r(1, 0);
+         }
+         catch (std::invalid_argument&)
+         {
+            return;
+         }
 
+         Assert::Fail(L"The exception was not caught.");
       }
 
       /*
@@ -42,7 +60,14 @@ namespace QGL_Model_Unit_Tests
        */
       TEST_METHOD(CopyConstructor)
       {
+         rational<int> r(1, 2);
+         rational<int> r2(r);
 
+         Assert::AreEqual(r.numerator(), r2.numerator(),
+                          L"The numerators are not equal.");
+
+         Assert::AreEqual(r.denominator(), r2.denominator(),
+                          L"The denominators are not equal.");
       }
 
       /*
@@ -51,7 +76,15 @@ namespace QGL_Model_Unit_Tests
        */
       TEST_METHOD(EqualityOperator)
       {
+         rational<int> r(1, 2);
+         rational<int> r2(r);
 
+         Assert::IsTrue(r == r2,
+                        L"The numbers should be equal.");
+
+         rational<int> r3(5, 8);
+         Assert::IsTrue(r != r3,
+                        L"The numbers should not be equal.");
       }
 
       /*
@@ -59,7 +92,10 @@ namespace QGL_Model_Unit_Tests
        */
       TEST_METHOD(AssignOperator)
       {
-
+         rational<int> r(-3, 8);
+         auto r2 = r;
+         Assert::IsTrue(r == r2,
+                        L"The numbers should be equal.");
       }
 
       /*

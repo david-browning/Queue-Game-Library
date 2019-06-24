@@ -94,6 +94,11 @@ namespace qgl::math
        */
       DirectX::XMVECTOR XM_CALLCONV norm_cache() const noexcept;
 
+      /*
+       Returns a 2D rectangle. The Z coordinates in this are discarded.
+       */
+      D2D_RECT_F rect_2d() const noexcept;
+
       private:
       /*
        Upper left corner of the rectangle.

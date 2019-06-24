@@ -77,7 +77,6 @@ familiar.
     * GitHub Extension for Visual Studio  
 
 ## TODO:
-* Implement qgl::rational operators
 * Test qgl::rational
 * Test qgl::content:: entry importers
 * Test qgl::content:: file loaders

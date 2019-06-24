@@ -105,33 +105,52 @@ namespace qgl::math
       /*
        Adds two rational numbers.
        */
-      //inline friend rational operator+(const rational& l, const rational& r);
+      friend rational operator+(const rational& l, const rational& r)
+      {
+         //(A / B) + (C / D) = (AD + BC) / BD
+         auto B = l.denominator();
+         auto D = r.denominator();
+
+         return rational(l.numerator() * D + B * r.numerator(),
+                         B * D).simplified();
+      }
 
       /*
        Subtracts two rational numbers.
        */
-      //inline friend rational operator-(const rational& l, const rational& r);
+      friend rational operator-(const rational& l, const rational& r)
+      {
+         //(A / B) - (C / D) = (AD - BC) / BD
+         auto B = l.denominator();
+         auto D = r.denominator();
+
+         return rational(l.numerator() * D - B * r.numerator(),
+                         B * D).simplified();
+      }
 
       /*
        Multiplies two rational numbers.
        */
-      //inline friend rational operator*(const rational& l, const rational& r);
+      friend rational operator*(const rational& l, const rational& r)
+      {
+         return rational(l.numerator() * r.numerator(),
+                         l.denominator() * r.denominator()).simplified();
+      }
 
       /*
        Returns l / r.
        */
-      //inline friend rational operator/(const rational& l, const rational& r);
-
-      /*
-       Returns the rational number * -1.
-       */
-      //inline rational& operator-() noexcept;
+      friend rational operator/(const rational& l, const rational& r)
+      {
+         return rational(l.numerator() * r.denominator(),
+                         l.denominator() * r.numerator()).simplified();
+      }
 
       /*
        Returns true l and r evaluate to the same value.
        */
-      inline friend bool operator==(const rational& l,
-                                    const rational& r) noexcept
+      friend bool operator==(const rational& l,
+                             const rational& r) noexcept
       {
          /*
           A/B == C/D if (AD - BC == 0)
@@ -142,8 +161,8 @@ namespace qgl::math
       /*
        Returns false if l and r evaluate to the same value.
        */
-      inline friend bool operator!=(const rational& l,
-                                    const rational& r) noexcept
+      friend bool operator!=(const rational& l,
+                             const rational& r) noexcept
       {
          return !(l == r);
       }
@@ -151,7 +170,7 @@ namespace qgl::math
       /*
        Returns true if the value of l is less than the value of r.
        */
-      inline friend bool operator<(const rational& l, rational& r) noexcept
+      friend bool operator<(const rational& l, rational& r) noexcept
       {
          return rational::msub(l, r) < NumberT(0);
       }
@@ -159,7 +178,7 @@ namespace qgl::math
       /*
        Returns true if the value of l is greater than the value of r.
        */
-      inline friend bool operator>(const rational& l, rational& r) noexcept
+      friend bool operator>(const rational& l, rational& r) noexcept
       {
          return rational::msub(l, r) > NumberT(0);
       }
@@ -167,7 +186,7 @@ namespace qgl::math
       /*
        Returns true if the value of l is less than or equal to the value of r.
        */
-      inline friend bool operator<=(const rational& l, rational& r) noexcept
+      friend bool operator<=(const rational& l, rational& r) noexcept
       {
          return !(l > r);
       }
@@ -176,9 +195,15 @@ namespace qgl::math
        Returns true if the value of l is greater than or equal to the value
        of r.
        */
-      inline friend bool operator>=(const rational& l, rational& r) noexcept
+      friend bool operator>=(const rational& l, rational& r) noexcept
       {
          return  !(l < r);
+      }
+
+      rational simplified() noexcept
+      {
+         simplify();
+         return *this;
       }
 
       private:
@@ -194,12 +219,14 @@ namespace qgl::math
       }
 
       /*
+       l = A/B
+       r = C/D
        Returns AD - BC
        */
       static NumberT msub(const rational& l,
                           const rational& r) noexcept
       {
-         return l.numerator() * r.denominator() - 
+         return l.numerator() * r.denominator() -
             l.denominator() * r.numerator();
       }
 
