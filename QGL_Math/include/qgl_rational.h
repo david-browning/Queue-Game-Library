@@ -87,7 +87,7 @@ namespace qgl::math
       /*
        Move assign operator.
        */
-      //rational& operator=(rational&& r) = default;
+      rational& operator=(rational&& r) = default;
 
       /*
        Returns a floating point representation of the rational number.
@@ -206,6 +206,10 @@ namespace qgl::math
          return *this;
       }
 
+      template<typename U>
+      friend std::ostream& operator<<(std::ostream& os,
+                                             const rational<U>& r);
+
       private:
 
       /*
@@ -243,4 +247,11 @@ namespace qgl::math
    QGL_MATH_TEMPLATE template struct QGL_MATH_API rational<int16_t>;
    QGL_MATH_TEMPLATE template struct QGL_MATH_API rational<int32_t>;
    QGL_MATH_TEMPLATE template struct QGL_MATH_API rational<int64_t>;
+   
+   template<typename U>
+   std::ostream& operator<<(std::ostream& os, const rational<U>& r)
+   {
+      os << r.numerator() << '/' << r.denominator();
+      return os;
+   }
 }

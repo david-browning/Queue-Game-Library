@@ -77,14 +77,19 @@ namespace QGL_Math_Unit_Tests
       TEST_METHOD(EqualityOperator)
       {
          rational<int> r(1, 2);
-         rational<int> r2(r);
+         rational<int> twoFourths(2, 4);
 
-         Assert::IsTrue(r == r2,
+         Assert::IsTrue(r == twoFourths,
                         L"The numbers should be equal.");
 
          rational<int> r3(5, 8);
          Assert::IsTrue(r != r3,
                         L"The numbers should not be equal.");
+
+         rational<int> zeroThrids(0, 3);
+         rational<int> zeroFourths(0, 4);
+         Assert::IsTrue(zeroThrids == zeroFourths,
+                        L"0 == 0");
       }
 
       /*
@@ -100,14 +105,18 @@ namespace QGL_Math_Unit_Tests
 
       /*
        Assume equality operator is correct.
-       Create a rational number.
-       Create a different rational number. Copy it to another rational.
-       Move the copied rational number into the first rational number.
+       Create a rational number. Copy it to another rational.
+       Move the copied rational number into the a new rational number.
        Verify the moved numbers are equal.
        */
       TEST_METHOD(MoveConstructor)
       {
+         rational<int> oneThird(1, 3);
+         rational<int> oneThirdCopy(oneThird);
 
+         rational<int> oneThirdMoved(std::move(oneThirdCopy));
+         Assert::IsTrue(oneThird == oneThirdMoved,
+                        L"Moved not equal.");
       }
 
       /*
@@ -116,7 +125,11 @@ namespace QGL_Math_Unit_Tests
        */
       TEST_METHOD(MoveAssignOperator)
       {
-
+         rational<int> oneThird(1, 3);
+         rational<int> oneThirdCopy(oneThird);
+         rational<int> oneThirdMoved = std::move(oneThirdCopy);
+         Assert::IsTrue(oneThird == oneThirdMoved,
+                        L"Moved not equal.");
       }
 
       /*
@@ -125,16 +138,50 @@ namespace QGL_Math_Unit_Tests
        */
       TEST_METHOD(FloatConversion)
       {
+         rational<int> zero;
+         rational<int> one(1, 1);
+         rational<int> netagiveOne(-1, 1);
+         Assert::IsTrue(approx_equal(0.0f, static_cast<float>(zero)),
+                        L"Should be 0");
 
+         Assert::IsTrue(approx_equal(1.0f, static_cast<float>(one)),
+                        L"Should be 1");
+
+         Assert::IsTrue(approx_equal(-1.0f, static_cast<float>(netagiveOne)),
+                        L"Should be -1");
+
+         rational<int> oneTenth(1, 10);
+         Assert::IsTrue(approx_equal(0.1f, static_cast<float>(oneTenth)),
+                        L"Should be 1/10");
+
+         Assert::IsTrue(!approx_equal(0.099999f, static_cast<float>(oneTenth)),
+                        L"Should be 1/10");
       }
 
       /*
-       Create a rational, convert it to a float and verify that float is
+       Create a rational, convert it to a double and verify that double is
        approximately equal to an expected value.
        */
       TEST_METHOD(DoubleConversion)
       {
+         rational<int> zero;
+         rational<int> one(1, 1);
+         rational<int> netagiveOne(-1, 1);
+         Assert::IsTrue(approx_equal(0.0, static_cast<double>(zero)),
+                        L"Should be 0");
 
+         Assert::IsTrue(approx_equal(1.0, static_cast<double>(one)),
+                        L"Should be 1");
+
+         Assert::IsTrue(approx_equal(-1.0, static_cast<double>(netagiveOne)),
+                        L"Should be -1");
+
+         rational<int> oneTenth(1, 10);
+         Assert::IsTrue(approx_equal(0.1, static_cast<double>(oneTenth)),
+                        L"Should be 1/10");
+
+         Assert::IsTrue(!approx_equal(0.099999, static_cast<double>(oneTenth)),
+                        L"Should be 1/10");
       }
 
       /*
@@ -142,7 +189,13 @@ namespace QGL_Math_Unit_Tests
        */
       TEST_METHOD(Addition)
       {
+         rational<int> oneHalf(1, 2);
+         Assert::AreEqual(rational<int>(1, 1), oneHalf + oneHalf,
+                          L"Should be 1/2");
 
+         rational<int> two(2, 1);
+         Assert::AreEqual(rational<int>(10, 4), two + oneHalf,
+                          L"Should be 5/2");
       }
 
       /*
@@ -150,7 +203,13 @@ namespace QGL_Math_Unit_Tests
        */
       TEST_METHOD(Subtraction)
       {
+         rational<int> oneHalf(1, 2);
+         Assert::AreEqual(rational<int>(), oneHalf - oneHalf,
+                          L"Should be 0");
 
+         rational<int> zero;
+         Assert::AreEqual(rational<int>(-1, 2), zero - oneHalf,
+                          L"Should be -1/2");
       }
 
       /*
@@ -158,7 +217,14 @@ namespace QGL_Math_Unit_Tests
        */
       TEST_METHOD(Multiplication)
       {
+         rational<int> oneThird(1, 3);
+         rational<int> oneHalf(1, 2);
+         Assert::AreEqual(rational<int>(1, 6), oneThird * oneHalf,
+                        L"Should be 1/6");
 
+         rational<int> negativeOneFourth(1, -4);
+         Assert::AreEqual(rational<int>(-1, 8), oneHalf * negativeOneFourth,
+                        L"Should be -1/8");
       }
 
       /*
@@ -166,7 +232,19 @@ namespace QGL_Math_Unit_Tests
        */
       TEST_METHOD(Division)
       {
+         rational<int> oneThird(1, 3);
+         rational<int> oneHalf(1, 2);
+         rational<int> negativeOneHalf(-1, 2);
 
+         Assert::AreEqual(rational<int>(2, 3), oneThird / oneHalf,
+                          L"Should be 2/3");
+
+         Assert::AreEqual(rational<int>(3, 2), oneHalf / oneThird,
+                          L"Should be 3/2");
+
+         Assert::IsTrue(approx_equal(1.5f, 
+                                     static_cast<float>(oneHalf / oneThird)),
+                        L"Should be 1.5");
       }
 
       /*
@@ -174,7 +252,20 @@ namespace QGL_Math_Unit_Tests
        */
       TEST_METHOD(ComparisonOperators)
       {
+         rational<int> oneThird(1, 3);
+         rational<int> oneHalf(1, 2);
+         Assert::IsTrue(oneThird < oneHalf,
+                        L"1/3 < 1/2");
 
+         Assert::IsTrue(oneHalf > oneThird,
+                        L"1/2 > 1/3");
+
+         rational<int> twoFourths(2, 4);
+         Assert::IsTrue(oneHalf >= twoFourths,
+                        L"1/2 >= 2/4");
+
+         Assert::IsTrue(oneHalf <= twoFourths,
+                        L"1/2 <= 2/4");
       }
    };
 }
