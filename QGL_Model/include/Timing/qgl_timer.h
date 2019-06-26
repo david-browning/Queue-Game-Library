@@ -5,11 +5,6 @@
 
 namespace qgl
 {
-   /*
-    SecondsT should be a floating-point type like float or double. Using an
-    integral type will cause elapsed seconds to be zero due to truncation.
-    TickT should be integral because ticks are whole numbers.
-    */
    template<typename TickT>
    class timer
    {
@@ -28,9 +23,18 @@ namespace qgl
 
       /*
        Constructs a timer and queries the timer's frequency.
+       targetHz: The maximum amount of time between time updates. If
+        the time between any two calls to tick() is greater than this, the
+        elapsed time is clamped to the target. This is to keep the timer
+        running at a consistent rate.
+       targetTolerance: If the elapsed ticks is within the tolerance of the 
+        target, then the elapsed ticks are clamped.
+       timerOffset: Time, in ticks, that the timer starts at. Useful for
+        debugging rounding errors.
        */
-      timer(const TickT& targetHz = TICK_60_HZ,
-            const TickT& targetTolerance = TICKS_PER_SECOND / 4000) :
+      timer(TickT targetHz = TICK_60_HZ,
+            TickT targetTolerance = TICKS_PER_SECOND / 4000,
+            TickT timerOffset = 0) :
          m_frameCount(0),
          m_fpsTime(0),
          m_maxDelta(targetHz),
@@ -46,7 +50,7 @@ namespace qgl
          QueryPerformanceFrequency(&freq);
          m_frequency = freq.QuadPart;
 
-         m_lastTime.QuadPart = 0;
+         m_lastTime.QuadPart = timerOffset;
       }
 
       /*
@@ -77,7 +81,7 @@ namespace qgl
       }
 
       /*
-       The tolerance of how close elapsed ticks can be to the target elapsed 
+       The tolerance of how close elapsed ticks can be to the target elapsed
        ticks.
        If the elapsed ticks is within the tolerance of the target, then the
        elapsed ticks are clamped.
@@ -124,7 +128,7 @@ namespace qgl
       }
 
       /*
-       Returns the state of the timer since it was last updated. 
+       Returns the state of the timer since it was last updated.
        The state is updated by calling tick().
        */
       time_state<TickT> state() const
@@ -146,11 +150,15 @@ namespace qgl
          m_fpsTime += deltaTime;
 
          //Clamp the elapsed ticks.
+         //Useful after the program is paused.
          deltaTime = std::clamp<TickT>(deltaTime, 0, m_maxDelta);
 
          //Convert QPC units into a canonical tick format. This cannot 
          //overflow due to the previous clamp.
-         deltaTime = deltaTime * TICKS_PER_SECOND / m_frequency;
+         // To guard against loss-of-precision, we convert
+         // to microseconds *before* dividing by ticks-per-second.
+         deltaTime *= TICKS_PER_SECOND;
+         deltaTime /= m_frequency;
 
          auto lastFrameCount = m_frameCount;
 
@@ -251,15 +259,24 @@ namespace qgl
       TickT m_targetTicks;
 
       /*
-       The tolerance of how close elapsed ticks can be to the target elapsed 
+       The tolerance of how close elapsed ticks can be to the target elapsed
        ticks.
        If the elapsed ticks is within the tolerance of the target, then the
        elapsed ticks are clamped.
        */
       TickT m_targetTolerance;
 
+      /*
+       Elapsed ticks between the last two calls to tick().
+       */
       TickT m_elapsedTicks;
+
+      /*
+       Total number of ticks the clock has been running for.
+       */
       TickT m_totalTicks;
+
+
       TickT m_leftoverTicks;
    };
 }

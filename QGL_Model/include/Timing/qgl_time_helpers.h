@@ -15,7 +15,10 @@ namespace qgl
 
    /*
     Converts a number of ticks to milliseconds. Milliseconds should be a 
-    floating point type to avoid truncation.. 
+    floating point type to avoid truncation.
+    While this template function will work fine with floats, a double is less 
+    susceptible to rounding errors, especially after the elapsed time is 60 
+    seconds.
     */
    template<typename MillisecondsT, typename TickT>
    constexpr MillisecondsT ticks_to_milliseconds(TickT t)
@@ -50,6 +53,9 @@ namespace qgl
    /*
     Converts s seconds to ticks. Seconds should be a floating point type to 
     avoid truncation.
+    While this template function will work fine with floats, a double is less
+    susceptible to rounding errors, especially after the elapsed time is 60
+    seconds.
     */
    template<typename SecondsT, typename TickT>
    constexpr TickT seconds_to_ticks(SecondsT s)

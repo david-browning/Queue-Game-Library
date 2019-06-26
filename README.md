@@ -81,11 +81,31 @@ familiar.
 * Test qgl::content:: file loaders
 * Test qgl::qgl_version_t
 * Test qgl::icommand
+* Test qgl::math::rectangle
 * Test math functions, comparators and template variables.
+* Verify converting timer's elapsed ticks to seconds is always accurate to 8  
+  decimal places. 
+  Test it after these time spans:  
+  * 0 seconds
+  * 3 microseconds
+  * 10 microseconds
+  * 25 microseconds
+  * 100 microseconds
+  * 500 microseconds
+  * 1 millisecond
+  * 3 milliseconds
+  * 25 milliseconds
+  * 100 milliseconds
+  * 500 milliseconds
+  * 1 second
+  * 3 seconds
+  * 1 day
+  * 1 month
+  * 140 years
+  * 200 years
 * Verify or implement iterators for icontent_file, icontent_store, and 
   icontent_project.
 * icontent_project and icontent_file must support erasing. 
-* Implement camera_file_loader
 * Implement depth_stencil_file_loader
 * qgl::content::buffers::BRUSH_BUFFER has floating point data types in it.
 * content_store_1_0::flush_loads_thread does not do anything with failed 
@@ -99,3 +119,4 @@ familiar.
 * Finish PSO file loader.
 * Resize frame? This resized render targets and depth stencils?
 * Provide CPU access to depth-stencil buffer.
+* Memory map the file that icontent_file points to?
