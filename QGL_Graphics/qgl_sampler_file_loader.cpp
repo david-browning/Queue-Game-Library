@@ -5,10 +5,11 @@
 
 namespace qgl::content::loaders
 {
-   std::unique_ptr<sampler> qgl_load_sampler_file(const icontent_file* f,
-                                                  const id_t newID)
+   std::unique_ptr<sampler> sampler_file_loader::operator()(
+      const icontent_file* f, 
+      const id_t newID)
    {
-      //Make sure the file has the correct loader.
+        //Make sure the file has the correct loader.
       auto headerInfo = f->const_header()->metadata();
       check_loader_and_resource<RESOURCE_TYPE_SAMPLER,
          CONTENT_LOADER_ID_SAMPLER>(headerInfo);

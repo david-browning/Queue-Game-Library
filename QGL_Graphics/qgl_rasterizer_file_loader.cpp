@@ -5,8 +5,9 @@
 
 namespace qgl::content::loaders
 {
-   std::unique_ptr<rasterizer> qgl_load_rasterizer_file(const icontent_file* f,
-                                                        const id_t newID)
+   std::unique_ptr<rasterizer> rasterizer_file_loader::operator()(
+      const icontent_file* f, 
+      const id_t newID)
    {
       //Make sure the file has the correct loader.
       auto headerInfo = f->const_header()->metadata();

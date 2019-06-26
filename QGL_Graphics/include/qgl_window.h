@@ -72,6 +72,12 @@ namespace qgl::graphics
        Returns the height of the window in pixels.
        */
       UINT height() const noexcept;
+
+      /*
+       Returns the window's aspect ratio.
+       It is the width / height.
+       */
+      float ratio() const noexcept;
       
       /*
        Returns an IUnknown pointer to the core window.

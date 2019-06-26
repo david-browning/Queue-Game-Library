@@ -7,10 +7,11 @@
 
 namespace qgl::content::loaders
 {
-   std::unique_ptr<string_item> qgl_load_string_file(const icontent_file* f,
-                                                     const id_t newID)
+   std::unique_ptr<string_item> string_file_loader::operator()(
+      const icontent_file* f, 
+      const id_t newID) const
    {
-      //Make sure the string file has the correct loader.
+          //Make sure the string file has the correct loader.
       auto headerInfo = f->const_header()->metadata();
       check_loader_and_resource<RESOURCE_TYPES::RESOURCE_TYPE_STRING,
          CONTENT_LOADER_IDS::CONTENT_LOADER_ID_STRING>(headerInfo);

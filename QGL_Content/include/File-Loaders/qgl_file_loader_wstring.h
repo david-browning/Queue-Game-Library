@@ -9,7 +9,10 @@ namespace qgl::content
 
 namespace qgl::content::loaders
 {
-   extern QGL_CONTENT_API std::unique_ptr<wstring_item> qgl_load_wstring_file(
-      const icontent_file* f,
-      const id_t newID);
+   class QGL_CONTENT_API wstring_file_loader
+   {
+      public:
+      std::unique_ptr<wstring_item> operator()(const icontent_file* f,
+                                               const id_t newID) const;
+   };
 }

@@ -6,9 +6,9 @@
 
 namespace qgl::content::loaders
 {
-   std::unique_ptr<wstring_item> qgl_load_wstring_file(
+   std::unique_ptr<wstring_item> wstring_file_loader::operator()(
       const icontent_file* f,
-      const id_t newID)
+      const id_t newID) const
    {
       //Make sure the wstring file has the correct loader.
       auto headerInfo = f->const_header()->metadata();

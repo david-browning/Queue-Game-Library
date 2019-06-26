@@ -8,7 +8,10 @@ namespace qgl::content
 
 namespace qgl::content::loaders
 {
-   extern QGL_GRAPHICS_API std::unique_ptr<sampler>
-      qgl_load_sampler_file(const icontent_file* f,
-                            const id_t newID);
+   class QGL_GRAPHICS_API sampler_file_loader
+   {
+      public:
+      std::unique_ptr<sampler> operator()(const icontent_file* f,
+                                          const id_t newID);
+   };
 }

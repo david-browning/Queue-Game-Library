@@ -8,7 +8,10 @@ namespace qgl::content
 
 namespace qgl::content::loaders
 {
-   extern QGL_GRAPHICS_API std::unique_ptr<rasterizer>
-      qgl_load_rasterizer_file(const icontent_file* f,
-                               const id_t newID);
+   class QGL_GRAPHICS_API rasterizer_file_loader
+   {
+      public:
+      std::unique_ptr<rasterizer> operator()(const icontent_file* f,
+                                             const id_t newID);
+   };
 }

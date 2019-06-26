@@ -23,7 +23,7 @@ namespace qgl::graphics
          m_wnd(wnd) //Create a copy of the projected reference.
       {
          auto wndImpl = winrt::get_self<implementation::window_rt>(m_wnd);
-         
+
          m_wnd_p = wndImpl->core_ptr();
          m_view_p = wndImpl->view_prt();
 
@@ -35,7 +35,7 @@ namespace qgl::graphics
 
       impl(impl&& m) = delete;
 
-      virtual ~impl() noexcept = default;
+      ~impl() noexcept = default;
 
       bool full_screen() const
       {
@@ -92,7 +92,7 @@ namespace qgl::graphics
          const auto& bnds = m_wnd_p->Bounds();
 
          //Get the DPI of the screen.
-         auto dpInfo =Display::DisplayInformation::GetForCurrentView();
+         auto dpInfo = Display::DisplayInformation::GetForCurrentView();
          float dpi = dpInfo.LogicalDpi();
 
          //Convert the device-independent pixels into physical pixels.
@@ -176,6 +176,12 @@ namespace qgl::graphics
    UINT window::height() const noexcept
    {
       return m_impl_p->HeightPixels;
+   }
+
+   float window::ratio() const noexcept
+   {
+      return static_cast<float>(m_impl_p->WidthPixels) /
+         static_cast<float>(m_impl_p->HeightPixels);
    }
 
    IUnknown* window::unknown()

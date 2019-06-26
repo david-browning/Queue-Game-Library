@@ -87,7 +87,6 @@ familiar.
 * icontent_project and icontent_file must support erasing. 
 * Implement camera_file_loader
 * Implement depth_stencil_file_loader
-* Wrap all file loaders as functors?
 * qgl::content::buffers::BRUSH_BUFFER has floating point data types in it.
 * content_store_1_0::flush_loads_thread does not do anything with failed 
   HRESULTs.
