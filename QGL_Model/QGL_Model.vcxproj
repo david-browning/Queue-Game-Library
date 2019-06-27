@@ -21,10 +21,6 @@
       <Configuration>Debug</Configuration>
       <Platform>ARM</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|Win32">
-      <Configuration>Debug</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
@@ -32,10 +28,6 @@
     <ProjectConfiguration Include="Release|ARM">
       <Configuration>Release</Configuration>
       <Platform>ARM</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Win32">
-      <Configuration>Release</Configuration>
-      <Platform>Win32</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
@@ -59,8 +51,6 @@
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" />
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" />
-  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -74,13 +64,7 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="..\Project_Properties\CommonCppProps.props" />
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <Import Project="..\Project_Properties\CommonCppProps.props" />
-  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
-    <Import Project="..\Project_Properties\CommonCppProps.props" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="..\Project_Properties\CommonCppProps.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
@@ -94,14 +78,6 @@
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
-    <ExecutablePath>$(ProjectDir)sources\qgl;$(ExecutablePath)</ExecutablePath>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ExecutablePath>$(ProjectDir)sources\qgl;$(ExecutablePath)</ExecutablePath>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ExecutablePath>$(ProjectDir)sources\qgl;$(ExecutablePath)</ExecutablePath>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
@@ -135,20 +111,15 @@
     <ClCompile>
       <PreprocessorDefinitions>QGL_MODEL_EXPORTS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <EnforceTypeConversionRules Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">true</EnforceTypeConversionRules>
-      <EnforceTypeConversionRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</EnforceTypeConversionRules>
       <EnforceTypeConversionRules Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</EnforceTypeConversionRules>
       <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">true</ConformanceMode>
-      <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ConformanceMode>
       <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ConformanceMode>
     </ClCompile>
     <Midl>
       <MetadataFileName Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">$(IntDir)Unmerged\%(Filename).winmd</MetadataFileName>
       <GenerateTypeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">true</GenerateTypeLibrary>
     </Midl>
-    <Midl>
-      <MetadataFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)Unmerged\%(Filename).winmd</MetadataFileName>
-      <GenerateTypeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateTypeLibrary>
-    </Midl>
+    <Midl />
     <Midl>
       <MetadataFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)Unmerged\%(Filename).winmd</MetadataFileName>
       <GenerateTypeLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateTypeLibrary>
@@ -158,20 +129,15 @@
     <ClCompile>
       <PreprocessorDefinitions>QGL_MODEL_EXPORTS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <EnforceTypeConversionRules Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">true</EnforceTypeConversionRules>
-      <EnforceTypeConversionRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</EnforceTypeConversionRules>
       <EnforceTypeConversionRules Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</EnforceTypeConversionRules>
       <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">true</ConformanceMode>
-      <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ConformanceMode>
       <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ConformanceMode>
     </ClCompile>
     <Midl>
       <MetadataFileName Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">$(IntDir)Unmerged\%(Filename).winmd</MetadataFileName>
       <GenerateTypeLibrary Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">true</GenerateTypeLibrary>
     </Midl>
-    <Midl>
-      <MetadataFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)Unmerged\%(Filename).winmd</MetadataFileName>
-      <GenerateTypeLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateTypeLibrary>
-    </Midl>
+    <Midl />
     <Midl>
       <MetadataFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)Unmerged\%(Filename).winmd</MetadataFileName>
       <GenerateTypeLibrary Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateTypeLibrary>
