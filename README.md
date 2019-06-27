@@ -120,3 +120,5 @@ familiar.
 * Resize frame? This resized render targets and depth stencils?
 * Provide CPU access to depth-stencil buffer.
 * Memory map the file that icontent_file points to?
+* Delay load user32, shell32, gdi32, and ole32?  
+  https://randomascii.wordpress.com/2018/12/03/a-not-called-function-can-cause-a-5x-slowdown/
