@@ -1,7 +1,6 @@
 Queue Game Library
 ==================
-
-## Overview
+## Overview:
 QGL is a DirectX 12 game library. The primary philosophy of this project is to 
 achieve high performance with parallelism. Where applicable, code should focus 
 on vector processing and queuing operations to run in parallel.
@@ -20,6 +19,11 @@ familiar.
   compile time, and using C++ idioms. Using static_assert is a good way to 
   ensure template instantiation is correct. RAII removes cleanup from the 
   caller which is especially useful when there is an error.
+
+## Target Platform:
+QGL is developed for x64 Windows 10 platforms. The minimum supported version of
+Windows 10 is 1803. There are no plans to support 32-bit. In the future, QGL 
+may support ARM64.
 
 ## Important Topics:
 ### Best Practices:
@@ -54,27 +58,30 @@ familiar.
     * Universal Windows Platform Development
     * Game development with C++
 * Additional Required Components:
-    * Windows Universal C Runtime
-    * Windows 10 SDK (10.17763.0)
-    * Live Unit Testing
-    * Coded UI test
+    * Git for Windows
+    * GitHub extension for Visual Studio
+    * NuGet package manager
     * C++ profiling tools
     * .NET profiling tools
     * Testing tools core features
-    * C++ Universal Windows Platform tools for ARM64
-    * Modules for Standard Library
     * VC++ 2017 latest version tools
-    * Libraries for Spectre (ARM)
-    * Libraries for Spectre (ARM64)
     * Libraries for Spectre (x86 and x64)
-    * Visual C++ compilers and libraries for ARM
-    * Visual C++ compilers and libraries for ARM64
     * Visual C++ runtime for UWP
     * Windows Universal CRT SDK
-    * Git for Windows
+    * Windows Universal C Runtime
+    * Windows 10 SDK (10.17734.0)
 * Required Plugins:
     * C++/WinRT  
     * GitHub Extension for Visual Studio  
+* Recommended Plugins:
+    * Productivity PowerTools 2017/2019
+    * Custom Web Search
+    * Editor Guidelines
+
+## Testing:
+* Change the solution platform to x64. By default, it is x86.
+* Change test architecture to X64: Select "Test" -> "Test Settings" -> 
+  "Default Processor Architecture".
 
 ## TODO:
 * Test qgl::content:: entry importers
@@ -120,6 +127,6 @@ familiar.
 * Finish PSO file loader.
 * Resize frame? This resized render targets and depth stencils?
 * Provide CPU access to depth-stencil buffer.
+* Require AVX support?
 * Memory map the file that icontent_file points to?
-* Delay load user32, shell32, gdi32, and ole32?  
-  https://randomascii.wordpress.com/2018/12/03/a-not-called-function-can-cause-a-5x-slowdown/
+* Delay Loaded Dlls: user32.lib, shell32.lib, gdi32.lib, ole32.lib
