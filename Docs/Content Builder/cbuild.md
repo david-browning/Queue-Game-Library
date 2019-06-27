@@ -10,7 +10,7 @@ The project can be verified and compiled using this tool.
   Displays help.  
 * select (header | entry NUMBER)  
   Sets the currently selected object.
-  header: Sets the currently selected object to the content project's header.
+  header: Sets the currently selected object to the content project's header.  
   entry NUMBER: Sets the currently selected object to the NUMBER'th dictionary 
   entry.  
 * detail (header | entry | dict | NOTHING)   

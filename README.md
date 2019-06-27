@@ -105,6 +105,7 @@ familiar.
   * 200 years
 * Verify or implement iterators for icontent_file, icontent_store, and 
   icontent_project.
+* Cross compiler/VC Runtime integration tests.
 * icontent_project and icontent_file must support erasing. 
 * Implement depth_stencil_file_loader
 * qgl::content::buffers::BRUSH_BUFFER has floating point data types in it.
