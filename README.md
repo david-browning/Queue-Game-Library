@@ -129,4 +129,3 @@ may support ARM64.
 * Provide CPU access to depth-stencil buffer.
 * Require AVX support?
 * Memory map the file that icontent_file points to?
-* Delay Loaded Dlls: user32.lib, shell32.lib, gdi32.lib, ole32.lib

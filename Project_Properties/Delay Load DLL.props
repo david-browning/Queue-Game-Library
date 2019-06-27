@@ -4,17 +4,9 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
   <ItemDefinitionGroup>
-    <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
-      <ConformanceMode>true</ConformanceMode>
-      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-    </ClCompile>
-    <Link />
     <Link>
-    </Link>
-    <Link>
-      <SubSystem>Console</SubSystem>
+      <DelayLoadDLLs>user32.lib;ole32.lib;shell32.lib;gdi32.lib</DelayLoadDLLs>
+      <AdditionalDependencies>delayimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup />
