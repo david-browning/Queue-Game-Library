@@ -7,54 +7,54 @@ The project can be verified and compiled using this tool.
 
 ## Commands:
 * help  
-  Displays help.
+  Displays help.  
 * select (header | entry NUMBER)  
   Sets the currently selected object.
   header: Sets the currently selected object to the content project's header.
   entry NUMBER: Sets the currently selected object to the NUMBER'th dictionary 
-  entry.
+  entry.  
 * detail (header | entry | dict | NOTHING)   
   header: Displays the name, version, resource type, loader ID, GUID, if the 
-  content is renderable, and if the content obeys physics.
+  content is renderable, and if the content obeys physics.  
   entry: Displays the entry's name, resource type, loader ID, GUID, and data 
-  file path.
-  dict: Displays the dictionary offset and number of entries.
-  NOTHING: Shows the details for the currently selected object.
+  file path.    
+  dict: Displays the dictionary offset and number of entries.  
+  NOTHING: Shows the details for the currently selected object.  
 * list (dict)  
   dict: Shows each dictionary entry's index, name, resource type, loader ID, 
-  GUID, and data file path.
+  GUID, and data file path.  
 * remove (entry | dict)  
-  dict: Clears the dictionary of all entries.
-  entry: Removes the selected entry from the dictionary.
-* new (entry) 
+  dict: Clears the dictionary of all entries.  
+  entry: Removes the selected entry from the dictionary.  
+* new (entry)  
   entry: Prompts for the new entry's name, resource type, loader ID, and file 
-  path to the entry's raw data.
+  path to the entry's raw data.  
 * set (name | resource | loader | renderable | physics | version | data) Data
-  name: Data is a wide character string.
+  name: Data is a wide character string.  
   resource: A RESOURCE_TYPE. Data can be a hexadecimal string, but in the 
-  future, this should support more friendly identifiers.
+  future, this should support more friendly identifiers.  
   loader: A CONTENT_LOADER_ID. Data can be a hexadecimal string, but in the 
-  future, this should support more friendly identifiers.
+  future, this should support more friendly identifiers.  
   renderable: The object is renderable and must include a dictionary entry 
   who's resource type is RESOURCE_TYPE_GUID and loader ID is 
   CONTENT_LOADER_ID_RENDER_COMPONENT. Only applicable if the selected object is 
-  a dictionary entry. Data can be yes, no, y, or n.
+  a dictionary entry. Data can be yes, no, y, or n.  
   physics: The object obeys physics while in the engine. The dictionary must 
   include an entry who's resource type is RESOURCE_TYPE_GUID and loader ID is 
-  CONTENT_LOADER_ID_PHYSICS_COMPONENT. Data can be yes, no, 
-  y, or n. Only applicable if the selected object is a dictionary entry.
-  version: Reserved for future use.
+  CONTENT_LOADER_ID_PHYSICS_COMPONENT. Data can be yes, no, y, or n. Only 
+  applicable if the selected object is a dictionary entry.  
+  version: Reserved for future use.  
   data: File path to an entry's data. While Data can be a relative path, this 
   tool needs to save the file's absolute path. Only applicable if the selected 
-  object is header.
+  object is header.  
 * compile [filePath]  
-  Compiles the project and saves it.
-* verify 
-  Verifies the content project. Displays success or an error.  
+  Compiles the project and saves it.  
+* verify  
+  Verifies the content project. Displays success or an error.   
 * save  
   Saves the project file.  
 * exit  
-  Prompts the user to save changes and exits the program.
+  Prompts the user to save changes and exits the program.  
 
 ## Command Line Arguments:
 * projectFile
