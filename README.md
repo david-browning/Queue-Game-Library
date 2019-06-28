@@ -84,6 +84,8 @@ may support ARM64.
   "Default Processor Architecture".
 
 ## TODO:
+* Fix failed HRESULT when opening existing files.
+* Support multi-instance with content builder.
 * Test qgl::content:: entry importers
 * Test qgl::content:: file loaders
 * Test qgl::qgl_version_t

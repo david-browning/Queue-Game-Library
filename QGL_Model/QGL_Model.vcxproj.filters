@@ -114,14 +114,14 @@
     <ClCompile Include="QGL_ModelRT.cpp">
       <Filter>win_rt</Filter>
     </ClCompile>
+    <ClCompile Include="qgl_icommand.cpp">
+      <Filter>Source Files\Interfaces</Filter>
+    </ClCompile>
     <ClCompile Include="qgl_body.cpp">
       <Filter>Source Files\Physical</Filter>
     </ClCompile>
     <ClCompile Include="qgl_version.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_icommand.cpp">
-      <Filter>Source Files\Interfaces</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

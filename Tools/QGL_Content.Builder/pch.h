@@ -1,4 +1,7 @@
-﻿#pragma once
-#include <winrt/Windows.Foundation.h>
-#include <winrt/Windows.Foundation.Collections.h>
-#include <Folder_Helpers.h>
+﻿// pch.h
+// Header for standard system include files.
+
+#pragma once
+
+#include "winrt/Windows.ApplicationModel.Core.h"
+#include <QGLContent.h>
