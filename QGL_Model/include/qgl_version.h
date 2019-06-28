@@ -27,7 +27,11 @@ namespace qgl
    #pragma pack(push, 1)
    struct QGL_MODEL_API qgl_version_t
    {
-      constexpr qgl_version_t(uint8_t major, uint8_t minor,
+      /*
+       Constructor.
+       */
+      constexpr qgl_version_t(uint8_t major, 
+                              uint8_t minor,
                               QGL_OS_VERSION_FLAGS os) :
          Flags(static_cast<uint16_t>(os) << QGL_VERSION_NUM_FLAGS_BITS),
          Major(major),
@@ -36,15 +40,24 @@ namespace qgl
 
       }
 
+      /*
+       Copy constructor
+       */
       qgl_version_t(const qgl_version_t&) = default;
 
+      /*
+       Move constructor
+       */
       qgl_version_t(qgl_version_t&&) = default;
 
       uint16_t Flags;
       uint8_t Major;
       uint8_t Minor;
 
-      friend void swap(qgl_version_t& l, qgl_version_t& r)
+      /*
+       Swaps the contents of l and r.
+       */
+      inline friend void swap(qgl_version_t& l, qgl_version_t& r) noexcept
       {
          using std::swap;
          swap(l.Flags, r.Flags);
@@ -52,9 +65,19 @@ namespace qgl
          swap(l.Minor, r.Minor);
       }
 
-      qgl_version_t& operator=(qgl_version_t r);
+      /*
+       Copy assign operator.
+       */
+      inline qgl_version_t& operator=(qgl_version_t r) noexcept
+      {
+         swap(*this, r);
+         return *this;
+      }
 
-      friend bool operator==(const qgl_version_t& l,
+      /*
+       Equality operator
+       */
+      inline friend bool operator==(const qgl_version_t& l,
                              const qgl_version_t& r) noexcept
       {
          return l.Flags == r.Flags &&
@@ -67,12 +90,18 @@ namespace qgl
    static_assert(sizeof(qgl_version_t) == 4,
                  "QGL versions must be 4 bytes.");
 
+   /*
+    Returns the OS flags from version.
+    */
    constexpr QGL_OS_VERSION_FLAGS version_os(qgl_version_t version)
    {
       return static_cast<QGL_OS_VERSION_FLAGS>((version.Flags & 0xC000) >>
                                                QGL_VERSION_NUM_FLAGS_BITS);
    }
 
+   /*
+    Creates a qgl version where the OS flag is Windows.
+    */
    constexpr qgl_version_t make_win_version(const uint8_t versionMajor,
                                             const uint8_t versionMinor)
    {
@@ -94,6 +123,11 @@ namespace qgl
 
 namespace std
 {
+   /*
+    The hash of a version is an 8-byte value where only the bottom 2 bytes are
+    set. The lowest byte is a version's minor. The next byte is the version's
+    major.
+    */
    template<> struct hash<qgl::qgl_version_t>
    {
       constexpr hash()
