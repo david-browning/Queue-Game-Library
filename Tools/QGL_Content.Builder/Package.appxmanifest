@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5" xmlns:desktop4="http://schemas.microsoft.com/appx/manifest/desktop/windows10/4" xmlns:iot2="http://schemas.microsoft.com/appx/manifest/iot/windows10/2" xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" IgnorableNamespaces="uap mp uap5 iot2 desktop4 rescap">
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5" xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10" xmlns:desktop4="http://schemas.microsoft.com/appx/manifest/desktop/windows10/4" xmlns:iot2="http://schemas.microsoft.com/appx/manifest/iot/windows10/2" xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" xmlns:iot="http://schemas.microsoft.com/appx/manifest/iot/windows10" IgnorableNamespaces="uap mp uap5 iot2 desktop4 rescap iot desktop">
   <Identity Name="4303d11b-2c9d-41a4-afcc-708ea288ad78" Publisher="CN=david" Version="1.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="4303d11b-2c9d-41a4-afcc-708ea288ad78" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
@@ -13,6 +13,10 @@
   <Resources>
     <Resource Language="x-generate" />
   </Resources>
+  <Capabilities>
+    <rescap:Capability Name="broadFileSystemAccess" />
+    <rescap:Capability Name="runFullTrust" />
+  </Capabilities>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="QGL_Content_Builder.App" desktop4:Subsystem="console" desktop4:SupportsMultipleInstances="true" iot2:Subsystem="console" iot2:SupportsMultipleInstances="true">
       <uap:VisualElements DisplayName="QGL_Content.Builder" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="QGL_Content.Builder" BackgroundColor="transparent">
@@ -21,25 +25,18 @@
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
       <Extensions>
-        <uap5:Extension Category="windows.appExecutionAlias" Executable="QGL_Content_Builder.exe" EntryPoint="QGL_Content_Builder.App">
+        <uap5:Extension Category="windows.appExecutionAlias" Executable="cbuilder.exe" EntryPoint="QGL_Content_Builder.App">
           <uap5:AppExecutionAlias desktop4:Subsystem="console" iot2:Subsystem="console">
             <uap5:ExecutionAlias Alias="QGL_Content_Builder.exe" />
           </uap5:AppExecutionAlias>
         </uap5:Extension>
-        <uap:Extension Category="windows.fileTypeAssociation">
-          <uap:FileTypeAssociation Name="qgl_content_project">
-            <uap:SupportedFileTypes>
-              <uap:FileType>.qglproj</uap:FileType>
-            </uap:SupportedFileTypes>
-          </uap:FileTypeAssociation>
-        </uap:Extension>
+        <desktop:Extension Category="windows.fullTrustProcess"
+                   Executable="XCopyLauncher\XCopyLauncher.exe">
+          <desktop:FullTrustProcess>
+            <desktop:ParameterGroup GroupId="Parameters" Parameters="/params" />
+          </desktop:FullTrustProcess>
+        </desktop:Extension>
       </Extensions>
     </Application>
   </Applications>
-  <Capabilities>
-    <uap:Capability Name="removableStorage" />
-    <uap:Capability Name="musicLibrary" />
-    <uap:Capability Name="picturesLibrary" />
-    <rescap:Capability Name="broadFileSystemAccess" />
-  </Capabilities>
 </Package>

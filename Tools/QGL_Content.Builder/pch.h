@@ -1,7 +1,3 @@
-﻿// pch.h
-// Header for standard system include files.
+﻿#pragma once
 
-#pragma once
-
-#include "winrt/Windows.ApplicationModel.Core.h"
-#include <QGLContent.h>
+#include "CommonIncludes.h"

@@ -118,16 +118,15 @@ may support ARM64.
 * icontent_project and icontent_file must support erasing. 
 * Implement depth_stencil_file_loader
 * qgl::content::buffers::BRUSH_BUFFER has floating point data types in it.
-* content_store_1_0::flush_loads_thread does not do anything with failed 
-  HRESULTs.
 * OBJ Importer. Needs to be aware of the vertex layout.
 * Define a component-like class for use in rendering, handling input, and 
   physics updating. Components need to be type safe and allow programmers to 
   define new functionality. Components are functors with additional 
   requirements?
 * PSO supports steam output?
-* Finish PSO file loader.
 * Resize frame? This resized render targets and depth stencils?
 * Provide CPU access to depth-stencil buffer.
 * Require AVX support?
 * Memory map the file that icontent_file points to?
+* PSO, rasterizer, and depth stencil are not content. Only the config buffers 
+  should be imported as content.
