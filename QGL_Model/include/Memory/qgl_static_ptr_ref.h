@@ -3,10 +3,19 @@
 
 namespace qgl
 {
+   /*
+    Weak reference to a static pointer. The underlying address cannot be 
+    changed.
+    Since this is a weak pointer, the pointer does not need to be freed. 
+    */
    template<class T>
    class QGL_MODEL_API static_ptr_ref final
    {
       public:
+      /*
+       Constructs a static pointer reference from the raw pointer.
+       This address cannot be changed.
+       */
       static_ptr_ref(T* ptr) :
          m_ptr(ptr)
       {
