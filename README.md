@@ -130,3 +130,4 @@ may support ARM64.
 * Memory map the file that icontent_file points to?
 * PSO, rasterizer, and depth stencil are not content. Only the config buffers 
   should be imported as content.
+* Test static pointer.
