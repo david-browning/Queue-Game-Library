@@ -1,7 +1,8 @@
 Frame Configuration File
 ========================
 ## Description:
-
+Blender
+Depth Stencil
 
 ## Header Metadata Requirements:
 

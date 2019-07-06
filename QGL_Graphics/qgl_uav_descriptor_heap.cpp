@@ -3,7 +3,7 @@
 
 namespace qgl::graphics::gpu
 {
-   uav_descriptor_heap::uav_descriptor_heap(d3d_device* dev_p, 
+   uav_descriptor_heap::uav_descriptor_heap(static_ptr_ref<d3d_device> dev_p,
                                             size_t numEntries,
                                             UINT nodeMask) :
       descriptor_heap(dev_p, numEntries, nodeMask)

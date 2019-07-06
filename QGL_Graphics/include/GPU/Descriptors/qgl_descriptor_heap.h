@@ -2,7 +2,7 @@
 #include "include/qgl_graphics_include.h"
 #include "include/Content/qgl_sampler.h"
 #include "include/Content/qgl_texture.h"
-#include "include/Content/qgl_depth_stencil.h"
+#include "include/GPU/Render/qgl_depth_stencil.h"
 #include "include/GPU/Buffers/qgl_const_buffer.h"
 #include "include/GPU/Render/qgl_render_target.h"
 
@@ -32,7 +32,7 @@ namespace qgl::graphics::gpu
         heap, set this to the number of render targets.
        nodeMask: GPU mask where to put the descriptor heap.
        */
-      descriptor_heap(d3d_device* dev_p,
+      descriptor_heap(static_ptr_ref<d3d_device> dev_p,
                       size_t numEntries,
                       UINT nodeMask = 0) :
          m_heapSize(numEntries)
@@ -68,7 +68,7 @@ namespace qgl::graphics::gpu
        Adds a shader resource view at the idx'th position in the descriptor
        heap.
        */
-      void insert(d3d_device* dev_p,
+      void insert(static_ptr_ref<d3d_device> dev_p,
                   size_t idx,
                   content::texture* textureBuffer)
       {
@@ -82,7 +82,7 @@ namespace qgl::graphics::gpu
        heap.
        */
       template<typename T>
-      void insert(d3d_device* dev_p,
+      void insert(static_ptr_ref<d3d_device> dev_p,
                   size_t idx,
                   const gpu::buffers::const_buffer<T>* constBuffer)
       {
@@ -94,7 +94,7 @@ namespace qgl::graphics::gpu
       /*
        Adds a sampler view at the idx'th position in the descriptor heap.
        */
-      void insert(d3d_device* dev_p,
+      void insert(static_ptr_ref<d3d_device> dev_p,
                   size_t idx,
                   const content::sampler* samplerBuffer)
       {
@@ -106,9 +106,9 @@ namespace qgl::graphics::gpu
       /*
        Adds a depth stencil view at the idx'th position in the descriptor heap.
        */
-      void insert(d3d_device* dev_p,
+      void insert(static_ptr_ref<d3d_device> dev_p,
                   size_t idx,
-                  content::depth_stencil* depthStencil)
+                  graphics::gpu::render::depth_stencil* depthStencil)
       {
          auto handle = at_cpu(idx);
          auto v = depthStencil->view();
@@ -118,7 +118,7 @@ namespace qgl::graphics::gpu
       /*
        Adds a render target view at the idx'th position in the descriptor heap.
        */
-      void insert(d3d_device* dev_p,
+      void insert(static_ptr_ref<d3d_device> dev_p,
                   size_t idx,
                   render::render_target* renderTarget)
       {
@@ -164,7 +164,7 @@ namespace qgl::graphics::gpu
       }
 
       private:
-      void p_allocate(d3d_device* dev_p,
+      void p_allocate(static_ptr_ref<d3d_device> dev_p,
                       UINT nodeMask)
       {
          //Create the description

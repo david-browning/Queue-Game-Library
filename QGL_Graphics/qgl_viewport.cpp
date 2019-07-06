@@ -6,7 +6,7 @@
 namespace qgl::graphics::gpu::render
 {
    viewport::viewport(const content::graphics_config* config,
-                      const graphics::window* wnd)
+                      const static_ptr_ref<graphics::window> wnd)
    {
       auto windowWidth = wnd->width();
       auto windowHeight = wnd->height();

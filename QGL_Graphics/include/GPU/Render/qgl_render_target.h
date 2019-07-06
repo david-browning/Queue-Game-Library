@@ -31,8 +31,8 @@ namespace qgl::graphics::gpu::render
        TODO: Is there any reason why multiple things cannot bind to the same 
        render?
        */
-      render_target(graphics::igraphics_device* dev,
-                    const rtv_descriptor_heap* rtvHeap,
+      render_target(static_ptr_ref<graphics::igraphics_device> dev,
+                    const static_ptr_ref<rtv_descriptor_heap> rtvHeap,
                     size_t frameIndex);
 
       /*

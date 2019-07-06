@@ -7,9 +7,10 @@ using namespace winrt::Windows::Graphics;
 
 namespace qgl::graphics::gpu::render
 {
-   render_target::render_target(graphics::igraphics_device* dev,
-                                const rtv_descriptor_heap* rtvHeap,
-                                size_t frameIndex) :
+   render_target::render_target(
+      static_ptr_ref<graphics::igraphics_device> dev,
+      const static_ptr_ref<rtv_descriptor_heap> rtvHeap,
+      size_t frameIndex) :
       m_rects(nullptr),
       m_numRects(0),
       m_acquired(false)
@@ -98,8 +99,8 @@ namespace qgl::graphics::gpu::render
 
    void render_target::acquire_resources(d3d11_device* dev_p)
    {
-      d3d_wrapped_render_target* targets2D[] = 
-      { 
+      d3d_wrapped_render_target* targets2D[] =
+      {
          m_wrappedRenderTarget_p.get()
       };
 
@@ -161,9 +162,9 @@ namespace qgl::graphics::gpu::render
          IID_PPV_ARGS(m_wrappedRenderTarget_p.put())));
 
       // Create a render target for D2D to draw directly to this back buffer.
-      winrt::com_ptr<IDXGISurface> const surface = 
+      winrt::com_ptr<IDXGISurface> const surface =
          m_wrappedRenderTarget_p.as<IDXGISurface>();
-      
+
       winrt::check_hresult(d2dContext_p->CreateBitmapFromDxgiSurface(
          surface.get(),
          &bitmapProperties,

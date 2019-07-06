@@ -3,7 +3,7 @@
 
 namespace qgl::graphics::gpu
 {
-   cbv_descriptor_heap::cbv_descriptor_heap(d3d_device* dev_p,
+   cbv_descriptor_heap::cbv_descriptor_heap(static_ptr_ref<d3d_device> dev_p,
                                             size_t numEntries,
                                             UINT nodeMask) :
       descriptor_heap(dev_p, numEntries, nodeMask)

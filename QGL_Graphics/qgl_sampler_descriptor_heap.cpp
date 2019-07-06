@@ -3,9 +3,10 @@
 
 namespace qgl::graphics::gpu
 {
-   sampler_descriptor_heap::sampler_descriptor_heap(d3d_device* dev_p,
-                                                    size_t numEntries,
-                                                    UINT nodeMask) :
+   sampler_descriptor_heap::sampler_descriptor_heap(
+      static_ptr_ref<d3d_device> dev_p,
+      size_t numEntries,
+      UINT nodeMask) :
       descriptor_heap(dev_p, numEntries, nodeMask)
    {
    }

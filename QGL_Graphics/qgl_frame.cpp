@@ -3,11 +3,11 @@
 
 namespace qgl::graphics::gpu::render
 {
-   frame::frame(graphics::igraphics_device* dev,
+   frame::frame(static_ptr_ref<graphics::igraphics_device> dev,
                 UINT frameIndex,
-                content::depth_stencil* depthStencil_p,
-                rtv_descriptor_heap* rtvHeap,
-                const graphics::window* wnd) :
+                static_ptr_ref<depth_stencil> depthStencil_p,
+                static_ptr_ref<rtv_descriptor_heap> rtvHeap,
+                const static_ptr_ref<graphics::window> wnd) :
       m_viewport(dev->config(), wnd),
       m_scissor(&m_viewport),
       m_renderTarget(dev, rtvHeap, frameIndex),
@@ -38,14 +38,14 @@ namespace qgl::graphics::gpu::render
       return &m_renderTarget;
    }
 
-   const content::depth_stencil* frame::frame_stencil() const noexcept
+   const depth_stencil* frame::frame_stencil() const noexcept
    {
-      return m_depthStencil_p;
+      return m_depthStencil_p.get();
    }
 
-   content::depth_stencil* frame::frame_stencil() noexcept
+   depth_stencil* frame::frame_stencil() noexcept
    {
-      return m_depthStencil_p;
+      return m_depthStencil_p.get();
    }
 
    const viewport* frame::frame_viewport() const noexcept

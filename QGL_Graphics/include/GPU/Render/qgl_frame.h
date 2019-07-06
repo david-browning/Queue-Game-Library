@@ -3,7 +3,7 @@
 #include "include/Interfaces/qgl_igraphics_device.h"
 #include "include/GPU/Descriptors/qgl_rtv_descriptor_heap.h"
 
-#include "include/Content/qgl_depth_stencil.h"
+#include "include/GPU/Render/qgl_depth_stencil.h"
 #include "include/GPU/Render/qgl_scissor.h"
 #include "include/GPU/Render/qgl_viewport.h"
 #include "include/GPU/Render/qgl_render_target.h"
@@ -25,11 +25,11 @@ namespace qgl::graphics::gpu::render
        responsibility of whoever provided the content to make sure it does not 
        get freed.
        */
-      frame(graphics::igraphics_device* dev,
+      frame(static_ptr_ref<graphics::igraphics_device> dev,
             UINT frameIndex,
-            content::depth_stencil* depthStencil_p,
-            gpu::rtv_descriptor_heap* rtvHeap,
-            const graphics::window* wnd);
+            static_ptr_ref<depth_stencil> depthStencil_p,
+            static_ptr_ref<gpu::rtv_descriptor_heap> rtvHeap,
+            const static_ptr_ref<graphics::window> wnd);
 
       /*
        Each render must be bound to one RTV and DSV heap slot. Do not allow
@@ -57,9 +57,9 @@ namespace qgl::graphics::gpu::render
       /*
        Returns a pointer to the stencil.
        */
-      const content::depth_stencil* frame_stencil() const noexcept;
+      const depth_stencil* frame_stencil() const noexcept;
 
-      content::depth_stencil* frame_stencil() noexcept;
+      depth_stencil* frame_stencil() noexcept;
 
       /*
        Returns a pointer to the viewport.
@@ -100,6 +100,6 @@ namespace qgl::graphics::gpu::render
       render_target m_renderTarget;
       viewport m_viewport;
       scissor m_scissor;
-      content::depth_stencil* m_depthStencil_p;
+      static_ptr_ref<depth_stencil> m_depthStencil_p;
    };
 }

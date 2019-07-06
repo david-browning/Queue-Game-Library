@@ -9,7 +9,7 @@ namespace qgl
     Since this is a weak pointer, the pointer does not need to be freed. 
     */
    template<class T>
-   class QGL_MODEL_API static_ptr_ref final
+   class static_ptr_ref final
    {
       public:
       /*
@@ -40,7 +40,7 @@ namespace qgl
       /*
        Gets the underlying pointer. 
        */
-      T* get() noexcept
+      inline T* get() noexcept
       {
          return m_ptr;
       }
@@ -48,7 +48,7 @@ namespace qgl
       /*
        Gets the underlying pointer.
        */
-      const T* get() const noexcept
+      inline const T* get() const noexcept
       {
          return m_ptr;
       }
@@ -84,6 +84,11 @@ namespace qgl
       inline T& operator*() const noexcept
       {
          return *m_ptr;
+      }
+
+      inline T* operator->() noexcept
+      {
+         return m_ptr;
       }
 
       inline T* operator->() const noexcept

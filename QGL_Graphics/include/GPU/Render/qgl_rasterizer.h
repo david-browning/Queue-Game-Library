@@ -3,23 +3,15 @@
 #include "include/GPU/Buffers/igpu_buffer.h"
 #include "include/Content/Content-Buffers/qgl_rasterizer_buffer.h"
 
-namespace qgl::content
+namespace qgl::graphics::gpu::render
 {
-   class QGL_GRAPHICS_API rasterizer : public qgl::content::content_item
+   class QGL_GRAPHICS_API rasterizer
    {
       public:
       /*
-       Constructs a default rasterizer.
-       */
-      rasterizer(const wchar_t* name,
-                 qgl::content::content_id id);
-
-      /*
        Constructs a rasterizer from the buffer.
        */
-      rasterizer(const content::buffers::RASTERIZER_BUFFER* buff,
-                 const wchar_t* name,
-                 qgl::content::content_id id);
+      rasterizer(const content::buffers::RASTERIZER_BUFFER* buff);
 
       /*
        Copy constructor.

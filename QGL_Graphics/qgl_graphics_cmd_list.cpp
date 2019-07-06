@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "include/GPU/Command-Lists/qgl_graphics_cmd_list.h"
 #include "include/GPU/Render/qgl_frame.h"
-#include "include/Content/qgl_blender.h"
+#include "include/GPU/Render/qgl_blender.h"
 #include "include/GPU/Render/qgl_viewport.h"
 #include "include/GPU/Render/qgl_scissor.h"
 
@@ -19,7 +19,7 @@ namespace qgl::graphics::gpu
       float ClearColorRGBA[4];
 
 
-      std::vector<content::depth_stencil*> DepthStencil_ps;
+      std::vector<render::depth_stencil*> DepthStencil_ps;
       std::vector<render::render_target*> RenderTargets_ps;
       std::vector<D3D12_CPU_DESCRIPTOR_HANDLE> RTVHandles;
       std::vector<D3D12_CPU_DESCRIPTOR_HANDLE> DSVHandles;
@@ -189,7 +189,7 @@ namespace qgl::graphics::gpu
       }
    }
 
-   void graphics_command_list::blend_factor(const content::blender* blndr)
+   void graphics_command_list::blend_factor(const render::blender* blndr)
    {
       get()->OMSetBlendFactor(blndr->blend_factor());
    }

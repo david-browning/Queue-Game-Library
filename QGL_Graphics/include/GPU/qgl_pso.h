@@ -1,7 +1,7 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include "include/Content/qgl_blender.h"
-#include "include/Content/qgl_rasterizer.h"
+#include "include/GPU/Render/qgl_blender.h"
+#include "include/GPU/Render/qgl_rasterizer.h"
 #include "include/Content/qgl_shader.h"
 #include "include/Content/qgl_vert_description.h"
 #include "include/Content/qgl_multisample_desc.h"
@@ -57,9 +57,9 @@ namespace qgl::content
    {
       shader** Shaders;
       size_t NumShaders;
-      blender* Blender;
+      graphics::gpu::render::blender* Blender;
       multisample_desc* Sampler;
-      rasterizer* Rasterizer;
+      graphics::gpu::render::rasterizer* Rasterizer;
       vertex_description* VertexDesc;
       graphics::gpu::root_signature* RootSignature;
       UINT NodeMask;

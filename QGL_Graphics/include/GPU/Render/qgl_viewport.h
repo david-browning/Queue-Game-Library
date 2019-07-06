@@ -25,7 +25,7 @@ namespace qgl::graphics::gpu::render
        The viewport is then scaled to fit in the window.
        */
       viewport(const content::graphics_config* config,
-               const graphics::window* wnd);
+               const static_ptr_ref<graphics::window> wnd);
 
       /*
        Move constructor.

@@ -14,20 +14,19 @@ namespace qgl::graphics::gpu
    class dsv_descriptor_heap;
 }
 
-namespace qgl::content
+namespace qgl::graphics::gpu::render
 {
    /*
-    Depth-stencil testing is used by the output merger to determine if a pixel 
+    Depth-stencil testing is used by the output merger to determine if a pixel
     should be drawn or not.
     Depth data is used to determine which pixels lie closest to the camera.
     Stencil data is used to mask which pixels can be updated.
     */
    class QGL_GRAPHICS_API depth_stencil :
       public graphics::gpu::buffers::igpu_buffer<
-         CD3DX12_RESOURCE_DESC,
-         D3D12_DEPTH_STENCIL_VIEW_DESC,
-         graphics::d3d_resource>,
-      public content_item
+      CD3DX12_RESOURCE_DESC,
+      D3D12_DEPTH_STENCIL_VIEW_DESC,
+      graphics::d3d_resource>
    {
       public:
       using ResourceDescriptionT = CD3DX12_RESOURCE_DESC;
@@ -37,22 +36,21 @@ namespace qgl::content
        Constructs a depth stencil texture.
        buffer: Describes the parameters for the depth stencil texture.
        dev_p: Used to create the depth stencil texture resource.
-       dsvHeap: Once constructed, this depth stencil is bound to this depth 
+       dsvHeap: Once constructed, this depth stencil is bound to this depth
         stencil view descriptor heap.
        wnd_p: Provide the viewport parameters for the depth stencil texture.
        frameIndex: Index where to put the view descriptor in the DSV descriptor
         heap.
        */
-      depth_stencil(const buffers::DEPTH_STENCIL_BUFFER* buffer,
-                    graphics::igraphics_device* dev_p,
-                    const graphics::gpu::dsv_descriptor_heap* dsvHeap,
-                    const graphics::window* wnd_p,
-                    UINT frameIndex,
-                    const wchar_t* name,
-                    id_t id);
+      depth_stencil(
+         const qgl::content::buffers::DEPTH_STENCIL_BUFFER* buffer,
+         static_ptr_ref<graphics::igraphics_device> dev_p,
+         const static_ptr_ref<graphics::gpu::dsv_descriptor_heap> dsvHeap,
+         const static_ptr_ref<graphics::window> wnd_p,
+         UINT frameIndex);
 
       /*
-       Do not allow copying because only one depth stencil can bind to any one 
+       Do not allow copying because only one depth stencil can bind to any one
        descriptor slot.
        */
       depth_stencil(const depth_stencil&) = delete;
@@ -73,7 +71,7 @@ namespace qgl::content
       virtual const ResourceDescriptionT* description() const;
 
       /*
-       The view description that gets bound to a depth stencil view descriptor 
+       The view description that gets bound to a depth stencil view descriptor
        heap.
        */
       virtual const ViewDescriptionT* view() const;
@@ -116,7 +114,7 @@ namespace qgl::content
       size_t rectangle_count() const noexcept;
 
       private:
-      void construct(graphics::d3d_device* dev_p);
+      void construct(static_ptr_ref<graphics::d3d_device> dev_p);
 
       ResourceDescriptionT m_desc;
       ViewDescriptionT m_viewDesc;
@@ -125,7 +123,7 @@ namespace qgl::content
       D3D12_DEPTH_STENCIL_DESC m_depthDesc;
       D3D12_RECT* m_rects;
       size_t m_numRects;
-      buffers::DEPTH_STENCIL_BUFFER m_buffer;
+      qgl::content::buffers::DEPTH_STENCIL_BUFFER m_buffer;
       UINT m_width;
       UINT m_height;
       UINT m_frameIndex;

@@ -9,7 +9,7 @@ namespace qgl::graphics::gpu
                              D3D12_DESCRIPTOR_HEAP_FLAG_NONE>
    {
       public:
-      dsv_descriptor_heap(d3d_device* dev_p,
+      dsv_descriptor_heap(static_ptr_ref<d3d_device> dev_p,
                           size_t numEntries,
                           UINT nodeMask = 0);
 

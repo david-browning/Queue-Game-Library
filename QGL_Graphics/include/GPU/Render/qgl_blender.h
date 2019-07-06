@@ -2,26 +2,18 @@
 #include "include/qgl_graphics_include.h"
 #include "include/Content/Content-Buffers/qgl_blender_buffer.h"
 
-namespace qgl::content
+namespace qgl::graphics::gpu::render
 {
    /*
     The blender provides the parameters describing how to blend pixels.
     */
-   class QGL_GRAPHICS_API blender : public content_item
+   class QGL_GRAPHICS_API blender
    {
       public:
       /*
-       Constructs a blender with default parameters.
-       */
-      blender(const wchar_t* name,
-              id_t id);
-
-      /*
        Constructs a blend using the given buffer.
        */
-      blender(const buffers::BLENDER_BUFFER* buff,
-              const wchar_t* name,
-              id_t id);
+      blender(const qgl::content::buffers::BLENDER_BUFFER* buff);
 
       /*
        Copy constructor.

@@ -181,9 +181,6 @@
     <ClCompile Include="qgl_wtext.cpp">
       <Filter>Source Files\Content</Filter>
     </ClCompile>
-    <ClCompile Include="qgl_rasterizer.cpp">
-      <Filter>Source Files\Content</Filter>
-    </ClCompile>
     <ClCompile Include="qgl_descriptor_table.cpp">
       <Filter>Source Files\GPU\Descriptors</Filter>
     </ClCompile>
@@ -268,12 +265,6 @@
     <ClCompile Include="qgl_shader_file_loader.cpp">
       <Filter>Source Files\Content\File-Loaders</Filter>
     </ClCompile>
-    <ClCompile Include="qgl_blender.cpp">
-      <Filter>Source Files\Content</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_blender_file_loader.cpp">
-      <Filter>Source Files\Content\File-Loaders</Filter>
-    </ClCompile>
     <ClCompile Include="qgl_multisample_desc_buffer.cpp">
       <Filter>Source Files\Content\Content-Buffers</Filter>
     </ClCompile>
@@ -286,25 +277,13 @@
     <ClCompile Include="qgl_vertex_desc_header.cpp">
       <Filter>Source Files\Content\Content-Buffers</Filter>
     </ClCompile>
-    <ClCompile Include="qgl_pso_file_loader.cpp">
-      <Filter>Source Files\Content\File-Loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_rasterizer_file_loader.cpp">
-      <Filter>Source Files\Content\File-Loaders</Filter>
-    </ClCompile>
     <ClCompile Include="qgl_sampler_file_loader.cpp">
       <Filter>Source Files\Content\File-Loaders</Filter>
     </ClCompile>
     <ClCompile Include="qgl_light_file_loader.cpp">
       <Filter>Source Files\Content\File-Loaders</Filter>
     </ClCompile>
-    <ClCompile Include="qgl_depth_stencil.cpp">
-      <Filter>Source Files\Content</Filter>
-    </ClCompile>
     <ClCompile Include="qgl_text_format_file_loader.cpp">
-      <Filter>Source Files\Content\File-Loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_depth_stencil_file_loader.cpp">
       <Filter>Source Files\Content\File-Loaders</Filter>
     </ClCompile>
     <ClCompile Include="qgl_camera.cpp">
@@ -312,6 +291,15 @@
     </ClCompile>
     <ClCompile Include="qgl_camera_file_loader.cpp">
       <Filter>Source Files\Content\File-Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_blender.cpp">
+      <Filter>Source Files\GPU\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_depth_stencil.cpp">
+      <Filter>Source Files\GPU\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_rasterizer.cpp">
+      <Filter>Source Files\GPU\Render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -429,9 +417,6 @@
     <ClInclude Include="include\Content\qgl_wtext.h">
       <Filter>Header Files\Content</Filter>
     </ClInclude>
-    <ClInclude Include="include\Content\qgl_rasterizer.h">
-      <Filter>Header Files\Content</Filter>
-    </ClInclude>
     <ClInclude Include="include\GPU\Descriptors\qgl_cbv_descriptor_heap.h">
       <Filter>Header Files\GPU\Descriptors</Filter>
     </ClInclude>
@@ -510,16 +495,10 @@
     <ClInclude Include="include\Content\FIle-Loaders\qgl_camera_file_loader.h">
       <Filter>Header Files\Content\File-Loaders</Filter>
     </ClInclude>
-    <ClInclude Include="include\Content\FIle-Loaders\qgl_depth_stencil_file_loader.h">
-      <Filter>Header Files\Content\File-Loaders</Filter>
-    </ClInclude>
     <ClInclude Include="include\Content\FIle-Loaders\qgl_graphics_config_file_loader.h">
       <Filter>Header Files\Content\File-Loaders</Filter>
     </ClInclude>
     <ClInclude Include="include\Content\FIle-Loaders\qgl_light_file_loader.h">
-      <Filter>Header Files\Content\File-Loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Content\FIle-Loaders\qgl_rasterizer_file_loader.h">
       <Filter>Header Files\Content\File-Loaders</Filter>
     </ClInclude>
     <ClInclude Include="include\Content\FIle-Loaders\qgl_sampler_file_loader.h">
@@ -576,15 +555,6 @@
     <ClInclude Include="include\Content\FIle-Loaders\qgl_shader_file_loader.h">
       <Filter>Header Files\Content\File-Loaders</Filter>
     </ClInclude>
-    <ClInclude Include="include\Content\FIle-Loaders\qgl_blender_file_loader.h">
-      <Filter>Header Files\Content\File-Loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Content\Content-Loaders\qgl_blender_importer.h">
-      <Filter>Header Files\Content\Content-Loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Content\qgl_blender.h">
-      <Filter>Header Files\Content</Filter>
-    </ClInclude>
     <ClInclude Include="include\Content\Content-Loaders\qgl_multisample_desc_importer.h">
       <Filter>Header Files\Content\Content-Loaders</Filter>
     </ClInclude>
@@ -600,11 +570,14 @@
     <ClInclude Include="include\Content\Content-Buffers\qgl_vertex_desc_header.h">
       <Filter>Header Files\Content\Content-Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="include\Content\File-Loaders\qgl_pso_file_loader.h">
-      <Filter>Header Files\Content\File-Loaders</Filter>
+    <ClInclude Include="include\GPU\Render\qgl_blender.h">
+      <Filter>Header Files\GPU\Render</Filter>
     </ClInclude>
-    <ClInclude Include="include\Content\qgl_depth_stencil.h">
-      <Filter>Header Files\Content</Filter>
+    <ClInclude Include="include\GPU\Render\qgl_depth_stencil.h">
+      <Filter>Header Files\GPU\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Render\qgl_rasterizer.h">
+      <Filter>Header Files\GPU\Render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
