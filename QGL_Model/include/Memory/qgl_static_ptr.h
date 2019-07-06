@@ -107,4 +107,13 @@ namespace qgl
       private:
       std::unique_ptr<T, Deleter> m_ptr;
    };
+
+   /*
+    Constructs an object of type T and wraps it in a static_ptr.
+    */
+   template<class T, class... Args>
+   static_ptr<T> make_static(Args&&... args)
+   {
+      return static_ptr<T>(std::make_unique<T>(std::forward(args)));
+   }
 }

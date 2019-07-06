@@ -152,22 +152,22 @@ namespace qgl::content
          qgl_version_t v,
          icontent_project** out_p);
 
-      /*
-       Opens a content project file in read-write mode. The storage file must
-       allow write permissions.
-       If the file does not exist, this creates a new one.
-       When creating a new file, the content metadata is default and the list
-       of project entries is empty.
+   /*
+      Opens a content project file in read-write mode. The storage file must
+      allow write permissions.
+      If the file does not exist, this creates a new one.
+      When creating a new file, the content metadata is default and the list
+      of project entries is empty.
 
-       Be sure to call release on the returned pointer or wrap it
-       using make_unique.
-       Returns:
-         E_INVALIDARG if out_p is nullptr.
-         E_OUTOFMEMORY if memory cannot be allocated.
-         E_NOINTERFACE if the version is not correct.
-         E_BADMAGIC if the file is not correct.
-         S_OK if the pointer was constructed.
-       */
+      Be sure to call release on the returned pointer or wrap it
+      using make_unique.
+      Returns:
+      E_INVALIDARG if out_p is nullptr.
+      E_OUTOFMEMORY if memory cannot be allocated.
+      E_NOINTERFACE if the version is not correct.
+      E_BADMAGIC if the file is not correct.
+      S_OK if the pointer was constructed.
+      */
    extern "C"[[nodiscard]] QGL_CONTENT_API HRESULT QGL_CC
       qgl_open_content_project_sf(
          const winrt::Windows::Storage::StorageFile& f,
