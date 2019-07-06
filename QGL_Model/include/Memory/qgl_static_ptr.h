@@ -5,18 +5,26 @@
 namespace qgl
 {
    template<class T, class Deleter = std::default_delete<T>>
-   class QGL_MODEL_API static_ptr
+   class static_ptr
    {
       public:
-      static_ptr();
+      static_ptr() :
+         m_ptr(nullptr)
+      {
 
-      static_ptr(T* ptr);
+      }
+
+      static_ptr(std::unique_ptr<T, Deleter>&& ptr) :
+         m_ptr(ptr)
+      {
+
+      }
 
       static_ptr(static_ptr&&) = default;
 
       ~static_ptr() noexcept = default;
       
-      static_ptr_ref ref() const noexcept
+      static_ptr_ref<T> ref() const noexcept
       {
          assert(m_ptr.get() != nullptr);
          return static_ptr_ref<T>(m_ptr.get());
