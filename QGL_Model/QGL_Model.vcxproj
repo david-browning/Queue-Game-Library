@@ -148,6 +148,8 @@
     <ClInclude Include="include\Interfaces\qgl_interface.h" />
     <ClInclude Include="include\Memory\qgl_mem.h" />
     <ClInclude Include="include\Memory\qgl_mem_tmpl.h" />
+    <ClInclude Include="include\Memory\qgl_static_ptr.h" />
+    <ClInclude Include="include\Memory\qgl_static_ptr_ref.h" />
     <ClInclude Include="include\Observer-Observable\qgl_callback_observer.h" />
     <ClInclude Include="include\Observer-Observable\qgl_iobserver.h" />
     <ClInclude Include="include\Observer-Observable\qgl_subject.h" />
