@@ -82,14 +82,6 @@ namespace qgl::graphics::gpu::render
        Returns the 2D render target used for Direct2D.
        */
       const d2d_render_target* d2d_target() const noexcept;
-
-      private:
-      friend class frame;
-      friend class graphics_command_list;
-
-      void construct(static_ptr_ref<igraphics_device> gdev,
-                     float dpiX,
-                     float dpiY);
             
       /*
        Acquires resources so this render target can be used.
@@ -106,6 +98,11 @@ namespace qgl::graphics::gpu::render
        to be called when the frames need to be resized.
        */
       void dispose(static_ptr_ref<d3d11_device> dev_p);
+
+      private:
+      void construct(static_ptr_ref<igraphics_device> gdev,
+                     float dpiX,
+                     float dpiY);
 
       ViewDescriptionT m_viewDesc;
       ResourceDescriptionT m_swapChainDesc;

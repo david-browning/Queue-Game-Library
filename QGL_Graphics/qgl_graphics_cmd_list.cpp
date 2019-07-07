@@ -1,9 +1,5 @@
 #include "pch.h"
 #include "include/GPU/Command-Lists/qgl_graphics_cmd_list.h"
-#include "include/GPU/Render/qgl_frame.h"
-#include "include/GPU/Render/qgl_blender.h"
-#include "include/GPU/Render/qgl_viewport.h"
-#include "include/GPU/Render/qgl_scissor.h"
 
 namespace qgl::graphics::gpu
 {
@@ -97,7 +93,7 @@ namespace qgl::graphics::gpu
                                             tbl->where());
    }
 
-   void graphics_command_list::frame_buffer(render::frame* f,
+   void graphics_command_list::frame_buffer(render::iframe* f,
                                             size_t numFrames)
    {
       m_impl_p->RenderTargetTransitions.resize(numFrames);

@@ -1,105 +1,99 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
 #include "include/Interfaces/qgl_igraphics_device.h"
-#include "include/GPU/Descriptors/qgl_rtv_descriptor_heap.h"
-
-#include "include/GPU/Render/qgl_depth_stencil.h"
-#include "include/GPU/Render/qgl_scissor.h"
-#include "include/GPU/Render/qgl_viewport.h"
-#include "include/GPU/Render/qgl_render_target.h"
 #include "include/qgl_window.h"
+#include "include/GPU/Descriptors/qgl_rtv_descriptor_heap.h"
+#include "include/GPU/Descriptors/qgl_dsv_descriptor_heap.h"
 
+#include "include/GPU/Render/qgl_render_target.h"
+#include "include/GPU/Render/qgl_depth_stencil.h"
+#include "include/GPU/Render/qgl_viewport.h"
+#include "include/GPU/Render/qgl_scissor.h"
+#include "include/GPU/Render/qgl_rasterizer.h"
+#include "include/GPU/Render/qgl_blender.h"
 
 namespace qgl::graphics::gpu::render
 {
-   /*
-    After creating a render bind its frame_buffer() and frame_stencil() to 
-    the RTV and DSV descriptor heaps.
-    */
-   class QGL_GRAPHICS_API frame
+   class iframe : iqgl
    {
       public:
-      /*
-       Creates a render.
-       depthStencil_p is content so the pointer is copied. It is the 
-       responsibility of whoever provided the content to make sure it does not 
-       get freed.
-       */
-      frame(static_ptr_ref<graphics::igraphics_device> dev,
-            UINT frameIndex,
-            static_ptr_ref<depth_stencil> depthStencil_p,
-            static_ptr_ref<gpu::rtv_descriptor_heap> rtvHeap,
-            const static_ptr_ref<graphics::window> wnd);
-
-      /*
-       Each render must be bound to one RTV and DSV heap slot. Do not allow
-       copying frames.
-       */
-      frame(const frame&) = delete;
-
-      /*
-       Move constructor.
-       */
-      frame(frame&&);
-
-      /*
-       Destructor.
-       */
-      ~frame();
 
       /*
        Returns a pointer to the render target.
        */
-      const render_target* frame_buffer() const noexcept;
+      virtual render_target* frame_buffer() noexcept = 0;
 
-      render_target* frame_buffer() noexcept;
+      virtual const render_target* const_frame_buffer() const noexcept = 0;
 
       /*
        Returns a pointer to the stencil.
        */
-      const depth_stencil* frame_stencil() const noexcept;
+      virtual depth_stencil* frame_stencil() noexcept = 0;
 
-      depth_stencil* frame_stencil() noexcept;
+      virtual const depth_stencil* const_frame_stencil() const noexcept = 0;
 
       /*
        Returns a pointer to the viewport.
        The viewport defines the space of the render target that will be
        presented.
        */
-      const viewport* frame_viewport() const noexcept;
+      virtual viewport* frame_viewport() noexcept = 0;
 
-      viewport* frame_viewport() noexcept;
+      virtual const viewport* const_frame_viewport() const noexcept = 0;
 
       /*
        Returns a pointer to the scissor.
        By default, the scissor uses the same area as the viewport.
        */
-      const scissor* frame_scissor() const noexcept;
+      virtual scissor* frame_scissor() noexcept = 0;
 
-      scissor* frame_scissor() noexcept;
+      virtual const scissor* const_frame_scissor() const noexcept = 0;
+
+      virtual rasterizer* frame_rasterizer() noexcept = 0;
+
+      virtual const rasterizer* const_frame_rasterizer() const noexcept = 0;
+
+      virtual blender* frame_blender() noexcept = 0;
+
+      virtual const blender* const_frame_blender() const noexcept = 0;
+
 
       /*
        Acquires the necessary resources so rendering operations can be queued
        to this render. Engines must call this before recording render commands.
        */
-      void acquire(graphics::igraphics_device* dev_p);
+      virtual void acquire(static_ptr_ref<igraphics_device> dev_p) = 0;
 
       /*
        Releases the render's resources so it can be presented.
        Engines must call release before flushing the D3D11On12 context and
        presenting the render on the swap chain.
        */
-      void release(graphics::igraphics_device* dev_p);
+      virtual void release(static_ptr_ref<igraphics_device> dev_p) = 0;
 
       /*
        Disposes of render resources so the render can be rebuilt.
        */
-      void dispose(graphics::igraphics_device* dev_p);
-
-      private:
-      render_target m_renderTarget;
-      viewport m_viewport;
-      scissor m_scissor;
-      static_ptr_ref<depth_stencil> m_depthStencil_p;
+      virtual void dispose(static_ptr_ref<igraphics_device> dev_p) = 0;
    };
+
+   struct IFRAME_CREATION_PARAMS
+   {
+      static_ptr_ref<gpu::dsv_descriptor_heap> DSVHeap;
+      static_ptr_ref<gpu::rtv_descriptor_heap> RTVHeap;
+      static_ptr_ref<window> Window;
+      static_ptr_ref<content::buffers::DEPTH_STENCIL_BUFFER> DepthStencilConfig;
+      static_ptr_ref<content::buffers::RASTERIZER_BUFFER> RasterizerConfig;
+      static_ptr_ref<content::buffers::BLENDER_BUFFER> BlenderConfig;
+      UINT FrameIndex;
+   };
+
+   /*
+    Constructs a frame.
+    */
+   extern "C"[[nodiscard]] QGL_GRAPHICS_API HRESULT QGL_CC
+      qgl_make_frame(static_ptr_ref<igraphics_device> dev_p,
+                     IFRAME_CREATION_PARAMS* params_p,
+                     qgl_version_t v,
+                     iframe** out_p) noexcept;
 }

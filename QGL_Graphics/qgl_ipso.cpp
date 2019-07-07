@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "include/GPU/qgl_ipso.h"
-#include "include/GPU/Render/qgl_frame.h"
 
 using namespace qgl::content;
 
@@ -33,19 +32,23 @@ namespace qgl::graphics
 
       HRESULT make(const IPSO_CREATION_PARAMS* params_p) noexcept
       {
+         auto firstFrame = params_p->Frames[0];
+
          //Set the flags.
          m_psoDesc.Flags = PSO_DEFAULT_FLAG;
 
          //Set the blender
-         m_psoDesc.BlendState = *params_p->Blender->description();
-         m_psoDesc.SampleMask = params_p->Blender->mask();
+         auto blndr = firstFrame->const_frame_blender();
+         m_psoDesc.BlendState = *blndr->description();
+         m_psoDesc.SampleMask = blndr->mask();
 
          //Set the sampling.
          m_psoDesc.SampleDesc.Count = params_p->Sampler->count();
          m_psoDesc.SampleDesc.Quality = params_p->Sampler->quality();
 
          //Set the rasterizer.
-         m_psoDesc.RasterizerState = *params_p->Rasterizer->description();
+         auto rastr = firstFrame->const_frame_rasterizer();
+         m_psoDesc.RasterizerState = *rastr->description();
 
          //Set the vertex layout
          m_psoDesc.PrimitiveTopologyType = params_p->VertexDesc->topology();
@@ -64,11 +67,12 @@ namespace qgl::graphics
          //TODO: Add support for stream output?
          //m_psoDesc.StreamOutput;
 
+         this->frames(params_p->Frames, params_p->NumFrames);
          return set_shaders(params_p);
       }
 
-      virtual void frames(const graphics::gpu::render::frame* frms,
-                          size_t numFrames)
+      virtual HRESULT frames(gpu::render::iframe** frms,
+                             size_t numFrames) noexcept
       {
          static constexpr auto maxRTVs =
             sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC::RTVFormats) /
@@ -76,34 +80,37 @@ namespace qgl::graphics
 
          if (numFrames > maxRTVs)
          {
-            throw std::invalid_argument("Maximum of 8 RTVs allowed.");
+            OutputDebugString(L"Maximum of 8 RTVs allowed.");
+            return E_INVALIDARG;
          }
 
          m_psoDesc.NumRenderTargets = static_cast<UINT>(numFrames);
          for (size_t i = 0; i < numFrames; i++)
          {
-            auto stncl = frms[i].frame_stencil();
-            auto renderTarget = frms[i].frame_buffer();
+            auto stncl = frms[i]->const_frame_stencil();
+            auto renderTarget = frms[i]->const_frame_buffer();
 
             m_psoDesc.RTVFormats[i] = renderTarget->format();
             m_psoDesc.DSVFormat = stncl->format();
             m_psoDesc.DepthStencilState = *stncl->depth_desc();
             i++;
          }
+
+         return S_OK;
       }
 
-      virtual const ID3D12PipelineState* const_get() const
+      virtual const ID3D12PipelineState* const_get() const noexcept
       {
          return get_and_finalize();
       }
 
-      virtual ID3D12PipelineState* get()
+      virtual ID3D12PipelineState* get() noexcept
       {
          return get_and_finalize();
       }
 
       private:
-      HRESULT set_shaders(const IPSO_CREATION_PARAMS* params_p)
+      HRESULT set_shaders(const IPSO_CREATION_PARAMS* params_p) noexcept
       {
          //Set the shaders. Keep track that no shader is set twice.
          std::set<buffers::SHADER_TYPES> seenShaders;

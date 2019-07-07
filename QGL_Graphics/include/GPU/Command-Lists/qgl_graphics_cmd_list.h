@@ -3,11 +3,7 @@
 #include "include/GPU/Command-Lists/qgl_icmd_list.h"
 #include "include/GPU/Command-Lists/qgl_cmd_bundle.h"
 #include "include/GPU/Buffers/igpu_buffer.h"
-
-namespace qgl::graphics::gpu::render
-{
-   class frame;
-}
+#include "include/GPU/Render/qgl_frame.h"
 
 namespace qgl::graphics::gpu
 {
@@ -49,7 +45,7 @@ namespace qgl::graphics::gpu
        and scissor) for the graphics command list. Usually, this is the first
        command to queue before queuing other rendering commands.
        */
-      void frame_buffer(render::frame* f,
+      void frame_buffer(render::iframe* f,
                         size_t numFrames = 1);
 
       /*
@@ -82,7 +78,7 @@ namespace qgl::graphics::gpu
       void clear_color(const float rgba[4]) noexcept;
 
       /*
-        Gets a const pointer to the color the render targets are cleared to.
+       Gets a const pointer to the color the render targets are cleared to.
        */
       const float* clear_color() const noexcept;
 
