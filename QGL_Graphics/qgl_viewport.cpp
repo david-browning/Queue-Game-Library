@@ -1,7 +1,5 @@
 #include "pch.h"
 #include "include/GPU/Render/qgl_viewport.h"
-#include "include/qgl_window.h"
-#include "include/Content/qgl_graphics_config.h"
 
 namespace qgl::graphics::gpu::render
 {

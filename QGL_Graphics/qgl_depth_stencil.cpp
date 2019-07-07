@@ -8,9 +8,9 @@ namespace qgl::graphics::gpu::render
    depth_stencil::depth_stencil(
       const content::buffers::DEPTH_STENCIL_BUFFER* buffer,
       static_ptr_ref<graphics::igraphics_device> dev_p,
-      const static_ptr_ref<graphics::gpu::dsv_descriptor_heap> dsvHeap,
+      static_ptr_ref<graphics::gpu::dsv_descriptor_heap> dsvHeap,
       const static_ptr_ref<graphics::window> wnd_p,
-      UINT frameIndex) :
+      size_t frameIndex) :
       m_buffer(*buffer),
       m_width(wnd_p->width()),
       m_height(wnd_p->height()),
@@ -32,6 +32,8 @@ namespace qgl::graphics::gpu::render
       m_depthDesc = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 
       construct(dev_p->d3d12_device());
+
+      dsvHeap->insert(dev_p, frameIndex, this);
    }
 
    depth_stencil::~depth_stencil() noexcept

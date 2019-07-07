@@ -17,7 +17,6 @@ namespace qgl::graphics::gpu::render
    class iframe : iqgl
    {
       public:
-
       /*
        Returns a pointer to the render target.
        */
@@ -56,7 +55,6 @@ namespace qgl::graphics::gpu::render
       virtual blender* frame_blender() noexcept = 0;
 
       virtual const blender* const_frame_blender() const noexcept = 0;
-
 
       /*
        Acquires the necessary resources so rendering operations can be queued

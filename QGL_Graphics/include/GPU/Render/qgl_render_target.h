@@ -1,16 +1,11 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
 #include "include/GPU/Buffers/igpu_buffer.h"
-
-namespace qgl::graphics
-{
-   class igraphics_device;
-}
+#include "include/Interfaces/qgl_igraphics_device.h"
 
 namespace qgl::graphics::gpu
 {
    class rtv_descriptor_heap;
-   class graphics_command_list;
 }
 
 namespace qgl::graphics::gpu::render
@@ -25,6 +20,7 @@ namespace qgl::graphics::gpu::render
       using ViewDescriptionT = D3D12_RENDER_TARGET_VIEW_DESC;
 
       /*
+       Once constructed, this inserts itself into the RTV Heap.
        frameIndex is the render from swap chain that this attaches to.
        Ex: A swap chain may have 3 frames, where the render indices are 
        from 0-2.
@@ -32,7 +28,7 @@ namespace qgl::graphics::gpu::render
        render?
        */
       render_target(static_ptr_ref<graphics::igraphics_device> dev,
-                    const static_ptr_ref<rtv_descriptor_heap> rtvHeap,
+                    static_ptr_ref<rtv_descriptor_heap> rtvHeap,
                     size_t frameIndex);
 
       /*

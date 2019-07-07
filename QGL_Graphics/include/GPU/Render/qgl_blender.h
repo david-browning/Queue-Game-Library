@@ -47,7 +47,7 @@ namespace qgl::graphics::gpu::render
       /*
        Swaps the contents of l and r.
        */
-      friend void swap(blender& l, blender& r) noexcept
+      inline friend void swap(blender& l, blender& r) noexcept
       {
          using std::swap;
          swap(l.m_desc, r.m_desc);
@@ -58,7 +58,7 @@ namespace qgl::graphics::gpu::render
       /*
        Assignment Operator
        */
-      blender& operator=(blender r) noexcept
+      inline blender& operator=(blender r) noexcept
       {
          swap(*this, r);
          return *this;

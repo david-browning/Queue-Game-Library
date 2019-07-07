@@ -1,10 +1,9 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
+#include "include/GPU/Render/qgl_viewport.h"
 
 namespace qgl::graphics::gpu::render
 {
-   class viewport;
-
    class QGL_GRAPHICS_API scissor
    {
       public:

@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "include/GPU/Render/qgl_scissor.h"
-#include "include/GPU/Render/qgl_viewport.h"
 
 namespace qgl::graphics::gpu::render
 {

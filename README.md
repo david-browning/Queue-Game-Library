@@ -92,6 +92,7 @@ may support ARM64.
 * Test qgl::icommand
 * Test qgl::math::rectangle
 * Test math functions, comparators and template variables.
+* Test static pointer.
 * Verify converting timer's elapsed ticks to seconds is always accurate to 8  
   decimal places. 
   Test it after these time spans:  
@@ -116,7 +117,6 @@ may support ARM64.
   icontent_project.
 * Cross compiler/VC Runtime integration tests.
 * icontent_project and icontent_file must support erasing. 
-* Implement depth_stencil_file_loader
 * qgl::content::buffers::BRUSH_BUFFER has floating point data types in it.
 * OBJ Importer. Needs to be aware of the vertex layout.
 * Define a component-like class for use in rendering, handling input, and 
@@ -124,10 +124,8 @@ may support ARM64.
   define new functionality. Components are functors with additional 
   requirements?
 * PSO supports steam output?
-* Resize frame? This resized render targets and depth stencils?
+* Resize frame? This resized render targets and depth stencils? Resize viewport 
+  and scissor?
 * Provide CPU access to depth-stencil buffer.
 * Require AVX support?
 * Memory map the file that icontent_file points to?
-* PSO, rasterizer, and depth stencil are not content. Only the config buffers 
-  should be imported as content.
-* Test static pointer.

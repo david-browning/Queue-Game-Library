@@ -33,7 +33,8 @@ namespace qgl::graphics::gpu::render
       using ViewDescriptionT = D3D12_DEPTH_STENCIL_VIEW_DESC;
 
       /*
-       Constructs a depth stencil texture.
+       Constructs a depth stencil texture. Once constructed, this inserts 
+       itself into the DSV heap.
        buffer: Describes the parameters for the depth stencil texture.
        dev_p: Used to create the depth stencil texture resource.
        dsvHeap: Once constructed, this depth stencil is bound to this depth
@@ -45,9 +46,9 @@ namespace qgl::graphics::gpu::render
       depth_stencil(
          const qgl::content::buffers::DEPTH_STENCIL_BUFFER* buffer,
          static_ptr_ref<graphics::igraphics_device> dev_p,
-         const static_ptr_ref<graphics::gpu::dsv_descriptor_heap> dsvHeap,
+         static_ptr_ref<graphics::gpu::dsv_descriptor_heap> dsvHeap,
          const static_ptr_ref<graphics::window> wnd_p,
-         UINT frameIndex);
+         size_t frameIndex);
 
       /*
        Do not allow copying because only one depth stencil can bind to any one
@@ -126,6 +127,6 @@ namespace qgl::graphics::gpu::render
       qgl::content::buffers::DEPTH_STENCIL_BUFFER m_buffer;
       UINT m_width;
       UINT m_height;
-      UINT m_frameIndex;
+      size_t m_frameIndex;
    };
 }

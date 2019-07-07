@@ -1,17 +1,7 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
 #include "include/Interfaces/qgl_igraphics_device.h"
-#include "include/Content/Content-Buffers/qgl_graphic_config_buffer.h"
-
-namespace qgl::content
-{
-   class graphics_config;
-}
-
-namespace qgl::graphics
-{
-   class window;
-}
+#include "include/qgl_window.h"
 
 namespace qgl::graphics::gpu::render
 {
@@ -22,7 +12,8 @@ namespace qgl::graphics::gpu::render
    {
       public:
       /*
-       Construct a viewport that is the same width and height as the render.
+       Construct a viewport that is the same width and height as the render 
+       target.
        The viewport is then scaled to fit in the window.
        */
       viewport(const static_ptr_ref<graphics::igraphics_device> dev,
@@ -37,23 +28,34 @@ namespace qgl::graphics::gpu::render
 
       ~viewport() noexcept = default;
 
+      /*
+       Returns const a pointer to the D3D12 Viewport.
+       */
       const D3D12_VIEWPORT* get() const noexcept;
 
+      /*
+       Returns a pointer to the D3D12 Viewport.
+       */
       D3D12_VIEWPORT* get() noexcept;
 
-      friend void swap(viewport& l, viewport& r) noexcept
+      /*
+       Swaps the contents of l and r.
+       */
+      inline friend void swap(viewport& l, 
+                              viewport& r) noexcept
       {
          using std::swap;
          swap(l.m_viewport, r.m_viewport);
       }
 
-      viewport& operator=(viewport r) noexcept
+      inline viewport& operator=(viewport r) noexcept
       {
          swap(*this, r);
          return *this;
       }
 
-      friend bool operator==(const viewport& l, const viewport& r) noexcept
+      inline friend bool operator==(const viewport& l,
+                                    const viewport& r) noexcept
       {
          return l.m_viewport == r.m_viewport;
       }

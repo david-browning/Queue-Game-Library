@@ -9,7 +9,7 @@ namespace qgl::graphics::gpu::render
 {
    render_target::render_target(
       static_ptr_ref<graphics::igraphics_device> dev,
-      const static_ptr_ref<rtv_descriptor_heap> rtvHeap,
+      static_ptr_ref<rtv_descriptor_heap> rtvHeap,
       size_t frameIndex) :
       m_rects(nullptr),
       m_numRects(0),
@@ -28,6 +28,8 @@ namespace qgl::graphics::gpu::render
       construct(dev,
                 displayProps.RawDpiX(),
                 displayProps.RawDpiY());
+
+      rtvHeap->insert(dev, frameIndex, this);
    }
 
    render_target::render_target(render_target&& r) :

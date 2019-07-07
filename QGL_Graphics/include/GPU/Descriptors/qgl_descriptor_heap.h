@@ -68,13 +68,14 @@ namespace qgl::graphics::gpu
        Adds a shader resource view at the idx'th position in the descriptor
        heap.
        */
-      void insert(static_ptr_ref<d3d_device> dev_p,
+      void insert(static_ptr_ref<igraphics_device> dev_p,
                   size_t idx,
                   content::texture* textureBuffer)
       {
          auto handle = at_cpu(idx);
          auto v = textureBuffer->view();
-         dev_p->CreateShaderResourceView(textureBuffer->get(), v, handle);
+         dev_p->d3d12_device()->CreateShaderResourceView(textureBuffer->get(),
+                                                         v, handle);
       }
 
       /*
@@ -82,49 +83,53 @@ namespace qgl::graphics::gpu
        heap.
        */
       template<typename T>
-      void insert(static_ptr_ref<d3d_device> dev_p,
+      void insert(static_ptr_ref<igraphics_device> dev_p,
                   size_t idx,
                   const gpu::buffers::const_buffer<T>* constBuffer)
       {
          auto handle = at_cpu(idx);
          auto v = constBuffer->view();
-         dev_p->CreateConstantBufferView(v, handle);
+         dev_p->d3d12_device()->CreateConstantBufferView(v, handle);
       }
 
       /*
        Adds a sampler view at the idx'th position in the descriptor heap.
        */
-      void insert(static_ptr_ref<d3d_device> dev_p,
+      void insert(static_ptr_ref<igraphics_device> dev_p,
                   size_t idx,
                   const content::sampler* samplerBuffer)
       {
          auto handle = at_cpu(idx);
          auto d = samplerBuffer->description();
-         dev_p->CreateSampler(d, handle);
+         dev_p->d3d12_device()->CreateSampler(d, handle);
       }
 
       /*
        Adds a depth stencil view at the idx'th position in the descriptor heap.
        */
-      void insert(static_ptr_ref<d3d_device> dev_p,
+      void insert(static_ptr_ref<igraphics_device> dev_p,
                   size_t idx,
                   graphics::gpu::render::depth_stencil* depthStencil)
       {
          auto handle = at_cpu(idx);
          auto v = depthStencil->view();
-         dev_p->CreateDepthStencilView(depthStencil->get(), v, handle);
+         dev_p->d3d12_device()->CreateDepthStencilView(depthStencil->get(), 
+                                                       v, 
+                                                       handle);
       }
 
       /*
        Adds a render target view at the idx'th position in the descriptor heap.
        */
-      void insert(static_ptr_ref<d3d_device> dev_p,
+      void insert(static_ptr_ref<igraphics_device> dev_p,
                   size_t idx,
                   render::render_target* renderTarget)
       {
          auto handle = at_cpu(idx);
          auto v = renderTarget->view();
-         dev_p->CreateRenderTargetView(renderTarget->get(), v, handle);
+         dev_p->d3d12_device()->CreateRenderTargetView(renderTarget->get(), 
+                                                       v,
+                                                       handle);
       }
 
       /*
