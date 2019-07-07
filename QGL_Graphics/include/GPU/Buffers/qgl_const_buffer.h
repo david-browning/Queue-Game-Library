@@ -21,7 +21,7 @@ namespace qgl::graphics::gpu::buffers
        Creates a committed resource of T.
        Call map() to map it to a CPU pointer.
        */
-      const_buffer(d3d_device* gdev) :
+      const_buffer(static_ptr_ref<d3d_device> gdev) :
          m_viewDescription()
       {
          construct(gdev);
@@ -60,7 +60,7 @@ namespace qgl::graphics::gpu::buffers
       }
 
       private:
-      void construct(d3d_device* gdev)
+      void construct(static_ptr_ref<d3d_device> gdev)
       {
          auto heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
          auto rscDesc = CD3DX12_RESOURCE_DESC::Buffer(sizeof(T));

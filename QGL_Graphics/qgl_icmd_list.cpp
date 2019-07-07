@@ -5,9 +5,9 @@ namespace qgl::graphics::gpu
 {
    struct icommand_list::impl
    {
-      impl(d3d_device* dev_p,
+      impl(static_ptr_ref<d3d_device> dev_p,
            D3D12_COMMAND_LIST_TYPE listT,
-           content::ipso* pipelineState_p,
+           static_ptr_ref<content::ipso> pipelineState_p,
            UINT nodeMask) :
          Allocator(nullptr),
          CmdList(nullptr),
@@ -17,7 +17,7 @@ namespace qgl::graphics::gpu
          make_cmd_list(dev_p, listT, nodeMask);
       }
 
-      void pso(content::ipso* pipeline_p)
+      void pso(static_ptr_ref<content::ipso> pipeline_p)
       {
          Pipeline_p = pipeline_p;
          CmdList->SetPipelineState(Pipeline_p->get());
@@ -90,7 +90,7 @@ namespace qgl::graphics::gpu
        specified by D3D12_COMMAND_LIST_TYPE, must match the type of command
        list being created.
        */
-      void make_allocator(d3d_device* dev_p,
+      void make_allocator(static_ptr_ref<d3d_device> dev_p,
                           D3D12_COMMAND_LIST_TYPE listT)
       {
          winrt::check_hresult(dev_p->CreateCommandAllocator(
@@ -102,7 +102,7 @@ namespace qgl::graphics::gpu
        Immediately after being created, command lists are in the recording
        state. So, close it.
        */
-      void make_cmd_list(d3d_device* dev_p,
+      void make_cmd_list(static_ptr_ref<d3d_device> dev_p,
                          D3D12_COMMAND_LIST_TYPE listT,
                          UINT nodeMask)
       {
@@ -118,7 +118,7 @@ namespace qgl::graphics::gpu
       }
 
 
-      content::ipso* Pipeline_p;
+      static_ptr_ref<content::ipso> Pipeline_p;
       winrt::com_ptr<d3d_cmd_allocator> Allocator;
       winrt::com_ptr<d3d_command_list> CmdList;
 
@@ -137,9 +137,9 @@ namespace qgl::graphics::gpu
       D3D12_INDEX_BUFFER_VIEW IndexBufferView;
    };
 
-   icommand_list::icommand_list(d3d_device* dev_p,
+   icommand_list::icommand_list(static_ptr_ref<d3d_device> dev_p,
                                 D3D12_COMMAND_LIST_TYPE listT,
-                                content::ipso* pipelineState_p,
+                                static_ptr_ref<content::ipso> pipelineState_p,
                                 UINT nodeMask) :
       m_impl_p(new impl(dev_p, listT, pipelineState_p, nodeMask))
    {
@@ -164,7 +164,7 @@ namespace qgl::graphics::gpu
       m_impl_p->close();
    }
 
-   void icommand_list::pso(content::ipso* pipeline_p)
+   void icommand_list::pso(static_ptr_ref<content::ipso> pipeline_p)
    {
       m_impl_p->pso(pipeline_p);
    }

@@ -20,7 +20,7 @@ namespace qgl::graphics::gpu::buffers
       using ResourceDescriptionT = D3D12_SUBRESOURCE_DATA;
       using ViewDescriptionT = D3D12_INDEX_BUFFER_VIEW;
 
-      index_buffer(graphics::igraphics_device* gdev,
+      index_buffer(static_ptr_ref<graphics::igraphics_device> gdev,
                    const IndexT* indicies,
                    size_t numIndicies) :
          m_viewDesc(),
@@ -33,7 +33,7 @@ namespace qgl::graphics::gpu::buffers
          construct(gdev);
       }
 
-      index_buffer(graphics::igraphics_device* gdev,
+      index_buffer(static_ptr_ref<graphics::igraphics_device> gdev,
                    const std::vector<IndexT>& indicies) :
          m_viewDesc(),
          m_desc(),
@@ -94,7 +94,7 @@ namespace qgl::graphics::gpu::buffers
       }
 
       private:
-      void construct(graphics::igraphics_device* gdev)
+      void construct(static_ptr_ref<graphics::igraphics_device> gdev)
       {
          m_desc.pData = m_indices.data();
          m_desc.RowPitch = m_indexDataSize;

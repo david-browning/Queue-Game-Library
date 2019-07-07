@@ -29,8 +29,8 @@ namespace qgl::graphics::gpu
    };
 
    graphics_command_list::graphics_command_list(
-      d3d_device* dev_p,
-      content::ipso* pipelineState_p,
+      static_ptr_ref<d3d_device> dev_p,
+      static_ptr_ref<content::ipso> pipelineState_p,
       UINT nodeMask) : icommand_list(dev_p,
                                      D3D12_COMMAND_LIST_TYPE_DIRECT,
                                      pipelineState_p,
@@ -86,12 +86,12 @@ namespace qgl::graphics::gpu
       //winrt::check_hresult(get()->Close());
    }
 
-   void graphics_command_list::root_sig(root_signature* sig)
+   void graphics_command_list::root_sig(static_ptr_ref<root_signature> sig)
    {
       get()->SetGraphicsRootSignature(sig->get());
    }
 
-   void graphics_command_list::table(descriptor_table* tbl)
+   void graphics_command_list::table(static_ptr_ref<descriptor_table> tbl)
    {
       get()->SetGraphicsRootDescriptorTable(tbl->root_index(),
                                             tbl->where());
@@ -189,7 +189,8 @@ namespace qgl::graphics::gpu
       }
    }
 
-   void graphics_command_list::blend_factor(const render::blender* blndr)
+   void graphics_command_list::blend_factor(
+      const static_ptr_ref<render::blender> blndr)
    {
       get()->OMSetBlendFactor(blndr->blend_factor());
    }

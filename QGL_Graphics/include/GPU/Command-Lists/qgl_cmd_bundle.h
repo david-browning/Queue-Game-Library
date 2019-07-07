@@ -7,8 +7,8 @@ namespace qgl::graphics::gpu
    class cmd_bundle : public icommand_list
    {
       public:
-      cmd_bundle(d3d_device* dev_p,
-                 content::ipso* pipelineState_p,
+      cmd_bundle(static_ptr_ref<d3d_device> dev_p,
+                 static_ptr_ref<content::ipso> pipelineState_p,
                  UINT nodeMask = 0) :
          icommand_list(dev_p,
                        D3D12_COMMAND_LIST_TYPE_BUNDLE,
@@ -29,7 +29,7 @@ namespace qgl::graphics::gpu
          reset();
       }
 
-      virtual void root_sig(root_signature* sig)
+      virtual void root_sig(static_ptr_ref<root_signature> sig)
       {
          if (ComputeBundle)
          {
@@ -41,7 +41,7 @@ namespace qgl::graphics::gpu
          }
       }
 
-      virtual void table(descriptor_table* tbl)
+      virtual void table(static_ptr_ref<descriptor_table> tbl)
       {
          if (ComputeBundle)
          {

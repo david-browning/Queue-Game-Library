@@ -19,7 +19,7 @@ namespace qgl::graphics::gpu::buffers
       using ResourceDescriptionT = D3D12_SUBRESOURCE_DATA;
       using ViewDescriptionT = D3D12_VERTEX_BUFFER_VIEW;
 
-      vertex_buffer(graphics::igraphics_device* gdev,
+      vertex_buffer(static_ptr_ref<graphics::igraphics_device> gdev,
                     const VertexT* vertices,
                     size_t numVertices) :
          m_desc(),
@@ -31,7 +31,7 @@ namespace qgl::graphics::gpu::buffers
          construct(gdev);
       }
 
-      vertex_buffer(graphics::igraphics_device* gdev,
+      vertex_buffer(static_ptr_ref<graphics::igraphics_device> gdev,
                     std::vector<VertexT>& vertices) :
          m_desc(),
          m_viewDesc(),
@@ -68,7 +68,7 @@ namespace qgl::graphics::gpu::buffers
       }
 
       private:
-      void construct(graphics::igraphics_device* gdev)
+      void construct(static_ptr_ref<graphics::igraphics_device> gdev)
       {
          //Initialize the description.
          m_desc.pData = m_vertices.data();

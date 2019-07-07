@@ -15,9 +15,9 @@ namespace qgl::graphics::gpu
    class QGL_GRAPHICS_API icommand_list
    {
       public:
-      icommand_list(d3d_device* dev_p,
+      icommand_list(static_ptr_ref<d3d_device> dev_p,
                     D3D12_COMMAND_LIST_TYPE listT,
-                    content::ipso* pipelineState_p,
+                    static_ptr_ref<content::ipso> pipelineState_p,
                     UINT nodeMask = 0);
 
       /*
@@ -62,20 +62,20 @@ namespace qgl::graphics::gpu
         it does not need to set the root signature. Keep in mind that changing
         this during a command list is expensive.
         */
-      virtual void root_sig(root_signature* sig) = 0;
+      virtual void root_sig(static_ptr_ref<root_signature> sig) = 0;
 
       /*
        Sets a single descriptor table on the root signature.
        The root signature slot is defined by the table.
        */
-      virtual void table(descriptor_table* tbl) = 0;
+      virtual void table(static_ptr_ref<descriptor_table> tbl) = 0;
 
       /*
        Changes the pipeline state.
        Note that bundles don't inherit the pipeline state set by previous
        calls in direct command lists that are their parents.
        */
-      void pso(content::ipso* pipeline_p);
+      void pso(static_ptr_ref<content::ipso> pipeline_p);
 
       /*
        Sets the descriptor heaps. This should only be called once because the

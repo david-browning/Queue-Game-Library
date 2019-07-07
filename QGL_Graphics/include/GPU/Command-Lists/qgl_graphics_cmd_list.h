@@ -14,8 +14,8 @@ namespace qgl::graphics::gpu
    class QGL_GRAPHICS_API graphics_command_list : public icommand_list
    {
       public:
-      graphics_command_list(d3d_device* dev_p,
-                            content::ipso* pipelineState_p,
+      graphics_command_list(static_ptr_ref<d3d_device> dev_p,
+                            static_ptr_ref<content::ipso> pipelineState_p,
                             UINT nodeMask = 0);
 
       graphics_command_list(const graphics_command_list&) = delete;
@@ -37,12 +37,12 @@ namespace qgl::graphics::gpu
       /*
        Sets the root signature for the command list.
        */
-      virtual void root_sig(root_signature* sig);
+      virtual void root_sig(static_ptr_ref<root_signature> sig);
 
       /*
        Sets a descriptor table for the command list to use.
        */
-      virtual void table(descriptor_table* tbl);
+      virtual void table(static_ptr_ref<descriptor_table> tbl);
 
       /*
        Sets the frames (including the render target, depth stencil, viewport,
@@ -69,7 +69,7 @@ namespace qgl::graphics::gpu
        Sets the blend factor that modulate values for a pixel shader, 
        render target, or both.
        */
-      void blend_factor(const render::blender* blndr);
+      void blend_factor(const static_ptr_ref<render::blender> blndr);
 
       /*
        Sets the reference value for depth stencil tests.
