@@ -227,7 +227,7 @@
     <ClInclude Include="include\GPU\Descriptors\qgl_uav_descriptor_heap.h" />
     <ClInclude Include="include\GPU\Memory\qgl_igpu_memory_allocator.h" />
     <ClInclude Include="include\GPU\qgl_graphics_device_helpers.h" />
-    <ClInclude Include="include\GPU\qgl_pso.h" />
+    <ClInclude Include="include\GPU\qgl_ipso.h" />
     <ClInclude Include="include\GPU\Render\qgl_blender.h" />
     <ClInclude Include="include\GPU\Render\qgl_depth_stencil.h" />
     <ClInclude Include="include\GPU\Render\qgl_frame.h" />
@@ -288,7 +288,7 @@
     <ClCompile Include="qgl_multisample_desc.cpp" />
     <ClCompile Include="qgl_multisample_desc_buffer.cpp" />
     <ClCompile Include="qgl_multisample_desc_file_loader.cpp" />
-    <ClCompile Include="qgl_pso.cpp" />
+    <ClCompile Include="qgl_ipso.cpp" />
     <ClCompile Include="qgl_rasterizer.cpp" />
     <ClCompile Include="qgl_rasterizer_buffer.cpp" />
     <ClCompile Include="qgl_render_target.cpp" />

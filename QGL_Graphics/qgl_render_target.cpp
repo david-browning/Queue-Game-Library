@@ -25,9 +25,7 @@ namespace qgl::graphics::gpu::render
       m_viewDesc.Texture2D.PlaneSlice = 0;
 
       auto displayProps = Display::DisplayInformation::GetForCurrentView();
-      construct(dev->d3d11on12_device(),
-                swapChain,
-                dev->d2d1_context(),
+      construct(dev,
                 displayProps.RawDpiX(),
                 displayProps.RawDpiY());
    }
@@ -97,7 +95,7 @@ namespace qgl::graphics::gpu::render
       return m_d2dTarget_p.get();
    }
 
-   void render_target::acquire_resources(d3d11_device* dev_p)
+   void render_target::acquire_resources(static_ptr_ref<d3d11_device> dev_p)
    {
       d3d_wrapped_render_target* targets2D[] =
       {
@@ -108,7 +106,7 @@ namespace qgl::graphics::gpu::render
       m_acquired = true;
    }
 
-   void render_target::release_resources(d3d11_device* dev_p)
+   void render_target::release_resources(static_ptr_ref<d3d11_device> dev_p)
    {
       d3d_wrapped_render_target* targets2D[] =
       {
@@ -119,7 +117,7 @@ namespace qgl::graphics::gpu::render
       m_acquired = false;
    }
 
-   void render_target::dispose(d3d11_device* dev_p)
+   void render_target::dispose(static_ptr_ref<d3d11_device> dev_p)
    {
       if (m_acquired)
       {
@@ -131,13 +129,11 @@ namespace qgl::graphics::gpu::render
       m_wrappedRenderTarget_p = nullptr;
    }
 
-   void render_target::construct(d3d11_device* d3d11on12Device,
-                                 d3d_swap_chain* swapChain_p,
-                                 d2d_context* d2dContext_p,
+   void render_target::construct(static_ptr_ref<igraphics_device> gdev,
                                  float dpiX,
                                  float dpiY)
    {
-      winrt::check_hresult(swapChain_p->GetBuffer(
+      winrt::check_hresult(gdev->swap_chain()->GetBuffer(
          static_cast<UINT>(m_frameIndex),
          IID_PPV_ARGS(put())));
 
@@ -154,7 +150,7 @@ namespace qgl::graphics::gpu::render
          dpiY);
 
       D3D11_RESOURCE_FLAGS d3d11Flags = { D3D11_BIND_RENDER_TARGET };
-      winrt::check_hresult(d3d11on12Device->CreateWrappedResource(
+      winrt::check_hresult(gdev->d3d11on12_device()->CreateWrappedResource(
          get(),
          &d3d11Flags,
          D3D12_RESOURCE_STATE_RENDER_TARGET,
@@ -165,7 +161,7 @@ namespace qgl::graphics::gpu::render
       winrt::com_ptr<IDXGISurface> const surface =
          m_wrappedRenderTarget_p.as<IDXGISurface>();
 
-      winrt::check_hresult(d2dContext_p->CreateBitmapFromDxgiSurface(
+      winrt::check_hresult(gdev->d2d1_context()->CreateBitmapFromDxgiSurface(
          surface.get(),
          &bitmapProperties,
          m_d2dTarget_p.put()));

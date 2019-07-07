@@ -8,7 +8,7 @@ namespace qgl::graphics::gpu::render
    class QGL_GRAPHICS_API scissor
    {
       public:
-      scissor(const viewport* vp);
+      scissor(const static_ptr_ref<viewport> vp);
 
       scissor(const scissor&) = default;
 

@@ -3,7 +3,7 @@
 #include "include/GPU/Root-Signature/qgl_root_signature.h"
 #include "include/GPU/Descriptors/qgl_descriptor_table.h"
 #include "include/GPU/Descriptors/qgl_descriptor_heap.h"
-#include "include/GPU/qgl_pso.h"
+#include "include/GPU/qgl_ipso.h"
 #include "include/GPU/Buffers/qgl_index_buffer.h"
 #include "include/GPU/Buffers/qgl_vertex_buffer.h"
 
@@ -15,9 +15,9 @@ namespace qgl::graphics::gpu
    class QGL_GRAPHICS_API icommand_list
    {
       public:
-      icommand_list(static_ptr_ref<d3d_device> dev_p,
+      icommand_list(static_ptr_ref<igraphics_device> dev_p,
                     D3D12_COMMAND_LIST_TYPE listT,
-                    static_ptr_ref<content::ipso> pipelineState_p,
+                    static_ptr_ref<ipso> pipelineState_p,
                     UINT nodeMask = 0);
 
       /*
@@ -75,7 +75,7 @@ namespace qgl::graphics::gpu
        Note that bundles don't inherit the pipeline state set by previous
        calls in direct command lists that are their parents.
        */
-      void pso(static_ptr_ref<content::ipso> pipeline_p);
+      void pso(static_ptr_ref<ipso> pipeline_p);
 
       /*
        Sets the descriptor heaps. This should only be called once because the

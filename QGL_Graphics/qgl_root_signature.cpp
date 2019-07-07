@@ -5,7 +5,7 @@ namespace qgl::graphics::gpu
 {
    struct root_signature::impl
    {
-      impl(d3d_device* gdev,
+      impl(static_ptr_ref<igraphics_device> gdev,
            const ibindable** descriptors,
            size_t numDescriptors,
            UINT nodeMask)
@@ -57,19 +57,21 @@ namespace qgl::graphics::gpu
          }
       }
 
-      void construct(d3d_device* gdev,
+      void construct(static_ptr_ref<igraphics_device> gdev,
                      UINT nodeMask)
       {
          D3D12_FEATURE_DATA_ROOT_SIGNATURE featureData = {};
+         auto d3dDevice = gdev->d3d12_device();
 
          //This is the highest version the sample supports. 
          //If CheckFeatureSupport succeeds, the HighestVersion returned will 
          //not be greater than this.
          featureData.HighestVersion = D3D_ROOT_SIGNATURE_VERSION_1_1;
 
-         HRESULT hr = gdev->CheckFeatureSupport(D3D12_FEATURE_ROOT_SIGNATURE,
-                                                &featureData,
-                                                sizeof(featureData));
+         HRESULT hr = d3dDevice->CheckFeatureSupport(
+            D3D12_FEATURE_ROOT_SIGNATURE,
+            &featureData,
+            sizeof(featureData));
          if (FAILED(hr))
          {
             featureData.HighestVersion = D3D_ROOT_SIGNATURE_VERSION_1_0;
@@ -94,10 +96,10 @@ namespace qgl::graphics::gpu
          winrt::check_hresult(hr);
 
          //Create the signature.
-         hr = gdev->CreateRootSignature(nodeMask,
-                                        signature->GetBufferPointer(),
-                                        signature->GetBufferSize(),
-                                        IID_PPV_ARGS(RootSig.put()));
+         hr = d3dDevice->CreateRootSignature(nodeMask,
+                                             signature->GetBufferPointer(),
+                                             signature->GetBufferSize(),
+                                             IID_PPV_ARGS(RootSig.put()));
          winrt::check_hresult(hr);
 
          NAME_D3D12_OBJECT(RootSig.get());
@@ -107,7 +109,7 @@ namespace qgl::graphics::gpu
       std::vector<D3D12_ROOT_PARAMETER1> Params;
    };
 
-   root_signature::root_signature(d3d_device* gdev,
+   root_signature::root_signature(static_ptr_ref<igraphics_device> gdev,
                                   const ibindable** descriptors,
                                   size_t numDescriptors,
                                   UINT nodeMask) :

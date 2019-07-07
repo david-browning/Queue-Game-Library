@@ -9,7 +9,7 @@ namespace qgl
     Since this is a weak pointer, the pointer does not need to be freed. 
     */
    template<class T>
-   class static_ptr_ref final
+   class static_ptr_ref
    {
       public:
       /*
@@ -81,7 +81,12 @@ namespace qgl
          return *this;
       }
 
-      inline T& operator*() const noexcept
+      inline T& operator*() noexcept
+      {
+         return *m_ptr;
+      }
+
+      inline const T& operator*() const noexcept
       {
          return *m_ptr;
       }

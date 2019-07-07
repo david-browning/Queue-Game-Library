@@ -13,7 +13,7 @@ namespace qgl::graphics::gpu
        descriptors: Pointer to an array of descriptors.
        nodeMask: Which GPU to upload the root signature to.
        */
-      root_signature(d3d_device* gdev,
+      root_signature(static_ptr_ref<igraphics_device> gdev,
                      const ibindable** descriptors,
                      size_t numDescriptors,
                      UINT nodeMask = 0);

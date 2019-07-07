@@ -1,10 +1,12 @@
 #include "pch.h"
-#include "include/GPU/qgl_pso.h"
+#include "include/GPU/qgl_ipso.h"
 #include "include/GPU/Render/qgl_frame.h"
 
-namespace qgl::content
+using namespace qgl::content;
+
+namespace qgl::graphics
 {
-   class pipeline_state_1_0 : public ipso 
+   class pipeline_state_1_0 : public ipso
    {
       public:
       #ifdef DEBUG
@@ -15,9 +17,8 @@ namespace qgl::content
          D3D12_PIPELINE_STATE_FLAG_NONE;
       #endif
 
-      pipeline_state_1_0(const wchar_t* name,
-                         id_t id) :
-         ipso(name, id)
+      pipeline_state_1_0(static_ptr_ref<graphics::d3d_device> dev_p) :
+         m_dev(dev_p)
       {
 
       }
@@ -30,17 +31,8 @@ namespace qgl::content
          delete this;
       }
 
-      HRESULT make(graphics::d3d_device* dev_p,
-                   const IPSO_CREATION_PARAMS* params_p) noexcept
+      HRESULT make(const IPSO_CREATION_PARAMS* params_p) noexcept
       {
-         m_dev = dev_p;
-
-         auto hr = set_shaders(params_p);
-         if (FAILED(hr))
-         {
-            return hr;
-         }
-
          //Set the flags.
          m_psoDesc.Flags = PSO_DEFAULT_FLAG;
 
@@ -60,7 +52,7 @@ namespace qgl::content
          m_psoDesc.IBStripCutValue = params_p->VertexDesc->strip_cut();
          m_psoDesc.InputLayout.NumElements =
             static_cast<UINT>(params_p->VertexDesc->size());
-         m_psoDesc.InputLayout.pInputElementDescs = 
+         m_psoDesc.InputLayout.pInputElementDescs =
             params_p->VertexDesc->data();
 
          //Set the root signature.
@@ -72,7 +64,7 @@ namespace qgl::content
          //TODO: Add support for stream output?
          //m_psoDesc.StreamOutput;
 
-         return S_OK;
+         return set_shaders(params_p);
       }
 
       virtual void frames(const graphics::gpu::render::frame* frms,
@@ -219,24 +211,15 @@ namespace qgl::content
        */
       D3D12_GRAPHICS_PIPELINE_STATE_DESC m_psoDesc;
 
-      graphics::d3d_device* m_dev;
+      static_ptr_ref<graphics::d3d_device> m_dev;
    };
 
-   ipso::ipso(const wchar_t * n, id_t i) :
-      content_item(n, i,
-                   RESOURCE_TYPE_PSO,
-                   CONTENT_LOADER_ID_PSO)
-   {
-
-   }
-
-   HRESULT qgl_make_pipeline(graphics::d3d_device* dev_p,
+   HRESULT qgl_make_pipeline(static_ptr_ref<graphics::d3d_device> dev_p,
                              const IPSO_CREATION_PARAMS* params_p,
-                             const wchar_t* name,
-                             id_t id,
                              qgl_version_t v,
                              ipso** out_p) noexcept
    {
+      //Make sure out_p is not nullptr.
       if (out_p == nullptr)
       {
          #ifdef DEBUG
@@ -245,6 +228,7 @@ namespace qgl::content
          return E_INVALIDARG;
       }
 
+      //This is what will be assigned to out_p.
       ipso* ret = nullptr;
 
       switch (std::hash<qgl_version_t>{}(v))
@@ -252,7 +236,7 @@ namespace qgl::content
          case qgl::hashes::VERSION_0_1_HASH:
          case qgl::hashes::VERSION_0_2_HASH:
          {
-            ret = new(std::nothrow)pipeline_state_1_0(name, id);
+            ret = new(std::nothrow)pipeline_state_1_0(dev_p);
 
             if (ret == nullptr)
             {
@@ -262,8 +246,7 @@ namespace qgl::content
                return E_OUTOFMEMORY;
             }
 
-            auto hr = (dynamic_cast<pipeline_state_1_0*>(ret))->make(dev_p,
-                                                                     params_p);
+            auto hr = (dynamic_cast<pipeline_state_1_0*>(ret))->make(params_p);
             if (FAILED(hr))
             {
                return hr;
@@ -282,5 +265,4 @@ namespace qgl::content
       *out_p = ret;
       return S_OK;
    }
-
 }

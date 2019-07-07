@@ -8,8 +8,8 @@ namespace qgl::graphics::gpu
 
    };
 
-   copy_command_list::copy_command_list(static_ptr_ref<d3d_device> dev_p,
-                                        static_ptr_ref<content::ipso> pipelineState_p,
+   copy_command_list::copy_command_list(static_ptr_ref<igraphics_device> dev_p,
+                                        static_ptr_ref<ipso> pipelineState_p,
                                         UINT nodeMask) :
       icommand_list(dev_p,
                     D3D12_COMMAND_LIST_TYPE_COPY,

@@ -29,8 +29,8 @@ namespace qgl::graphics::gpu
    };
 
    graphics_command_list::graphics_command_list(
-      static_ptr_ref<d3d_device> dev_p,
-      static_ptr_ref<content::ipso> pipelineState_p,
+      static_ptr_ref<igraphics_device> dev_p,
+      static_ptr_ref<ipso> pipelineState_p,
       UINT nodeMask) : icommand_list(dev_p,
                                      D3D12_COMMAND_LIST_TYPE_DIRECT,
                                      pipelineState_p,

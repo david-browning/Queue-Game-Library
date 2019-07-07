@@ -1,5 +1,6 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
+#include "include/Interfaces/qgl_igraphics_device.h"
 #include "include/Content/Content-Buffers/qgl_graphic_config_buffer.h"
 
 namespace qgl::content
@@ -24,7 +25,7 @@ namespace qgl::graphics::gpu::render
        Construct a viewport that is the same width and height as the render.
        The viewport is then scaled to fit in the window.
        */
-      viewport(const content::graphics_config* config,
+      viewport(const static_ptr_ref<graphics::igraphics_device> dev,
                const static_ptr_ref<graphics::window> wnd);
 
       /*

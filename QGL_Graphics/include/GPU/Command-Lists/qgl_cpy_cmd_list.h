@@ -7,8 +7,8 @@ namespace qgl::graphics::gpu
    class copy_command_list : public icommand_list
    {
       public:
-      copy_command_list(static_ptr_ref<d3d_device> dev_p,
-                        static_ptr_ref<content::ipso> pipelineState_p,
+      copy_command_list(static_ptr_ref<igraphics_device> dev_p,
+                        static_ptr_ref<ipso> pipelineState_p,
                         UINT nodeMask = 0);
 
       copy_command_list(const copy_command_list&) = delete;

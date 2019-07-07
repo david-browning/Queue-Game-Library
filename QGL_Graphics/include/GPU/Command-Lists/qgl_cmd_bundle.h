@@ -7,8 +7,8 @@ namespace qgl::graphics::gpu
    class cmd_bundle : public icommand_list
    {
       public:
-      cmd_bundle(static_ptr_ref<d3d_device> dev_p,
-                 static_ptr_ref<content::ipso> pipelineState_p,
+      cmd_bundle(static_ptr_ref<igraphics_device> dev_p,
+                 static_ptr_ref<ipso> pipelineState_p,
                  UINT nodeMask = 0) :
          icommand_list(dev_p,
                        D3D12_COMMAND_LIST_TYPE_BUNDLE,

@@ -4,7 +4,7 @@
 
 namespace qgl::graphics::gpu::render
 {
-   scissor::scissor(const viewport* vp)
+   scissor::scissor(const static_ptr_ref<viewport> vp)
    {
       auto d3dViewport = vp->get();
       m_scissor.left = static_cast<LONG>(d3dViewport->TopLeftX);

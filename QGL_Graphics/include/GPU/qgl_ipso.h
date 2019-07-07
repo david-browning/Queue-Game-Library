@@ -12,7 +12,7 @@ namespace qgl::graphics::gpu::render
    class frame;
 }
 
-namespace qgl::content
+namespace qgl::graphics
 {
    /*
     Represents a collection of shaders and other parameters describing how to
@@ -21,11 +21,9 @@ namespace qgl::content
     Creating the pipeline state object is deferred until calling get(). The
     pipeline state parameters must be set first.
     */
-   class ipso : public iqgl, public content_item
+   class ipso : public iqgl
    {
       public:
-      ipso(const wchar_t* n, id_t i);
-
       /*
        Returns a pointer to the D3D pipeline state.
        If the pipeline state has not been created, this creates it before
@@ -55,21 +53,22 @@ namespace qgl::content
 
    struct IPSO_CREATION_PARAMS
    {
-      shader** Shaders;
+      content::shader** Shaders;
       size_t NumShaders;
-      graphics::gpu::render::blender* Blender;
-      multisample_desc* Sampler;
-      graphics::gpu::render::rasterizer* Rasterizer;
-      vertex_description* VertexDesc;
-      graphics::gpu::root_signature* RootSignature;
+      static_ptr_ref<graphics::gpu::render::blender> Blender;
+      static_ptr_ref<content::multisample_desc> Sampler;
+      static_ptr_ref<graphics::gpu::render::rasterizer> Rasterizer;
+      static_ptr_ref<content::vertex_description> VertexDesc;
+      static_ptr_ref<graphics::gpu::root_signature> RootSignature;
       UINT NodeMask;
    };
 
+   /*
+    Constructs an ipso.
+    */
    extern "C"[[nodiscard]] QGL_GRAPHICS_API HRESULT QGL_CC
-      qgl_make_pipeline(graphics::d3d_device* dev_p,
+      qgl_make_pipeline(static_ptr_ref<graphics::d3d_device> dev_p,
                         const IPSO_CREATION_PARAMS* params_p,
-                        const wchar_t* name,
-                        id_t id,
                         qgl_version_t v,
                         ipso** out_p) noexcept;
 }

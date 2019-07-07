@@ -14,8 +14,8 @@ namespace qgl::graphics::gpu
    class QGL_GRAPHICS_API graphics_command_list : public icommand_list
    {
       public:
-      graphics_command_list(static_ptr_ref<d3d_device> dev_p,
-                            static_ptr_ref<content::ipso> pipelineState_p,
+      graphics_command_list(static_ptr_ref<igraphics_device> dev_p,
+                            static_ptr_ref<ipso> pipelineState_p,
                             UINT nodeMask = 0);
 
       graphics_command_list(const graphics_command_list&) = delete;

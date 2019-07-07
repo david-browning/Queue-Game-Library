@@ -208,9 +208,6 @@
     <ClCompile Include="qgl_root_signature.cpp">
       <Filter>Source Files\GPU\Root-Signature</Filter>
     </ClCompile>
-    <ClCompile Include="qgl_pso.cpp">
-      <Filter>Source Files\GPU</Filter>
-    </ClCompile>
     <ClCompile Include="qgl_shader.cpp">
       <Filter>Source Files\Content</Filter>
     </ClCompile>
@@ -301,6 +298,9 @@
     <ClCompile Include="qgl_rasterizer.cpp">
       <Filter>Source Files\GPU\Render</Filter>
     </ClCompile>
+    <ClCompile Include="qgl_ipso.cpp">
+      <Filter>Source Files\GPU</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLGraphics.h">
@@ -365,9 +365,6 @@
     </ClInclude>
     <ClInclude Include="include\GPU\Root-Signature\qgl_root_signature.h">
       <Filter>Header Files\GPU\Root-Signature</Filter>
-    </ClInclude>
-    <ClInclude Include="include\GPU\qgl_pso.h">
-      <Filter>Header Files\GPU</Filter>
     </ClInclude>
     <ClInclude Include="include\GPU\Descriptors\qgl_descriptor_heap.h">
       <Filter>Header Files\GPU\Descriptors</Filter>
@@ -578,6 +575,9 @@
     </ClInclude>
     <ClInclude Include="include\GPU\Render\qgl_rasterizer.h">
       <Filter>Header Files\GPU\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\qgl_ipso.h">
+      <Filter>Header Files\GPU</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

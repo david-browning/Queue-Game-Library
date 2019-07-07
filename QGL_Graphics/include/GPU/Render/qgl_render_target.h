@@ -87,27 +87,25 @@ namespace qgl::graphics::gpu::render
       friend class frame;
       friend class graphics_command_list;
 
-      void construct(d3d11_device* d3d11on12Device,
-                     d3d_swap_chain* swapChain_p,
-                     d2d_context* d2dContext_p,
+      void construct(static_ptr_ref<igraphics_device> gdev,
                      float dpiX,
                      float dpiY);
             
       /*
        Acquires resources so this render target can be used.
        */
-      void acquire_resources(d3d11_device* dev_p);
+      void acquire_resources(static_ptr_ref<d3d11_device> dev_p);
 
       /*
        Releases acquired resources so other render targets can be used.
        */
-      void release_resources(d3d11_device* dev_p);
+      void release_resources(static_ptr_ref<d3d11_device> dev_p);
 
       /*
        Releases all resources so that the render can be rebuilt. This only needs
        to be called when the frames need to be resized.
        */
-      void dispose(d3d11_device* dev_p);
+      void dispose(static_ptr_ref<d3d11_device> dev_p);
 
       ViewDescriptionT m_viewDesc;
       ResourceDescriptionT m_swapChainDesc;

@@ -5,13 +5,16 @@
 
 namespace qgl::graphics::gpu::render
 {
-   viewport::viewport(const content::graphics_config* config,
+   viewport::viewport(const static_ptr_ref<graphics::igraphics_device> dev,
                       const static_ptr_ref<graphics::window> wnd)
    {
       auto windowWidth = wnd->width();
       auto windowHeight = wnd->height();
-      float viewWidthRatio = static_cast<float>(config->width()) / windowWidth;
-      float viewHeightRatio = static_cast<float>(config->height()) / windowHeight;
+      auto config = dev->config();
+      float viewWidthRatio = static_cast<float>(
+         config->width()) / windowWidth;
+      float viewHeightRatio = static_cast<float>(
+         config->height()) / windowHeight;
       float x = 1.0f;
       float y = 1.0f;
 
@@ -33,12 +36,12 @@ namespace qgl::graphics::gpu::render
       m_viewport.Width = x * windowWidth;
       m_viewport.Height = y * windowHeight;
    }
-   
+
    const D3D12_VIEWPORT* viewport::get() const noexcept
    {
       return &m_viewport;
    }
-   
+
    D3D12_VIEWPORT* viewport::get() noexcept
    {
       return &m_viewport;

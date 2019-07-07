@@ -8,7 +8,7 @@ namespace qgl::graphics::gpu::render
                 static_ptr_ref<depth_stencil> depthStencil_p,
                 static_ptr_ref<rtv_descriptor_heap> rtvHeap,
                 const static_ptr_ref<graphics::window> wnd) :
-      m_viewport(dev->config(), wnd),
+      m_viewport(dev, wnd),
       m_scissor(&m_viewport),
       m_renderTarget(dev, rtvHeap, frameIndex),
       m_depthStencil_p(depthStencil_p)
