@@ -103,4 +103,15 @@ namespace qgl::graphics
    typedef ID2D1Bitmap1 d2d_render_target;
    typedef ID3D11Resource d3d_wrapped_render_target;
 
+
+   /*
+    Explicit specializations of com_ptr.
+    The definitions are stored in pch.cpp.
+    */
+   QGL_GRAPHICS_TEMPLATE template struct QGL_GRAPHICS_API 
+      winrt::com_ptr<d3d_resource>;
+
+   QGL_GRAPHICS_TEMPLATE template struct QGL_GRAPHICS_API
+      winrt::com_ptr<ID3D12DescriptorHeap>;
+   
 }

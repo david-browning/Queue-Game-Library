@@ -2,6 +2,8 @@
 #include "include/qgl_graphics_include.h"
 #include "include/Content/Content-Buffers/qgl_light_buffer.h"
 #include "include/GPU/Buffers/qgl_const_buffer.h"
+#pragma warning(push)
+#pragma warning(disable: 4324)
 
 namespace qgl::content
 {
@@ -19,7 +21,7 @@ namespace qgl::content
    };
 
    class alignas(alignof(DirectX::XMVECTOR)) QGL_GRAPHICS_API light :
-   public graphics::gpu::buffers::const_buffer<LIGHT_CONST_BUFFER>,
+      public graphics::gpu::buffers::const_buffer<LIGHT_CONST_BUFFER>,
       public qgl::content::content_item
    {
       public:
@@ -104,3 +106,5 @@ namespace qgl::content
       void XM_CALLCONV color(const DirectX::FXMVECTOR colr);
    };
 }
+
+#pragma warning(pop)

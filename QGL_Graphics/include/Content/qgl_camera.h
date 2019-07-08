@@ -2,6 +2,8 @@
 #include "include/qgl_graphics_include.h"
 #include "include/Content/Content-Buffers/qgl_camera_buffer.h"
 #include "include/GPU/Buffers/qgl_const_buffer.h"
+#pragma warning(push)
+#pragma warning(disable: 4324)
 
 namespace qgl::content
 {
@@ -128,3 +130,5 @@ namespace qgl::content
       );
    };
 }
+
+#pragma warning(pop)

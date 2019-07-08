@@ -10,9 +10,9 @@ namespace qgl::graphics::gpu
 
 namespace qgl::graphics::gpu::render
 {
-   class QGL_GRAPHICS_API render_target : 
+   class QGL_GRAPHICS_API render_target :
       public buffers::igpu_buffer<DXGI_SWAP_CHAIN_DESC1,
-      D3D12_RENDER_TARGET_VIEW_DESC, 
+      D3D12_RENDER_TARGET_VIEW_DESC,
       d3d_render_target>
    {
       public:
@@ -22,9 +22,9 @@ namespace qgl::graphics::gpu::render
       /*
        Once constructed, this inserts itself into the RTV Heap.
        frameIndex is the render from swap chain that this attaches to.
-       Ex: A swap chain may have 3 frames, where the render indices are 
+       Ex: A swap chain may have 3 frames, where the render indices are
        from 0-2.
-       TODO: Is there any reason why multiple things cannot bind to the same 
+       TODO: Is there any reason why multiple things cannot bind to the same
        render?
        */
       render_target(static_ptr_ref<graphics::igraphics_device> dev,
@@ -64,7 +64,7 @@ namespace qgl::graphics::gpu::render
 
       void rectangles(const D3D12_RECT* rects,
                       size_t rectCount);
-      
+
       const D3D12_RECT* rectangles() const noexcept;
 
       /*
@@ -73,12 +73,12 @@ namespace qgl::graphics::gpu::render
       size_t rectangle_count() const noexcept;
 
       D3D12_CPU_DESCRIPTOR_HANDLE where() const;
-      
+
       /*
        Returns the 2D render target used for Direct2D.
        */
       const d2d_render_target* d2d_target() const noexcept;
-            
+
       /*
        Acquires resources so this render target can be used.
        */
@@ -96,19 +96,7 @@ namespace qgl::graphics::gpu::render
       void dispose(static_ptr_ref<d3d11_device> dev_p);
 
       private:
-      void construct(static_ptr_ref<igraphics_device> gdev,
-                     float dpiX,
-                     float dpiY);
-
-      ViewDescriptionT m_viewDesc;
-      ResourceDescriptionT m_swapChainDesc;
-      size_t m_frameIndex;
-      D3D12_CPU_DESCRIPTOR_HANDLE m_handle;
-      bool m_acquired;
-
-      D3D12_RECT* m_rects;
-      size_t m_numRects;
-      winrt::com_ptr<d3d_wrapped_render_target> m_wrappedRenderTarget_p;
-      winrt::com_ptr<d2d_render_target> m_d2dTarget_p;
+      struct impl;
+      impl* m_impl_p = nullptr;
    };
 }

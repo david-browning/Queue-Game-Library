@@ -20,29 +20,35 @@
 struct CD3DX12_DEFAULT { };
 extern const DECLSPEC_SELECTANY CD3DX12_DEFAULT D3D12_DEFAULT;
 
-//------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 inline bool operator==(const D3D12_VIEWPORT& l, const D3D12_VIEWPORT& r)
 {
-   return l.TopLeftX == r.TopLeftX && l.TopLeftY == r.TopLeftY && l.Width == r.Width &&
-      l.Height == r.Height && l.MinDepth == r.MinDepth && l.MaxDepth == r.MaxDepth;
+   return l.TopLeftX == r.TopLeftX &&
+      l.TopLeftY == r.TopLeftY &&
+      l.Width == r.Width &&
+      l.Height == r.Height &&
+      l.MinDepth == r.MinDepth &&
+      l.MaxDepth == r.MaxDepth;
 }
 
-//------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 inline bool operator!=(const D3D12_VIEWPORT& l, const D3D12_VIEWPORT& r)
 {
    return !(l == r);
 }
 
-//------------------------------------------------------------------------------------------------
-struct CD3DX12_RECT : public D3D12_RECT
+//-----------------------------------------------------------------------------
+struct __declspec(dllexport) CD3DX12_RECT : public D3D12_RECT
 {
    CD3DX12_RECT()
    {
    }
+
    explicit CD3DX12_RECT(const D3D12_RECT& o) :
       D3D12_RECT(o)
    {
    }
+
    explicit CD3DX12_RECT(
       LONG Left,
       LONG Top,
@@ -54,11 +60,12 @@ struct CD3DX12_RECT : public D3D12_RECT
       right = Right;
       bottom = Bottom;
    }
+
    ~CD3DX12_RECT() { }
 };
 
 //------------------------------------------------------------------------------------------------
-struct CD3DX12_VIEWPORT : public D3D12_VIEWPORT
+struct __declspec(dllexport) CD3DX12_VIEWPORT : public D3D12_VIEWPORT
 {
    CD3DX12_VIEWPORT()
    {
@@ -67,6 +74,7 @@ struct CD3DX12_VIEWPORT : public D3D12_VIEWPORT
       D3D12_VIEWPORT(o)
    {
    }
+
    explicit CD3DX12_VIEWPORT(
       FLOAT topLeftX,
       FLOAT topLeftY,
@@ -82,6 +90,7 @@ struct CD3DX12_VIEWPORT : public D3D12_VIEWPORT
       MinDepth = minDepth;
       MaxDepth = maxDepth;
    }
+
    explicit CD3DX12_VIEWPORT(
       _In_ ID3D12Resource* pResource,
       UINT mipSlice = 0,
@@ -120,6 +129,7 @@ struct CD3DX12_VIEWPORT : public D3D12_VIEWPORT
       MinDepth = minDepth;
       MaxDepth = maxDepth;
    }
+
    ~CD3DX12_VIEWPORT() { }
 };
 
@@ -129,10 +139,12 @@ struct CD3DX12_BOX : public D3D12_BOX
    CD3DX12_BOX()
    {
    }
+
    explicit CD3DX12_BOX(const D3D12_BOX& o) :
       D3D12_BOX(o)
    {
    }
+
    explicit CD3DX12_BOX(
       LONG Left,
       LONG Right)
@@ -144,6 +156,7 @@ struct CD3DX12_BOX : public D3D12_BOX
       bottom = 1;
       back = 1;
    }
+
    explicit CD3DX12_BOX(
       LONG Left,
       LONG Top,
@@ -157,6 +170,7 @@ struct CD3DX12_BOX : public D3D12_BOX
       bottom = Bottom;
       back = 1;
    }
+
    explicit CD3DX12_BOX(
       LONG Left,
       LONG Top,
@@ -172,19 +186,22 @@ struct CD3DX12_BOX : public D3D12_BOX
       bottom = Bottom;
       back = Back;
    }
+
    ~CD3DX12_BOX() { }
 };
+
 inline bool operator==(const D3D12_BOX& l, const D3D12_BOX& r)
 {
    return l.left == r.left && l.top == r.top && l.front == r.front &&
       l.right == r.right && l.bottom == r.bottom && l.back == r.back;
 }
+
 inline bool operator!=(const D3D12_BOX& l, const D3D12_BOX& r)
 {
    return !(l == r);
 }
 
-//------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 struct CD3DX12_DEPTH_STENCIL_DESC : public D3D12_DEPTH_STENCIL_DESC
 {
    CD3DX12_DEPTH_STENCIL_DESC()
@@ -203,7 +220,12 @@ struct CD3DX12_DEPTH_STENCIL_DESC : public D3D12_DEPTH_STENCIL_DESC
       StencilReadMask = D3D12_DEFAULT_STENCIL_READ_MASK;
       StencilWriteMask = D3D12_DEFAULT_STENCIL_WRITE_MASK;
       const D3D12_DEPTH_STENCILOP_DESC defaultStencilOp =
-      { D3D12_STENCIL_OP_KEEP, D3D12_STENCIL_OP_KEEP, D3D12_STENCIL_OP_KEEP, D3D12_COMPARISON_FUNC_ALWAYS };
+      {
+         D3D12_STENCIL_OP_KEEP,
+         D3D12_STENCIL_OP_KEEP,
+         D3D12_STENCIL_OP_KEEP,
+         D3D12_COMPARISON_FUNC_ALWAYS
+      };
       FrontFace = defaultStencilOp;
       BackFace = defaultStencilOp;
    }
@@ -1562,23 +1584,27 @@ struct __declspec(dllexport) CD3DX12_ROOT_PARAMETER1 : public D3D12_ROOT_PARAMET
 };
 
 //------------------------------------------------------------------------------------------------
-struct CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC : public D3D12_VERSIONED_ROOT_SIGNATURE_DESC
+struct CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC :
+   public D3D12_VERSIONED_ROOT_SIGNATURE_DESC
 {
    CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC() { }
    explicit CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC(const D3D12_VERSIONED_ROOT_SIGNATURE_DESC &o) :
       D3D12_VERSIONED_ROOT_SIGNATURE_DESC(o)
    {
    }
+
    explicit CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC(const D3D12_ROOT_SIGNATURE_DESC &o)
    {
       Version = D3D_ROOT_SIGNATURE_VERSION_1_0;
       Desc_1_0 = o;
    }
+
    explicit CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC(const D3D12_ROOT_SIGNATURE_DESC1 &o)
    {
       Version = D3D_ROOT_SIGNATURE_VERSION_1_1;
       Desc_1_1 = o;
    }
+
    CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC(
       UINT numParameters,
       _In_reads_opt_(numParameters) const D3D12_ROOT_PARAMETER* _pParameters,
@@ -1588,6 +1614,7 @@ struct CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC : public D3D12_VERSIONED_ROOT_SIGNA
    {
       Init_1_0(numParameters, _pParameters, numStaticSamplers, _pStaticSamplers, flags);
    }
+
    CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC(
       UINT numParameters,
       _In_reads_opt_(numParameters) const D3D12_ROOT_PARAMETER1* _pParameters,
@@ -1597,6 +1624,7 @@ struct CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC : public D3D12_VERSIONED_ROOT_SIGNA
    {
       Init_1_1(numParameters, _pParameters, numStaticSamplers, _pStaticSamplers, flags);
    }
+
    CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC(CD3DX12_DEFAULT)
    {
       Init_1_1(0, NULL, 0, NULL, D3D12_ROOT_SIGNATURE_FLAG_NONE);
@@ -1635,7 +1663,12 @@ struct CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC : public D3D12_VERSIONED_ROOT_SIGNA
       _In_reads_opt_(numStaticSamplers) const D3D12_STATIC_SAMPLER_DESC* _pStaticSamplers = NULL,
       D3D12_ROOT_SIGNATURE_FLAGS flags = D3D12_ROOT_SIGNATURE_FLAG_NONE)
    {
-      Init_1_1(*this, numParameters, _pParameters, numStaticSamplers, _pStaticSamplers, flags);
+      Init_1_1(*this,
+               numParameters,
+               _pParameters,
+               numStaticSamplers,
+               _pStaticSamplers,
+               flags);
    }
 
    static inline void Init_1_1(
@@ -1656,7 +1689,8 @@ struct CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC : public D3D12_VERSIONED_ROOT_SIGNA
 };
 
 //------------------------------------------------------------------------------------------------
-struct CD3DX12_CPU_DESCRIPTOR_HANDLE : public D3D12_CPU_DESCRIPTOR_HANDLE
+struct __declspec(dllexport) CD3DX12_CPU_DESCRIPTOR_HANDLE :
+   public D3D12_CPU_DESCRIPTOR_HANDLE
 {
    CD3DX12_CPU_DESCRIPTOR_HANDLE() { }
    explicit CD3DX12_CPU_DESCRIPTOR_HANDLE(const D3D12_CPU_DESCRIPTOR_HANDLE &o) :
@@ -1809,7 +1843,7 @@ inline UINT8 D3D12GetFormatPlaneCount(
 }
 
 //------------------------------------------------------------------------------------------------
-struct CD3DX12_RESOURCE_DESC : public D3D12_RESOURCE_DESC
+struct __declspec(dllexport) CD3DX12_RESOURCE_DESC : public D3D12_RESOURCE_DESC
 {
    CD3DX12_RESOURCE_DESC()
    {
