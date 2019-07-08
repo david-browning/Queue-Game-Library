@@ -91,6 +91,8 @@ may support ARM64.
 * Test qgl::qgl_version_t
 * Test qgl::icommand
 * Test qgl::math::rectangle
+* Test icontent_file::erase
+* Test content_project_entry
 * Test math functions, comparators and template variables.
 * Test static pointer.
 * Verify converting timer's elapsed ticks to seconds is always accurate to 8  
@@ -113,10 +115,7 @@ may support ARM64.
   * 1 month
   * 140 years
   * 200 years
-* Verify or implement iterators for icontent_file, icontent_store, and 
-  icontent_project.
 * Cross compiler/VC Runtime integration tests.
-* icontent_project and icontent_file must support erasing. 
 * qgl::content::buffers::BRUSH_BUFFER has floating point data types in it.
 * OBJ Importer. Needs to be aware of the vertex layout.
 * Define a component-like class for use in rendering, handling input, and 

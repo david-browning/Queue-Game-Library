@@ -25,12 +25,6 @@ namespace QGL_Content_UnitTests
                           project->size(),
                           L"There should be 0 project entries.");
 
-         Assert::IsTrue(project->begin() == project->end(),
-                        L"The iterators are not equal.");
-
-         Assert::IsTrue(project->cbegin() == project->cend(),
-                        L"The const iterators are not equal.");
-
          project->release();
       }
 
@@ -57,10 +51,10 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER entryMeta(RESOURCE_TYPE_BRUSH,
                                            CONTENT_LOADER_ID_BRUSH,
                                            L"Brush");
-         winrt::check_hresult(projectWrite->emplace_data_back(
+         winrt::check_hresult(projectWrite->push_data_entry(
             &entryMeta,
             L"C:\\SomeFile.txt"));
-         winrt::check_hresult(projectWrite->emplace_data_back(
+         winrt::check_hresult(projectWrite->push_data_entry(
             &entryMeta,
             L"C:\\SomeFile.txt"));
 
@@ -76,13 +70,13 @@ namespace QGL_Content_UnitTests
 
          for (size_t i = 0; i < projectRead->size(); i++)
          {
-            Assert::IsTrue(projectRead->at(i)->first ==
-                           projectWrite->at(i)->first,
+            Assert::IsTrue(*projectRead->at(i)->const_metadata() ==
+                           *projectWrite->at(i)->const_metadata(),
                            L"The project entry metadata is not equal.");
 
-            Assert::IsTrue(projectRead->at(i)->second ==
-                           projectWrite->at(i)->second,
-                           L"The entry paths are not equal.");
+            Assert::AreEqual(std::wstring(projectRead->at(i)->const_path()),
+                             std::wstring(projectWrite->at(i)->const_path()),
+                             L"The entry paths are not equal.");
          }
          projectRead->release();
          projectWrite->release();
@@ -109,10 +103,10 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER entryMeta(RESOURCE_TYPE_BRUSH,
                                            CONTENT_LOADER_ID_BRUSH,
                                            L"Brush");
-         winrt::check_hresult(projectWrite->emplace_data_back(
+         winrt::check_hresult(projectWrite->push_data_entry(
             &entryMeta,
             L"C:\\SomeFile.txt"));
-         winrt::check_hresult(projectWrite->emplace_data_back(
+         winrt::check_hresult(projectWrite->push_data_entry(
             &entryMeta,
             L"C:\\SomeFile2.txt"));
 
@@ -160,14 +154,15 @@ namespace QGL_Content_UnitTests
             CONTENT_METADATA_BUFFER readEntryMeta;
             read_file_sync(&hndl, sizeof(readEntryMeta), offset,
                            &readEntryMeta);
-            Assert::IsTrue(readEntryMeta == projectWrite->at(i)->first,
-                           L"Entry metadata is not correct.");
+            Assert::IsTrue(
+               readEntryMeta == *projectWrite->at(i)->const_metadata(),
+               L"Entry metadata is not correct.");
             offset += sizeof(readEntryMeta);
 
             uint64_t numChars = 0;
             read_file_sync(&hndl, sizeof(numChars), offset,
                            &numChars);
-            Assert::IsTrue(numChars == projectWrite->at(i)->second.size(),
+            Assert::IsTrue(numChars == projectWrite->at(i)->path_size(),
                            L"The number of characters is not correct.");
             offset += sizeof(numChars);
 
@@ -175,8 +170,9 @@ namespace QGL_Content_UnitTests
             readPath.resize(numChars);
             read_file_sync(&hndl, numChars * sizeof(wchar_t), offset,
                            readPath.data());
-            Assert::IsTrue(projectWrite->at(i)->second == readPath,
-                           L"The file path is not correct.");
+            Assert::AreEqual(std::wstring(projectWrite->at(i)->const_path()),
+                             readPath,
+                             L"The file path is not correct.");
             offset += numChars * sizeof(wchar_t);
          }
 
@@ -201,36 +197,39 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER entryMeta(RESOURCE_TYPE_BRUSH,
                                            CONTENT_LOADER_ID_BRUSH,
                                            L"Brush");
-         winrt::check_hresult(projectWrite->emplace_data_back(
+         winrt::check_hresult(projectWrite->push_data_entry(
             &entryMeta,
             L"C:\\SomeFile.txt"));
-         winrt::check_hresult(projectWrite->emplace_data_back(
+         winrt::check_hresult(projectWrite->push_data_entry(
             &entryMeta,
             L"C:\\SomeFile2.txt"));
 
-         Assert::IsTrue(projectWrite->at(0)->first == entryMeta,
+         Assert::IsTrue(*projectWrite->at(0)->const_metadata() == entryMeta,
                         L"The metadata is not correct for entry 0.");
 
-         Assert::IsTrue(projectWrite->at(0)->second == L"C:\\SomeFile.txt",
-                        L"The path is not correct for entry 0");
+         Assert::AreEqual(std::wstring(projectWrite->at(0)->const_path()),
+                          std::wstring(L"C:\\SomeFile.txt"),
+                          L"The path is not correct for entry 0");
 
-         Assert::IsTrue(projectWrite->at(1)->first == entryMeta,
+         Assert::IsTrue(*projectWrite->at(1)->const_metadata() == entryMeta,
                         L"The metadata is not correct for entry 1.");
 
-         Assert::IsTrue(projectWrite->at(1)->second == L"C:\\SomeFile2.txt",
-                        L"The path is not correct for entry 1");
+         Assert::AreEqual(std::wstring(projectWrite->at(1)->const_path()),
+                          std::wstring(L"C:\\SomeFile2.txt"),
+                          L"The path is not correct for entry 1");
 
          CONTENT_METADATA_BUFFER newEntryMeta(RESOURCE_TYPE_BRUSH,
                                               CONTENT_LOADER_ID_BRUSH,
                                               L"NewEntry");
-         auto newEntry = std::make_pair(newEntryMeta,
-                                        std::wstring(L"NewPath.txt"));
+         auto newEntry = helpers::content_project_entry(&newEntryMeta,
+                                                        L"NewPath.txt");
          *projectWrite->at(1) = newEntry;
 
-         Assert::IsTrue(projectWrite->at(1)->first == newEntryMeta,
+         Assert::IsTrue(*projectWrite->at(1)->const_metadata() == newEntryMeta,
                         L"The new metadata for entry 1 is not correct.");
-         Assert::IsTrue(projectWrite->at(1)->second == L"NewPath.txt",
-                        L"The new path for entry 1 is not correct.");
+         Assert::AreEqual(std::wstring(projectWrite->at(1)->const_path()),
+                          std::wstring(L"NewPath.txt"),
+                          L"The new path for entry 1 is not correct.");
          projectWrite->release();
       }
 
@@ -250,11 +249,11 @@ namespace QGL_Content_UnitTests
                         L"The size should be 0.");
 
          CONTENT_METADATA_BUFFER def;
-         winrt::check_hresult(projectWrite->emplace_data_back(&def, L"0"));
+         winrt::check_hresult(projectWrite->push_data_entry(&def, L"0"));
          Assert::IsTrue(1 == projectWrite->size(),
                         L"The size should be 1.");
 
-         winrt::check_hresult(projectWrite->emplace_data_back(&def, L"2"));
+         winrt::check_hresult(projectWrite->push_data_entry(&def, L"2"));
          Assert::IsTrue(2 == projectWrite->size(),
                         L"The size should be 2.");
          projectWrite->release();
@@ -280,30 +279,27 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER entry3;
 
          //Insert an item.
-         winrt::check_hresult(projectWrite->emplace_data_back(
+         winrt::check_hresult(projectWrite->push_data_entry(
             &entry1,
             L"Str0"));
 
          //Erase it.
-         projectWrite->erase(projectWrite->cbegin());
+         projectWrite->erase(0);
 
          //Verify size is 0
          Assert::AreEqual(static_cast<size_t>(0),
                           projectWrite->size(),
                           L"Removed only entry: Size should be 0");
 
-         //Verify iterators are correct.
-         Assert::IsTrue(projectWrite->begin() == projectWrite->end(),
-                        L"The iterators should be equal");
 
          //Insert 3 items
-         winrt::check_hresult(projectWrite->emplace_data_back(
+         winrt::check_hresult(projectWrite->push_data_entry(
             &entry1,
             L"Str1"));
-         winrt::check_hresult(projectWrite->emplace_data_back(
+         winrt::check_hresult(projectWrite->push_data_entry(
             &entry2,
             L"Str2"));
-         winrt::check_hresult(projectWrite->emplace_data_back(
+         winrt::check_hresult(projectWrite->push_data_entry(
             &entry3,
             L"Str3"));
 
@@ -313,7 +309,7 @@ namespace QGL_Content_UnitTests
                           L"There should be 3 entries.");
 
          //Remove middle item.
-         projectWrite->erase(projectWrite->cbegin() + 1);
+         projectWrite->erase(1);
 
          //Verify size is 2.
          Assert::AreEqual(static_cast<size_t>(2),
@@ -321,7 +317,7 @@ namespace QGL_Content_UnitTests
                           L"There should be 2 entries.");
 
          //Remove all items.
-         projectWrite->erase(projectWrite->cbegin(), projectWrite->cend());
+         projectWrite->clear();
 
          //Verify size is 0.
          Assert::AreEqual(static_cast<size_t>(0),
@@ -353,7 +349,7 @@ namespace QGL_Content_UnitTests
             CONTENT_METADATA_BUFFER()
          };
 
-         std::vector<winrt::hstring> paths =
+         std::vector<std::wstring> paths =
          {
             L"1",
             L"2",
@@ -362,20 +358,20 @@ namespace QGL_Content_UnitTests
 
          for (size_t i = 0; i < metaDatas.size(); i++)
          {
-            winrt::check_hresult(projectWrite->emplace_data_back(
+            winrt::check_hresult(projectWrite->push_data_entry(
                &metaDatas[i],
                paths[i].c_str()));
          }
 
-         size_t i = 0;
-         for (const auto& entry : *projectWrite)
+         for (size_t i = 0; i < projectWrite->size(); i++)
          {
-            Assert::IsTrue(entry.first == metaDatas[i],
+            auto entry = projectWrite->const_at(i);
+            Assert::IsTrue(*entry->const_metadata() == metaDatas[i],
                            L"Metadata is not correct.");
 
-            Assert::IsTrue(entry.second == paths[i],
-                           L"Path is not correct.");
-            i++;
+            Assert::AreEqual(std::wstring(entry->const_path()),
+                             paths[i],
+                             L"Path is not correct.");
          }
          projectWrite->release();
       }
@@ -398,33 +394,17 @@ namespace QGL_Content_UnitTests
                                        L"Brush");
          auto goodStr = L"Q:Shared Path 1";
 
-         //Number of entries is zero. Inserting should fail.
-         auto hr = projectWrite->insert_shared_entry(&meta1,
-                                                     goodStr,
-                                                     0);
-         Assert::AreEqual(E_BOUNDS, hr, L"Should fail with E_BOUNDS.");
-
          //Test inserting a bad string.
          auto badStr = L"T:Shared Path 1";
-         hr = projectWrite->emplace_shared_back(&meta1,
-                                                badStr);
+         auto hr = projectWrite->push_shared_entry(&meta1,
+                                                   badStr);
          Assert::AreEqual(E_INVALIDARG, hr, L"Should fail with E_INVALIDARG");
 
-         hr = projectWrite->emplace_shared_back(&meta1,
-                                                goodStr);
+         hr = projectWrite->push_shared_entry(&meta1,
+                                              goodStr);
          Assert::AreEqual(S_OK, hr, L"Inserting should have worked.");
-
-         //Overwrite the string we inserted.
-         hr = projectWrite->insert_data_entry(&meta1,
-                                              goodStr,
-                                              0);
-         Assert::AreEqual(S_OK, hr, L"Overwriting should have worked.");
-
-         //Try to insert out of bounds.
-         hr = projectWrite->insert_data_entry(&meta1,
-                                              goodStr,
-                                              1);
-         Assert::AreEqual(E_BOUNDS, hr, L"Should fail again with E_BOUNDS.");
+         Assert::AreEqual(size_t(1), projectWrite->size(),
+                          L"There should be 1 entry now.");
       }
 
       TEST_METHOD(InsertDataEntry)
@@ -444,14 +424,10 @@ namespace QGL_Content_UnitTests
                                        CONTENT_LOADER_ID_BRUSH,
                                        L"Brush");
 
-         //Number of entries is zero. Inserting should fail.
-         auto hr = projectWrite->insert_data_entry(&meta1,
-                                                   L"Test",
-                                                   0);
-         Assert::AreEqual(E_BOUNDS, hr, L"Should fail with E_BOUNDS.");
-
-         hr = projectWrite->emplace_data_back(&meta1, L"Test");
+         auto hr = projectWrite->push_data_entry(&meta1, L"Test");
          Assert::AreEqual(S_OK, hr, L"Inserting should have worked.");
+         Assert::AreEqual(size_t(1), projectWrite->size(),
+                          L"There should be 1 entry now.");
       }
 
       TEST_METHOD(StorageFileOpenFlushRead)
@@ -481,11 +457,11 @@ namespace QGL_Content_UnitTests
          CONTENT_METADATA_BUFFER entryMeta(RESOURCE_TYPE_BRUSH,
                                            CONTENT_LOADER_ID_BRUSH,
                                            L"Brush");
-         winrt::check_hresult(projectWrite->emplace_data_back(
-            &entryMeta, 
+         winrt::check_hresult(projectWrite->push_data_entry(
+            &entryMeta,
             L"C:\\SomeFile.txt"));
-         winrt::check_hresult(projectWrite->emplace_data_back(
-            &entryMeta, 
+         winrt::check_hresult(projectWrite->push_data_entry(
+            &entryMeta,
             L"C:\\SomeFile2.txt"));
 
          //Flush it
@@ -501,13 +477,13 @@ namespace QGL_Content_UnitTests
 
          for (size_t i = 0; i < projectRead->size(); i++)
          {
-            Assert::IsTrue(projectRead->at(i)->first ==
-                           projectWrite->at(i)->first,
+            Assert::IsTrue(*projectRead->at(i)->const_metadata() ==
+                           *projectWrite->at(i)->const_metadata(),
                            L"The project entry metadata is not equal.");
 
-            Assert::IsTrue(projectRead->at(i)->second ==
-                           projectWrite->at(i)->second,
-                           L"The entry paths are not equal.");
+            Assert::AreEqual(std::wstring(projectRead->at(i)->const_path()),
+                             std::wstring(projectWrite->at(i)->const_path()),
+                             L"The entry paths are not equal.");
          }
 
          projectWrite->release();

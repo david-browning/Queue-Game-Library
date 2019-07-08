@@ -26,23 +26,6 @@ namespace qgl::content
       virtual HRESULT flush() noexcept = 0;
 
       /*
-       The metadata and buffer are copied and can go out of scope after calling
-       this.
-       */
-      virtual void push_data_entry(
-         const CONTENT_METADATA_BUFFER* meta,
-         const void* buff,
-         size_t buffBytes) noexcept = 0;
-
-      /*
-       The metadata and buffer are copied and can go out of scope after calling
-       this.
-       */
-      virtual void push_shared_entry(
-         const CONTENT_METADATA_BUFFER* meta,
-         const wchar_t* str) noexcept = 0;
-
-      /*
        Returns a const reference to the file's header.
        Do not free or reallocate the returned pointer.
        */
@@ -68,11 +51,27 @@ namespace qgl::content
       virtual const file_handle* handle() const noexcept = 0;
 
       /*
+       Inserts a data entry at the end of this content file.
+       The metadata and buffer are copied and can go out of scope after calling
+       this.
+       */
+      virtual void push_data_entry(const CONTENT_METADATA_BUFFER* meta,
+                                   const void* buff,
+                                   size_t buffBytes) noexcept = 0;
+
+      /*
+       Inserts a shared entry at the end of this content file.
+       The metadata and buffer are copied and can go out of scope after calling
+       this.
+       */
+      virtual void push_shared_entry(const CONTENT_METADATA_BUFFER* meta,
+                                     const wchar_t* str) noexcept = 0;
+
+      /*
        Does not bounds checking.
        Do not free or reallocate the returned pointer.
        */
-      virtual CONTENT_DICTIONARY_ENTRY_BUFFER* at(
-         size_t idx) noexcept = 0;
+      virtual CONTENT_DICTIONARY_ENTRY_BUFFER* at(size_t idx) noexcept = 0;
 
       /*
        Does not bounds checking.
@@ -80,6 +79,14 @@ namespace qgl::content
        */
       virtual const CONTENT_DICTIONARY_ENTRY_BUFFER* const_at(
          size_t idx) const noexcept = 0;
+
+      /*
+       Removes the entry at the given index from the content file. All entries
+       after the removed entry get shifted so the collection of entries is
+       contiguous.
+       Does nothing if the index is out of range.
+       */
+      virtual void erase(size_t idx) noexcept = 0;
    };
 
    /*

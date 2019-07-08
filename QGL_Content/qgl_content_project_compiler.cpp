@@ -9,22 +9,24 @@ namespace qgl::content
    HRESULT compile_content_project(const icontent_project* proj,
                                    icontent_file* cf) noexcept
    {
-      CONTENT_FILE_HEADER_BUFFER hdr(proj->metadata());
+      CONTENT_FILE_HEADER_BUFFER hdr(proj->const_metadata());
       (*cf->header()) = hdr;
 
-      for (const auto& entry : *proj)
+      for(size_t i = 0; i < proj->size(); i++)
       {
-         if (entry.first.shared())
+         auto entry = proj->const_at(i);
+
+         if (entry->const_metadata()->shared())
          {
             //Create a shared entry using the file path.
-            cf->push_shared_entry(&entry.first,
-                                  entry.second.c_str());
+            cf->push_shared_entry(entry->const_metadata(),
+                                  entry->const_path());
          }
          else
          {
             //Load the entry's file into memory.
             ifile_buffer* buff = nullptr;
-            auto hr = qgl_open_file_buffer(entry.second.c_str(),
+            auto hr = qgl_open_file_buffer(entry->const_path(),
                                            hdr.metadata()->version(),
                                            &buff);
             if (FAILED(hr))
@@ -35,7 +37,7 @@ namespace qgl::content
             auto safeBuffer = qgl::make_unique<ifile_buffer>(buff);
 
             //Add its data to the content file.
-            cf->push_data_entry(&entry.first,
+            cf->push_data_entry(entry->const_metadata(),
                                 safeBuffer->const_data(),
                                 safeBuffer->size());
          }
@@ -53,7 +55,7 @@ HRESULT qgl::content::compile_content_project(const icontent_project* proj,
    //Create a content file in write mode.
    icontent_file* cf = nullptr;
    auto hr = qgl_open_content_file(absPath,
-                                   proj->metadata()->version(),
+                                   proj->const_metadata()->version(),
                                    &cf);
    if (FAILED(hr))
    {
@@ -78,7 +80,7 @@ HRESULT qgl::content::compile_content_project_sf(
    //Create a content file in write mode.
    icontent_file* cf = nullptr;
    auto hr = qgl_open_content_file_sf(f,
-                                      proj->metadata()->version(),
+                                      proj->const_metadata()->version(),
                                       &cf);
    if (FAILED(hr))
    {

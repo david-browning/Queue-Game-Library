@@ -1,5 +1,6 @@
 #pragma once
 #include "include/qgl_content_include.h"
+#include "include/Content-Project/qgl_content_project_entry.h"
 #include "include/Content-Buffers/qgl_content_metadata_buffer.h"
 
 namespace qgl::content
@@ -7,13 +8,6 @@ namespace qgl::content
    class icontent_project : public iqgl
    {
       public:
-      using content_project_entry_pair =
-         std::pair<CONTENT_METADATA_BUFFER, file_string>;
-      using cpep = content_project_entry_pair;
-      using container = std::vector<content_project_entry_pair>;
-      using iterator = container::iterator;
-      using const_iterator = container::const_iterator;
-
       /*
        Flushes any changes to the content file to the disk.
        */
@@ -27,7 +21,8 @@ namespace qgl::content
       /*
        Returns a const reference to the content project's metadata.
        */
-      virtual const CONTENT_METADATA_BUFFER* metadata() const noexcept = 0;
+      virtual const CONTENT_METADATA_BUFFER* const_metadata() 
+         const noexcept = 0;
 
       /*
        Returns the number of entries in the project.
@@ -35,39 +30,14 @@ namespace qgl::content
       virtual size_t size() const noexcept = 0;
 
       /*
-       Constructs a shared entry and inserts it at the position.
-       Returns:
-         E_INVALIDARG if the string is not well formed. See qgl::content::
-            entries::shared_content_entry for information about good strings.
-         E_BOUNDS if the position is invalid.
-         S_OK on success.
-       */
-      [[nodiscard]] virtual HRESULT insert_shared_entry(
-         const content_project_entry_pair::first_type* entry,
-         const wchar_t* str,
-         size_t idx) noexcept = 0;
-
-      /*
-       Constructs a data entry in the content project. str must be an absolute
-       path. This function does not check if the string points to a valid file.
-       Returns:
-         E_BOUNDS if the position is invalid.
-         S_OK on success.
-       */
-      [[nodiscard]] virtual HRESULT insert_data_entry(
-         const content_project_entry_pair::first_type* entry,
-         const wchar_t* str,
-         size_t idx) noexcept = 0;
-
-      /*
        Constructs a shared entry and inserts it at the end.
        Returns:
          E_INVALIDARG if the string is not well formed. See qgl::content::
             entries::shared_content_entry for information about good strings.
          S_OK on success.
        */
-      [[nodiscard]] virtual HRESULT emplace_shared_back(
-         const content_project_entry_pair::first_type* entry,
+      [[nodiscard]] virtual HRESULT push_shared_entry(
+         const CONTENT_METADATA_BUFFER* entry,
          const wchar_t* str) = 0;
 
       /*
@@ -75,8 +45,8 @@ namespace qgl::content
        Returns:
          S_OK on success.
        */
-      [[nodiscard]] virtual HRESULT emplace_data_back(
-         const content_project_entry_pair::first_type* entry,
+      [[nodiscard]] virtual HRESULT push_data_entry(
+         const CONTENT_METADATA_BUFFER* entry,
          const wchar_t* str) = 0;
 
       /*
@@ -84,50 +54,28 @@ namespace qgl::content
        Does not bounds checking.
        Do not free or reallocate the returned pointer.
        */
-      virtual content_project_entry_pair* at(
-         size_t idx) noexcept = 0;
+      virtual helpers::content_project_entry* at(size_t idx) noexcept = 0;
 
       /*
        Returns a const reference to the idx'th project entry.
        Does not bounds checking.
        Do not free or reallocate the returned pointer.
        */
-      virtual const content_project_entry_pair* at(
+      virtual const helpers::content_project_entry* const_at(
          size_t idx) const noexcept = 0;
 
       /*
-       Returns the project entry at the given position.
+       Removes the entry at the given index from the content file. All entries
+       after the removed entry get shifted so the collection of entries is
+       contiguous.
+       Does nothing if the index is out of range.
        */
-      virtual iterator erase(const_iterator position) = 0;
+      virtual void erase(size_t position) noexcept = 0;
 
       /*
-       Removes the project entries between first and last, inclusive.
+       Removes all entries from this content project.
        */
-      virtual iterator erase(const_iterator first, const_iterator last) = 0;
-
-      /*
-       Returns an iterator to the beginning of the project entries.
-       */
-      virtual iterator begin() noexcept = 0;
-
-      virtual const_iterator begin() const noexcept = 0;
-
-      /*
-       Returns a const iterator to the beginning of the project entries.
-       */
-      virtual const_iterator cbegin() const noexcept = 0;
-
-      /*
-       Returns an iterator to the end of the project entries.
-       */
-      virtual iterator end() noexcept = 0;
-
-      virtual const_iterator end() const noexcept = 0;
-
-      /*
-       Returns a const iterator to the end of the project entries.
-       */
-      virtual const_iterator cend() const noexcept = 0;
+      virtual void clear() noexcept = 0;
    };
 
    /*

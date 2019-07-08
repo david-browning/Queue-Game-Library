@@ -106,39 +106,29 @@ namespace QGL_Content_UnitTests
       {
          auto root = ApplicationData::Current().LocalFolder();
          auto f = co_await root.CreateFileAsync(
-            L"StorageFile.txt",
+            L"test_open_storage_file_rw.txt",
             CreationCollisionOption::ReplaceExisting);
 
          file_handle handle;
-         try
-         {
-            open_file_readwrite_sf(f, &handle);
-         }
-         catch (winrt::hresult_error&)
-         {
-            Assert::Fail(L"Exception opening the file.");
-         }
+
+         auto hr = open_file_readwrite_sf(f, &handle);
+         Assert::IsTrue(SUCCEEDED(hr), L"HRESULT failed.");
 
          std::string buffer = "Test";
-         DWORD written = 0;
-         auto result = WriteFile(handle.get(),
-                                 buffer.c_str(),
-                                 static_cast<DWORD>(buffer.size()),
-                                 &written,
-                                 nullptr);
-
-         Assert::IsTrue(result > 0, L"Failed to write to the file.");
+         hr = write_file_sync<char>(&handle,
+                                    buffer.size(),
+                                    0,
+                                    buffer.c_str());
+         Assert::IsTrue(SUCCEEDED(hr), L"HRESULT failed.");
 
          char readBack[4];
-         OVERLAPPED ovr;
-         make_overlapped(0, &ovr);
-         result = ReadFile(handle.get(), readBack, 4, &written, &ovr);
-
-         Assert::IsTrue(result != 0, L"Failed to read the file.");
+         hr = read_file_sync(&handle,
+                             4,
+                             0,
+                             readBack);
+         Assert::IsTrue(SUCCEEDED(hr), L"HRESULT failed.");
 
          handle.close();
       }
    };
-
-
 }

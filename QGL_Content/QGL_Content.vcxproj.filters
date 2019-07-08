@@ -142,6 +142,9 @@
     <ClCompile Include="qgl_rectangle_buffer.cpp">
       <Filter>Source Files\Content-Buffers</Filter>
     </ClCompile>
+    <ClCompile Include="qgl_content_project_entry.cpp">
+      <Filter>Source Files\Content-Project</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLContent.h">
@@ -252,6 +255,9 @@
     </ClInclude>
     <ClInclude Include="include\Content-Buffers\qgl_rectangle_buffer.h">
       <Filter>Header Files\Content-Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content-Project\qgl_content_project_entry.h">
+      <Filter>Header Files\Content-Project</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

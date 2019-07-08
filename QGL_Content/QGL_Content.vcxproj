@@ -177,6 +177,7 @@
     <ClInclude Include="include\Content-Items\qgl_string_item.h" />
     <ClInclude Include="include\Content-Items\qgl_wstring_item.h" />
     <ClInclude Include="include\Content-Project\qgl_content_project_compiler.h" />
+    <ClInclude Include="include\Content-Project\qgl_content_project_entry.h" />
     <ClInclude Include="include\File-Loaders\qgl_file_loaders.h" />
     <ClInclude Include="include\File-Loaders\qgl_file_loader_string.h" />
     <ClInclude Include="include\File-Loaders\qgl_file_loader_wstring.h" />
@@ -195,6 +196,7 @@
   <ItemGroup>
     <ClCompile Include="QGL_ContentRT.cpp" />
     <ClCompile Include="qgl_content_item.cpp" />
+    <ClCompile Include="qgl_content_project_entry.cpp" />
     <ClCompile Include="qgl_content_variant_entry.cpp" />
     <ClCompile Include="qgl_content_file_helpers.cpp" />
     <ClCompile Include="qgl_content_project_compiler.cpp" />

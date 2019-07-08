@@ -152,6 +152,16 @@ namespace qgl::content
          m_dict.push_back(std::move(entry));
       }
 
+      virtual void erase(size_t idx) noexcept
+      {
+         if (idx >= m_dict.size())
+         {
+            return;
+         }
+
+         m_dict.erase(m_dict.begin() + idx);
+      }
+
       virtual const CONTENT_FILE_HEADER_BUFFER* const_header() const noexcept
       {
          return &m_header;

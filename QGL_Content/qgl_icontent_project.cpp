@@ -80,7 +80,7 @@ namespace qgl::content
          offset += sizeof(numEntries);
 
          //For each entry:
-         for (const auto& entry : *this)
+         for (const auto& entry : m_entries)
          {
             //Write the separator.
             hr = write_file_sync(
@@ -106,17 +106,17 @@ namespace qgl::content
 
             //Write the metadata
             hr = write_file_sync(&m_handle,
-                                 sizeof(entry.first),
+                                 sizeof(CONTENT_METADATA_BUFFER),
                                  offset,
-                                 &entry.first);
+                                 entry.const_metadata());
             if (FAILED(hr))
             {
                return hr;
             }
-            offset += sizeof(entry.first);
+            offset += sizeof(CONTENT_METADATA_BUFFER);
 
             //Write the number of characters in the path.
-            uint64_t numChars = static_cast<uint64_t>(entry.second.size());
+            uint64_t numChars = static_cast<uint64_t>(entry.path_size());
             hr = write_file_sync(&m_handle, numChars, offset, &numChars);
             if (FAILED(hr))
             {
@@ -128,7 +128,7 @@ namespace qgl::content
             hr = write_file_sync(&m_handle,
                                  numChars * sizeof(wchar_t),
                                  offset,
-                                 entry.second.c_str());
+                                 entry.const_path());
             if (FAILED(hr))
             {
                return hr;
@@ -144,7 +144,7 @@ namespace qgl::content
          return &m_hdr;
       }
 
-      virtual const CONTENT_METADATA_BUFFER* metadata() const noexcept
+      virtual const CONTENT_METADATA_BUFFER* const_metadata() const noexcept
       {
          return &m_hdr;
       }
@@ -154,58 +154,8 @@ namespace qgl::content
          return m_entries.size();
       }
 
-      virtual HRESULT insert_shared_entry(
-         const content_project_entry_pair::first_type* entry,
-         const wchar_t* str,
-         size_t idx) noexcept
-      {
-         if (idx >= m_entries.size())
-         {
-            #ifdef DEBUG
-            OutputDebugString(L"Index is out of bounds.");
-            #endif
-            return E_BOUNDS;
-         }
-
-         try
-         {
-            //Construct a shared content entry. This checks if str is valid.
-            entries::shared_content_entry sharedEntry(str);
-         }
-         catch (std::invalid_argument&)
-         {
-            #ifdef DEBUG
-            OutputDebugString(L"The shared entry string is ill-formed.");
-            #endif
-            return E_INVALIDARG;
-         }
-
-         m_entries[idx] = { *entry, winrt::to_hstring(str) };
-
-         return S_OK;
-      }
-
-      virtual HRESULT insert_data_entry(
-         const content_project_entry_pair::first_type* entry,
-         const wchar_t* str,
-         size_t idx) noexcept
-      {
-         if (idx >= m_entries.size())
-         {
-            #ifdef DEBUG
-            OutputDebugString(L"Index is out of bounds.");
-            #endif
-            return E_BOUNDS;
-         }
-
-         m_entries[idx] = { *entry, winrt::to_hstring(str) };
-
-         return S_OK;
-      }
-
-      virtual HRESULT emplace_shared_back(
-         const content_project_entry_pair::first_type* entry,
-         const wchar_t* str)
+      virtual HRESULT push_shared_entry(const CONTENT_METADATA_BUFFER* entry,
+                                        const wchar_t* str)
       {
          try
          {
@@ -220,79 +170,38 @@ namespace qgl::content
             return E_INVALIDARG;
          }
 
-         m_entries.emplace_back(*entry,
-                                winrt::to_hstring(str));
+         m_entries.emplace_back(entry, str);
 
          return S_OK;
       }
 
-      virtual HRESULT emplace_data_back(
-         const content_project_entry_pair::first_type* entry,
-         const wchar_t* str)
+      virtual HRESULT push_data_entry(const CONTENT_METADATA_BUFFER* entry,
+                                      const wchar_t* str)
       {
-         m_entries.emplace_back(*entry,
-                                winrt::to_hstring(str));
+         m_entries.emplace_back(entry, str);
 
          return S_OK;
       }
 
-      virtual content_project_entry_pair* at(size_t idx) noexcept
+      virtual helpers::content_project_entry* at(size_t idx) noexcept
       {
          return &m_entries[idx];
       }
 
-      virtual const content_project_entry_pair* at(size_t idx) const noexcept
+      virtual const helpers::content_project_entry* const_at(size_t idx)
+         const noexcept
       {
          return &m_entries[idx];
       }
 
-      virtual iterator erase(const_iterator position)
+      virtual void erase(size_t position) noexcept
       {
-         return m_entries.erase(position);
+         m_entries.erase(m_entries.begin() + position);
       }
 
-      virtual iterator erase(const_iterator first, const_iterator last)
+      virtual void clear() noexcept
       {
-         return m_entries.erase(first, last);
-      }
-
-      virtual iterator begin() noexcept
-      {
-         return m_entries.begin();
-      }
-
-      virtual const_iterator begin() const noexcept
-      {
-         return m_entries.cbegin();
-      }
-
-      /*
-       Returns a const iterator to the beginning of the project entries.
-       */
-      virtual const_iterator cbegin() const noexcept
-      {
-         return m_entries.cbegin();
-      }
-
-      /*
-       Returns an iterator to the end of the project entries.
-       */
-      virtual iterator end() noexcept
-      {
-         return m_entries.end();
-      }
-
-      virtual const_iterator end() const noexcept
-      {
-         return m_entries.cend();
-      }
-
-      /*
-       Returns a const iterator to the end of the project entries.
-       */
-      virtual const_iterator cend() const noexcept
-      {
-         return m_entries.cend();
+         m_entries.clear();
       }
 
       private:
@@ -402,13 +311,13 @@ namespace qgl::content
             //Emplace back a new entry.
             if (meta.shared())
             {
-               emplace_shared_back(&meta,
-                                   path.c_str());
+               push_shared_entry(&meta,
+                                 path.c_str());
             }
             else
             {
-               emplace_data_back(&meta,
-                                 path.c_str());
+               push_data_entry(&meta,
+                               path.c_str());
             }
 
             numEntries--;
@@ -420,7 +329,7 @@ namespace qgl::content
       /*
        Collection of entries.
        */
-      container m_entries;
+      std::vector<helpers::content_project_entry> m_entries;
 
       /*
        File handle.
