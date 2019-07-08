@@ -14,7 +14,7 @@
 
 namespace qgl::graphics::gpu::render
 {
-   class iframe : iqgl
+   QGL_INTERFACE iframe : public iqgl
    {
       public:
       /*

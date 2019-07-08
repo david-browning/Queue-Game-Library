@@ -15,7 +15,7 @@ namespace qgl::graphics
     Creating the pipeline state object is deferred until calling get(). The
     pipeline state parameters must be set first.
     */
-   class ipso : public iqgl
+   QGL_INTERFACE ipso : public iqgl
    {
       public:
       /*

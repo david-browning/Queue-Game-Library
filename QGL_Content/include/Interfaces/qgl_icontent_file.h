@@ -13,7 +13,7 @@ namespace qgl::content
     is addressed using a dictionary. The dictionary can be iterated through
     using the begin() and end() functions.
     */
-   class icontent_file : public iqgl
+   QGL_INTERFACE icontent_file : public iqgl
    {
       public:
       /*

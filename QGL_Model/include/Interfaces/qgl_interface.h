@@ -1,9 +1,11 @@
 #pragma once
 #include "include/qgl_model_include.h"
 
+#define QGL_INTERFACE class __declspec(novtable)
+
 namespace qgl
 {
-   class iqgl
+   QGL_INTERFACE iqgl
    {
       public:
       /*
@@ -23,7 +25,7 @@ namespace qgl
       }
    };
 
-   class iqgl_impl : public iqgl
+   QGL_INTERFACE iqgl_impl : public iqgl
    {
 
    };

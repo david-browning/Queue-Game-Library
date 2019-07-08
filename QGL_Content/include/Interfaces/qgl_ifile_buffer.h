@@ -11,8 +11,9 @@ namespace qgl::content
        Wraps a unique pointer to a file and its data. The file is opened for
        read access only.
        */
-      struct ifile_buffer : public iqgl
+      QGL_INTERFACE ifile_buffer : public iqgl
       {
+         public:
          /*
           Returns a const reference to the file data.
           */

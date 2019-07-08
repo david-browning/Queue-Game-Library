@@ -6,7 +6,7 @@ namespace qgl::graphics
 {
    class window;
 
-   class igraphics_device : public iqgl
+   QGL_INTERFACE igraphics_device : public iqgl
    {
       public:
       /*

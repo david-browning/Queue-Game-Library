@@ -5,8 +5,9 @@
 
 namespace qgl::content
 {
-   struct file_buffer_1_0 : public ifile_buffer
+   class file_buffer_1_0 : public ifile_buffer
    {
+      public:
       HRESULT make(const wchar_t* absPath)
       {
          auto hr = open_file_read(absPath, &m_hndl);

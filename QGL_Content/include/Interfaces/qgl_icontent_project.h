@@ -5,7 +5,7 @@
 
 namespace qgl::content
 {
-   class icontent_project : public iqgl
+   QGL_INTERFACE icontent_project : public iqgl
    {
       public:
       /*
