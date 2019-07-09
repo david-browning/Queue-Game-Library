@@ -35,6 +35,9 @@
     <Filter Include="Source Files\Interfaces">
       <UniqueIdentifier>{1904813c-45f7-43fd-aa9a-4e494fd468a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Structures">
+      <UniqueIdentifier>{7d59c5f2-5850-480a-abda-27633485f7d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLModel.h">
@@ -93,6 +96,15 @@
     </ClInclude>
     <ClInclude Include="include\qgl_component.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Structures\qgl_basic_tree_map.h">
+      <Filter>Header Files\Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Structures\qgl_tree_map.h">
+      <Filter>Header Files\Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Structures\qgl_unordered_tree_map.h">
+      <Filter>Header Files\Structures</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -14,3 +14,6 @@
 #include "include/Observer-Observable/qgl_subject.h"
 #include "include/Observer-Observable/qgl_iobserver.h"
 #include "include/Observer-Observable/qgl_callback_observer.h"
+
+#include "include/Structures/qgl_tree_map.h"
+#include "include/Structures/qgl_unordered_tree_map.h"
