@@ -229,9 +229,6 @@
     <ClCompile Include="qgl_cpy_cmd_list.cpp">
       <Filter>Source Files\GPU\Command-Lists</Filter>
     </ClCompile>
-    <ClCompile Include="qgl_text_render_component.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
     <ClCompile Include="qgl_graphics_config.cpp">
       <Filter>Source Files\Content</Filter>
     </ClCompile>

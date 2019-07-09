@@ -3,55 +3,76 @@
 #include "include/Content/qgl_wtext.h"
 #include "include/Content/qgl_brush.h"
 #include "include/Content/qgl_text_format.h"
+#include "include/Interfaces/qgl_igraphics_device.h"
 
 namespace qgl::graphics::components
 {
+   using text_render_updatable = static_ptr_ref<content::wtext>;
+   using text_render_context = static_ptr_ref<igraphics_device>;
+   namespace functors
+   {
+      class text_render_functor
+      {
+         public:
+         text_render_functor(static_ptr_ref<content::brush> brush_p,
+                             static_ptr_ref<content::text_format> fmt_p) :
+            m_brush_p(brush_p),
+            m_fmt_p(fmt_p)
+         {
+
+         }
+
+         text_render_functor(const text_render_functor&) = default;
+
+         text_render_functor(text_render_functor&&) = default;
+
+         ~text_render_functor() noexcept = default;
+
+         HRESULT operator()(text_render_updatable& txt,
+                            text_render_context& dev_p)
+         {
+            dev_p->d2d1_context()->DrawText(txt->c_str(),
+                                            static_cast<UINT32>(txt->length()),
+                                            m_fmt_p->get(),
+                                            txt->layout(),
+                                            m_brush_p->get());
+            return S_OK;
+         }
+
+         private:
+         static_ptr_ref<content::brush> m_brush_p;
+         static_ptr_ref<content::text_format> m_fmt_p;
+      };
+   }
+
    /*
     Renders a wtext object.
-    The "style" the text is render depends on the brush and text_format passed 
-    to this's constructor. The font spacing, size, and style is stored in a 
+    The "style" the text is render depends on the brush and text_format passed
+    to this's constructor. The font spacing, size, and style is stored in a
     text_format. The font color is stored in a brush.
-    Update context is a d2d_context.
-    Object to update is a wtext.
     */
-   class QGL_GRAPHICS_API text_render_component : 
-      public icomponent<d2d_context, content::wtext>
+   class text_render_component : public component<text_render_updatable,
+                                                  text_render_context,
+                                                  HRESULT,
+                                                  functors::text_render_functor>
    {
       public:
-      using uc_t = d2d_context;
-      using u_t = content::wtext;
+      text_render_component(static_ptr_ref<content::brush> brush_p,
+                            static_ptr_ref<content::text_format> fmt_p) :
+         component(TEXT_RENDER_COMPONENT_GUID,
+                   functors::text_render_functor(brush_p, fmt_p))
+      {
 
-      /*
-       The brush and text format are not copied. Do not allow them to 
-       go out of scope.
-       */
-      text_render_component(content::brush* brush_p,
-                            content::text_format* fmt_p,
-                            const GUID* g);
+      }
 
-      /*
-       Copy constructor.
-       */
-      text_render_component(const text_render_component& r);
-
-      /*
-       Move constructor.
-       */
-      text_render_component(text_render_component&& r);
-
-      /*
-       Destructor
-       */
-      virtual ~text_render_component() noexcept;
-
-      /*
-       Renders the wtext using the context.
-       */
-      virtual void update(uc_t* context, u_t* obj);
-
-      protected:
-
-      struct impl;
-      impl* m_impl_p = nullptr;
+      private:
+      // {1625CE76-C3D2-4A2A-9194-35A4667E4FAE}
+      static constexpr GUID TEXT_RENDER_COMPONENT_GUID =
+      { 
+         0x1625ce76, 
+         0xc3d2, 
+         0x4a2a, 
+         { 0x91, 0x94, 0x35, 0xa4, 0x66, 0x7e, 0x4f, 0xae } 
+      };
    };
 }

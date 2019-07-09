@@ -309,7 +309,6 @@
     <ClCompile Include="qgl_text_format.cpp" />
     <ClCompile Include="qgl_text_format_buffer.cpp" />
     <ClCompile Include="qgl_text_format_file_loader.cpp" />
-    <ClCompile Include="qgl_text_render_component.cpp" />
     <ClCompile Include="qgl_uav_descriptor_heap.cpp" />
     <ClCompile Include="qgl_vertex_desc_header.cpp" />
     <ClCompile Include="qgl_vert_description.cpp" />

@@ -53,7 +53,7 @@ may support ARM64.
 * https://chadaustin.me/cppinterface.html
 
 ## Build Requirements:
-* Fully up-to-date Visual Studio 2017. Tested only on Enterprise.
+* Fully up-to-date Visual Studio 2017. Tested on Enterprise and Community.
 * Required Workloads:
     * Universal Windows Platform Development
     * Game development with C++
@@ -86,15 +86,16 @@ may support ARM64.
 ## TODO:
 * Fix failed HRESULT when opening existing files.
 * Support multi-instance with content builder.
-* Test qgl::content:: entry importers
-* Test qgl::content:: file loaders
-* Test qgl::qgl_version_t
-* Test qgl::icommand
-* Test qgl::math::rectangle
-* Test icontent_file::erase
-* Test content_project_entry
+* Test qgl::content:: entry importers.
+* Test qgl::content:: file loaders.
+* Test qgl::qgl_version_t.
+* Test qgl::icommand.
+* Test qgl::math::rectangle.
+* Test icontent_file::erase.
+* Test content_project_entry.
 * Test math functions, comparators and template variables.
 * Test static pointer.
+* Test component.
 * Verify converting timer's elapsed ticks to seconds is always accurate to 8  
   decimal places. 
   Test it after these time spans:  
@@ -118,10 +119,6 @@ may support ARM64.
 * Cross compiler/VC Runtime integration tests.
 * qgl::content::buffers::BRUSH_BUFFER has floating point data types in it.
 * OBJ Importer. Needs to be aware of the vertex layout.
-* Define a component-like class for use in rendering, handling input, and 
-  physics updating. Components need to be type safe and allow programmers to 
-  define new functionality. Components are functors with additional 
-  requirements?
 * PSO supports steam output?
 * Resize frame? This resized render targets and depth stencils? Resize viewport 
   and scissor?

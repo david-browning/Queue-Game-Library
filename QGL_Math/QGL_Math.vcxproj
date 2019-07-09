@@ -151,6 +151,7 @@
     <ClInclude Include="include\qgl_rational.h" />
     <ClInclude Include="include\Shapes\qgl_rectangle.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="physics_structs.h" />
     <ClInclude Include="QGLMath.h" />
     <ClInclude Include="QGL_MathRT.h" />
   </ItemGroup>

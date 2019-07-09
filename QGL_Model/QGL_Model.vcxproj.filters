@@ -29,12 +29,6 @@
     <Filter Include="Header Files\Memory">
       <UniqueIdentifier>{9675b492-4eee-4393-b547-f01aa5aca065}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Physical">
-      <UniqueIdentifier>{a376667f-0301-4e85-92a5-686a9c19de05}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Physical">
-      <UniqueIdentifier>{eb1b772e-ed67-49b7-a90b-41f7ee710520}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Interfaces">
       <UniqueIdentifier>{ca2b5dc4-045b-45e2-9c54-c02b0e26146a}</UniqueIdentifier>
     </Filter>
@@ -54,9 +48,6 @@
     </ClInclude>
     <ClInclude Include="include\qgl_version.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_icomponent.h">
-      <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="QGL_ModelRT.h">
       <Filter>win_rt</Filter>
@@ -88,9 +79,6 @@
     <ClInclude Include="include\qgl_platform_abstraction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Physical\qgl_body.h">
-      <Filter>Header Files\Physical</Filter>
-    </ClInclude>
     <ClInclude Include="include\Interfaces\qgl_interface.h">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
@@ -102,6 +90,9 @@
     </ClInclude>
     <ClInclude Include="include\Memory\qgl_static_ptr_ref.h">
       <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_component.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -122,9 +113,6 @@
     </ClCompile>
     <ClCompile Include="qgl_icommand.cpp">
       <Filter>Source Files\Interfaces</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_body.cpp">
-      <Filter>Source Files\Physical</Filter>
     </ClCompile>
     <ClCompile Include="qgl_version.cpp">
       <Filter>Source Files</Filter>

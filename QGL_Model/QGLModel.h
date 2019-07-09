@@ -5,7 +5,7 @@
 #include "include/Memory/qgl_static_ptr_ref.h"
 
 #include "include/qgl_version.h"
-#include "include/qgl_icomponent.h"
+#include "include/qgl_component.h"
 
 #include "include/Timing/qgl_time_state.h"
 #include "include/Timing/qgl_timer.h"
@@ -14,6 +14,3 @@
 #include "include/Observer-Observable/qgl_subject.h"
 #include "include/Observer-Observable/qgl_iobserver.h"
 #include "include/Observer-Observable/qgl_callback_observer.h"
-
-#include "include/Physical/qgl_body.h"
-
