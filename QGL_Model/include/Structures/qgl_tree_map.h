@@ -4,5 +4,5 @@
 namespace qgl
 {
    template<class KeyT, class ValueT>
-   using tree_map = basic_tree_map<std::map, ValueT, KeyT>;
+   using tree_map = basic_tree_map<std::map, KeyT, ValueT>;
 }

@@ -4,5 +4,5 @@
 namespace qgl
 {
    template<class KeyT, class ValueT>
-   using unordered_tree_map = basic_tree_map<std::unordered_map, ValueT, KeyT>;
+   using unordered_tree_map = basic_tree_map<std::unordered_map, KeyT, ValueT>;
 }

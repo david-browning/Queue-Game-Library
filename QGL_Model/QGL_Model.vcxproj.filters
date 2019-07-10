@@ -106,6 +106,9 @@
     <ClInclude Include="include\Structures\qgl_unordered_tree_map.h">
       <Filter>Header Files\Structures</Filter>
     </ClInclude>
+    <ClInclude Include="include\Structures\qgl_xform_tree.h">
+      <Filter>Header Files\Structures</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="QGL_Model.def">

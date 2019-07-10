@@ -115,6 +115,8 @@
       <EnforceTypeConversionRules Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</EnforceTypeConversionRules>
       <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">true</ConformanceMode>
       <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ConformanceMode>
+      <OpenMPSupport Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">false</OpenMPSupport>
+      <OpenMPSupport Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</OpenMPSupport>
     </ClCompile>
     <Link>
       <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">d3dcompiler.lib;d2d1.lib;dwrite.lib;d3d11.lib;d3d12.lib;dxgi.lib;QGL_Math.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -140,6 +142,8 @@
       <EnforceTypeConversionRules Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</EnforceTypeConversionRules>
       <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">true</ConformanceMode>
       <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ConformanceMode>
+      <OpenMPSupport Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">false</OpenMPSupport>
+      <OpenMPSupport Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</OpenMPSupport>
     </ClCompile>
     <Link>
       <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">d3dcompiler.lib;d2d1.lib;dwrite.lib;d3d11.lib;d3d12.lib;dxgi.lib;QGL_Math.lib;%(AdditionalDependencies)</AdditionalDependencies>
