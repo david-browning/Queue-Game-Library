@@ -16,9 +16,6 @@ namespace qgl
       {
          public:
          using container = ContainerT<KeyT, basic_tree_map_node>;
-         using iterator = container::iterator;
-         using const_iterator = container::const_iterator;
-         using size_type = container::size_type;
 
          basic_tree_map_node(const KeyT& k, const ValueT& v) :
             m_key(k),
@@ -28,7 +25,7 @@ namespace qgl
 
          }
 
-         basic_tree_map_node(const KeyT&& k, const ValueT&& v) :
+         basic_tree_map_node(KeyT&& k, ValueT&& v) :
             m_key(k),
             m_val(v),
             m_set(true)
@@ -117,7 +114,7 @@ namespace qgl
           direct children of this node. It does not include grandchildren, 
           great-grandchildren, etc.
           */
-         size_type size() const noexcept
+         size_t size() const noexcept
          {
             return m_children.size();
          }
@@ -130,32 +127,32 @@ namespace qgl
             m_children.clear();
          }
 
-         const_iterator begin() const noexcept
+         auto begin() const noexcept
          {
             return m_children.cbegin();
          }
 
-         const_iterator end() const noexcept
+         auto end() const noexcept
          {
             return m_children.cend();
          }
 
-         const_iterator cbegin() const noexcept
+         auto cbegin() const noexcept
          {
             return m_children.cbegin();
          }
 
-         const_iterator cend() const noexcept
+         auto cend() const noexcept
          {
             return m_children.cend();
          }
 
-         iterator begin() noexcept
+         auto begin() noexcept
          {
             return m_children.begin();
          }
 
-         iterator end() noexcept
+         auto end() noexcept
          {
             return m_children.end();
          }
@@ -165,7 +162,7 @@ namespace qgl
           Returns end() if no child has the key.
           Incrementing the returned iterator will return its sibling.
           */
-         const_iterator find(const KeyT& k) const noexcept
+         auto find(const KeyT& k) const noexcept
          {
             //Queue of nodes.
             std::queue<decltype(begin())> q;
@@ -255,7 +252,7 @@ namespace qgl
       /*
        Constructs the root node by moving the root key and root value.
        */
-      basic_tree_map(const KeyT&& rootKey, const ValueT&& rootVal) :
+      basic_tree_map(KeyT&& rootKey, ValueT&& rootVal) :
          m_root(rootKey, rootVal)
       {
 

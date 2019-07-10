@@ -6,22 +6,33 @@
 #include <cstdint>
 #include <cstring>
 #include <cmath>
-#include <algorithm>
-#include <string>
-#include <iostream>
-#include <fstream>
-#include <list>
-#include <queue>
-#include <forward_list>
-#include <functional>
-#include <vector>
-#include <iomanip>
+
+//System
 #include <memory>
 #include <mutex>
 #include <stdexcept>
-#include <sstream>
 #include <atomic>
 #include <system_error>
+
+//IO and Streams
+#include <iostream>
+#include <fstream>
+#include <sstream>
+
+//Containers
+#include <string>
+#include <list>
+#include <queue>
+#include <forward_list>
+#include <vector>
+#include <set>
+#include <unordered_set>
+
+//Algorithms
+#include <algorithm>
+#include <functional>
+
+#include <iomanip>
 
 #if !defined(NDEBUG) || defined(_DEBUG) || defined(DEBUG)
 

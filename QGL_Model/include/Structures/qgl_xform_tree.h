@@ -17,17 +17,14 @@ namespace qgl
    #endif
 
    /*
-    An xform_tree is a tree who's operations cascade down the tree. This is
+    Transforms a tree who's operations cascade down the tree. This is
     most useful for scene graphs where each child's transform is a function of
     their parent's transform. Each node in the tree can also be reset so the
     transform is no longer applied.
-    KeyT: Key used to look up nodes.
-    ValueT: Value that gets stored in each tree node.
-    BinaryOperand1: Must be implicitly convertible to ValueT.
-    BinaryOperand2: Must be implicitly convertible to ValueT.
+    TreeT: Type of tree. Must have TreeT::node_type.
     BinaryOperation: A binary operation function that will be applied. The
      signature of the function should be equivalent to this:
-     ValueT fun(ValueT parentValue, BinaryOperand2 nodeValue);
+     ValueT fun(ValueT parentValue, ValueT nodeValue);
      The result of this binary operation overrides the node's data that the
      operation was applied to.
      While the binary operation is meant to work with any data type, its
@@ -35,75 +32,32 @@ namespace qgl
      types can be passed using SSE registers so the binary operation's
      operators are not reference types.
     */
-   template<
-      class KeyT,
-      class ValueT,
-      class BinaryOperation,
-      class BinaryOperand1 = ValueT,
-      class BinaryOperand2 = ValueT>
-   class xform_tree : public qgl::unordered_tree_map<KeyT, ValueT>
+   template<class TreeT, class BinaryOperation>
+   void xform(TreeT& tree, BinaryOperation op)
    {
-      public:
-      xform_tree(const KeyT& rootKey, 
-                 const ValueT& rootVal,
-                 BinaryOperation op = BinaryOperation()) :
-         unordered_tree_map<KeyT, ValueT>(rootKey, rootVal),
-         m_op(op)
-      {
+       //First item is the node's parent. Second is the node to xform.
+      using t = std::pair<const TreeT::node_type&, TreeT::node_type&>;
 
+      //Enqueue the root's children.
+      std::queue<t> toXFrom;
+      for (auto& child : tree.root_node())
+      {
+         toXFrom.emplace(tree.root_node(),
+                         child.second);
       }
 
-      xform_tree(const KeyT&& rootKey,
-                 const ValueT&& rootVal,
-                 BinaryOperation op = BinaryOperation()) :
-         unordered_tree_map<KeyT, ValueT>(rootKey, rootVal),
-         m_op(op)
+      while (!toXFrom.empty())
       {
+         auto& cur = toXFrom.front();
+         cur.second.mapped() = op(cur.first.mapped(),
+                                  cur.second.mapped());
 
-      }
-
-      xform_tree(const xform_tree&) = default;
-
-      xform_tree(xform_tree&&) = default;
-
-      ~xform_tree() noexcept = default;
-
-      /*
-       Applies the root's transform to all children.
-       Since all elements must be accessed, the complexity is O(n) where n is 
-       the number of nodes.
-       */
-      void xform()
-      {
-         //First item is the node's parent. Second is the node to xform.
-         using t = std::pair<const xform_tree::node_type*, 
-            xform_tree::node_type&>;
-
-         //Enqueue the root's children.
-         std::queue<t> toXFrom;
-         const auto rootPtr = &xform_tree::root_node();
-         for (auto& child : xform_tree::root_node())
+         for (auto& child : cur.second)
          {
-            toXFrom.emplace(rootPtr,
-                            child.second);
+            toXFrom.emplace(&cur.second, child);
          }
 
-         while (!toXFrom.empty())
-         {
-            auto& cur = toXFrom.front();
-            cur.second.mapped() = m_op(cur.first->mapped(),
-                                       cur.second.mapped());
-
-            for (auto& child : cur.second)
-            {
-               toXFrom.emplace(&cur.second, child);
-            }
-
-            toXFrom.pop();
-         }
+         toXFrom.pop();
       }
-
-      private:
-      BinaryOperation m_op;
-   };
+   }
 }

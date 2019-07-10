@@ -157,10 +157,13 @@
     <ClInclude Include="include\qgl_model_include.h" />
     <ClInclude Include="include\qgl_platform_abstraction.h" />
     <ClInclude Include="include\qgl_version.h" />
+    <ClInclude Include="include\Structures\qgl_uugraph_map.h" />
     <ClInclude Include="include\Structures\qgl_basic_tree_map.h" />
     <ClInclude Include="include\Structures\qgl_tree_map.h" />
     <ClInclude Include="include\Structures\qgl_unordered_tree_map.h" />
     <ClInclude Include="include\Structures\qgl_xform_tree.h" />
+    <ClInclude Include="include\Structures\Vertices\qgl_wdgraph_map_vertex.h" />
+    <ClInclude Include="include\Structures\Vertices\qgl_udgraph_map_vertex.h" />
     <ClInclude Include="include\Timing\qgl_timer.h" />
     <ClInclude Include="include\Timing\qgl_time_helpers.h" />
     <ClInclude Include="include\Timing\qgl_time_state.h" />

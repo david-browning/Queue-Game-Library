@@ -17,3 +17,4 @@
 
 #include "include/Structures/qgl_tree_map.h"
 #include "include/Structures/qgl_unordered_tree_map.h"
+#include "include/Structures/qgl_uugraph_map.h"
