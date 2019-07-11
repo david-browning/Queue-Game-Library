@@ -210,8 +210,7 @@ namespace qgl
        "from" to the vertex whose key is equivalent to "to".
        Throws std::out_of_range if from or to do not exist.
        */
-      void nlink(const key_type& from,
-             const key_type& to)
+      void unlink(const key_type& from, const key_type& to)
       {
          if (m_verts.count(from) == 0 || m_verts.count(to) == 0)
          {
