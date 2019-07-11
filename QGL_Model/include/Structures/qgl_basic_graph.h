@@ -3,16 +3,6 @@
 
 namespace qgl
 {
-   class undirected_policy
-   {
-
-   };
-
-   class directed_policy
-   {
-
-   };
-
    template<
       class Key,
       class T,
@@ -209,7 +199,7 @@ namespace qgl
                                                   toRemove.end());
          for (auto& neighbor : neighbors)
          {
-            unlink<directed_policy>(neighbor.first, k);
+            unlink(neighbor.first, k);
          }
 
          m_verts.erase(k);
@@ -220,12 +210,8 @@ namespace qgl
        "from" to the vertex whose key is equivalent to "to".
        Throws std::out_of_range if from or to do not exist.
        */
-      template<class DirectionPolicy,
-               typename = std::enable_if_t<
-                          std::is_same<DirectionPolicy, 
-                          directed_policy>::value>>
-      void unlink(const key_type& from,
-                  const key_type& to)
+      void nlink(const key_type& from,
+             const key_type& to)
       {
          if (m_verts.count(from) == 0 || m_verts.count(to) == 0)
          {
@@ -235,26 +221,6 @@ namespace qgl
          vertex(from).unlink(to);
       }
 
-      /*
-       Removes the outgoing edge from the vertex whose key is equivalent to
-       "from" to the vertex whose key is equivalent to "to".
-       Throws std::out_of_range if from or to do not exist.
-       */
-      template<class DirectionPolicy,
-         typename = std::enable_if_t<
-         std::is_same<DirectionPolicy,
-         undirected_policy>::value>>
-      void unlink(const key_type& from,
-                  const key_type& to)
-      {
-         if (m_verts.count(from) == 0 || m_verts.count(to) == 0)
-         {
-            throw std::out_of_range("No vertex exists.");
-         }
-
-         vertex(from).unlink(to);
-         vertex(to).unline(from);
-      }
 
       /*
        Returns a reference to the value of the edge that connects the vertex
