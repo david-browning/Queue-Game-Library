@@ -415,4 +415,10 @@ namespace qgl
       private:
       node_type m_root;
    };
+
+   template<class KeyT, class ValueT>
+   using unordered_tree_map = basic_tree_map<std::unordered_map, KeyT, ValueT>;
+
+   template<class KeyT, class ValueT>
+   using tree_map = basic_tree_map<std::map, KeyT, ValueT>;
 }

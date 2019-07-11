@@ -38,9 +38,6 @@
     <Filter Include="Header Files\Structures">
       <UniqueIdentifier>{7d59c5f2-5850-480a-abda-27633485f7d5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Structures\Vertices">
-      <UniqueIdentifier>{237c7bb6-8b33-4140-86fb-e63c6d411066}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLModel.h">
@@ -103,22 +100,10 @@
     <ClInclude Include="include\Structures\qgl_basic_tree_map.h">
       <Filter>Header Files\Structures</Filter>
     </ClInclude>
-    <ClInclude Include="include\Structures\qgl_tree_map.h">
-      <Filter>Header Files\Structures</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Structures\qgl_unordered_tree_map.h">
-      <Filter>Header Files\Structures</Filter>
-    </ClInclude>
     <ClInclude Include="include\Structures\qgl_xform_tree.h">
       <Filter>Header Files\Structures</Filter>
     </ClInclude>
-    <ClInclude Include="include\Structures\Vertices\qgl_udgraph_map_vertex.h">
-      <Filter>Header Files\Structures\Vertices</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Structures\Vertices\qgl_wdgraph_map_vertex.h">
-      <Filter>Header Files\Structures\Vertices</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Structures\qgl_uugraph_map.h">
+    <ClInclude Include="include\Structures\qgl_basic_graph.h">
       <Filter>Header Files\Structures</Filter>
     </ClInclude>
   </ItemGroup>
