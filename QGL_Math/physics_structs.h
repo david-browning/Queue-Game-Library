@@ -22,6 +22,7 @@ namespace qgl::math
        1.0 inclusive.
        */
       float CoR;
+
    };
 
    /*
@@ -52,15 +53,11 @@ namespace qgl::math
       DirectX::XMVECTOR LastAcceleration;
 
       /*
-       Integrated acceleration of the rigid body at the current time-step.
-       Measured in distance-units per time-step^2
-       */
-      DirectX::XMVECTOR Acceleration;
-
-      /*
        Rigid body rotation, stored in a quaternion.
        */
       DirectX::XMVECTOR Rotation;
+
+      DirectX::XMMATRIX XM_CALLCONV InertiaTensor();
    };
 
    /*
@@ -71,7 +68,7 @@ namespace qgl::math
    struct physical_world
    {
       /*
-       Acceleration due to gravity. Measured in distance-units per 
+       Acceleration due to gravity. Measured in distance-units per
        time-step^2.
        The Y component should be negative.
        */
@@ -82,4 +79,24 @@ namespace qgl::math
        */
       float AirDensity;
    };
+
+   void XM_CALLCONV integrate(DirectX::FXMVECTOR force,
+                              DirectX::FXMVECTOR impact,
+                              const rb_properties& props,
+                              float dt,
+                              rb_state& state)
+   {
+      using namespace DirectX;
+      XMVECTOR acceleration = force / props.Mass;
+      XMVECTOR armVector = impact - state.Position;
+      XMVECTOR torque = XMVector3Cross(armVector, force);
+
+
+      state.LastAcceleration = acceleration;
+      state.Velocity += state.LastAcceleration * dt;
+      state.Position += state.Velocity * dt;
+
+      //XMVECTOR angularAcceleration = torque / state.InertiaTensor();
+
+   }
 }
