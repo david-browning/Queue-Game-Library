@@ -68,6 +68,9 @@
     <ClInclude Include="include\Collision\qgl_bvh_tree.h">
       <Filter>Header Files\Collision</Filter>
     </ClInclude>
+    <ClInclude Include="include\Collision\qgl_bounding.h">
+      <Filter>Header Files\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

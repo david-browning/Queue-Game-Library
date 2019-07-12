@@ -161,6 +161,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\Collision\qgl_bounding.h" />
     <ClInclude Include="include\Collision\qgl_bvh_tree.h" />
     <ClInclude Include="include\qgl_physics_include.h" />
     <ClInclude Include="include\Rigid-Bodies\qgl_rb_integration.h" />
