@@ -68,9 +68,6 @@
     <ClInclude Include="include\Shapes\qgl_rectangle.h">
       <Filter>Header Files\Shapes</Filter>
     </ClInclude>
-    <ClInclude Include="physics_structs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

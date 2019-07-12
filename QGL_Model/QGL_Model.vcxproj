@@ -160,6 +160,7 @@
     <ClInclude Include="include\Structures\qgl_balanced_tree.h" />
     <ClInclude Include="include\Structures\qgl_basic_graph.h" />
     <ClInclude Include="include\Structures\qgl_basic_tree_map.h" />
+    <ClInclude Include="include\Structures\qgl_tree_helpers.h" />
     <ClInclude Include="include\Structures\qgl_xform_tree.h" />
     <ClInclude Include="include\Timing\qgl_timer.h" />
     <ClInclude Include="include\Timing\qgl_time_helpers.h" />

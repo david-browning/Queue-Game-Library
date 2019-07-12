@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resources">
+      <UniqueIdentifier>accd3aa8-1ba0-4223-9bbe-0c431709210b</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{926ab91d-31b4-48c3-b9a4-e681349f27f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{5bc7fb2f-292d-4e39-bf6e-6c97755fb8a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{1060bb6b-f7c0-4290-93db-b5307426e6c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="win_rt">
+      <UniqueIdentifier>{d974517b-b580-40d6-b9a3-17c51e1bd622}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Rigid-Bodies">
+      <UniqueIdentifier>{208996e5-97de-4c32-b7c8-1bac291ea73e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\World">
+      <UniqueIdentifier>{4d015b06-83b7-4060-aaf5-8412c2cb3540}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Collision">
+      <UniqueIdentifier>{ad4ffba8-946c-4de2-a3d0-edfc1412b521}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QGL_Physics.cpp">
+      <Filter>win_rt</Filter>
+    </ClCompile>
+    <ClCompile Include="QGL_PhysicsRT.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QGLPhysics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QGL_Physics.h">
+      <Filter>win_rt</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_physics_include.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QGL_PhysicsRT.h" />
+    <ClInclude Include="include\Rigid-Bodies\qgl_rb_properties.h">
+      <Filter>Header Files\Rigid-Bodies</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Rigid-Bodies\qgl_rb_state.h">
+      <Filter>Header Files\Rigid-Bodies</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Rigid-Bodies\qgl_rb_integration.h">
+      <Filter>Header Files\Rigid-Bodies</Filter>
+    </ClInclude>
+    <ClInclude Include="include\World\qgl_world_properties.h">
+      <Filter>Header Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Collision\qgl_bvh_tree.h">
+      <Filter>Header Files\Collision</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="QGL_Physics.def">
+      <Filter>win_rt</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PropertySheet.props" />
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="QGL_PhysicsRT.idl">
+      <Filter>win_rt</Filter>
+    </Midl>
+  </ItemGroup>
+</Project>
