@@ -19,73 +19,10 @@ namespace qgl
    static constexpr uint8_t QGL_VERSION_MAJOR_LATEST = QGL_VERSION_MAJOR_0;
    static constexpr uint8_t QGL_VERSION_MINOR_LATEST = QGL_VERSION_MINOR_1;
 
-   static constexpr uint8_t QGL_VERSION_NUM_FLAGS_BITS = 14;
-
    /*
     Bit layout: {2 OS Flag} { 14 Flags} {8 Major} {8 Minor}
     */
-   #pragma pack(push, 1)
-   struct QGL_MODEL_API qgl_version_t
-   {
-      /*
-       Constructor.
-       */
-      constexpr qgl_version_t(uint8_t major, 
-                              uint8_t minor,
-                              QGL_OS_VERSION_FLAGS os) :
-         Flags(static_cast<uint16_t>(os) << QGL_VERSION_NUM_FLAGS_BITS),
-         Major(major),
-         Minor(minor)
-      {
-
-      }
-
-      /*
-       Copy constructor
-       */
-      qgl_version_t(const qgl_version_t&) = default;
-
-      /*
-       Move constructor
-       */
-      qgl_version_t(qgl_version_t&&) = default;
-
-      uint16_t Flags;
-      uint8_t Major;
-      uint8_t Minor;
-
-      /*
-       Swaps the contents of l and r.
-       */
-      inline friend void swap(qgl_version_t& l, qgl_version_t& r) noexcept
-      {
-         using std::swap;
-         swap(l.Flags, r.Flags);
-         swap(l.Major, r.Major);
-         swap(l.Minor, r.Minor);
-      }
-
-      /*
-       Copy assign operator.
-       */
-      inline qgl_version_t& operator=(qgl_version_t r) noexcept
-      {
-         swap(*this, r);
-         return *this;
-      }
-
-      /*
-       Equality operator
-       */
-      inline friend bool operator==(const qgl_version_t& l,
-                             const qgl_version_t& r) noexcept
-      {
-         return l.Flags == r.Flags &&
-            l.Major == r.Major &&
-            l.Minor == r.Minor;
-      }
-   };
-   #pragma pack(pop)
+   using qgl_version_t = uint32_t;
 
    static_assert(sizeof(qgl_version_t) == 4,
                  "QGL versions must be 4 bytes.");
@@ -93,21 +30,49 @@ namespace qgl
    /*
     Returns the OS flags from version.
     */
-   constexpr QGL_OS_VERSION_FLAGS version_os(qgl_version_t version)
+   inline QGL_OS_VERSION_FLAGS version_os(qgl_version_t version)
    {
-      return static_cast<QGL_OS_VERSION_FLAGS>((version.Flags & 0xC000) >>
-                                               QGL_VERSION_NUM_FLAGS_BITS);
+      return static_cast<QGL_OS_VERSION_FLAGS>((version & 0xC000'0000) >> 30);
+   }
+
+   /*
+    Returns the major version stored in a qgl_version_t.
+    */
+   inline constexpr uint8_t version_major(qgl_version_t v)
+   {
+      return (v >> 8) & 0x0000'00FF;
+   }
+
+   /*
+    Returns the minor version stored in a qgl_version_t.
+    */
+   inline constexpr uint8_t version_minor(qgl_version_t v)
+   {
+      return v & 0x0000'00FF;
+   }
+
+   /*
+    Creates a qgl_version_t.
+    */
+   inline constexpr qgl_version_t make_version(uint8_t versionMajor,
+                                               uint8_t versionMinor,
+                                               QGL_OS_VERSION_FLAGS osVersion)
+   {
+      return
+         (static_cast<qgl_version_t>(osVersion) << 30) |
+         (versionMajor << 8) |
+         (versionMinor);
    }
 
    /*
     Creates a qgl version where the OS flag is Windows.
     */
-   constexpr qgl_version_t make_win_version(const uint8_t versionMajor,
-                                            const uint8_t versionMinor)
+   inline constexpr qgl_version_t make_win_version(uint8_t versionMajor,
+                                                   uint8_t versionMinor)
    {
-      return qgl_version_t(versionMajor,
-                           versionMinor,
-                           QGL_OS_VERSION_FLAGS::OS_WINDOWS);
+      return make_version(versionMajor, 
+                          versionMinor,
+                          QGL_OS_VERSION_FLAGS::OS_WINDOWS);
    }
 
    static constexpr qgl_version_t QGL_VERSION_0_1_WIN =
@@ -137,19 +102,19 @@ namespace std
 
       typedef qgl::qgl_version_t argument_type;
       typedef std::size_t result_type;
-      constexpr  result_type operator()(argument_type const& v) const noexcept
+      constexpr result_type operator()(const argument_type& v) const noexcept
       {
-         return (static_cast<result_type>(v.Major) << CHAR_BIT) |
-            static_cast<result_type>(v.Minor);
+         return (static_cast<result_type>(qgl::version_major(v)) << CHAR_BIT) |
+            static_cast<result_type>(qgl::version_minor(v));
       }
    };
 }
 
 namespace qgl::hashes
 {
-   constexpr auto VERSION_0_1_HASH =
+   static constexpr auto VERSION_0_1_HASH =
       std::hash<qgl_version_t>{}(QGL_VERSION_0_1_WIN);
 
-   constexpr auto VERSION_0_2_HASH =
+   static constexpr auto VERSION_0_2_HASH =
       std::hash<qgl_version_t>{}(QGL_VERSION_0_2_WIN);
 }

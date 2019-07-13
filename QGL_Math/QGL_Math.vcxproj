@@ -120,11 +120,11 @@
       <EnforceTypeConversionRules Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</EnforceTypeConversionRules>
     </ClCompile>
     <Link>
-      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">d3d12.lib;d2d1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">QGL_Model.lib;d3d12.lib;d2d1.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Link />
     <Link>
-      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">d3d12.lib;d2d1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">QGL_Model.lib;d3d12.lib;d2d1.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
@@ -136,11 +136,11 @@
       <EnforceTypeConversionRules Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</EnforceTypeConversionRules>
     </ClCompile>
     <Link>
-      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">d3d12.lib;d2d1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">QGL_Model.lib;d3d12.lib;d2d1.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Link />
     <Link>
-      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">d3d12.lib;d2d1.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">QGL_Model.lib;d3d12.lib;d2d1.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
