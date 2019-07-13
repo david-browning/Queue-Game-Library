@@ -14,7 +14,13 @@ namespace QGL_Model_Unit_Tests
        */
       TEST_METHOD(Construct)
       {
-
+         uint8_t versionMajor1 = 1;
+         uint8_t versionMinor0 = 0;
+         QGL_OS_VERSION_FLAGS windows = QGL_OS_VERSION_FLAGS::OS_WINDOWS;
+         qgl_version_t toTest(versionMajor1, versionMinor0, windows);
+         Assert::AreEqual(versionMajor1, toTest.Major, L"Major not equal!");
+         Assert::AreEqual(versionMinor0, toTest.Minor, L"Minor not equal!");
+         Assert::IsTrue(windows == version_os(toTest), L"Flags not equal!");
       }
       /*
        Create a version, create a copy using the copy constructor.
