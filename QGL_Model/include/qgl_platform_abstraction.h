@@ -25,7 +25,10 @@
 #include <queue>
 #include <forward_list>
 #include <vector>
+#include <stack>
 #include <set>
+#include <map>
+#include <unordered_map>
 #include <unordered_set>
 
 //Algorithms
@@ -53,10 +56,10 @@ typedef void* handle_t;
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif
+#define NOMINMAX 
 #include <Windows.h>
 #include <winrt/base.h>
 #include <winrt/Windows.Foundation.h>
-#include <DirectXMath.h>
 
 typedef HANDLE thread_handle_t;
 
