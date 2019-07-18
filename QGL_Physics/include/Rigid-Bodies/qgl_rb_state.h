@@ -4,18 +4,6 @@
 
 namespace qgl::physics::rigid_body
 {
-   #ifdef DEBUG
-   class test_inertia_tensor
-   {
-      public:
-      DirectX::XMMATRIX XM_CALLCONV operator()(rb_properties& rb)
-      {
-
-      }
-   };
-
-   #endif
-
     /*
     State information about a physical object. The members here are not
     measured in any particular units. Instead, the members reference time-steps
@@ -23,7 +11,6 @@ namespace qgl::physics::rigid_body
     Commonly, the distance-units should be meters and time-steps should be
     seconds.
     */
-   template<class InertiaTensorFunctor>
    struct rb_state
    {
       /*
@@ -49,6 +36,13 @@ namespace qgl::physics::rigid_body
        */
       DirectX::XMVECTOR Rotation;
 
-      InertiaTensorFunctor InertiaTensor;
+      DirectX::XMVECTOR MaxAABB;
+
+      DirectX::XMVECTOR MinAABB;
+
+      /*
+       Inverse of the rigid body's moment of inertia. 
+       */
+      DirectX::XMMATRIX InvInertiaTensor;
    };
 }

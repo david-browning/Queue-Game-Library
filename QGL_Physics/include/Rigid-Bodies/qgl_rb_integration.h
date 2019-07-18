@@ -5,12 +5,11 @@
 
 namespace qgl::physics::rigid_body
 {
-   template<class InertiaTensorFunctor>
    void XM_CALLCONV integrate(DirectX::FXMVECTOR force,
                               DirectX::FXMVECTOR impact,
                               const rb_properties& props,
                               float dt,
-                              rb_state<InertiaTensorFunctor>& state)
+                              rb_state& state)
    {
       using namespace DirectX;
       XMVECTOR acceleration = force / props.Mass;
@@ -22,7 +21,8 @@ namespace qgl::physics::rigid_body
       state.Velocity += state.LastAcceleration * dt;
       state.Position += state.Velocity * dt;
 
-      //XMVECTOR angularAcceleration = torque / state.InertiaTensor();
+      XMVECTOR angularAcceleration = XMVector3Transform(torque,
+                                                        state.InvInertiaTensor);
 
    }
 }

@@ -23,5 +23,7 @@ namespace qgl::physics::rigid_body
        */
       float CoR;
 
+      DirectX::BoundingBox RestingAABB;
+
    };
 }

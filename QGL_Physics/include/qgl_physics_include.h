@@ -1,7 +1,4 @@
 #pragma once
-#include <Unknwn.h>
-#include <winrt/base.h>
-
 #include <QGLModel.h>
 #include <QGLMath.h>
 
