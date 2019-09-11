@@ -4,21 +4,34 @@
 namespace qgl::math
 {
    /*
-    Returns log base b of n.
-    */
-   template<typename T>
-   constexpr T logbn(const T b, const T n)
-   {
-      return (n > b - 1) ? 1 + logbn(n / b, b) : 0;
-   }
-
-   /*
     Returns val rounded to the nearest.
+    Returns val if it is already rounded to the nearest.
+    Zero cannot be rounded up.
     */
    template<typename T>
-   constexpr T round_up(const T val, const T nearest)
+   constexpr T round_up(T val, T nearest)
    {
       T remainder = val % nearest;
       return remainder == 0 ? val : val + nearest - remainder;
+   }
+
+   /*
+    Specialization of round_up for floats.
+    */
+   template<>
+   inline float round_up<float>(float val, float nearest)
+   {
+      auto remainder = fmod(val, nearest);
+      return approx_equal(remainder, 0.0f) ? val : val + nearest - remainder;
+   }
+
+   /*
+    Specialization of round_up for doubles.
+    */
+   template<>
+   inline double round_up<double>(double val, double nearest)
+   {
+      auto remainder = fmod(val, nearest);
+      return approx_equal(remainder, 0.0) ? val : val + nearest - remainder;
    }
 }

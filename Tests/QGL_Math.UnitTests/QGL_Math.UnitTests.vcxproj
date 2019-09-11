@@ -216,6 +216,7 @@
     <ClCompile Include="Tests\comparison_function_tests.cpp" />
     <ClCompile Include="Tests\math_function_tests.cpp" />
     <ClCompile Include="Tests\rational_number_tests.cpp" />
+    <ClCompile Include="Tests\rectangle_tests.cpp" />
     <ClCompile Include="UnitTestApp.xaml.cpp">
       <DependentUpon>UnitTestApp.xaml</DependentUpon>
     </ClCompile>

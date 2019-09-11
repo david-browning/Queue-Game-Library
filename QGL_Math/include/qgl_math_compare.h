@@ -1,3 +1,8 @@
+/*
+ Contains specializations of comparison functions for types not defined by QGL.
+ For example, this includes equality and inequality operators for DirectX 
+ vectors and bounding volumes.
+ */
 #pragma once
 #include "include/qgl_math_includes.h"
 
@@ -29,9 +34,9 @@ namespace qgl::math
    template<typename T>
    inline bool approx_equal(T expected,
                             T actual,
-                            T tolerance)
+                            T tolerance) noexcept
    {
-      return abs(expected - actual) < tolerance;
+      return abs(expected - actual) <= tolerance;
    }
 
    /*
@@ -39,9 +44,9 @@ namespace qgl::math
     */
    inline bool approx_equal(float expected,
                             float actual,
-                            float tolerance = FLT_EPSILON)
+                            float tolerance = FLT_EPSILON) noexcept
    {
-      return abs(expected - actual) < tolerance;
+      return abs(expected - actual) <= tolerance;
    }
 
    /*
@@ -49,8 +54,66 @@ namespace qgl::math
     */
    inline bool approx_equal(double expected,
                             double actual,
-                            double tolerance = DBL_EPSILON)
+                            double tolerance = DBL_EPSILON) noexcept
    {
-      return abs(expected - actual) < tolerance;
+      return abs(expected - actual) <= tolerance;
+   }
+
+
+   /////////Overload equality operators for DirectX CPU vectors.////////////////
+   inline bool operator==(const DirectX::XMFLOAT2& a,
+                          const DirectX::XMFLOAT2& b) noexcept
+   {
+      return approx_equal(a.x, b.x) &&
+         approx_equal(a.y, b.y);
+   }
+
+   inline bool operator!=(const DirectX::XMFLOAT2& a,
+                          const DirectX::XMFLOAT2& b) noexcept
+   {
+      return !(a == b);
+   }
+
+   inline bool operator==(const DirectX::XMFLOAT3& a,
+                          const DirectX::XMFLOAT3& b) noexcept
+   {
+      return approx_equal(a.x, b.x) &&
+         approx_equal(a.y, b.y) &&
+         approx_equal(a.z, b.z);
+   }
+
+   inline bool operator!=(const DirectX::XMFLOAT3& a,
+                          const DirectX::XMFLOAT3& b) noexcept
+   {
+      return !(a == b);
+   }
+
+   inline bool operator==(const DirectX::XMFLOAT4& a,
+                          const DirectX::XMFLOAT4& b) noexcept
+   {
+      return approx_equal(a.x, b.x) &&
+         approx_equal(a.y, b.y) &&
+         approx_equal(a.z, b.z) &&
+         approx_equal(a.w, b.w);
+   }
+
+   inline bool operator!=(const DirectX::XMFLOAT4& a,
+                          const DirectX::XMFLOAT4& b) noexcept
+   {
+      return !(a == b);
+   }
+
+   /////////Overload equality operators for DirectX bounding volumes.///////////
+   inline bool operator==(const DirectX::BoundingSphere& a,
+                          const DirectX::BoundingSphere& b) noexcept
+   {
+      return a.Radius == b.Radius &&
+         a.Center == b.Center;
+   }
+
+   inline bool operator!=(const DirectX::BoundingSphere& a,
+                          const DirectX::BoundingSphere& b) noexcept
+   {
+      return !(a == b);
    }
 }
