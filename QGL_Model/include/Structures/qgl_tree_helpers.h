@@ -10,16 +10,19 @@ namespace qgl::tree
    template<typename IndexT, IndexT K>
    constexpr IndexT kd_ichild(const IndexT parent, const IndexT ith)
    {
+      static_assert(K != 0, "K cannot be zero.");
       return K * parent + ith;
    }
 
    /*
     Given a k-d tree stored in a pre-order, returns the index of the node's 
     parent node.
+    K cannot be 0.
     */
    template<typename IndexT, IndexT K>
    constexpr IndexT kd_parent(const IndexT node)
    {
+      static_assert(K != 0, "K cannot be zero.");
       return (node - 1) / K;
    }
 
@@ -38,7 +41,7 @@ namespace qgl::tree
    template<typename IndexT>
    constexpr IndexT left_index(const IndexT i)
    {
-      return kd_ichild<IndexT, 2>(i, 1);
+      return kd_ichild<IndexT, 2>(i, static_cast<IndexT>(1));
    }
 
    /*
@@ -47,6 +50,6 @@ namespace qgl::tree
    template<typename IndexT>
    constexpr IndexT right_index(const IndexT i)
    {
-      return kd_ichild<IndexT, 2>(i, 2);
+      return kd_ichild<IndexT, 2>(i, static_cast<IndexT>(2));
    }
 }

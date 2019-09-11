@@ -17,6 +17,9 @@
     <Filter Include="Tests\Timing">
       <UniqueIdentifier>{7bb116f0-cf25-4a67-9353-3d9a11c1edc8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\Structures">
+      <UniqueIdentifier>{2e5e7215-76b1-4dbb-9fcf-cea8d9cf2fae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="UnitTestApp.xaml" />
@@ -56,6 +59,9 @@
     </ClCompile>
     <ClCompile Include="Tests\qgl_version_tests.cpp">
       <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Structures\tree_helper_tests.cpp">
+      <Filter>Tests\Structures</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
