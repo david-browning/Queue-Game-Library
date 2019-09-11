@@ -1,5 +1,6 @@
 #pragma once
 #include "include/qgl_physics_include.h"
+using namespace qgl::math;
 
 namespace qgl::physics::collision
 {
@@ -50,9 +51,8 @@ namespace qgl::physics::collision
    class test_bound
    {
       public:
-      DirectX::BoundingSphere operator()(
-         const DirectX::BoundingSphere& v1,
-         const DirectX::BoundingSphere& v2)
+      DirectX::BoundingSphere operator()(const DirectX::BoundingSphere& v1,
+                                         const DirectX::BoundingSphere& v2)
       {
          using namespace DirectX;
          XMVECTOR v1Center = XMLoadFloat3(&v1.Center);
@@ -70,6 +70,19 @@ namespace qgl::physics::collision
       }
    };
 
+   class sphere_equal
+   {
+      public:
+      bool operator()(const DirectX::BoundingSphere& v1,
+                      const DirectX::BoundingSphere& v2) const noexcept
+      {
+         return v1.Radius == v2.Radius &&
+            v1.Center.x == v2.Center.x &&
+            v1.Center.y == v2.Center.y &&
+            v1.Center.z == v2.Center.z;
+      }
+   };
+
    class test_intersect_callback
    {
       public:
@@ -81,18 +94,6 @@ namespace qgl::physics::collision
 
    #endif
 
-   /*
-    This is a full binary tree.
-    Iterators allow pre-order traversal.
-    The height of a leaf node is 0.
-    BoundingVolume: Geometric structure to use.
-    Intersects: Returns a bool indicating if two BoundingVolume intersect.
-    Cost: Returns the cost of a BoundingVolume. This could be the volume or
-     surface area of the BoundingVolume.
-    Union: Given two BoundingVolumes, this returns a BoundingVolume that
-     encapsulates both volumes.
-    Fatten: Modifies a BoundingVolume to be slightly larger.
-    */
    template<
       class BoundingVolume,
       class Intersects,
@@ -100,46 +101,79 @@ namespace qgl::physics::collision
       class Union>
       class bvh_tree
    {
+      public:
+      using node_id = typename int;
       using volume_type = typename BoundingVolume;
-      using volume_func = typename Cost;
+      using cost_func = typename Cost;
       using union_func = typename Union;
       using intersect_func = typename Intersects;
+
+      static const node_id NO_NODE = -1;
+
       class node_type
       {
          public:
+
+         /*
+          Default constructor means this is free and has no children.
+          */
          node_type() :
-            m_height(0),
-            m_inUse(false)
+            m_leftIdx(NO_NODE),
+            m_rightIdx(NO_NODE),
+            m_height(0)
          {
 
          }
 
+         /*
+          Creates a node.
+          */
          node_type(const volume_type& v) :
-            m_volume(v),
+            m_leftIdx(NO_NODE),
+            m_rightIdx(NO_NODE),
             m_height(0),
-            m_inUse(true)
+            m_volume(v)
          {
 
          }
 
-         node_type(volume_type&& v) :
-            m_volume(v),
-            m_height(0),
-            m_inUse(true)
+         /*
+          Creates a node with its right and left children set.
+          Sets the height to 1.
+          */
+         node_type(const volume_type& v,
+                   node_id leftID,
+                   node_id rightID) :
+            m_leftIdx(leftID),
+            m_rightIdx(rightID),
+            m_height(1),
+            m_volume(v)
          {
 
          }
 
+         /*
+          Copy constructor
+          */
          node_type(const node_type&) = default;
 
+         /*
+          Move constructor
+          */
          node_type(node_type&&) = default;
+
+         /*
+          Destructor
+          */
+         ~node_type() = default;
 
          inline friend void swap(node_type& l, node_type& r) noexcept
          {
             using std::swap;
             swap(l.m_volume, r.m_volume);
             swap(l.m_height, r.m_height);
-            swap(l.m_inUse, r.m_inUse);
+            swap(l.m_rightIdx, r.m_rightIdx);
+            swap(l.m_leftIdx, r.m_leftIdx);
          }
 
          inline node_type& operator=(node_type r) noexcept
@@ -148,56 +182,93 @@ namespace qgl::physics::collision
             return *this;
          }
 
-         size_t& height() noexcept
-         {
-            return m_height;
-         }
-
-         size_t height() const noexcept
-         {
-            return m_height;
-         }
-
-         bool leaf() const noexcept
-         {
-            return m_height == 0;
-         }
-
+         /*
+          Returns a reference to this node's bounding volume.
+          */
          volume_type& volume() noexcept
          {
             return m_volume;
          }
 
+         /*
+          Returns a const reference to this node's bounding volume.
+          */
          const volume_type& volume() const noexcept
          {
             return m_volume;
          }
 
-         const bool used() const noexcept
+         /*
+          Returns true if this node has no children.
+          */
+         bool leaf() const noexcept
          {
-            return m_inUse;
+            return m_height == 0;
          }
 
-         bool& used() noexcept
+         /*
+          Returns a reference to this node's height.
+          */
+         size_t& height() noexcept
          {
-            return m_inUse;
+            return m_height;
+         }
+
+         /*
+          Returns a const reference to this node's height.
+          */
+         const size_t& height() const noexcept
+         {
+            return m_height;
+         }
+
+
+         auto& left() noexcept
+         {
+            return m_leftIdx;
+         }
+
+         /*
+          Returns the index of this node's left child.
+          */
+         auto left() const noexcept
+         {
+            return m_leftIdx;
+         }
+
+         auto& right() noexcept
+         {
+            return m_rightIdx;
+         }
+
+         /*
+          Returns the index of this node's right child.
+          */
+         auto right() const noexcept
+         {
+            return m_rightIdx;
          }
 
          private:
          volume_type m_volume;
          size_t m_height;
-         bool m_inUse;
+         node_id m_leftIdx;
+         node_id m_rightIdx;
       };
 
+      using free_list = typename std::stack<node_id>;
       using container = typename std::vector<node_type>;
       using iterator = typename container::iterator;
       using const_iterator = typename container::const_iterator;
 
       #pragma region Constructors
-      bvh_tree(intersect_func intFunc = intersect_func()) :
-         m_intersectsOp(intFunc)
+      bvh_tree(intersect_func intFunc = intersect_func(),
+               cost_func costFunc = cost_func(),
+               union_func unionFunc = union_func()) :
+         m_intersectsOp(intFunc),
+         m_costOp(costFunc),
+         m_unionOp(unionFunc)
       {
-
       }
 
       bvh_tree(const bvh_tree&) = default;
@@ -207,6 +278,7 @@ namespace qgl::physics::collision
       ~bvh_tree() noexcept = default;
       #pragma endregion
 
+
       #pragma region Modifiers
       /*
        Inserts the bounding volume into the tree.
@@ -214,34 +286,36 @@ namespace qgl::physics::collision
        */
       const_iterator insert(const volume_type& v)
       {
-         //Check if the tree is empty. 
-         if (m_nodes.size() == 0)
+         //If the tree is empty:
+         if (empty())
          {
-            //It is, just assign the volume to the root and return it.
-            m_nodes.push_back(v);
-            return cbegin();
+            //Just insert this into the root. The root has node_id 0.
+            m_nodes.emplace_back(v);
          }
 
-         //Find the best sibling node
-         auto sib = best_sibling(v);
-         auto sibNode = *sib;
+         //Find the best sibling node.
+         auto sibIt = best_sibling(v);
+         node_id sibID = sibIt - begin();
+         auto sibNode = *sibIt;
 
-         //Create a parent node that contains the new volume and the best 
+         //Allocate a node to put v into.
+         auto vID = alloc_node();
+         auto vIt = begin() + alloc_node();
+         *vIt = node_type(v);
+
+         //Create a parent node that contains the new volume of v and the 
          //sibling.
-         auto newParent = sib;
-         node_type newParentNode(m_unionOp(v, sibNode.volume()));
+         auto parentID = alloc_node();
+         auto newParentIt = begin() + parentID;
+         node_type newParent(m_unionOp(v, sibNode.volume()),
+                             sibID,
+                             vID);
+         *newParentIt = newParent;
 
-         //Replace the sibling we found with this new parent node.
-         *newParent = newParentNode;
+         //Fix up the tree
+         refit(parentID);
 
-         //Insert the new and old siblings to the new parent node.
-         insertLeft(newParent, sibNode);
-         insertRight(newParent, node_type(v));
-
-         //Fix up the tree.
-         refit(newParent);
-
-         return right(newParent);
+         return right(it(vID));
       }
 
       /*
@@ -249,8 +323,18 @@ namespace qgl::physics::collision
        */
       void erase(const_iterator node)
       {
-         if (node == cbegin())
+         //Do nothing if the tree is empty.
+         if (empty())
          {
+            return;
+         }
+
+         //If erasing the whole tree:
+         if (node == begin())
+         {
+            //Just clear everything out.
+            free_list emptyFreeList;
+            std::swap(m_freeNodes, emptyFreeList);
             m_nodes.clear();
             return;
          }
@@ -258,54 +342,22 @@ namespace qgl::physics::collision
 
 
 
-         //Fix up the tree.
+
+
+
+
+
       }
 
       #pragma endregion
 
       #pragma region Lookup and Query
       /*
-       Returns an iterator to a node's left child. If the node does not have a
-       left child, this returns end().
+       Returns true if the tree is empty.
        */
-      const_iterator left(const_iterator parent) const noexcept
+      [[nodiscard]] bool empty() const noexcept
       {
-         auto index = tree::left_index(parent - begin());
-         if (index >= m_nodes.size())
-         {
-            return end();
-         }
-
-         return begin() + index;
-      }
-
-      /*
-       Returns an iterator to a node's right child. If the node does not have a
-       right child, this returns end().
-       */
-      const_iterator right(const_iterator parent) const noexcept
-      {
-         auto index = tree::right_index(parent - begin());
-         if (index >= m_nodes.size())
-         {
-            return end();
-         }
-
-         return begin() + index;
-      }
-
-      /*
-       Returns an iterator to a node's parent. If the node is the root node,
-       this returns end().
-       */
-      const_iterator parent(const_iterator node) const noexcept
-      {
-         if (node == begin())
-         {
-            return end();
-         }
-
-         return begin() + tree::parent_index(node - begin());
+         return m_nodes.empty();
       }
 
       /*
@@ -319,10 +371,16 @@ namespace qgl::physics::collision
        O(log(n))
        */
       template<class Callback>
-      void intersects(const volume_type& bounding, Callback cb) const
+      void intersects(const volume_type& bounding,
+                      Callback cb = Calllback()) const
       {
+         if (empty())
+         {
+            return;
+         }
+
          std::stack<const_iterator> toCheck;
-         toCheck.push(begin());
+         toCheck.push(cbegin());
 
          while (!toCheck.empty())
          {
@@ -345,6 +403,55 @@ namespace qgl::physics::collision
                }
             }
          }
+      }
+
+      /*
+       Searches the tree for the first occurrence of a volume that is equivalent 
+       to v.
+       Returns cend() if the tree does not contain v.
+       Equivalence is tested using the binary predicate. The binary predicate 
+       takes two volume_types as arguments.
+       */
+      template<class BinaryPredicate>
+      const_iterator find(const volume_type& v,
+                          BinaryPredicate p = BinaryPredicate()) const
+      {
+         if (empty())
+         {
+            return cend();
+         }
+
+         std::stack<const_iterator> toCheck;
+         toCheck.push(cbegin());
+
+         while (!toCheck.empty())
+         {
+            auto it = toCheck.top();
+            toCheck.pop();
+
+            //If this is a leaf node, check if the predicate is true.
+            if (it->leaf())
+            {
+               if (p(it->volume(), v))
+               {
+                  //Predicate is true. Found the volume we are searching for.
+                  return it;
+               }
+            }
+            else
+            {
+               //Not a leaf.
+               //If this is intersecting with v:
+               if (m_intersectsOp(v, it->volume()))
+               {
+                  //Check the right and left children.
+                  toCheck.push(left(it));
+                  toCheck.push(right(it));
+               }
+            }
+         }
+
+         return cend();
       }
 
       #pragma endregion
@@ -382,96 +489,81 @@ namespace qgl::physics::collision
       #pragma endregion
 
       private:
-      #pragma region Non-Const Lookup
+      #pragma region Private Lookup and Query
       /*
-       Returns an iterator to a node's parent. If the node is the root node,
-       this returns end().
+       Returns the iterator to the tree node, given it's ID.
        */
-      iterator parent(iterator node) noexcept
+      const_iterator it(node_id id) const
       {
-         if (node == begin())
+         return cbegin() + id;
+      }
+
+      /*
+       Returns an iterator to a node's left child. If the node does not have a
+       left child, this returns end().
+       */
+      const_iterator left(const_iterator parent) const noexcept
+      {
+         auto lIdx = parent->left();
+         if (lIdx == NO_NODE)
+         {
+            return cend();
+         }
+
+         return it(lIdx);
+      }
+
+      /*
+       Returns an iterator to a node's right child. If the node does not have a
+       right child, this returns end().
+       */
+      const_iterator right(const_iterator parent) const noexcept
+      {
+         auto rIdx = parent->right();
+         if (rIdx == NO_NODE)
+         {
+            return cend();
+         }
+
+         return it(rIdx);
+      }
+
+      /*
+       Returns an iterator to a node's left child. If the node does not have a
+       left child, this returns end().
+       */
+      iterator left(iterator parent) noexcept
+      {
+         auto lIdx = parent->left();
+         if (lIdx == NO_NODE)
          {
             return end();
          }
 
-         return begin() + tree::parent_index(node - begin());
+         return it(lIdx);
       }
 
-      iterator left(iterator node) noexcept
+      /*
+       Returns an iterator to a node's right child. If the node does not have a
+       right child, this returns end().
+       */
+      iterator right(iterator parent) noexcept
       {
-         auto index = tree::left_index(node - begin());
-         if (index >= m_nodes.size())
+         auto rIdx = parent->right();
+         if (rIdx == NO_NODE)
          {
             return end();
          }
 
-         return begin() + index;
+         return it(rIdx);
       }
 
-      iterator right(iterator node) noexcept
+      /*
+       Returns the iterator to the tree node, given it's ID.
+       */
+      iterator it(node_id id)
       {
-         auto index = tree::right_index(node - begin());
-         if (index >= m_nodes.size())
-         {
-            return end();
-         }
-
-         return begin() + index;
-      }
-      #pragma endregion
-
-      void refit(iterator lastParent)
-      {
-         while (lastParent != cend())
-         {
-            auto leftChildIt = left(lastParent);
-            auto rightChildIt = right(lastParent);
-
-            //Check the balance
-            auto balance = static_cast<int>(leftChildIt->height()) -
-               static_cast<int>(rightChildIt->height());
-
-            if (balance > 1)
-            {
-               //Left heavy
-               auto pivot = leftChildIt;
-
-               //Which side of the pivot is heavier.
-               auto subBalance = static_cast<int>(left(pivot)->height()) -
-                  static_cast<int>(right(pivot)->height());
-
-               if (subBalance < 0)
-               {
-                  //Tree is left right heavy.
-                  
-               }
-
-               rotate_right(lastParent);
-            }
-            else if (balance < -1)
-            {
-               //Right heavy
-               auto pivot = rightChildIt;
-
-               auto subBalance = static_cast<int>(left(pivot)->height()) -
-                  static_cast<int>(right(pivot)->height());
-
-               if (subBalance > 0)
-               {
-                  //Tree is right left heavy
-               }
-
-               rotate_left(lastParent);
-            }
-
-            lastParent->volume() = m_unionOp(leftChildIt->volume(),
-                                             rightChildIt->volume());
-
-            lastParent->height() = 1 + std::max(leftChildIt->height(),
-                                                rightChildIt->height());
-
-            lastParent = parent(lastParent);
-         }
+         return begin() + id;
       }
 
       /*
@@ -480,78 +572,115 @@ namespace qgl::physics::collision
        */
       iterator best_sibling(const volume_type& v)
       {
-         auto it = begin();
-         while (!it->leaf())
+         auto iter = begin();
+         while (!iter->leaf())
          {
             //Since the tree is full, non-leaf nodes will always have a right
             //and left child.
 
             //Cost of inserting the volume to the left.
-            float leftCost = m_costOp(m_unionOp(v, it->volume()));
+            float leftCost = m_costOp(m_unionOp(v, left(iter)->volume()));
 
             //Cost of inserting the volume to the right.
-            float rightCost = m_costOp(m_unionOp(v, it->volume()));
+            float rightCost = m_costOp(m_unionOp(v, right(iter)->volume()));
 
             if (leftCost < rightCost)
             {
-               it = tree::left_index(it);
+               iter = left(iter);
             }
             else
             {
-               it = tree::right_index(it);
+               iter = right(iter);
             }
          }
 
-         return it;
+         return iter;
+      }
+
+      #pragma endregion
+
+      #pragma region Node Allocation and Deallocation
+      /*
+       Allocates storage for a node by returning the index where the node 
+       should be stored. Uses a free list to keep track of nodes that may have 
+       been previously freed. If the free list is empty, this will allocate 
+       more nodes.
+       */
+      node_id alloc_node()
+      {
+         //If the free list is empty:
+         if(m_freeNodes.empty())
+         {
+            //Allocate more nodes.
+            auto numNodes = m_nodes.size();
+            auto newSize = numNodes * 2 + 1;
+            m_nodes.resize(newSize);
+
+            //Populate the free list with the newly allocated node IDs.
+            while (newSize > numNodes)
+            {
+               m_freeNodes.push(--newSize);
+            }
+         }
+
+         auto ret = m_freeNodes.top();
+         m_freeNodes.pop();
+         return ret;
       }
 
       /*
-       Inserts the node into the parent's left child.
-       Expands the tree if necessary.
+       Marks this node, and its children as free. The freed nodes are returned
+       to the free list.
+       Keep in mind that this will leave holes in the array of nodes.
        */
-      void insertLeft(iterator parentNode, const node_type& n)
+      void free_node(node_id nID)
       {
-         auto leftIdx = tree::left_index(parentNode - begin());
-         if (leftIdx >= m_nodes.size())
+         #ifdef DEBUG
+         if (nID >= m_nodes.size())
          {
-            //Add two extra entries for the left and right child.
-            m_nodes.resize(leftIdx + 2);
+            throw std::out_of_range("Node ID is out of range.");
+         }
+         #endif
+
+         auto& n = m_nodes[nID];
+         if (!n.leaf())
+         {
+            free_node(n.left());
+            free_node(n.right());
          }
 
-         m_nodes[leftIdx] = n;
+         n.height() = 0;
+         n.left() = NO_NODE;
+         n.right() = NO_NODE;
+
+         //Push this node last so the stack is in descending order.
+         m_freeNodes.push(nID);
       }
+      #pragma endregion
 
       /*
-       Inserts the node into the parent's right child.
-       Expands the tree if necessary.
+       Returns a node that the parent should be assigned.
        */
-      void insertRight(iterator parentNode, const node_type& n)
+      void refit(node_id parentID)
       {
-         auto rightIdx = tree::right_index(parentNode - begin());
-         if (rightIdx >= m_nodes.size())
-         {
-            throw std::runtime_error("Left did not resize enough.");
-            m_nodes.resize(rightIdx + 1);
-         }
-
-         m_nodes[rightIdx] = n;
-      }
-
-      void rotate_right(iterator r)
-      {
-         auto pivotIt = left(r);
-         
-         
-      }
-
-      void rotate_left(iterator r)
-      {
-         auto pivotIt = right(r);
 
       }
 
+      node_id lrotate(node_id n);
+
+      node_id rrotate(node_id n);
+
+      /*
+       Nodes in the tree.
+       */
       container m_nodes;
-      volume_func m_costOp;
+
+      /*
+       List of indices in the tree that are free nodes.
+       */
+      free_list m_freeNodes;
+
+      cost_func m_costOp;
       union_func m_unionOp;
       const intersect_func m_intersectsOp;
    };
