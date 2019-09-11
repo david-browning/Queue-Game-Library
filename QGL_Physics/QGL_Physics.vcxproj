@@ -161,12 +161,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\Collision\QGLCollision.h" />
     <ClInclude Include="include\Collision\qgl_bounding.h" />
     <ClInclude Include="include\Collision\qgl_bvh_tree.h" />
     <ClInclude Include="include\qgl_physics_include.h" />
+    <ClInclude Include="include\Rigid-Bodies\QGLRigidBody.h" />
     <ClInclude Include="include\Rigid-Bodies\qgl_rb_integration.h" />
     <ClInclude Include="include\Rigid-Bodies\qgl_rb_properties.h" />
     <ClInclude Include="include\Rigid-Bodies\qgl_rb_state.h" />
+    <ClInclude Include="include\World\QGLWorld.h" />
     <ClInclude Include="include\World\qgl_world_properties.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="QGLPhysics.h" />

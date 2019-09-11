@@ -34,9 +34,6 @@
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="QGL_Physics.cpp">
-      <Filter>win_rt</Filter>
-    </ClCompile>
     <ClCompile Include="QGL_PhysicsRT.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -45,9 +42,6 @@
     </ClInclude>
     <ClInclude Include="QGLPhysics.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="QGL_Physics.h">
-      <Filter>win_rt</Filter>
     </ClInclude>
     <ClInclude Include="include\qgl_physics_include.h">
       <Filter>Header Files</Filter>
@@ -70,6 +64,15 @@
     </ClInclude>
     <ClInclude Include="include\Collision\qgl_bounding.h">
       <Filter>Header Files\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Collision\QGLCollision.h">
+      <Filter>Header Files\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Rigid-Bodies\QGLRigidBody.h">
+      <Filter>Header Files\Rigid-Bodies</Filter>
+    </ClInclude>
+    <ClInclude Include="include\World\QGLWorld.h">
+      <Filter>Header Files\World</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
