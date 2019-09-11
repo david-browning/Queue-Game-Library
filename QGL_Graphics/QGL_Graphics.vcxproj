@@ -249,8 +249,6 @@
     <ClInclude Include="include\Metrics\qgl_shader_meta.h" />
     <ClInclude Include="include\qgl_graphics_include.h" />
     <ClInclude Include="include\qgl_window.h" />
-    <ClInclude Include="include\Scene\qgl_scene.h" />
-    <ClInclude Include="include\Scene\qgl_stage.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="qgl.graphics.window_rt.h" />
     <ClInclude Include="QGLGraphics.h" />

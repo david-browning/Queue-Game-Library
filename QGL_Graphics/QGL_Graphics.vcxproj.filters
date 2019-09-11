@@ -459,14 +459,8 @@
     <ClInclude Include="include\GPU\Command-Lists\qgl_graphics_cmd_list.h">
       <Filter>Header Files\GPU\Command-Lists</Filter>
     </ClInclude>
-    <ClInclude Include="include\Scene\qgl_scene.h">
-      <Filter>Header Files\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="include\Content\qgl_model.h">
       <Filter>Header Files\Content</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Scene\qgl_stage.h">
-      <Filter>Header Files\Scene</Filter>
     </ClInclude>
     <ClInclude Include="include\Components\qgl_model_render_component.h">
       <Filter>Header Files\Components</Filter>
