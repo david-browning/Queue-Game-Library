@@ -9,6 +9,7 @@ namespace qgl::math
    {
       m_ul = upperLeft;
       m_br = bottomRight;
+      norm();
    }
 
    DirectX::XMVECTOR XM_CALLCONV rectangle::ul() const noexcept
