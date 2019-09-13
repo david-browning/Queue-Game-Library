@@ -90,7 +90,6 @@ may support ARM64.
 * Test qgl::content:: file loaders.
 * Test qgl::qgl_version_t.
 * Test qgl::icommand.
-* Test qgl::math::rectangle.
 * Test icontent_file::erase.
 * Test content_project_entry.
 * Test math functions, comparators and template variables.

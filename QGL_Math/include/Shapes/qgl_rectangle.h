@@ -3,6 +3,14 @@
 
 namespace qgl::math
 {
+   /*
+    2D rectangle existing in 3D space. The normal is available by calling
+    norm() or norm_cache(). 
+    norm() computes and caches the normal vector. The cached vector can be 
+    retrieved by calling norm_cache().
+    If the rectangle coordinates change, the normal will need to be recomputed.
+    The constructor calculates the normal vector.
+    */
    class QGL_MATH_API rectangle
    {
       public:
