@@ -1,6 +1,7 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
 #include "include/GPU/Render/qgl_viewport.h"
+using namespace qgl::mem;
 
 namespace qgl::graphics::gpu::render
 {

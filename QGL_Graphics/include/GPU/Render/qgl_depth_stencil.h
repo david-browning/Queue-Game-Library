@@ -3,6 +3,7 @@
 #include "include/GPU/Buffers/igpu_buffer.h"
 #include "include/Content/Content-Buffers/qgl_depth_stencil_buffer.h"
 #include "include/qgl_window.h"
+using namespace qgl::mem;
 
 namespace qgl::graphics
 {

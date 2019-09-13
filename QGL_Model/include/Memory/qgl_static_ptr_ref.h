@@ -1,7 +1,7 @@
 #pragma once
 #include "include/qgl_model_include.h"
 
-namespace qgl
+namespace qgl::mem
 {
    /*
     Weak reference to a static pointer. The underlying address cannot be 

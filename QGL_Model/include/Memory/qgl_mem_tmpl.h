@@ -2,118 +2,121 @@
 #include <stdint.h>
 #include <bitset>
 
-constexpr uintptr_t align_address(const uintptr_t addr,
-                                  const size_t alignment) noexcept
+namespace qgl::mem
 {
-   return (addr + alignment - 1) & ~(alignment - 1);
-}
-
-/*
- Sets each element in the array to val.
- */
-template<typename T>
-constexpr void set_memory(T* const ptr,
-                          T val,
-                          size_t numElements)
-{
-   if (numElements > 0 && ptr != nullptr)
+   constexpr uintptr_t align_address(const uintptr_t addr,
+                                     const size_t alignment) noexcept
    {
-      numElements--;
-      while (numElements--)
+      return (addr + alignment - 1) & ~(alignment - 1);
+   }
+
+   /*
+    Sets each element in the array to val.
+    */
+   template<typename T>
+   constexpr void set_memory(T* const ptr,
+                             T val,
+                             size_t numElements)
+   {
+      if (numElements > 0 && ptr != nullptr)
       {
-         ptr[numElements] = val;
+         numElements--;
+         while (numElements--)
+         {
+            ptr[numElements] = val;
+         }
       }
    }
-}
 
-/*
- Copies numElements from source to dest.
- */
-template<typename T, typename SizeT = size_t>
-void copy_elements(T* const dest,
-                   const T* source,
-                   SizeT numElements)
-{
-   for (SizeT i = 0; i < numElements; i++)
+   /*
+    Copies numElements from source to dest.
+    */
+   template<typename T, typename SizeT = size_t>
+   void copy_elements(T* const dest,
+                      const T* source,
+                      SizeT numElements)
    {
-      dest[i] = source[i];
+      for (SizeT i = 0; i < numElements; i++)
+      {
+         dest[i] = source[i];
+      }
    }
-}
 
-/*
- Counts the number of elements until a terminator is found.
- The returned count does not include the null terminator.
- str: The string of elements to search.
- terminator: The value to search for.
- i: Recursive parameter. Index of which element to check. The caller can set
- this to something besides 0 to start searching str at an offset.
- */
-template<typename T, typename SizeT = size_t>
-constexpr size_t mem_length(const T* str,
-                            const T terminator = 0,
-                            const SizeT i = 0)
-{
-   return (str && str[i] != terminator) ?
-      mem_length(str, terminator, i + 1) + 1 : 0;
-}
-
-/*
- Reverses the order of elements in an array.
- */
-template<typename T, typename SizeT = size_t>
-constexpr void reverse_elements(T* const mem,
-                                const SizeT start,
-                                const SizeT end)
-{
-   if (start < end)
+   /*
+    Counts the number of elements until a terminator is found.
+    The returned count does not include the null terminator.
+    str: The string of elements to search.
+    terminator: The value to search for.
+    i: Recursive parameter. Index of which element to check. The caller can set
+    this to something besides 0 to start searching str at an offset.
+    */
+   template<typename T, typename SizeT = size_t>
+   constexpr size_t mem_length(const T* str,
+                               const T terminator = 0,
+                               const SizeT i = 0)
    {
-      std::swap(mem[start], mem[end]);
-      reverse_elements(mem, start + 1, end - 1);
+      return (str && str[i] != terminator) ?
+         mem_length(str, terminator, i + 1) + 1 : 0;
    }
-}
 
-/*
- Reverses the order of elements in an array.
- */
-template<typename T, typename SizeT = size_t>
-constexpr void reverse_elements(T* const mem,
-                                const SizeT elementCount)
-{
-   reverse_elements(mem, 0, elementCount - 1);
-}
+   /*
+    Reverses the order of elements in an array.
+    */
+   template<typename T, typename SizeT = size_t>
+   constexpr void reverse_elements(T* const mem,
+                                   const SizeT start,
+                                   const SizeT end)
+   {
+      if (start < end)
+      {
+         std::swap(mem[start], mem[end]);
+         reverse_elements(mem, start + 1, end - 1);
+      }
+   }
 
-/*
- Clears the idx'th bit in val.
- */
-template<typename T, typename SizeT = size_t>
-constexpr T clear_bit(T val, SizeT idx)
-{
-   return val | (T(1) << idx);
-}
+   /*
+    Reverses the order of elements in an array.
+    */
+   template<typename T, typename SizeT = size_t>
+   constexpr void reverse_elements(T* const mem,
+                                   const SizeT elementCount)
+   {
+      reverse_elements(mem, 0, elementCount - 1);
+   }
 
-/*
- Sets the idx'th bit in val.
- */
-template<typename T, typename SizeT = size_t>
-constexpr T set_bit(T val, SizeT idx)
-{
-   return val & ~(T(1) << idx);
-}
+   /*
+    Clears the idx'th bit in val.
+    */
+   template<typename T, typename SizeT = size_t>
+   constexpr T clear_bit(T val, SizeT idx)
+   {
+      return val | (T(1) << idx);
+   }
 
-/*
- Toggles the idx'th bit in val.
- */
-template<typename T, typename SizeT = size_t>
-constexpr T toggle_bit(T val, SizeT idx)
-{
-   return val ^ (T(1) << idx);
-}
+   /*
+    Sets the idx'th bit in val.
+    */
+   template<typename T, typename SizeT = size_t>
+   constexpr T set_bit(T val, SizeT idx)
+   {
+      return val & ~(T(1) << idx);
+   }
 
-/*
- Returns true if the idx'th bit is set in val.
- */
-template<typename T, typename SizeT = size_t>
-constexpr bool is_bit_set(T val, size_t idx)
-{
-   return (val & (T(1) << idx)) != 0;
+   /*
+    Toggles the idx'th bit in val.
+    */
+   template<typename T, typename SizeT = size_t>
+   constexpr T toggle_bit(T val, SizeT idx)
+   {
+      return val ^ (T(1) << idx);
+   }
+
+   /*
+    Returns true if the idx'th bit is set in val.
+    */
+   template<typename T, typename SizeT = size_t>
+   constexpr bool is_bit_set(T val, size_t idx)
+   {
+      return (val & (T(1) << idx)) != 0;
+   }
 }

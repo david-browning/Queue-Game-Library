@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "include\Content\Content-Buffers\qgl_light_buffer.h"
+using namespace qgl::mem;
 
 namespace qgl::content::buffers
 {

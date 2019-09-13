@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "include/Content-Items/qgl_content_item.h"
+using namespace qgl::mem;
 
 namespace qgl::content
 {

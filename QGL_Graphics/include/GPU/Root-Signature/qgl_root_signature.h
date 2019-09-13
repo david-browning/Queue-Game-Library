@@ -2,6 +2,7 @@
 #include "include/qgl_graphics_include.h"
 #include "include/Interfaces/qgl_igraphics_device.h"
 #include "include/GPU/Root-Signature/qgl_ibindable.h"
+using namespace qgl::mem;
 
 namespace qgl::graphics::gpu
 {

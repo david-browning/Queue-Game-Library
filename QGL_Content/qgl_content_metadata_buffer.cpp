@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "include/Content-Buffers/qgl_content_metadata_buffer.h"
 #include <objbase.h>
+using namespace qgl::mem;
 
 namespace qgl::content
 {

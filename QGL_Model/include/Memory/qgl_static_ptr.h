@@ -2,7 +2,7 @@
 #include "include/qgl_model_include.h"
 #include "include/Memory/qgl_static_ptr_ref.h"
 
-namespace qgl
+namespace qgl::mem
 {
    /*
     A static pointer is a unique pointer than can only be assigned once. This 
