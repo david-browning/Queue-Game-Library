@@ -7,7 +7,7 @@ namespace qgl::mem
    constexpr uintptr_t align_address(const uintptr_t addr,
                                      const size_t alignment) noexcept
    {
-      return (addr + alignment - 1) & ~(alignment - 1);
+      return alignment <= 1 ? addr : (addr + alignment - 1) & ~(alignment - 1);
    }
 
    template<typename size_type, size_type n>
