@@ -1,5 +1,5 @@
 #pragma once
-#include <stdint.h>
+#include "include/qgl_model_include.h"
 #include <bitset>
 
 namespace qgl::mem
@@ -9,6 +9,28 @@ namespace qgl::mem
    {
       return (addr + alignment - 1) & ~(alignment - 1);
    }
+
+   template<typename size_type, size_type n>
+   constexpr bool is_power_of_two()
+   {
+      return n != 0 && ((n & (n - 1)) == 0);
+   }
+   
+
+   /*
+    Prints a message to the debug output.
+    */
+   extern QGL_MODEL_API void print_mem_leak(void* address);
+
+   /*
+    Prints a message to the debug output.
+    */
+   extern QGL_MODEL_API void print_mem_dealloc(void* address);
+
+   /*
+    Prints a message to the debug output.
+    */
+   extern QGL_MODEL_API void print_mem_alloc(void* address);
 
    /*
     Sets each element in the array to val.
