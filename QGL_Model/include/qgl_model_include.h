@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-#include "include/Memory/qgl_mem.h"
 #include "include/qgl_platform_abstraction.h"
 
 #ifdef QGL_MODEL_EXPORTS
