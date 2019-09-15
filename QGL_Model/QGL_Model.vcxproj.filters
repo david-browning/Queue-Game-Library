@@ -38,6 +38,15 @@
     <Filter Include="Header Files\Structures">
       <UniqueIdentifier>{7d59c5f2-5850-480a-abda-27633485f7d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Memory">
+      <UniqueIdentifier>{b847a9b5-277b-4fcd-987a-55df081bbf08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Memory\Heaps">
+      <UniqueIdentifier>{febffe33-f4fd-4eae-8c53-9258af9d898b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Memory\Allocators">
+      <UniqueIdentifier>{3b43a553-3610-4102-84db-4d98968c3695}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLModel.h">
@@ -109,6 +118,12 @@
     <ClInclude Include="include\Structures\qgl_tree_helpers.h">
       <Filter>Header Files\Structures</Filter>
     </ClInclude>
+    <ClInclude Include="include\Memory\qgl_mem_tracker.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Memory\qgl_memory_track_entry.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="QGL_Model.def">
@@ -131,6 +146,9 @@
     </ClCompile>
     <ClCompile Include="qgl_version.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_mem_tmpl.cpp">
+      <Filter>Source Files\Memory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

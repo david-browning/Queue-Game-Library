@@ -109,7 +109,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
     <ClCompile>
-      <PreprocessorDefinitions>QGL_MODEL_EXPORTS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>QGL_MODEL_EXPORTS;_DEBUG;MEM_VERBOSE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <EnforceTypeConversionRules Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">true</EnforceTypeConversionRules>
       <EnforceTypeConversionRules Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</EnforceTypeConversionRules>
       <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">true</ConformanceMode>
@@ -147,6 +147,8 @@
     <ClInclude Include="include\Interfaces\qgl_icommand.h" />
     <ClInclude Include="include\Interfaces\qgl_interface.h" />
     <ClInclude Include="include\Memory\qgl_mem.h" />
+    <ClInclude Include="include\Memory\qgl_memory_track_entry.h" />
+    <ClInclude Include="include\Memory\qgl_mem_tracker.h" />
     <ClInclude Include="include\Memory\qgl_mem_tmpl.h" />
     <ClInclude Include="include\Memory\qgl_static_ptr.h" />
     <ClInclude Include="include\Memory\qgl_static_ptr_ref.h" />
@@ -174,6 +176,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="qgl_icommand.cpp" />
+    <ClCompile Include="qgl_mem_tmpl.cpp" />
     <ClCompile Include="QGL_ModelRT.cpp" />
     <ClCompile Include="qgl_version.cpp" />
   </ItemGroup>
