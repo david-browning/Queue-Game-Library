@@ -124,6 +124,12 @@
     <ClInclude Include="include\Memory\qgl_memory_track_entry.h">
       <Filter>Header Files\Memory</Filter>
     </ClInclude>
+    <ClInclude Include="include\Memory\qgl_basic_heap.h">
+      <Filter>Header Files\Memory\Heaps</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Memory\qgl_heap_traits.h">
+      <Filter>Header Files\Memory\Heaps</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="QGL_Model.def">
