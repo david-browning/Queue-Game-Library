@@ -2,7 +2,7 @@
 #include "include/qgl_model_include.h"
 #include "include/Memory/qgl_memory_track_entry.h"
 
-namespace qgl::mem::alloc
+namespace qgl::mem
 {
    /*
     Tracks memory allocations and deallocations only if compiled with DEBUG
@@ -13,15 +13,11 @@ namespace qgl::mem::alloc
     Despite changing the state, track() and free() are const so they can be
     called by allocators who's allocation and deallocation methods are const.
     */
-   template<typename Pointer = uintptr_t>
    class mem_tracker
    {
-      public:
-      using pointer = typename Pointer;
-
       private:
       using alloc_list = 
-         typename std::set<internal::memory_entry<pointer>, std::less<>>;
+         typename std::set<internal::memory_entry<uintptr_t>, std::less<>>;
 
       public:
       using iterator = typename alloc_list::iterator;
@@ -54,7 +50,7 @@ namespace qgl::mem::alloc
        Adds an address to the tracker.
        This only does something if DEBUG is defined.
        */
-      inline void track(pointer p, size_t sz = 0) const
+      inline void track(uintptr_t p, size_t sz = 0) const
       {
          #ifdef DEBUG
          m_allocations.insert(internal::memory_entry(p, sz));
@@ -65,7 +61,7 @@ namespace qgl::mem::alloc
        Removes an address from the tracker. This does not deallocate the memory.
        This only does something if DEBUG is defined.
        */
-      inline void free(pointer p) const
+      inline void free(uintptr_t p) const
       {
          #ifdef DEBUG
          //See the link for example on finding with differing keys.
@@ -90,6 +86,16 @@ namespace qgl::mem::alloc
          #endif
       }
 
+      /*
+       Returns true if this memory tracker is tracking the given pointer.
+       */
+      bool contains(uintptr_t p) const
+      {
+         auto it = m_allocations.find(p);
+         return it != end();
+      }
+
+      #pragma region Iterators
       iterator begin() noexcept
       {
          return m_allocations.begin();
@@ -119,6 +125,7 @@ namespace qgl::mem::alloc
       {
          return m_allocations.cend();
       }
+      #pragma endregion
 
       /*
        If not compiled with DEBUG, this does nothing because memory allocations

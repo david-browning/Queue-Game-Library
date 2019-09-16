@@ -1,6 +1,6 @@
 #pragma once
 
-namespace qgl::mem::alloc::internal
+namespace qgl::mem::internal
 {
    /*
     This is an entry in a memory tracker.
