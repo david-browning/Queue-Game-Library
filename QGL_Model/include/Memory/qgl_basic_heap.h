@@ -14,9 +14,15 @@ namespace qgl::mem::heap
       public:
       basic_heap(Traits::size_type initialSizeBytes,
                  MemoryTracker mt = MemoryTracker()) :
-         m_tracker(mt)
+         m_tracker(mt),
+         m_heapHandle(INVALID_HANDLE_VALUE)
       {
          m_heapHandle = Traits::make(initialSizeBytes);
+         if (m_heapHandle == nullptr)
+         {
+            const auto lastError = GetLastError();
+            throw lastError;
+         }
       }
 
       /*
@@ -37,7 +43,10 @@ namespace qgl::mem::heap
        */
       ~basic_heap() noexcept
       {
-         Traits::destroy(m_heapHandle);
+         if (m_heapHandle != INVALID_HANDLE_VALUE)
+         {
+            Traits::destroy(m_heapHandle);
+         }
       }
 
       /*

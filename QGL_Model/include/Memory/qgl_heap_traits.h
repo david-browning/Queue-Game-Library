@@ -13,12 +13,14 @@ namespace qgl::mem::heap
 
       /*
        Creates a private heap object that can be used by the calling process.
+       Returns nullptr if the heap could not be allocated.
        */
       static heap_handle make(size_type initialSizeBytes) noexcept
       {
          #ifdef WIN32
          return HeapCreate(Flags, initialSizeBytes, 0);
          #else
+         //Not supported yet.
          throw 1;
          #endif
       }
@@ -33,6 +35,7 @@ namespace qgl::mem::heap
          #ifdef WIN32
          return HeapAlloc(hHandle, 0, bytes);
          #else
+         //Not supported yet.
          throw 1;
          #endif
       }
@@ -46,6 +49,7 @@ namespace qgl::mem::heap
          #ifdef WIN32
          HeapFree(hHandle, 0, ptr);
          #else
+         //Not supported yet.
          throw 1;
          #endif
       }
@@ -60,6 +64,7 @@ namespace qgl::mem::heap
          #ifdef WIN32
          HeapDestroy(hHandle);
          #else
+         //Not supported yet.
          throw 1;
          #endif
       }
@@ -72,12 +77,14 @@ namespace qgl::mem::heap
 
       /*
        Creates a private heap object that can be used by the calling process.
+       Returns nullptr if the heap could not be allocated.
        */
       static heap_handle make(size_type initialSizeBytes) noexcept
       {
          #ifdef WIN32
          return HeapCreate(Flags, initialSizeBytes, initialSizeBytes);
          #else
+         //Not supported yet.
          throw 1;
          #endif
       }
@@ -92,6 +99,7 @@ namespace qgl::mem::heap
          #ifdef WIN32
          return HeapAlloc(hHandle, 0, bytes);
          #else
+         //Not supported yet.
          throw 1;
          #endif
       }
@@ -105,6 +113,7 @@ namespace qgl::mem::heap
          #ifdef WIN32
          HeapFree(hHandle, 0, ptr);
          #else
+         //Not supported yet.
          throw 1;
          #endif
       }
@@ -119,6 +128,7 @@ namespace qgl::mem::heap
          #ifdef WIN32
          HeapDestroy(hHandle);
          #else
+         //Not supported yet.
          throw 1;
          #endif
       }

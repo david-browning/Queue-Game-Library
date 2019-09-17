@@ -47,6 +47,9 @@
     <Filter Include="Header Files\Memory\Allocators">
       <UniqueIdentifier>{3b43a553-3610-4102-84db-4d98968c3695}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Errors">
+      <UniqueIdentifier>{b25e2013-9a2a-4d09-809f-dadc11fc555c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLModel.h">
