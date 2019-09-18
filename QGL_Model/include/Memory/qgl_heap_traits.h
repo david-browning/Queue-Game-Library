@@ -1,15 +1,14 @@
 #pragma once
 #include "include/qgl_model_include.h"
+#include "include/Errors/qgl_e_checkers.h"
 
-namespace qgl::mem::heap
+namespace qgl::mem
 {
-   using heap_flag = DWORD;
-   using heap_handle = HANDLE;
-
-   template<heap_flag Flags>
-   struct heap_traits
+   template<DWORD Flags>
+   struct basic_heap_traits
    {
-      using size_type = size_t;
+      using size_type = typename size_t;
+      using heap_handle = typename handle_t;
 
       /*
        Creates a private heap object that can be used by the calling process.
@@ -21,7 +20,7 @@ namespace qgl::mem::heap
          return HeapCreate(Flags, initialSizeBytes, 0);
          #else
          //Not supported yet.
-         throw 1;
+         throw_not_implemented();
          #endif
       }
 
@@ -36,7 +35,7 @@ namespace qgl::mem::heap
          return HeapAlloc(hHandle, 0, bytes);
          #else
          //Not supported yet.
-         throw 1;
+         throw_not_implemented();
          #endif
       }
 
@@ -50,7 +49,7 @@ namespace qgl::mem::heap
          HeapFree(hHandle, 0, ptr);
          #else
          //Not supported yet.
-         throw 1;
+         throw_not_implemented();
          #endif
       }
 
@@ -65,15 +64,16 @@ namespace qgl::mem::heap
          HeapDestroy(hHandle);
          #else
          //Not supported yet.
-         throw 1;
+         throw_not_implemented();
          #endif
       }
    };
 
-   template<heap_flag Flags>
+   template<DWORD Flags>
    struct fixed_heap_traits
    {
-      using size_type = size_t;
+      using size_type = typename size_t;
+      using heap_handle = typename handle_t;
 
       /*
        Creates a private heap object that can be used by the calling process.
@@ -85,7 +85,7 @@ namespace qgl::mem::heap
          return HeapCreate(Flags, initialSizeBytes, initialSizeBytes);
          #else
          //Not supported yet.
-         throw 1;
+         throw_not_implemented();
          #endif
       }
 
@@ -100,7 +100,7 @@ namespace qgl::mem::heap
          return HeapAlloc(hHandle, 0, bytes);
          #else
          //Not supported yet.
-         throw 1;
+         throw_not_implemented();
          #endif
       }
 
@@ -114,7 +114,7 @@ namespace qgl::mem::heap
          HeapFree(hHandle, 0, ptr);
          #else
          //Not supported yet.
-         throw 1;
+         throw_not_implemented();
          #endif
       }
 
@@ -129,7 +129,7 @@ namespace qgl::mem::heap
          HeapDestroy(hHandle);
          #else
          //Not supported yet.
-         throw 1;
+         throw_not_implemented();
          #endif
       }
    };

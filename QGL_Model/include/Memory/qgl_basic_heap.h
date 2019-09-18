@@ -2,26 +2,27 @@
 #include "include/qgl_model_include.h"
 #include "include/Memory/qgl_heap_traits.h"
 #include "include/Memory/qgl_mem_tracker.h"
-#include "include/Memory/qgl_mem_tmpl.h"
 
-namespace qgl::mem::heap
+namespace qgl::mem
 {
-   template<heap_flag Flags,
-      class Traits = heap_traits<Flags>,
-      class MemoryTracker = mem_tracker>
+   template<DWORD Flags,
+      class Traits = qgl::mem::basic_heap_traits<Flags>,
+      class MemoryTracker =  qgl::mem::mem_tracker>
    class basic_heap
    {
       public:
-      basic_heap(Traits::size_type initialSizeBytes,
+      using heap_handle = typename Traits::heap_handle;
+      using size_type = typename Traits::size_type;
+
+      basic_heap(size_type initialSizeBytes,
                  MemoryTracker mt = MemoryTracker()) :
          m_tracker(mt),
-         m_heapHandle(INVALID_HANDLE_VALUE)
+         m_heapHandle(INVALID_HANDLE)
       {
          m_heapHandle = Traits::make(initialSizeBytes);
          if (m_heapHandle == nullptr)
          {
-            const auto lastError = GetLastError();
-            throw lastError;
+            throw_last_error();
          }
       }
 
@@ -43,7 +44,7 @@ namespace qgl::mem::heap
        */
       ~basic_heap() noexcept
       {
-         if (m_heapHandle != INVALID_HANDLE_VALUE)
+         if (m_heapHandle != INVALID_HANDLE<handle_t>)
          {
             Traits::destroy(m_heapHandle);
          }
@@ -57,7 +58,7 @@ namespace qgl::mem::heap
        Throws std::bad_alloc if the heap cannot allocate memory.
        */
       template<class T>
-      T* allocate(Traits::size_type count)
+      T* allocate(size_type count)
       {
          if (count > 1)
          {

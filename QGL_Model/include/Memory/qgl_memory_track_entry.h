@@ -6,12 +6,10 @@ namespace qgl::mem::internal
     This is an entry in a memory tracker.
     Overloads operators so this can be compared with an address.
     */
-   template<typename Pointer>
-   struct memory_entry
+   struct memory_entry final
    {
       public:
-      using pointer = typename Pointer;
-      memory_entry(pointer p, size_t sz) :
+      memory_entry(uintptr_t p, size_t sz) :
          m_p(p),
          m_size(sz)
       {
@@ -24,7 +22,7 @@ namespace qgl::mem::internal
 
       ~memory_entry() noexcept = default;
 
-      inline pointer ptr() const noexcept
+      inline uintptr_t ptr() const noexcept
       {
          return m_p;
       }
@@ -35,28 +33,31 @@ namespace qgl::mem::internal
       }
 
       private:
-      pointer m_p;
+      uintptr_t m_p;
       size_t m_size;
    };
 
-   template<typename PointerT>
-   inline bool operator<(const memory_entry<PointerT>& l,
-                         const PointerT& r) noexcept
+   inline bool operator<(const memory_entry& l,
+                         const uintptr_t& r) noexcept
    {
       return l.ptr() < r;
    }
 
-   template<typename PointerT>
-   inline bool operator<(const PointerT& l,
-                         const memory_entry<PointerT>& r) noexcept
+   inline bool operator<(const uintptr_t& l,
+                         const memory_entry& r) noexcept
    {
       return l < r.ptr();
    }
 
-   template<typename PointerT>
-   inline bool operator<(const memory_entry<PointerT>& l,
-                         const memory_entry<PointerT>& r) noexcept
+   inline bool operator<(const memory_entry& l,
+                         const memory_entry& r) noexcept
    {
       return l.ptr() < r.ptr();
+   }
+
+   inline bool operator==(const memory_entry& l,
+                          const memory_entry& r) noexcept
+   {
+      return l.ptr() == r.ptr();
    }
 }

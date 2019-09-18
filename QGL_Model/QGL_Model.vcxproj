@@ -144,6 +144,9 @@
     </Midl>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\Debug\qgl_debug.h" />
+    <ClInclude Include="include\Errors\qgl_e_checkers.h" />
+    <ClInclude Include="include\Errors\qgl_e_codes.h" />
     <ClInclude Include="include\Interfaces\qgl_icommand.h" />
     <ClInclude Include="include\Interfaces\qgl_interface.h" />
     <ClInclude Include="include\Memory\qgl_basic_heap.h" />
@@ -151,7 +154,7 @@
     <ClInclude Include="include\Memory\qgl_mem.h" />
     <ClInclude Include="include\Memory\qgl_memory_track_entry.h" />
     <ClInclude Include="include\Memory\qgl_mem_tracker.h" />
-    <ClInclude Include="include\Memory\qgl_mem_tmpl.h" />
+    <ClInclude Include="include\Memory\qgl_mem_helpers.h" />
     <ClInclude Include="include\Memory\qgl_static_ptr.h" />
     <ClInclude Include="include\Memory\qgl_static_ptr_ref.h" />
     <ClInclude Include="include\Observer-Observable\qgl_callback_observer.h" />
@@ -161,6 +164,9 @@
     <ClInclude Include="include\qgl_model_include.h" />
     <ClInclude Include="include\qgl_platform_abstraction.h" />
     <ClInclude Include="include\qgl_version.h" />
+    <ClInclude Include="include\String\qgl_string.h" />
+    <ClInclude Include="include\String\qgl_strings.h" />
+    <ClInclude Include="include\String\qgl_string_fmt.h" />
     <ClInclude Include="include\Structures\qgl_basic_graph.h" />
     <ClInclude Include="include\Structures\qgl_basic_tree_map.h" />
     <ClInclude Include="include\Structures\qgl_tree_helpers.h" />
@@ -177,8 +183,9 @@
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="qgl_debug.cpp" />
     <ClCompile Include="qgl_icommand.cpp" />
-    <ClCompile Include="qgl_mem_tmpl.cpp" />
+    <ClCompile Include="qgl_mem_helpers.cpp" />
     <ClCompile Include="QGL_ModelRT.cpp" />
     <ClCompile Include="qgl_version.cpp" />
   </ItemGroup>

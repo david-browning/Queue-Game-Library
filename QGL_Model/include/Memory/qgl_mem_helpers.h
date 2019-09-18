@@ -20,17 +20,17 @@ namespace qgl::mem
    /*
     Prints a message to the debug output.
     */
-   extern QGL_MODEL_API void print_mem_leak(void* address);
+   extern QGL_MODEL_API void print_mem_leak(uintptr_t address);
 
    /*
     Prints a message to the debug output.
     */
-   extern QGL_MODEL_API void print_mem_dealloc(void* address);
+   extern QGL_MODEL_API void print_mem_dealloc(uintptr_t address);
 
    /*
     Prints a message to the debug output.
     */
-   extern QGL_MODEL_API void print_mem_alloc(void* address);
+   extern QGL_MODEL_API void print_mem_alloc(uintptr_t address);
 
    /*
     Sets each element in the array to val.

@@ -50,6 +50,15 @@
     <Filter Include="Header Files\Errors">
       <UniqueIdentifier>{b25e2013-9a2a-4d09-809f-dadc11fc555c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Debug">
+      <UniqueIdentifier>{eed3ae30-2b7b-4285-8f7e-d55ac114a872}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\String">
+      <UniqueIdentifier>{0f693dc4-0718-4c9f-a319-783978513905}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Debug">
+      <UniqueIdentifier>{2fefc9a3-545c-4a83-8d90-f05ecfc76cdb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLModel.h">
@@ -86,9 +95,6 @@
       <Filter>Header Files\Timing</Filter>
     </ClInclude>
     <ClInclude Include="include\Memory\qgl_mem.h">
-      <Filter>Header Files\Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Memory\qgl_mem_tmpl.h">
       <Filter>Header Files\Memory</Filter>
     </ClInclude>
     <ClInclude Include="include\qgl_platform_abstraction.h">
@@ -133,6 +139,27 @@
     <ClInclude Include="include\Memory\qgl_heap_traits.h">
       <Filter>Header Files\Memory\Heaps</Filter>
     </ClInclude>
+    <ClInclude Include="include\Errors\qgl_e_checkers.h">
+      <Filter>Header Files\Errors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Errors\qgl_e_codes.h">
+      <Filter>Header Files\Errors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Memory\qgl_mem_helpers.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Debug\qgl_debug.h">
+      <Filter>Header Files\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="include\String\qgl_string.h">
+      <Filter>Header Files\String</Filter>
+    </ClInclude>
+    <ClInclude Include="include\String\qgl_string_fmt.h">
+      <Filter>Header Files\String</Filter>
+    </ClInclude>
+    <ClInclude Include="include\String\qgl_strings.h">
+      <Filter>Header Files\String</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="QGL_Model.def">
@@ -156,8 +183,11 @@
     <ClCompile Include="qgl_version.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="qgl_mem_tmpl.cpp">
+    <ClCompile Include="qgl_mem_helpers.cpp">
       <Filter>Source Files\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="qgl_debug.cpp">
+      <Filter>Source Files\Debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

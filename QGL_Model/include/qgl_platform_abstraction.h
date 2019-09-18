@@ -49,7 +49,6 @@
 
 #endif
 
-typedef void* handle_t;
 
 #ifdef _WIN32
 
@@ -61,46 +60,41 @@ typedef void* handle_t;
 #include <winrt/base.h>
 #include <winrt/Windows.Foundation.h>
 
+#pragma region Define Handle Types
+typedef HANDLE handle_t;
+
+template<typename Handle = handle_t>
+constexpr Handle INVALID_HANDLE = INVALID_HANDLE_VALUE;
+
 typedef HANDLE thread_handle_t;
 
 typedef HANDLE file_handle_t;
 static const file_handle_t NO_FILE = INVALID_HANDLE_VALUE;
+#pragma endregion
 
 #ifdef UNICODE
 typedef wchar_t sys_char;
+
 #else
 typedef char sys_char;
 #endif
 
-inline std::string HrToString(HRESULT hr)
-{
-   char s_str[64] = {};
-   sprintf_s(s_str, "HRESULT of 0x%08X", static_cast<unsigned long>(hr));
-   return std::string(s_str);
-}
-
-static constexpr uint16_t FACILITY_QGL = 0x555;
-static constexpr uint16_t BAD_MAGIC_NUMBER = 0xBAD0;
-static constexpr HRESULT E_BADMAGIC = MAKE_HRESULT(1, 
-                                                   FACILITY_QGL,
-                                                   BAD_MAGIC_NUMBER);
-
-static constexpr HRESULT S_ALREADYMAPPED = MAKE_HRESULT(0,
-                                                        FACILITY_QGL,
-                                                        ERROR_ALREADY_EXISTS);
-
-static constexpr HRESULT E_NOLOADER = MAKE_HRESULT(1,
-                                                   FACILITY_QGL,
-                                                   ERROR_NOT_FOUND);
 
 #else
+
+#pragma region Define Handle Types
+using handle_t = typename void*
+
+template<typename Handle = handle_t>
+constexpr Handle INVALID_HANDLE = static_cast<Handle>(-1);
 
 typedef void* thread_handle_t;
 
 typedef int file_handle_t;
 static constexpr file_handle_t NO_FILE = -1;
+#pragma endregion
+
 typedef char sys_char;
 
 #endif
 
-typedef std::basic_string<sys_char> sys_str;

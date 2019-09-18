@@ -17,7 +17,7 @@ namespace qgl::mem
    {
       private:
       using alloc_list = 
-         typename std::set<internal::memory_entry<uintptr_t>, std::less<>>;
+         typename std::set<internal::memory_entry, std::less<>>;
 
       public:
       using iterator = typename alloc_list::iterator;
@@ -91,8 +91,12 @@ namespace qgl::mem
        */
       bool contains(uintptr_t p) const
       {
+         #ifdef DEBUG
          auto it = m_allocations.find(p);
          return it != end();
+         #endif
+
+         return false;
       }
 
       #pragma region Iterators
