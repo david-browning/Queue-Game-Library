@@ -4,18 +4,51 @@
 
 namespace qgl::mem
 {
+   namespace internal
+   {
+      /*
+       Compile-time endianness swap based on http://stackoverflow.com/a/36937049
+       From https://en.cppreference.com/w/cpp/language/fold
+       */
+      template<class T, std::size_t... N>
+      constexpr T bswap(T i, std::index_sequence<N...>)
+      {
+         return (((i >> N * CHAR_BIT & std::uint8_t(-1)) << 
+            (sizeof(T) - 1 - N)*CHAR_BIT) | ...);
+      }
+   }
+
+   /*
+    Swaps the endianess of a value.
+    */
+   template<typename T>
+   constexpr T bswap(T val)
+   {
+      return internal::bswap<T>(val, std::make_index_sequence<sizeof(T)>{});
+   }
+
+   static_assert(bswap<uint16_t>(0x1234u) == static_cast<uint16_t>(0x3412u));
+   static_assert(bswap<uint64_t>(0x0123456789abcdefULL) ==
+                 static_cast<uint64_t>(0xefcdab8967452301ULL));
+
+   /*
+    Aligns and address to the nearest alignment.
+    */
    constexpr uintptr_t align_address(const uintptr_t addr,
                                      const size_t alignment) noexcept
    {
       return alignment <= 1 ? addr : (addr + alignment - 1) & ~(alignment - 1);
    }
 
+   /*
+    Returns true if n is a power of 2.
+    */
    template<typename size_type, size_type n>
    constexpr bool is_power_of_two()
    {
       return n != 0 && ((n & (n - 1)) == 0);
    }
-   
+
 
    /*
     Prints a message to the debug output.
