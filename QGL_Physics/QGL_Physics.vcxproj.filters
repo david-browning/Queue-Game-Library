@@ -26,6 +26,9 @@
     <Filter Include="Header Files\Collision">
       <UniqueIdentifier>{ad4ffba8-946c-4de2-a3d0-edfc1412b521}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Collision">
+      <UniqueIdentifier>{a7b5e9c4-6fd3-4db4-bcfe-90bc73d4db1c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -35,6 +38,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="QGL_PhysicsRT.cpp" />
+    <ClCompile Include="qgl_bounding.cpp">
+      <Filter>Source Files\Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">

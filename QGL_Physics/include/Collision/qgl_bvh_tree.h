@@ -2,7 +2,7 @@
 #include "include/qgl_physics_include.h"
 using namespace qgl::math;
 
-namespace qgl::physics::collision
+namespace qgl::physics
 {
    #ifdef DEBUG
    /*
@@ -108,7 +108,7 @@ namespace qgl::physics::collision
       using union_func = typename Union;
       using intersect_func = typename Intersects;
 
-      static const node_id NO_NODE = -1;
+      static constexpr node_id NO_NODE = node_id(-1);
 
       class node_type
       {
@@ -269,6 +269,7 @@ namespace qgl::physics::collision
          m_costOp(costFunc),
          m_unionOp(unionFunc)
       {
+         //Free list and list of nodes are empty.
       }
 
       bvh_tree(const bvh_tree&) = default;
@@ -283,6 +284,7 @@ namespace qgl::physics::collision
       /*
        Inserts the bounding volume into the tree.
        Returns an iterator to the inserted node.
+       The iterator will be invalid when another node is inserted or deleted.
        */
       const_iterator insert(const volume_type& v)
       {
@@ -295,25 +297,37 @@ namespace qgl::physics::collision
 
          //Find the best sibling node.
          auto sibIt = best_sibling(v);
-         node_id sibID = sibIt - begin();
          auto sibNode = *sibIt;
+         //The node id is just its index. Calculate the index.
+         auto sibID = static_cast<node_id>(sibIt - begin());
 
          //Allocate a node to put v into.
          auto vID = alloc_node();
-         auto vIt = begin() + alloc_node();
+         auto vIt = it(vID);
          *vIt = node_type(v);
 
          //Create a parent node that contains the new volume of v and the 
          //sibling.
          auto parentID = alloc_node();
-         auto newParentIt = begin() + parentID;
+         auto newParentIt = it(parentID);
          node_type newParent(m_unionOp(v, sibNode.volume()),
                              sibID,
                              vID);
          *newParentIt = newParent;
 
          //Fix up the tree
-         refit(parentID);
+         
+
+
+
+
+
+
+
+
+
+
+
 
          return right(it(vID));
       }
@@ -612,14 +626,15 @@ namespace qgl::physics::collision
          if(m_freeNodes.empty())
          {
             //Allocate more nodes.
-            auto numNodes = m_nodes.size();
-            auto newSize = numNodes * 2 + 1;
-            m_nodes.resize(newSize);
+            auto oldNodeCount = m_nodes.size();
+            auto newNodeCount = oldNodeCount * 2 + 1;
+            m_nodes.resize(newNodeCount);
 
             //Populate the free list with the newly allocated node IDs.
-            while (newSize > numNodes)
+            while (newNodeCount > oldNodeCount)
             {
-               m_freeNodes.push(--newSize);
+               //Pre-decrement the node count to get an "index".
+               m_freeNodes.push(static_cast<node_id>(--newNodeCount));
             }
          }
 
@@ -631,7 +646,9 @@ namespace qgl::physics::collision
       /*
        Marks this node, and its children as free. The freed nodes are returned
        to the free list.
-       Keep in mind that this will leave holes in the array of nodes.
+       Keep in mind that this will leave holes in the array of nodes meaning
+       the array will not be cache-coherent.
+       Allocating new nodes will fill these holes.
        */
       void free_node(node_id nID)
       {

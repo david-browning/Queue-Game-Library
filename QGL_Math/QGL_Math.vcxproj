@@ -149,6 +149,7 @@
     <ClInclude Include="include\qgl_math_funcs.h" />
     <ClInclude Include="include\qgl_math_includes.h" />
     <ClInclude Include="include\qgl_rational.h" />
+    <ClInclude Include="include\Shapes\qgl_aabb_helpers.h" />
     <ClInclude Include="include\Shapes\qgl_rectangle.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="QGLMath.h" />
@@ -159,6 +160,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+    <ClCompile Include="qgl_aabb_helpers.cpp" />
     <ClCompile Include="QGL_MathRT.cpp" />
     <ClCompile Include="qgl_rectangle.cpp" />
   </ItemGroup>

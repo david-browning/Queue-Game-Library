@@ -38,6 +38,9 @@
     <ClCompile Include="qgl_rectangle.cpp">
       <Filter>Source Files\Shapes</Filter>
     </ClCompile>
+    <ClCompile Include="qgl_aabb_helpers.cpp">
+      <Filter>Source Files\Shapes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -66,6 +69,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Shapes\qgl_rectangle.h">
+      <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shapes\qgl_aabb_helpers.h">
       <Filter>Header Files\Shapes</Filter>
     </ClInclude>
   </ItemGroup>

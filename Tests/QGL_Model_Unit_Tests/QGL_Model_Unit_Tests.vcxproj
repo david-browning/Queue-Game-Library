@@ -230,6 +230,8 @@
     <ClCompile Include="Tests\Observer-Observable\subject_out_of_scope_tests.cpp" />
     <ClCompile Include="Tests\Observer-Observable\subject_remove_tests.cpp" />
     <ClCompile Include="Tests\qgl_version_tests.cpp" />
+    <ClCompile Include="Tests\Structures\basic_graph_tests.cpp" />
+    <ClCompile Include="Tests\Structures\basic_tree_map_tests.cpp" />
     <ClCompile Include="Tests\Structures\tree_helper_tests.cpp" />
     <ClCompile Include="Tests\Timing\timer_tests.cpp" />
     <ClCompile Include="Tests\Timing\time_helper_tests.cpp" />

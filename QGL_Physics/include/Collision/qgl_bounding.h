@@ -4,9 +4,9 @@
 namespace qgl::physics
 {
    /*
-    Calculates an AABB for the set of vertices. The AABB  will most-likely not 
+    Calculates an AABB for the set of vertices. The AABB  will most-likely not
     be centered at the origin.
-    This operation is slow and should only be done once. Calculate the AABB at 
+    This operation is slow and should only be done once. Calculate the AABB at
     content compile time or content load time.
     Dereferencing the ForwardIterator should yield an XMFLOAT3.
     Complexity: O(Number of vertices)
@@ -32,7 +32,7 @@ namespace qgl::physics
       auto zMax = -std::numeric_limits<float>::infinity();
 
       //For each vertex in the model:
-      while(first != last)
+      while (first != last)
       {
          auto v = XMLoadFloat3(&*first);
 
@@ -62,21 +62,7 @@ namespace qgl::physics
       auto mins = XMVectorSet(xMin, yMin, zMin, 0.0f);
       auto maxs = XMVectorSet(xMax, yMax, zMax, 0.0f);
 
-      //Calculate the center:
-      //[x1 + x2, y1 + y2, z1 + z2] / 2
-      auto center = (mins + maxs) / 2.0f;
-
-      //Calculate the extents:
-      //[|x1| + |x2|, |y1| + |y2|, |z1| + |z2|] / 2
-      auto extents = (XMVectorAbs(mins) + XMVectorAbs(maxs)) / 2.0f;
-
-      //Store the center and extents in XMFLOAT3 so we can create the AABB.
-      XMFLOAT3 aabbCenter;
-      XMFLOAT3 aabbExtents;
-      XMStoreFloat3(&aabbCenter, center);
-      XMStoreFloat3(&aabbExtents, extents);
-
-      return DirectX::BoundingBox(aabbCenter, aabbExtents);
+      return math::aabb_from_minmax(mins, maxs);
    }
 
    /*
@@ -92,7 +78,7 @@ namespace qgl::physics
                                         ForwardIterator last)
    {
       using namespace DirectX;
-      
+
       //Accumulate all vertex positions. Used to calculate the sphere center.
       XMVECTOR accum = XMVectorZero();
       //Count the number of vertices as we go.
@@ -100,7 +86,7 @@ namespace qgl::physics
       //Keep track of the vertex farthest away from the origin.
       XMVECTOR largestVert = -1 * XMVectorSplatInfinity();
       auto largestVertMag = -1 * std::numeric_limits<float>::infinity();
-      
+
       //For each vertex in the model:
       while (first != last)
       {
@@ -132,4 +118,13 @@ namespace qgl::physics
       XMStoreFloat3(&sphereCenter, center);
       return BoundingSphere(sphereCenter, XMVectorGetX(radius));
    }
+
+   /*
+    Transforms a bounding box and returns an AABB large enough to hold the
+    transformed bounding box.
+    */
+   DirectX::BoundingBox XM_CALLCONV resize_aabb(
+      const DirectX::BoundingBox& aabb,
+      DirectX::FXMMATRIX xform);
+   
 }

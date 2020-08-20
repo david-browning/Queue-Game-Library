@@ -92,10 +92,11 @@ may support ARM64.
 * Test qgl::icommand.
 * Test icontent_file::erase.
 * Test content_project_entry.
-* Test math functions, comparators and template variables.
 * Test static pointer.
 * Test component.
 * Test tree_map and unordered_tree_map
+* Test basic_graph_map
+* Test tree helpers
 * Test xform_tree
 * Verify converting timer's elapsed ticks to seconds is always accurate to 8  
   decimal places. 

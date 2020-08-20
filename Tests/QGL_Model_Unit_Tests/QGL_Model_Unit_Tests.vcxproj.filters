@@ -63,6 +63,12 @@
     <ClCompile Include="Tests\Structures\tree_helper_tests.cpp">
       <Filter>Tests\Structures</Filter>
     </ClCompile>
+    <ClCompile Include="Tests\Structures\basic_graph_tests.cpp">
+      <Filter>Tests\Structures</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Structures\basic_tree_map_tests.cpp">
+      <Filter>Tests\Structures</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

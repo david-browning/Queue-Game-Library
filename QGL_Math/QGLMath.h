@@ -6,3 +6,4 @@
 #include "include/qgl_rational.h"
 
 #include "include/Shapes/qgl_rectangle.h"
+#include "include/Shapes/qgl_aabb_helpers.h"

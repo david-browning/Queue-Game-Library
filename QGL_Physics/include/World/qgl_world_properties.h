@@ -1,7 +1,7 @@
 #pragma once
 #include "include/qgl_physics_include.h"
 
-namespace qgl::physic
+namespace qgl::physics
 {
    /*
     World properties.

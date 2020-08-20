@@ -180,6 +180,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+    <ClCompile Include="qgl_bounding.cpp" />
     <ClCompile Include="QGL_PhysicsRT.cpp" />
   </ItemGroup>
   <ItemGroup>
