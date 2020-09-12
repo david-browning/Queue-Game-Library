@@ -12,10 +12,10 @@ namespace QGL_Physics_UnitTests
       public:
       TEST_METHOD(CreateEmptyTree)
       {
-         collision::bvh_tree<DirectX::BoundingSphere,
-            collision::test_intersects,
-            collision::test_volume,
-            collision::test_bound> emptyTree;
+         bvh_tree<DirectX::BoundingSphere,
+            test_intersects,
+            test_volume,
+            test_bound> emptyTree;
 
          Assert::IsTrue(emptyTree.begin() == emptyTree.end(),
                         L"The begin and end iterators should be equal.");
@@ -33,10 +33,10 @@ namespace QGL_Physics_UnitTests
 
       TEST_METHOD(CreateRootTree)
       {
-         collision::bvh_tree<DirectX::BoundingSphere,
-            collision::test_intersects,
-            collision::test_volume,
-            collision::test_bound> rootTree;
+         bvh_tree<DirectX::BoundingSphere,
+            test_intersects,
+            test_volume,
+            test_bound> rootTree;
 
          DirectX::BoundingSphere testSphere
          {
@@ -89,10 +89,10 @@ namespace QGL_Physics_UnitTests
             0.49f
          };
 
-         collision::bvh_tree<DirectX::BoundingSphere,
-            collision::test_intersects,
-            collision::test_volume,
-            collision::test_bound> bvh;
+         bvh_tree<DirectX::BoundingSphere,
+            test_intersects,
+            test_volume,
+            test_bound> bvh;
          bvh.insert(sphere1);
          bvh.insert(sphere2);
 
@@ -163,10 +163,10 @@ namespace QGL_Physics_UnitTests
             1.0f
          };
 
-         collision::bvh_tree<DirectX::BoundingSphere,
-            collision::test_intersects,
-            collision::test_volume,
-            collision::test_bound> bvh;
+         bvh_tree<DirectX::BoundingSphere,
+            test_intersects,
+            test_volume,
+            test_bound> bvh;
          bvh.insert(sphereA);
          bvh.insert(sphereB);
          bvh.insert(sphereC); 
@@ -221,10 +221,10 @@ namespace QGL_Physics_UnitTests
             1.0f
          };
 
-         collision::bvh_tree<DirectX::BoundingSphere,
-            collision::test_intersects,
-            collision::test_volume,
-            collision::test_bound> bvh;
+         bvh_tree<DirectX::BoundingSphere,
+            test_intersects,
+            test_volume,
+            test_bound> bvh;
          bvh.insert(sphereA);
          bvh.insert(sphereB);
          bvh.insert(sphereC);
@@ -279,10 +279,10 @@ namespace QGL_Physics_UnitTests
             1.0f
          };
 
-         collision::bvh_tree<DirectX::BoundingSphere,
-            collision::test_intersects,
-            collision::test_volume,
-            collision::test_bound> bvh;
+         bvh_tree<DirectX::BoundingSphere,
+            test_intersects,
+            test_volume,
+            test_bound> bvh;
          bvh.insert(sphereA);
          bvh.insert(sphereB);
          bvh.insert(sphereC);

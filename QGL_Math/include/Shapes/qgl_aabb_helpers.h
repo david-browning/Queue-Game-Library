@@ -9,7 +9,7 @@ namespace qgl::math
     Calculates an AABB from the smallest and largest distances from the 
     origin. 
     */
-   DirectX::BoundingBox XM_CALLCONV aabb_from_minmax(
+   extern QGL_MATH_API DirectX::BoundingBox XM_CALLCONV aabb_from_minmax(
       DirectX::FXMVECTOR mins,
       DirectX::FXMVECTOR maxs);
 
@@ -17,7 +17,7 @@ namespace qgl::math
     Calculates the 8 vertices in a bounding box and fills an array with
     the results.
     */
-   void XM_CALLCONV aabb_verts(
+   extern QGL_MATH_API void XM_CALLCONV aabb_verts(
       const DirectX::BoundingBox& aabb,
       DirectX::XMVECTOR verts[VERTS_PER_BOX]);
 }

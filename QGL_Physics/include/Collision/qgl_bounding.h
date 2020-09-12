@@ -84,8 +84,8 @@ namespace qgl::physics
       //Count the number of vertices as we go.
       size_t numVerts = 0;
       //Keep track of the vertex farthest away from the origin.
-      XMVECTOR largestVert = -1 * XMVectorSplatInfinity();
-      auto largestVertMag = -1 * std::numeric_limits<float>::infinity();
+      XMVECTOR largestVert = DirectX::operator*(-1.0f, XMVectorSplatInfinity());
+      auto largestVertMag = -1.0f * std::numeric_limits<float>::infinity();
 
       //For each vertex in the model:
       while (first != last)
