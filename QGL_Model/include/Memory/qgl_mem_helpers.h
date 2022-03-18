@@ -1,30 +1,17 @@
 #pragma once
 #include "include/qgl_model_include.h"
+#include "include/Impl/qgl_mem_helpers_impl.h"
 #include <bitset>
 
 namespace qgl::mem
 {
-   namespace internal
-   {
-      /*
-       Compile-time endianness swap based on http://stackoverflow.com/a/36937049
-       From https://en.cppreference.com/w/cpp/language/fold
-       */
-      template<class T, std::size_t... N>
-      constexpr T bswap(T i, std::index_sequence<N...>)
-      {
-         return (((i >> N * CHAR_BIT & std::uint8_t(-1)) << 
-            (sizeof(T) - 1 - N)*CHAR_BIT) | ...);
-      }
-   }
-
    /*
     Swaps the endianess of a value.
     */
    template<typename T>
    constexpr T bswap(T val)
    {
-      return internal::bswap<T>(val, std::make_index_sequence<sizeof(T)>{});
+      return impl::bswap<T>(val, std::make_index_sequence<sizeof(T)>{});
    }
 
    static_assert(bswap<uint16_t>(0x1234u) == static_cast<uint16_t>(0x3412u));
@@ -48,23 +35,7 @@ namespace qgl::mem
    {
       return n != 0 && ((n & (n - 1)) == 0);
    }
-
-
-   /*
-    Prints a message to the debug output.
-    */
-   extern QGL_MODEL_API void print_mem_leak(uintptr_t address);
-
-   /*
-    Prints a message to the debug output.
-    */
-   extern QGL_MODEL_API void print_mem_dealloc(uintptr_t address);
-
-   /*
-    Prints a message to the debug output.
-    */
-   extern QGL_MODEL_API void print_mem_alloc(uintptr_t address);
-
+  
    /*
     Sets each element in the array to val.
     */
@@ -88,7 +59,7 @@ namespace qgl::mem
     */
    template<typename T, typename SizeT = size_t>
    void copy_elements(T* const dest,
-                      const T* source,
+                      const T* const source,
                       SizeT numElements)
    {
       for (SizeT i = 0; i < numElements; i++)
@@ -102,7 +73,7 @@ namespace qgl::mem
     The returned count does not include the null terminator.
     str: The string of elements to search.
     terminator: The value to search for.
-    i: Recursive parameter. Index of which element to check. The caller can set
+    i: Recursive parameter. index of which element to check. The caller can set
     this to something besides 0 to start searching str at an offset.
     */
    template<typename T, typename SizeT = size_t>
@@ -143,7 +114,7 @@ namespace qgl::mem
     Clears the idx'th bit in val.
     */
    template<typename T, typename SizeT = size_t>
-   constexpr T clear_bit(T val, SizeT idx)
+   constexpr T clear_bit(T val, SizeT idx) noexcept
    {
       return val | (T(1) << idx);
    }
@@ -152,7 +123,7 @@ namespace qgl::mem
     Sets the idx'th bit in val.
     */
    template<typename T, typename SizeT = size_t>
-   constexpr T set_bit(T val, SizeT idx)
+   constexpr T set_bit(T val, SizeT idx) noexcept
    {
       return val & ~(T(1) << idx);
    }
@@ -161,7 +132,7 @@ namespace qgl::mem
     Toggles the idx'th bit in val.
     */
    template<typename T, typename SizeT = size_t>
-   constexpr T toggle_bit(T val, SizeT idx)
+   constexpr T toggle_bit(T val, SizeT idx) noexcept
    {
       return val ^ (T(1) << idx);
    }
@@ -170,8 +141,55 @@ namespace qgl::mem
     Returns true if the idx'th bit is set in val.
     */
    template<typename T, typename SizeT = size_t>
-   constexpr bool is_bit_set(T val, size_t idx)
+   constexpr bool is_bit_set(T val, size_t idx) noexcept
    {
       return (val & (T(1) << idx)) != 0;
    }
+
+   /*
+    Returns the index of the first most significant bit.
+    The number of leading zeros will depend on the type "T".
+    */
+   template<typename T>
+   constexpr size_t msb(T val) noexcept
+   {
+      size_t ret = (sizeof(T) * CHAR_BIT)  - 1;
+      auto mask = static_cast<T>(1) << ret;
+      while (ret > 0 && (val & mask) == 0)
+      {
+         ret--;
+         mask = static_cast<T>(1) << ret;
+      }
+
+      return ret;
+   }
+
+   static_assert(3 == msb<uint8_t>(13), "msb() returned the wrong result.");
+
+   /*
+    Converts a type to its binary representation.
+    */
+   template<typename From, typename To>
+   struct bit_convert
+   {
+      public:
+      static_assert(sizeof(From) == sizeof(To),
+         "To and From should be the same size.");
+
+      constexpr bit_convert(From f) :
+         f_value(f)
+      {}
+
+      constexpr To to() const noexcept
+      {
+         return t_value;
+      }
+
+      private:
+      union
+      {
+         From f_value;
+         To t_value;
+      };
+   };
 }

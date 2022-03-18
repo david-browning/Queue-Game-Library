@@ -7,32 +7,48 @@ namespace qgl::graphics::gpu
    class copy_command_list : public icommand_list
    {
       public:
-      copy_command_list(static_ptr_ref<igraphics_device> dev_p,
-                        static_ptr_ref<ipso> pipelineState_p,
-                        UINT nodeMask = 0);
+      copy_command_list(graphics_device_ptr& dev_p,
+                        const std::shared_ptr<gpu::pso>& pipelineState_p,
+                        size_t nodeMask = 0) :
+         icommand_list(dev_p, D3D12_COMMAND_LIST_TYPE_COPY,
+            pipelineState_p, nodeMask)
+      {
+      }
 
       copy_command_list(const copy_command_list&) = delete;
 
-      copy_command_list(copy_command_list&&);
+      copy_command_list(copy_command_list&&) = default;
 
-      virtual ~copy_command_list() noexcept;
+      virtual ~copy_command_list() noexcept = default;
+
+      virtual void begin()
+      {
+         reset();
+      }
 
       /*
        Throws exception.
        */
-      virtual void root_sig(static_ptr_ref<root_signature> sig);
+      virtual void root_sig(root_signature& sig)
+      {
+         throw std::runtime_error(
+            "Copy command lists do not support root signatures.");
+      }
 
       /*
        Throws exception.
        */
-      virtual void table(static_ptr_ref<descriptor_table> tbl);
+      virtual void table(descriptor_table& tbl)
+      {
+         throw std::runtime_error(
+            "Copy command lists do not support descriptor tables.");
+      }
 
-      virtual void begin();
+      void end()
+      {
 
-      void end();
+      }
 
       private:
-      struct impl;
-      impl* m_impl_p;
    };
 }

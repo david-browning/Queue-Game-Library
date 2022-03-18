@@ -20,8 +20,8 @@ namespace qgl::content::buffers
       {
          using std::swap;
          swap(l.Flags, r.Flags);
-         swap(l.Reserved1, r.Reserved1);
-         swap(l.Reserved2, r.Reserved2);
+         swap(l.reserved1, r.reserved1);
+         swap(l.reserved2, r.reserved2);
 
          swap(l.TopLeftX, r.TopLeftX);
          swap(l.TopLeftY, r.TopLeftY);
@@ -42,8 +42,8 @@ namespace qgl::content::buffers
                                     const RECTANGLE_BUFFER& r) noexcept
       {
          return l.Flags == r.Flags &&
-            l.Reserved1 == r.Reserved1 &&
-            l.Reserved2 == r.Reserved2 &&
+            l.reserved1 == r.reserved1 &&
+            l.reserved2 == r.reserved2 &&
             l.TopLeftX == r.TopLeftX &&
             l.TopLeftY == r.TopLeftY &&
             l.TopLeftZ == r.TopLeftZ &&
@@ -53,8 +53,8 @@ namespace qgl::content::buffers
       }
 
       uint8_t Flags;
-      uint16_t Reserved1;
-      uint32_t Reserved2;
+      uint16_t reserved1;
+      uint32_t reserved2;
 
       qgl::math::rational<int32_t> TopLeftX;
       qgl::math::rational<int32_t> TopLeftY;

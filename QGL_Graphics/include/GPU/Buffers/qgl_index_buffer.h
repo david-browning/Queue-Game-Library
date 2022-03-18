@@ -3,14 +3,14 @@
 #include "include/GPU/Buffers/igpu_buffer.h"
 #include "include/Interfaces/qgl_igraphics_device.h"
 
-namespace qgl::graphics::gpu::buffers
+namespace qgl::graphics::gpu
 {
    template<typename IndexT>
    class index_buffer : public igpu_buffer<D3D12_SUBRESOURCE_DATA,
       D3D12_INDEX_BUFFER_VIEW,
       d3d_resource>
    {
-      //Index size cannot only be 1, 2, or 4 bytes.
+      //index size cannot only be 1, 2, or 4 bytes.
       static_assert(std::is_integral<IndexT>::value && (
          sizeof(IndexT) == sizeof(uint8_t) ||
          sizeof(IndexT) == sizeof(uint16_t) ||
@@ -44,7 +44,7 @@ namespace qgl::graphics::gpu::buffers
       }
 
       /*
-       Index buffers should be unique.
+       index buffers should be unique.
        */
       index_buffer(const index_buffer&) = delete;
 
@@ -110,7 +110,7 @@ namespace qgl::graphics::gpu::buffers
             IID_PPV_ARGS(put())));
 
          m_viewDesc.BufferLocation = get()->GetGPUVirtualAddress();
-         m_viewDesc.Format = index_format();
+         m_viewDesc.format = index_format();
          m_viewDesc.SizeInBytes = m_indexDataSize;
       }
 

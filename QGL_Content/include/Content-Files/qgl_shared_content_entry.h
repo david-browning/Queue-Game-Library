@@ -12,7 +12,7 @@ namespace qgl::content::entries
    class shared_content_entry
    {
       public:
-      constexpr shared_content_entry();
+      shared_content_entry();
 
       /*
        Parses the string's metadata and copies the relative path to internal

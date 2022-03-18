@@ -1,8 +1,6 @@
 #pragma once
 #include "include/Interfaces/qgl_interface.h"
 #include "include/Memory/qgl_mem.h"
-#include "include/Memory/qgl_static_ptr.h"
-#include "include/Memory/qgl_static_ptr_ref.h"
 
 #include "include/qgl_version.h"
 #include "include/qgl_component.h"
@@ -18,3 +16,5 @@
 #include "include/Structures/qgl_tree_helpers.h"
 #include "include/Structures/qgl_basic_tree_map.h"
 #include "include/Structures/qgl_basic_graph.h"
+
+#include "include/qgl_misc_helpers.h"

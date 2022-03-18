@@ -6,14 +6,16 @@ namespace qgl::graphics::gpu
    /*
     ibindable classes are meant to be attached to a root signature.
     */
-   class QGL_GRAPHICS_API ibindable
+   class ibindable
    {
       public:
+      using index_type = typename UINT;
+
       /*
        Constructor.
-       rootIndex: Index into the root signature where to bind this.
+       rootIndex: index into the root signature where to bind this.
        */
-      ibindable(UINT rootIndex) :
+      ibindable(index_type rootIndex) :
          m_rootIndex(rootIndex)
       {
 
@@ -38,7 +40,7 @@ namespace qgl::graphics::gpu
       /*
        Returns the root signature index where this is bound.
        */
-      UINT root_index() const noexcept
+      index_type root_index() const noexcept
       {
          return m_rootIndex;
       }
@@ -47,9 +49,9 @@ namespace qgl::graphics::gpu
        Returns a const pointer to a D3D root parameter. The root signature uses
        this to bind this to the root signature.
        */
-      virtual const CD3DX12_ROOT_PARAMETER1* root_param() const = 0;
+      virtual const CD3DX12_ROOT_PARAMETER1& root_param() const = 0;
 
       private:
-      UINT m_rootIndex;
+      index_type m_rootIndex;
    };
 }

@@ -18,16 +18,19 @@
   <ItemGroup>
     <ClCompile Include="UnitTestApp.xaml.cpp" />
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="Tests\comparison_function_tests.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
-    <ClCompile Include="Tests\math_function_tests.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
     <ClCompile Include="Tests\rational_number_tests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
     <ClCompile Include="Tests\rectangle_tests.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="dx_comparator_tests.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="approx_equal_tests.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="math_func_tests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
   </ItemGroup>

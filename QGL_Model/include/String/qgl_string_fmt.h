@@ -10,7 +10,7 @@ namespace qgl
     Returns the stream.
     */
    template<class Stream>
-   static Stream& toprintf(Stream& ostrm, const sys_char* fmt)
+   Stream& toprintf(Stream& ostrm, const sys_char* fmt)
    {
       ostrm << fmt;
       return ostrm;
@@ -20,7 +20,7 @@ namespace qgl
     
     */
    template<class Stream, typename Param, typename... Params>
-   static Stream& toprintf(Stream& ostrm,
+   Stream& toprintf(Stream& ostrm,
                     const sys_char* fmt,
                     const Param& arg,
                     const Params&... args)
@@ -41,13 +41,13 @@ namespace qgl
       return ostrm;
    }
 
-   static sys_str tsprintf(const sys_char* fmt)
+   inline sys_str tsprintf(const sys_char* fmt)
    {
       return sys_str(fmt);
    }
 
    template<typename... Params>
-   static sys_str tsprintf(const sys_char* fmt,
+   sys_str tsprintf(const sys_char* fmt,
                     const Params&... args)
    {
       std::basic_stringstream<sys_char> ss;

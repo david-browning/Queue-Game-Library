@@ -2,13 +2,12 @@
 #include "include/qgl_graphics_include.h"
 #include "include/GPU/Buffers/igpu_buffer.h"
 
-namespace qgl::content
+namespace qgl::graphics
 {
-   class QGL_GRAPHICS_API texture :
-      public graphics::gpu::buffers::igpu_buffer<D3D12_RESOURCE_DESC,
+   class texture : public gpu::igpu_buffer<
+      D3D12_RESOURCE_DESC,
       D3D12_SHADER_RESOURCE_VIEW_DESC,
-      graphics::d3d_resource>,
-      public content_item
+      d3d_resource>
    {
       public:
       using ResourceDescriptionT = D3D12_RESOURCE_DESC;
@@ -16,20 +15,23 @@ namespace qgl::content
 
       texture(const void* textureData,
               size_t textureSizeBytes,
-              graphics::d3d_device* dev_p,
-              CONTENT_LOADER_IDS loaderID,
-              const wchar_t* name,
-              const content_id id);
+              const winrt::com_ptr<d3d_device>& dev_p);
 
-      texture(const texture& r);
+      texture(const texture& r) = default;
 
-      texture(texture&& r);
+      texture(texture&& r) = default;
 
-      virtual ~texture();
+      virtual ~texture() noexcept = default;
 
-      virtual const ResourceDescriptionT* description() const;
+      virtual const ResourceDescriptionT* description() const
+      {
+         return &m_textureDesc;
+      }
 
-      virtual const ViewDescriptionT* view() const;
+      virtual const ViewDescriptionT* view() const
+      {
+         return &m_viewDesc;
+      }
 
       size_t width() const noexcept;
 
@@ -48,9 +50,6 @@ namespace qgl::content
       bool cube() const noexcept;
 
       private:
-      struct impl;
-      impl* m_impl_p;
-
       ResourceDescriptionT m_textureDesc;
       ViewDescriptionT m_viewDesc;
 

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+   <Type Name="qgl::physics::bvh_tree&lt;*&gt;::node_type">
+      <DisplayString>{{ Allocated={allocated}, Height={m_height}, IsLeaf={m_height == 0} }}</DisplayString>
+   </Type>
+</AutoVisualizer>

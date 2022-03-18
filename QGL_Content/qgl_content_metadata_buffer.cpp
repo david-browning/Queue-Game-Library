@@ -21,10 +21,10 @@ namespace qgl::content
       m_reserved4(0),
       m_type(RESOURCE_TYPES::RESOURCE_TYPE_UNKNOWN),
       m_loaderID(CONTENT_LOADER_IDS::CONTENT_LOADER_ID_UNKNOWN),
-      m_compilerVersion(qgl::QGL_VERSION_LATEST)
+      m_compilerVersion(qgl::QGL_VERSION_LATEST),
+      m_guid(random_guid())
    {
       set_memory(m_name, L'\0', CONTENT_MAX_NAME_LEN);
-      winrt::check_hresult(CoCreateGuid(&m_guid));
    }
 
    CONTENT_METADATA_BUFFER::CONTENT_METADATA_BUFFER(
@@ -38,7 +38,8 @@ namespace qgl::content
       m_reserved4(0),
       m_type(type),
       m_loaderID(loaderID),
-      m_compilerVersion(qgl::QGL_VERSION_LATEST)
+      m_compilerVersion(qgl::QGL_VERSION_LATEST),
+      m_guid(random_guid())
    {
       auto nameLength = mem_length(name, L'\0');
       if (nameLength <= CONTENT_MAX_NAME_LEN)
@@ -50,8 +51,6 @@ namespace qgl::content
       {
          throw std::domain_error("The name is too long.");
       }
-
-      winrt::check_hresult(CoCreateGuid(&m_guid));
    }
 
    CONTENT_METADATA_BUFFER::CONTENT_METADATA_BUFFER(
@@ -63,10 +62,10 @@ namespace qgl::content
       m_reserved4(r.m_reserved4),
       m_type(r.m_type),
       m_loaderID(r.m_loaderID),
-      m_compilerVersion(r.version())
+      m_compilerVersion(r.version()),
+      m_guid(r.m_guid)
    {
       copy_elements<wchar_t>(m_name, r.m_name, CONTENT_MAX_NAME_LEN);
-      copy_elements<GUID>(&m_guid, &r.m_guid, 1);
    }
 
    CONTENT_METADATA_BUFFER::CONTENT_METADATA_BUFFER(
@@ -78,10 +77,10 @@ namespace qgl::content
       m_reserved4(r.m_reserved4),
       m_type(r.m_type),
       m_loaderID(r.m_loaderID),
-      m_compilerVersion(r.version())
+      m_compilerVersion(r.version()),
+      m_guid(std::move(r.m_guid))
    {
       copy_elements<wchar_t>(m_name, r.m_name, CONTENT_MAX_NAME_LEN);
-      copy_elements<GUID>(&m_guid, &r.m_guid, 1);
    }
 
    bool CONTENT_METADATA_BUFFER::content_visible() const noexcept
@@ -167,9 +166,9 @@ namespace qgl::content
       m_compilerVersion = v;
    }
 
-   const GUID* CONTENT_METADATA_BUFFER::guid() const noexcept
+   const qgl::guid& CONTENT_METADATA_BUFFER::guid() const noexcept
    {
-      return &m_guid;
+      return m_guid;
    }
 
    bool CONTENT_METADATA_BUFFER::shared() const noexcept
@@ -182,22 +181,5 @@ namespace qgl::content
       auto bit = static_cast<uint8_t>(v ? 1 : 0);
       uint8_t oldFlags = m_flags1 & ~IS_SHARED_FLAG;
       m_flags1 = oldFlags | (bit << 7);
-   }
-
-   winrt::hstring CONTENT_METADATA_BUFFER::guid_str() const
-   {
-      OLECHAR* guidStr = nullptr;
-      auto hr = StringFromCLSID(m_guid, &guidStr);
-      if (SUCCEEDED(hr))
-      {
-         winrt::hstring ret{ guidStr };
-         CoTaskMemFree(guidStr);
-         return ret;
-      }
-      else
-      {
-         CoTaskMemFree(guidStr);
-         winrt::throw_hresult(hr);
-      }
    }
 }

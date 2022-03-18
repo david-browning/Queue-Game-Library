@@ -1,55 +1,80 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include "include/Content/Content-Buffers/qgl_shader_header_buffer.h"
+#include "include/Content/Content-Descriptors/qgl_shader_descriptor.h"
 
-namespace qgl::content
+namespace qgl::graphics
 {
-   class QGL_GRAPHICS_API shader : public content_item
+   class shader
    {
       public:
+      using shader_vector = typename std::vector<std::byte>;
+
       /*
-       Creates a shader from the give shader byte code. The byte code must be 
+       Creates a shader from the give shader byte code. The byte code must be
        compiled. It cannot be source code.
        */
-      shader(const buffers::SHADER_HEADER_BUFFER* hdr_p,
-             const void* data,
-             size_t dataSizeBytes,
-             const wchar_t* name,
-             content_id id);
+      shader(descriptors::shader_descriptor&& desc,
+         void* shaderData,
+         size_t shaderSize) :
+         m_dsc(std::forward<descriptors::shader_descriptor>(desc))
+      {
+         m_shaderData.resize(shaderSize);
+         memcpy(m_shaderData.data(), shaderData, shaderSize);
+         m_byteCode.BytecodeLength = m_shaderData.size();
+         m_byteCode.pShaderBytecode = m_shaderData.data();
+      }
+
+      shader(descriptors::shader_descriptor&& desc,
+        shader_vector&& shaderData) :
+         m_dsc(std::forward<descriptors::shader_descriptor>(desc)),
+         m_shaderData(std::forward<shader_vector>(shaderData))
+      {
+         m_byteCode.BytecodeLength = m_shaderData.size();
+         m_byteCode.pShaderBytecode = m_shaderData.data();
+      }
 
       /*
        Copy constructor.
        */
-      shader(const shader&);
+      shader(const shader&) = delete;
 
       /*
        Move constructor.
        */
-      shader(shader&&);
+      shader(shader&&) = default;
 
       /*
        Destructor.
        */
-      virtual ~shader() noexcept;
-
-      /*
-       Returns a const pointer to the D3D shader byte code.
-       */
-      const D3D12_SHADER_BYTECODE* byte_code() const noexcept;
+      ~shader() noexcept = default;
 
       /*
        Returns the type of shader.
        */
-      buffers::SHADER_TYPES type() const noexcept;
+      SHADER_TYPES type() const noexcept
+      {
+         return m_dsc.type;
+      }
+
+      /*
+       Returns a const reference to the D3D shader byte code.
+       */
+      const D3D12_SHADER_BYTECODE& byte_code() const noexcept
+      {
+         return m_byteCode;
+      }
 
       /*
        Returns the shader vendor.
        */
-      buffers::SHADER_VENDORS vendor() const noexcept;
+      SHADER_VENDORS vendor() const noexcept
+      {
+         return m_dsc.vendor;
+      }
 
       private:
-      buffers::SHADER_HEADER_BUFFER m_header;
+      descriptors::shader_descriptor m_dsc;
+      shader_vector m_shaderData;
       D3D12_SHADER_BYTECODE m_byteCode;
-      uint8_t* m_data = nullptr;
    };
 }

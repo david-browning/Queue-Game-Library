@@ -1,10 +1,8 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include "include/Content/qgl_sampler.h"
-#include "include/Content/qgl_texture.h"
-#include "include/GPU/Render/qgl_depth_stencil.h"
+#include "include/Interfaces/qgl_igraphics_device.h"
+#include "include/GPU/Buffers/igpu_buffer.h"
 #include "include/GPU/Buffers/qgl_const_buffer.h"
-#include "include/GPU/Render/qgl_render_target.h"
 
 namespace qgl::graphics::gpu
 {
@@ -21,18 +19,35 @@ namespace qgl::graphics::gpu
     The heap type is ID3D12DescriptorHeap. Calling get() returns a pointer to
     that. The heap description is D3D12_DESCRIPTOR_HEAP_DESC.
     */
-   template<D3D12_DESCRIPTOR_HEAP_TYPE DescriptorHeapT,
+   template<
+      D3D12_DESCRIPTOR_HEAP_TYPE DescriptorHeapT,
       D3D12_DESCRIPTOR_HEAP_FLAGS Flag>
-      class descriptor_heap
+   class descriptor_heap
    {
       public:
+      using dev_ptr = typename winrt::com_ptr<d3d_device>;
+      using depth_stencil_type = typename igpu_buffer<
+         CD3DX12_RESOURCE_DESC,
+         D3D12_DEPTH_STENCIL_VIEW_DESC,
+         d3d_resource>;
+      using render_target_type = typename igpu_buffer<
+         DXGI_SWAP_CHAIN_DESC1,
+         D3D12_RENDER_TARGET_VIEW_DESC,
+         d3d_render_target>;
+      using sampler_type = typename igpu_buffer<
+         D3D12_SAMPLER_DESC,
+         nullptr_t,
+         d3d_resource>;
+      using texture_type = typename igpu_buffer<D3D12_RESOURCE_DESC,
+         D3D12_SHADER_RESOURCE_VIEW_DESC, d3d_resource>;
+
       /*
        dev_p: Pointer to a D3D12 Device.
        numEntries: Number of entries in the descriptor heap. For a DSV or RTV
         heap, set this to the number of render targets.
        nodeMask: GPU mask where to put the descriptor heap.
        */
-      descriptor_heap(static_ptr_ref<d3d_device> dev_p,
+      descriptor_heap(const dev_ptr& dev_p,
                       size_t numEntries,
                       UINT nodeMask = 0) :
          m_heapSize(numEntries)
@@ -68,14 +83,49 @@ namespace qgl::graphics::gpu
        Adds a shader resource view at the idx'th position in the descriptor
        heap.
        */
-      void insert(static_ptr_ref<igraphics_device> dev_p,
+      void insert(const graphics_device_ref& dev_p,
                   size_t idx,
-                  content::texture* textureBuffer)
+                  texture_type& textureBuffer)
       {
          auto handle = at_cpu(idx);
-         auto v = textureBuffer->view();
-         dev_p->d3d12_device()->CreateShaderResourceView(textureBuffer->get(),
-                                                         v, handle);
+         dev_p.lock()->d3d12_device()->CreateShaderResourceView(
+            textureBuffer.get(), textureBuffer.view(), handle);
+      }
+
+      /*
+       Adds a sampler view at the idx'th position in the descriptor heap.
+       */
+      void insert(const graphics_device_ref& dev_p,
+                  size_t idx,
+                  sampler_type& samplerBuffer)
+      {
+         auto handle = at_cpu(idx);
+         dev_p.lock()->d3d12_device()->CreateSampler(
+            samplerBuffer.description(), handle);
+      }
+
+      /*
+       Adds a depth stencil view at the idx'th position in the descriptor heap.
+       */
+      void insert(const graphics_device_ref& dev_p,
+                  size_t idx,
+                  depth_stencil_type& depthStencil)
+      {
+         auto handle = at_cpu(idx);
+         dev_p.lock()->d3d12_device()->CreateDepthStencilView(
+            depthStencil.get(), depthStencil.view(), handle);
+      }
+
+      /*
+       Adds a render target view at the idx'th position in the descriptor heap.
+       */
+      void insert(const std::weak_ptr<igraphics_device>& dev_p,
+                  size_t idx,
+                  render_target_type& renderTarget)
+      {
+         auto handle = at_cpu(idx);
+         dev_p.lock()->d3d12_device()->CreateRenderTargetView(
+            renderTarget.get(), renderTarget.view(), handle);
       }
 
       /*
@@ -83,53 +133,13 @@ namespace qgl::graphics::gpu
        heap.
        */
       template<typename T>
-      void insert(static_ptr_ref<igraphics_device> dev_p,
+      void insert(const graphics_device_ref& dev_p,
                   size_t idx,
-                  const gpu::buffers::const_buffer<T>* constBuffer)
+                  const const_buffer<T>& constBuffer)
       {
          auto handle = at_cpu(idx);
-         auto v = constBuffer->view();
-         dev_p->d3d12_device()->CreateConstantBufferView(v, handle);
-      }
-
-      /*
-       Adds a sampler view at the idx'th position in the descriptor heap.
-       */
-      void insert(static_ptr_ref<igraphics_device> dev_p,
-                  size_t idx,
-                  const content::sampler* samplerBuffer)
-      {
-         auto handle = at_cpu(idx);
-         auto d = samplerBuffer->description();
-         dev_p->d3d12_device()->CreateSampler(d, handle);
-      }
-
-      /*
-       Adds a depth stencil view at the idx'th position in the descriptor heap.
-       */
-      void insert(static_ptr_ref<igraphics_device> dev_p,
-                  size_t idx,
-                  graphics::gpu::render::depth_stencil* depthStencil)
-      {
-         auto handle = at_cpu(idx);
-         auto v = depthStencil->view();
-         dev_p->d3d12_device()->CreateDepthStencilView(depthStencil->get(), 
-                                                       v, 
-                                                       handle);
-      }
-
-      /*
-       Adds a render target view at the idx'th position in the descriptor heap.
-       */
-      void insert(static_ptr_ref<igraphics_device> dev_p,
-                  size_t idx,
-                  render::render_target* renderTarget)
-      {
-         auto handle = at_cpu(idx);
-         auto v = renderTarget->view();
-         dev_p->d3d12_device()->CreateRenderTargetView(renderTarget->get(), 
-                                                       v,
-                                                       handle);
+         dev_p.lock()->d3d12_device()->CreateConstantBufferView(
+            constBuffer.view(), handle);
       }
 
       /*
@@ -169,7 +179,7 @@ namespace qgl::graphics::gpu
       }
 
       private:
-      void p_allocate(static_ptr_ref<d3d_device> dev_p,
+      void p_allocate(const dev_ptr& dev_p,
                       UINT nodeMask)
       {
          //Create the description

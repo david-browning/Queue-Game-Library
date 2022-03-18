@@ -4,14 +4,17 @@
 
 namespace qgl::graphics::gpu
 {
-   class QGL_GRAPHICS_API rtv_descriptor_heap : 
-      public descriptor_heap<D3D12_DESCRIPTOR_HEAP_TYPE_RTV,
-                             D3D12_DESCRIPTOR_HEAP_FLAG_NONE>
+   class rtv_descriptor_heap : public descriptor_heap<
+      D3D12_DESCRIPTOR_HEAP_TYPE_RTV,
+      D3D12_DESCRIPTOR_HEAP_FLAG_NONE>
    {
       public:
-      rtv_descriptor_heap(static_ptr_ref<d3d_device> dev_p,
+      rtv_descriptor_heap(const winrt::com_ptr<d3d_device>& dev_p,
                           size_t numEntries,
-                          UINT nodeMask = 0);
+                          UINT nodeMask = 0) :
+         descriptor_heap(dev_p, numEntries, nodeMask)
+      {
+      }
 
       rtv_descriptor_heap(const rtv_descriptor_heap&) = default;
 

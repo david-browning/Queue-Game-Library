@@ -1,19 +1,36 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include "include/Content/Content-Buffers/qgl_blender_buffer.h"
+#include "include/Content/Content-Descriptors/qgl_blender_descriptor.h"
 
-namespace qgl::graphics::gpu::render
+namespace qgl::graphics::gpu
 {
    /*
     The blender provides the parameters describing how to blend pixels.
     */
-   class QGL_GRAPHICS_API blender
+   class blender
    {
       public:
       /*
        Constructs a blend using the given buffer.
        */
-      blender(const qgl::content::buffers::BLENDER_BUFFER* buff);
+      blender(const descriptors::blender_descriptor& buff) :
+         m_desc(),
+         m_mask(UINT_MAX)
+      {
+         m_desc.AlphaToCoverageEnable = buff.alpha_to_coverage;
+         m_desc.IndependentBlendEnable = buff.independent_blend;
+
+         auto descs = buff.blend_descriptions;
+         for (size_t i = 0; i < descriptors::NUM_RENDER_TARGETS; i++)
+         {
+            m_desc.RenderTarget[i] = descs[i].d3d_version();
+         }
+
+         for (auto i = 0; i < 4; i++)
+         {
+            m_blendFactor[i] = static_cast<float>(buff.blend_factor[i]);
+         }
+      }
 
       /*
        Copy constructor.
@@ -34,15 +51,24 @@ namespace qgl::graphics::gpu::render
        Returns a description of the blender.
        Used by a pipeline state object.
        */
-      const D3D12_BLEND_DESC* description() const;
+      const D3D12_BLEND_DESC& description() const
+      {
+         return m_desc;
+      }
 
       /*
        The sample mask for the blend state.
        Used by a pipeline state object.
        */
-      UINT mask() const noexcept;
+      UINT mask() const noexcept
+      {
+         return m_mask;
+      }
 
-      const float* blend_factor() const noexcept;
+      const float* blend_factor() const noexcept
+      {
+         return m_blendFactor;
+      }
 
       /*
        Swaps the contents of l and r.

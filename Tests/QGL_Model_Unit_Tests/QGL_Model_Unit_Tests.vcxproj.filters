@@ -57,7 +57,7 @@
     <ClCompile Include="Tests\icommand_tests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="Tests\qgl_version_tests.cpp">
+    <ClCompile Include="Tests\version_tests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
     <ClCompile Include="Tests\Structures\tree_helper_tests.cpp">
@@ -68,6 +68,12 @@
     </ClCompile>
     <ClCompile Include="Tests\Structures\basic_tree_map_tests.cpp">
       <Filter>Tests\Structures</Filter>
+    </ClCompile>
+    <ClCompile Include="guid_tests.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="misc_helpers_tests.cpp">
+      <Filter>Tests</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

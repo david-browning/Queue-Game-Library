@@ -3,9 +3,8 @@
 #include "include/GPU/Buffers/igpu_buffer.h"
 #include "include/GPU/Buffers/qgl_imappable.h"
 #include "include/Interfaces/qgl_igraphics_device.h"
-using namespace qgl::mem;
 
-namespace qgl::graphics::gpu::buffers
+namespace qgl::graphics::gpu
 {
    template<typename T>
    class const_buffer :

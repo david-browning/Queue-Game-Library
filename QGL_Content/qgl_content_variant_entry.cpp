@@ -27,7 +27,7 @@ namespace qgl::content::entries
       m_loaded(false)
    {
       m_buffer = new entries::data_content_entry(buff, numBytes);
-      m_sharedBuffer = false;
+      m_sharedBuffer = nullptr;
    }
 
    content_variant_entry::content_variant_entry(const wchar_t* sharedPath) :

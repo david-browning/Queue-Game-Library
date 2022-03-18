@@ -6,20 +6,6 @@ namespace qgl::physics
 {
    #ifdef DEBUG
    /*
-    Modifies a bounding sphere to be slightly larger.
-    */
-   class test_sphere_fatten
-   {
-      public:
-      void operator()(DirectX::BoundingSphere& toFatten)
-      {
-         toFatten.Radius *= FatMultiplier;
-      }
-
-      float FatMultiplier = 1.05f;
-   };
-
-   /*
     Returns the volume of the given bounding sphere.
     */
    class test_volume
@@ -122,7 +108,9 @@ namespace qgl::physics
             m_rightIdx(NO_NODE),
             m_height(0)
          {
-
+#ifdef DEBUG
+            allocated = false;
+#endif
          }
 
          /*
@@ -134,7 +122,9 @@ namespace qgl::physics
             m_height(0),
             m_volume(v)
          {
-
+#ifdef DEBUG
+            allocated = true;
+#endif
          }
 
          /*
@@ -149,7 +139,9 @@ namespace qgl::physics
             m_height(1),
             m_volume(v)
          {
-
+#ifdef DEBUG
+            allocated = true;
+#endif
          }
 
          /*
@@ -179,6 +171,9 @@ namespace qgl::physics
          inline node_type& operator=(node_type r) noexcept
          {
             swap(*this, r);
+#ifdef DEBUG
+            this->allocated = true;
+#endif
             return *this;
          }
 
@@ -222,7 +217,6 @@ namespace qgl::physics
             return m_height;
          }
 
-
          auto& left() noexcept
          {
             return m_leftIdx;
@@ -254,6 +248,10 @@ namespace qgl::physics
          size_t m_height;
          node_id m_leftIdx;
          node_id m_rightIdx;
+
+#ifdef DEBUG
+         bool allocated;
+#endif
       };
 
       using free_list = typename std::stack<node_id>;
@@ -272,13 +270,64 @@ namespace qgl::physics
          //Free list and list of nodes are empty.
       }
 
+      /*
+       Creates a BVH tree from the supplied bounding volumes.
+       */
+      template<class InputIterator>
+      bvh_tree(
+         InputIterator first,
+         InputIterator last,
+         intersect_func intFunc = intersect_func(),
+         cost_func costFunc = cost_func(),
+         union_func unionFunc = union_func()) :
+         m_intersectsOp(intFunc),
+         m_costOp(costFunc),
+         m_unionOp(unionFunc)
+      {
+         while (first != last)
+         {
+            insert(*first);
+            first++;
+         }
+      }
+
+      /*
+       Creates a BVH tree in an optimal way from the supplied bounding volumes.
+       */
+      template<class InputIterator, typename Compare>
+      bvh_tree(
+         InputIterator first,
+         InputIterator last,
+         Compare comp = Compare(),
+         intersect_func intFunc = intersect_func(),
+         cost_func costFunc = cost_func(),
+         union_func unionFunc = union_func()) :
+         m_intersectsOp(intFunc),
+         m_costOp(costFunc),
+         m_unionOp(unionFunc)
+      {
+         // Copy the bounding volumes into a temporary vector.
+         std::vector<volume_type> volumes{ first, last };
+
+         // Sort the vector:
+         std::sort(volumes.begin(), volumes.end(), comp);
+
+         // Alternate the sorting for the vector:
+         alternate(volumes.begin(), volumes.end());
+
+         // Insert the volumes:
+         for (const auto& v : volumes)
+         {
+            insert(v);
+         }
+      }
+
       bvh_tree(const bvh_tree&) = default;
 
       bvh_tree(bvh_tree&&) = default;
 
       ~bvh_tree() noexcept = default;
       #pragma endregion
-
 
       #pragma region Modifiers
       /*
@@ -292,13 +341,17 @@ namespace qgl::physics
          if (empty())
          {
             //Just insert this into the root. The root has node_id 0.
-            m_nodes.emplace_back(v);
+            auto parentID = alloc_node();
+            auto newParentIt = it(parentID);
+            node_type newParent(v);
+            *newParentIt = newParent;
+            return newParentIt;
          }
 
          //Find the best sibling node.
          auto sibIt = best_sibling(v);
          auto sibNode = *sibIt;
-         //The node id is just its index. Calculate the index.
+         //The node id is just its index. Calculate the ID.
          auto sibID = static_cast<node_id>(sibIt - begin());
 
          //Allocate a node to put v into.
@@ -316,8 +369,8 @@ namespace qgl::physics
          *newParentIt = newParent;
 
          //Fix up the tree
-         
-
+         std::swap(m_nodes[parentID], m_nodes[sibID]);
+         std::swap(m_nodes[parentID], m_nodes[vID]);
 
 
 
@@ -674,18 +727,6 @@ namespace qgl::physics
          m_freeNodes.push(nID);
       }
       #pragma endregion
-
-      /*
-       Returns a node that the parent should be assigned.
-       */
-      void refit(node_id parentID)
-      {
-
-      }
-
-      node_id lrotate(node_id n);
-
-      node_id rrotate(node_id n);
 
       /*
        Nodes in the tree.

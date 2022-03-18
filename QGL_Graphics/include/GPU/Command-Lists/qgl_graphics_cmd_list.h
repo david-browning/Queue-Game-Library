@@ -3,24 +3,34 @@
 #include "include/GPU/Command-Lists/qgl_icmd_list.h"
 #include "include/GPU/Command-Lists/qgl_cmd_bundle.h"
 #include "include/GPU/Buffers/igpu_buffer.h"
-#include "include/GPU/Render/qgl_frame.h"
 
 namespace qgl::graphics::gpu
 {
-   class QGL_GRAPHICS_API graphics_command_list : public icommand_list
+   class graphics_command_list : public icommand_list
    {
       public:
-      graphics_command_list(static_ptr_ref<igraphics_device> dev_p,
-                            static_ptr_ref<ipso> pipelineState_p,
-                            UINT nodeMask = 0);
+      graphics_command_list(graphics_device_ptr& dev_p,
+                            const std::shared_ptr<gpu::pso>& pipelineState_p,
+                            size_t nodeMask = 0) :
+         icommand_list(dev_p,
+            D3D12_COMMAND_LIST_TYPE_DIRECT,
+            pipelineState_p,
+            nodeMask)
+      {
+      }
 
       graphics_command_list(const graphics_command_list&) = delete;
 
-      graphics_command_list(graphics_command_list&&);
+      graphics_command_list(graphics_command_list&&) = default;
 
-      virtual ~graphics_command_list() noexcept;
+      virtual ~graphics_command_list() noexcept = default;
 
-      virtual void begin();
+      virtual void begin()
+      {
+         m_renderTargetTransitions.clear();
+         m_pendingResourceTransitions.clear();
+         reset();
+      }
 
       /*
        Transitions the render target views to PRESENT, flushes the pending
@@ -28,82 +38,209 @@ namespace qgl::graphics::gpu
        executed.
        Call "get()" to get the list so it can be executed.
        */
-      void end();
+      void end()
+      {
+         //When using d3d11on12, releasing the wrapped buffers takes care of 
+         //transitioning the render targets to the correct state.
+
+         ////Append PRESENT transitions to the list of pending transitions.
+         //for (auto& rtv : m_renderTarget_ps)
+         //{
+         //   m_pendingResourceTransitions.push_back(
+         //      CD3DX12_RESOURCE_BARRIER::Transition(
+         //      rtv->get(),
+         //      rtv->state(),
+         //      D3D12_RESOURCE_STATE_RENDER_TARGET,
+         //      D3D12_RESOURCE_STATE_PRESENT));
+
+         //   rtv->state(D3D12_RESOURCE_STATE_PRESENT);
+         //}
+
+         //Flush
+         get()->ResourceBarrier(
+            static_cast<UINT>(m_pendingResourceTransitions.size()),
+            m_pendingResourceTransitions.data());
+
+         //This gets called by close().
+         //winrt::check_hresult(get()->Close());
+      }
 
       /*
        Sets the root signature for the command list.
        */
-      virtual void root_sig(static_ptr_ref<root_signature> sig);
+      virtual void root_sig(root_signature& sig)
+      {
+         get()->SetGraphicsRootSignature(sig.get());
+      }
 
       /*
        Sets a descriptor table for the command list to use.
        */
-      virtual void table(static_ptr_ref<descriptor_table> tbl);
+      virtual void table(descriptor_table& tbl)
+      {
+         get()->SetGraphicsRootDescriptorTable(tbl.root_index(),
+                                      tbl.where());
+      }
 
       /*
        Sets the frames (including the render target, depth stencil, viewport,
        and scissor) for the graphics command list. Usually, this is the first
        command to queue before queuing other rendering commands.
        */
-      void frame_buffer(render::iframe* f,
-                        size_t numFrames = 1);
+      template<class FrameIt>
+      void frame_buffer(FrameIt first, FrameIt last)
+      {
+         m_renderTargetTransitions.clear();
+         m_viewports.clear();
+         m_scissors.clear();
+         m_rtvHandles.clear();
+         m_dsvHandles.clear();
+         m_renderTargets.clear();
+         m_depthStencils.clear();
+
+         for (auto it = first; it != last; it++)
+         {
+            auto& renderTarget = it->frame_buffer();
+
+            m_renderTargetTransitions.push_back(
+               CD3DX12_RESOURCE_BARRIER::Transition(
+                  renderTarget.get(),
+                  D3D12_RESOURCE_STATE_PRESENT,
+                  D3D12_RESOURCE_STATE_RENDER_TARGET));
+
+            //Update the state of the render target.
+            renderTarget.state(D3D12_RESOURCE_STATE_RENDER_TARGET);
+
+            //Make a copy of the render target view handle. 
+            //This will be used in OMSetRenderTargets
+            m_rtvHandles.push_back(renderTarget.where());
+
+            //Make a copy of the render target reference. 
+            //This will be used later to convert the render targets to 
+            //D3D12_RESOURCE_STATE_PRESENT
+            m_renderTargets.push_back(renderTarget);
+
+            //Make a copy of the DSV and depth stencil so we can later clear the
+            //depth stencils using clear_depth()
+            m_dsvHandles.push_back(it->frame_stencil().where());
+            m_depthStencils.push_back(it->frame_stencil());
+
+            m_viewports.push_back(it->frame_viewport().get());
+            m_scissors.push_back(it->frame_scissor().get());
+         }
+
+         //Transition each render target from D3D12_RESOURCE_STATE_PRESENT to 
+         //D3D12_RESOURCE_STATE_RENDER_TARGET
+         get()->ResourceBarrier(
+            static_cast<UINT>(m_renderTargetTransitions.size()),
+            m_renderTargetTransitions.data());
+
+         //Set the viewports
+         get()->RSSetViewports(static_cast<UINT>(m_viewports.size()),
+                               m_viewports.data());
+
+         //Set the scissors
+         get()->RSSetScissorRects(static_cast<UINT>(m_scissors.size()),
+                                  m_scissors.data());
+
+         //Set the render targets.
+         get()->OMSetRenderTargets(static_cast<UINT>(m_rtvHandles.size()),
+                                   m_rtvHandles.data(),
+                                   false,
+                                   m_dsvHandles.data());
+      }
 
       /*
        Clears the render targets.
        Set the clear color using clear_color().
        Call frame_buffer() before calling this.
        */
-      void clear_frame();
+      void clear_frame()
+      {
+         for (auto target : m_renderTargets)
+         {
+            get()->ClearRenderTargetView(
+               target.get().where(),
+               m_clearColor.data(),
+               static_cast<UINT>(target.get().rectangle_count()),
+               target.get().rectangles());
+         }
+      }
 
       /*
        Clears the depth stencils.
        Call frame_buffer() before calling this.
        */
-      void clear_depth();
+      void clear_depth()
+      {
+         for (auto stencil : m_depthStencils)
+         {
+            get()->ClearDepthStencilView(
+               stencil.get().where(),
+               D3D12_CLEAR_FLAG_DEPTH,
+               stencil.get().depth(),
+               stencil.get().stencil(),
+               static_cast<UINT>(stencil.get().rectangle_count()),
+               stencil.get().rectangles());
+         }
+      }
 
       /*
-       Sets the blend factor that modulate values for a pixel shader, 
+       Sets the blend factor that modulate values for a pixel shader,
        render target, or both.
        */
-      void blend_factor(const static_ptr_ref<render::blender> blndr);
+      void blend_factor(const blender& blndr)
+      {
+         get()->OMSetBlendFactor(blndr.blend_factor());
+      }
 
       /*
        Sets the reference value for depth stencil tests.
        */
-      void stencil_ref(UINT ref);
+      void stencil_ref(size_t ref)
+      {
+         get()->OMSetStencilRef(ref);
+      }
 
       /*
        Sets the color to clear the render targets to.
        */
-      void clear_color(const float rgba[4]) noexcept;
+      void clear_color(const std::array<float, 4>& rgba) noexcept
+      {
+         m_clearColor = rgba;
+      }
 
       /*
        Gets a const pointer to the color the render targets are cleared to.
        */
-      const float* clear_color() const noexcept;
+      const float* clear_color() const noexcept
+      {
+         return m_clearColor.data();
+      }
 
       /*
        Queues a bundle to execute.
        */
       template<bool ComputeBundle = false>
-      void bundle(cmd_bundle<ComputeBundle>* bndl)
+      void bundle(cmd_bundle<ComputeBundle>& bndl)
       {
-         bundle(bndl->get());
+         get()->ExecuteBundle(bndl.get());
       }
 
       /*
-       Performs an immediate resource transition from one state to another. 
+       Performs an immediate resource transition from one state to another.
        Resource's current state is updated.
        Transitions can be expensive.
        */
-      template<typename ResourceDescriptionT,
+      template<
+         typename ResourceDescriptionT,
          typename ViewDescriptionT,
          typename ResourceT>
-         void transition(buffers::igpu_buffer<
-                         ResourceDescriptionT,
-                         ViewDescriptionT,
-                         ResourceT>* resource,
-                         D3D12_RESOURCE_STATES newState)
+         void transition(
+            igpu_buffer<ResourceDescriptionT,
+                        ViewDescriptionT,
+                        ResourceT>* resource,
+                        D3D12_RESOURCE_STATES newState)
       {
          if (resource->state != newState)
          {
@@ -112,21 +249,33 @@ namespace qgl::graphics::gpu
          }
       }
 
+      void transition(d3d_resource* resource,
+                D3D12_RESOURCE_STATES oldState,
+                D3D12_RESOURCE_STATES newState)
+      {
+         auto transition = CD3DX12_RESOURCE_BARRIER::Transition(
+        resource,
+        oldState,
+        newState);
+         get()->ResourceBarrier(1, &transition);
+      }
+
       /*
        Queues a transition to be flushed at the end of the command list.
        Resource's current state is updated.
        The transitions are not recorded until "end()" is called.
-       It is best to batch transitions at the end of the command list because 
+       It is best to batch transitions at the end of the command list because
        they may cause a pipeline stall.
        */
       template<
          typename ResourceDescriptionT,
          typename ViewDescriptionT,
          typename ResourceT>
-         void transition_queue(buffers::igpu_buffer<ResourceDescriptionT,
-                               ViewDescriptionT,
-                               ResourceT>* resource,
-                               D3D12_RESOURCE_STATES newState)
+         void transition_queue(
+            igpu_buffer<ResourceDescriptionT,
+                        ViewDescriptionT,
+                        ResourceT>* resource,
+                        D3D12_RESOURCE_STATES newState)
       {
          if (resource->state != newState)
          {
@@ -135,18 +284,35 @@ namespace qgl::graphics::gpu
          }
       }
 
-      private:
-      struct impl;
-      impl* m_impl_p;
-
-      void transition(d3d_resource* resource,
-                      D3D12_RESOURCE_STATES oldState,
-                      D3D12_RESOURCE_STATES newState);
 
       void transition_queue(d3d_resource* resource,
                             D3D12_RESOURCE_STATES oldState,
-                            D3D12_RESOURCE_STATES newState);
+                            D3D12_RESOURCE_STATES newState)
+      {
+         m_pendingResourceTransitions.push_back(
+            CD3DX12_RESOURCE_BARRIER::Transition(
+               resource,
+               oldState,
+               newState));
+      }
 
-      void bundle(d3d_command_list* computeBndl);
+      private:
+      /*
+       List of pending resource transitions.
+       These are vectors instead of queues so that we can get the raw array
+       pointer and guarantee that it is contiguous.
+       */
+      std::vector<D3D12_RESOURCE_BARRIER> m_pendingResourceTransitions;
+
+      std::array<float, 4> m_clearColor;
+
+      std::vector<std::reference_wrapper<depth_stencil>> m_depthStencils;
+      std::vector<std::reference_wrapper<render_target>> m_renderTargets;
+
+      std::vector<D3D12_CPU_DESCRIPTOR_HANDLE> m_rtvHandles;
+      std::vector<D3D12_CPU_DESCRIPTOR_HANDLE> m_dsvHandles;
+      std::vector<D3D12_RESOURCE_BARRIER> m_renderTargetTransitions;
+      std::vector<D3D12_RECT> m_scissors;
+      std::vector<D3D12_VIEWPORT> m_viewports;
    };
 }

@@ -1,14 +1,22 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
 #include "include/GPU/Render/qgl_viewport.h"
-using namespace qgl::mem;
 
-namespace qgl::graphics::gpu::render
+namespace qgl::graphics::gpu
 {
-   class QGL_GRAPHICS_API scissor
+   class scissor
    {
       public:
-      scissor(const static_ptr_ref<viewport> vp);
+      scissor(const viewport& vp)
+      {
+         auto& d3dViewport = vp.get();
+         m_scissor.left = static_cast<LONG>(d3dViewport.TopLeftX);
+         m_scissor.right = static_cast<LONG>(
+            d3dViewport.TopLeftX + d3dViewport.Width);
+         m_scissor.top = static_cast<LONG>(d3dViewport.TopLeftY);
+         m_scissor.bottom = static_cast<LONG>(
+            d3dViewport.TopLeftY + d3dViewport.Height);
+      }
 
       scissor(const scissor&) = default;
 
@@ -16,25 +24,14 @@ namespace qgl::graphics::gpu::render
 
       ~scissor() noexcept = default;
 
-      const D3D12_RECT* get() const noexcept;
-
-      D3D12_RECT* get() noexcept;
-
-      friend void swap(scissor& l, scissor& r) noexcept
+      const D3D12_RECT& get() const noexcept
       {
-         using std::swap;
-         swap(l.m_scissor, r.m_scissor);
+         return m_scissor;
       }
 
-      scissor& operator=(scissor r) noexcept
+      D3D12_RECT& get() noexcept
       {
-         swap(*this, r);
-         return *this;
-      }
-
-      friend bool operator==(const scissor& l, const scissor& r) noexcept
-      {
-         return l.m_scissor == r.m_scissor;
+         return m_scissor;
       }
 
       private:

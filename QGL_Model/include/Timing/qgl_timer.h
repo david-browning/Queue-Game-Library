@@ -105,7 +105,7 @@ namespace qgl
       /*
        Returns the number of ticks between the last two calls to tick().
        */
-      TickT deltaT() const noexcept
+      TickT delta() const noexcept
       {
          return m_elapsedTicks;
       }

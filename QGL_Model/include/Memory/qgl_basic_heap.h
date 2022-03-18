@@ -1,22 +1,18 @@
 #pragma once
 #include "include/qgl_model_include.h"
 #include "include/Memory/qgl_heap_traits.h"
-#include "include/Memory/qgl_mem_tracker.h"
 
 namespace qgl::mem
 {
    template<DWORD Flags,
-      class Traits = qgl::mem::basic_heap_traits<Flags>,
-      class MemoryTracker =  qgl::mem::mem_tracker>
+      class Traits = qgl::mem::basic_heap_traits<Flags>>
    class basic_heap
    {
       public:
       using heap_handle = typename Traits::heap_handle;
       using size_type = typename Traits::size_type;
 
-      basic_heap(size_type initialSizeBytes,
-                 MemoryTracker mt = MemoryTracker()) :
-         m_tracker(mt),
+      basic_heap(size_type initialSizeBytes) :
          m_heapHandle(INVALID_HANDLE)
       {
          m_heapHandle = Traits::make(initialSizeBytes);
@@ -71,9 +67,6 @@ namespace qgl::mem
             //Check the address
             if (address != nullptr)
             {
-               //Track the address.
-               m_tracker.track((uintptr_t)address, actualSize);
-
                //Return the address.
                return static_cast<T*>(address);
             }
@@ -95,21 +88,11 @@ namespace qgl::mem
       template<class T>
       void deallocate(T* const ptr)
       {
-         #ifdef DEBUG
-         if (!m_tracker.contains((uintptr_t)ptr))
-         {
-            throw std::invalid_argument("Not tracking the pointer.");
-         }
-         #endif
-
          ptr->~T();
-         m_tracker.free((uintptr_t)ptr);
-
          Traits::deallocate(m_heapHandle, ptr);
       }
 
       private:
       heap_handle m_heapHandle;
-      MemoryTracker m_tracker;
    };
 }

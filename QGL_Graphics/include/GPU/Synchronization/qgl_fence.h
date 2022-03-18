@@ -2,7 +2,7 @@
 #include "include/qgl_graphics_include.h"
 #include "include/GPU/Synchronization/qgl_sync_object.h"
 
-namespace qgl::graphics::sync
+namespace qgl::graphics
 {
    /*
     The fence provides a mechanism to synchronize CPU and GPU work.

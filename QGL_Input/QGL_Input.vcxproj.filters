@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resources">
+      <UniqueIdentifier>accd3aa8-1ba0-4223-9bbe-0c431709210b</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{926ab91d-31b4-48c3-b9a4-e681349f27f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{de975352-fa39-4409-bbfd-00505ab27515}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{fb9bb3bf-428a-49d4-b805-8b2e6b06f4db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{f46f7a6d-8736-4e88-bbf6-b40a16e201c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="winrt_rt">
+      <UniqueIdentifier>{c798747c-2a89-4948-86c3-8025581c1221}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Input Providers">
+      <UniqueIdentifier>{bbb59423-6ebb-4605-9c3a-5718f30ffbeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Helpers">
+      <UniqueIdentifier>{e87185c3-a98c-4612-a06e-b663d79392f0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="QGL_Input.def">
+      <Filter>winrt_rt</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PropertySheet.props" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_input_include.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\QGLInput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_input_dispatcher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_input_instance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_input_state.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_input_trigger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_basic_input_provider.h">
+      <Filter>Header Files\Input Providers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_xinput_input_provider.h">
+      <Filter>Header Files\Input Providers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_uwp_pointer_input_provider.h">
+      <Filter>Header Files\Input Providers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_uwp_key_input_provider.h">
+      <Filter>Header Files\Input Providers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_uwp_background_point_input_provider.h">
+      <Filter>Header Files\Input Providers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_uwp_gamepad_input_provider.h">
+      <Filter>Header Files\Input Providers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_gamepad_helpers.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_pointer_helpers.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="QGL_InputRT.idl">
+      <Filter>winrt_rt</Filter>
+    </Midl>
+  </ItemGroup>
+</Project>

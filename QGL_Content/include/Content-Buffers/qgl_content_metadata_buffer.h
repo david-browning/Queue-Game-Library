@@ -114,17 +114,11 @@ namespace qgl::content
       /*
        Returns a const reference to the content's GUID.
        */
-      const GUID* guid() const noexcept;
+      const qgl::guid& guid() const noexcept;
 
       bool shared() const noexcept;
 
       void shared(bool v) noexcept;
-
-      /*
-       Returns the content's GUID as a string.
-       Throws if the GUID cannot be converted to a string.
-       */
-      winrt::hstring guid_str() const;
 
       friend void swap(CONTENT_METADATA_BUFFER& first,
                        CONTENT_METADATA_BUFFER& second) noexcept
@@ -175,7 +169,7 @@ namespace qgl::content
       /*
        Unique ID for this content.
        */
-      GUID m_guid = { 0 };
+      qgl::guid m_guid;
 
       /*
        Content type. See qgl_content_types.h for options.
@@ -188,7 +182,7 @@ namespace qgl::content
       uint16_t m_loaderID;
 
       /*
-       { 1 Is Shared }{ 3 }{ 1 IsVisible }{ 1 IsPhysical }{ 2 Flags }
+       { 1 Is Shared }{ 3 }{ 1 IsVisible }{ 1 IsPhysical }{ 2 flags }
        */
       uint8_t m_flags1;
 

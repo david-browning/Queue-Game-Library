@@ -20,7 +20,7 @@ namespace winrt::QGL_Content
    //static auto loaderContentStore = ContentLoaderModel(CONTENT_LOADER_IDS::CONTENT_LOADER_ID_STORE_CONFIG,
    //                                                    L"Content Store Configuration");
    //static auto loaderTextFmt = ContentLoaderModel(CONTENT_LOADER_IDS::CONTENT_LOADER_ID_TEXT_FORMAT,
-   //                                               L"Text Format");
+   //                                               L"Text format");
    //static auto loaderWStr = ContentLoaderModel(CONTENT_LOADER_IDS::CONTENT_LOADER_ID_WSTRING,
    //                                            L"Wide String");
    //static auto loaderWText = ContentLoaderModel(CONTENT_LOADER_IDS::CONTENT_LOADER_ID_WTEXT,

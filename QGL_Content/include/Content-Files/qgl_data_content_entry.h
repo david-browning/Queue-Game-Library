@@ -11,7 +11,7 @@ namespace qgl::content::entries
    class data_content_entry
    {
       public:
-      constexpr data_content_entry();
+      data_content_entry();
 
       /*
        Copies bytes from b to internal storage. After construction, b can be

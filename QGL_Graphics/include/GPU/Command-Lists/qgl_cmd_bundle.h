@@ -7,9 +7,9 @@ namespace qgl::graphics::gpu
    class cmd_bundle : public icommand_list
    {
       public:
-      cmd_bundle(static_ptr_ref<igraphics_device> dev_p,
-                 static_ptr_ref<ipso> pipelineState_p,
-                 UINT nodeMask = 0) :
+      cmd_bundle(graphics_device_ptr& dev_p,
+                    const std::shared_ptr<gpu::pso>& pipelineState_p,
+                    size_t nodeMask = 0) :
          icommand_list(dev_p,
                        D3D12_COMMAND_LIST_TYPE_BUNDLE,
                        pipelineState_p,
@@ -29,29 +29,29 @@ namespace qgl::graphics::gpu
          reset();
       }
 
-      virtual void root_sig(static_ptr_ref<root_signature> sig)
+      virtual void root_sig(root_signature& sig)
       {
-         if (ComputeBundle)
+         if constexpr (ComputeBundle)
          {
-            get()->SetComputeRootSignature(sig->get());
+            get()->SetComputeRootSignature(sig.get());
          }
          else
          {
-            get()->SetGraphicsRootSignature(sig->get());
+            get()->SetGraphicsRootSignature(sig.get());
          }
       }
 
-      virtual void table(static_ptr_ref<descriptor_table> tbl)
+      virtual void table(descriptor_table& tbl)
       {
-         if (ComputeBundle)
+         if constexpr (ComputeBundle)
          {
-            get()->SetGraphicsRootDescriptorTable(tbl->root_index(),
-                                                  tbl->where());
+            get()->SetGraphicsRootDescriptorTable(tbl.root_index(),
+                                                  tbl.where());
          }
          else
          {
-            get()->SetComputeRootDescriptorTable(tbl->root_index(),
-                                                 tbl->where());
+            get()->SetComputeRootDescriptorTable(tbl.root_index(),
+                                                 tbl.where());
          }
       }
    };

@@ -7,7 +7,7 @@ namespace qgl::graphics::gpu
    class graphics_command_list;
 }
 
-namespace qgl::graphics::gpu::buffers
+namespace qgl::graphics::gpu
 {
    /*
     ResourceDescriptionT describes the resource. For a buffer, this may be a
@@ -16,7 +16,7 @@ namespace qgl::graphics::gpu::buffers
      pipeline. Most likely it is D3D_*_BUFFER_VIEW
     ResourceT is the type of resource. Often, this will be a d3d_resource.
 
-    GPU Buffers can offer their resources to the OS to free video memory.
+    GPU buffers can offer their resources to the OS to free video memory.
     It is the application's responsibility to offer and reclaim a resource
     when it is needed. A good time to offer resources is when the app is
     minimized or suspended.

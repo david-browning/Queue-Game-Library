@@ -20,7 +20,7 @@ namespace qgl
    static constexpr uint8_t QGL_VERSION_MINOR_LATEST = QGL_VERSION_MINOR_1;
 
    /*
-    Bit layout: {2 OS Flag} { 14 Flags} {8 Major} {8 Minor}
+    Bit layout: {2 OS Flag} { 14 flags} {8 Major} {8 Minor}
     */
    using qgl_version_t = uint32_t;
 

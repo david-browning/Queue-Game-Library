@@ -1,7 +1,6 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
 #include "include/GPU/Command-Lists/qgl_cmd_bundle.h"
-#include "include/Content/qgl_model.h"
 
 namespace qgl::graphics::components
 {

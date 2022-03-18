@@ -30,11 +30,12 @@
 #include <map>
 #include <unordered_map>
 #include <unordered_set>
+#include <variant>
 
 //Algorithms
 #include <algorithm>
 #include <functional>
-
+#include <execution>
 #include <iomanip>
 
 #if !defined(NDEBUG) || defined(_DEBUG) || defined(DEBUG)
@@ -57,8 +58,10 @@
 #endif
 #define NOMINMAX 
 #include <Windows.h>
+#include <objbase.h>
 #include <winrt/base.h>
 #include <winrt/Windows.Foundation.h>
+#include <winrt/Windows.System.Threading.h>
 
 #pragma region Define Handle Types
 typedef HANDLE handle_t;
@@ -81,6 +84,9 @@ typedef char sys_char;
 
 
 #else
+
+#include <unistd.h>
+#include <uuid/uuid.h>
 
 #pragma region Define Handle Types
 using handle_t = typename void*

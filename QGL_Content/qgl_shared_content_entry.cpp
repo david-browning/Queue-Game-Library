@@ -5,7 +5,7 @@ namespace qgl::content::entries
 {
    static constexpr size_t VENDOR_METADATA_INDEX = 0;
 
-   constexpr shared_content_entry::shared_content_entry()
+   shared_content_entry::shared_content_entry()
    {
    }
 

@@ -1,20 +1,9 @@
 #pragma once
 #include "qgl_model_include.h"
+#include "qgl_guid.h"
 
 namespace qgl
 {
-   #ifdef DEBUG
-   class test_update_functor
-   {
-      public:
-      double operator()(int& obj_p, float& context_p)
-      {
-         obj_p = static_cast<int>(context_p);
-         return 1.0;
-      }
-   };
-   #endif
-
    /*
     A component is a tool used to decouple behavior from data. Instead of a
     monolithic class that responds to input, rendering, and physics, those
@@ -44,7 +33,7 @@ namespace qgl
        Constructor.
        Components must have a GUID.
        */
-      constexpr component(const GUID& g,
+      constexpr component(const qgl::guid& g,
                           UpdateFunctor f = UpdateFunctor()) :
          m_guid(g),
          m_functor(f)
@@ -52,7 +41,7 @@ namespace qgl
 
       }
 
-      constexpr component(GUID&& g,
+      constexpr component(qgl::guid&& g,
                           UpdateFunctor f = UpdateFunctor()) :
          m_guid(g),
          m_functor(f)
@@ -63,12 +52,12 @@ namespace qgl
       /*
        Default copy constructor.
        */
-      component(const component& r) = default;
+      component(const component&) noexcept = default;
 
       /*
        Default move constructor.
        */
-      component(component&& r) = default;
+      component(component&&) noexcept = default;
 
       /*
        Default destructor.
@@ -86,13 +75,13 @@ namespace qgl
       /*
        Returns a reference to this component's GUID.
        */
-      const GUID& guid() const noexcept
+      const qgl::guid& guid() const noexcept
       {
          return m_guid;
       }
 
       private:
-      GUID m_guid;
+      qgl::guid m_guid;
       UpdateFunctor m_functor;
    };
 }

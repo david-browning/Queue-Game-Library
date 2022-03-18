@@ -3,7 +3,7 @@
 #include "include/GPU/Buffers/igpu_buffer.h"
 #include "include/Interfaces/qgl_igraphics_device.h"
 
-namespace qgl::graphics::gpu::buffers
+namespace qgl::graphics::gpu
 {
    /*
     You can create a vertex buffer without a command list but the GPU heap will 

@@ -1,5 +1,6 @@
 #pragma once
 #include "include/qgl_model_include.h"
+#include "include/qgl_guid.h"
 
 namespace qgl
 {
@@ -10,23 +11,34 @@ namespace qgl
     then override "undo" to do nothing.
     Provides ==, !=, and < operators for use in maps.
     */
-   class QGL_MODEL_API icommand
+   template<class ExecuteArgs>
+   class icommand
    {
       public:
       /*
        Copies the contents of g. g can be freed or go out of scope.
        */
-      icommand(const GUID* g);
+      icommand(const qgl::guid& g) noexcept :
+         m_guid(g)
+      {
+       
+      }
+
+      icommand(qgl::guid&& g) noexcept :
+         m_guid(g)
+      {
+
+      }
 
       /*
        Copy constructor.
        */
-      icommand(const icommand&) = default;
+      icommand(const icommand&) noexcept = default;
 
       /*
        Move constructor.
        */
-      icommand(icommand&&) = default;
+      icommand(icommand&&) noexcept = default;
 
       /*
        Destructor.
@@ -36,7 +48,7 @@ namespace qgl
       /*
        Executes this command.
        */
-      virtual void execute() = 0;
+      virtual void execute(ExecuteArgs args) = 0;
 
       /*
        Undoes this command if possible. If not possible, this does nothing.
@@ -54,14 +66,17 @@ namespace qgl
       /*
        Returns a const pointer to this component's GUID.
        */
-      const GUID* guid() const noexcept;
+      const qgl::guid& guid() const noexcept
+      {
+         return m_guid;
+      }
 
       /*
        Returns true if the GUIDs are equal.
        */
       friend bool operator==(const icommand& l, const icommand& r)
       {
-         return memcmp(l.guid(), r.guid(), sizeof(GUID)) == 0;
+         return l.guid() == r.guid();
       }
 
       /*
@@ -77,10 +92,10 @@ namespace qgl
        */
       friend bool operator<(const icommand& l, const icommand& r)
       {
-         return memcmp(l.guid(), r.guid(), sizeof(GUID)) < 0;
+         return l.guid() < r.guid();
       }
 
       private:
-      GUID m_guid;
+      qgl::guid m_guid;
    };
 }

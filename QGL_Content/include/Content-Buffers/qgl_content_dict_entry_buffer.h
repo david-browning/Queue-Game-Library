@@ -21,7 +21,7 @@ namespace qgl::content
       CONTENT_DICTIONARY_ENTRY_BUFFER();
 
       /*
-       Flags are set to default.
+       flags are set to default.
        Copies the metadata buffer to internal storage.
        */
       CONTENT_DICTIONARY_ENTRY_BUFFER(size_t entrySize,

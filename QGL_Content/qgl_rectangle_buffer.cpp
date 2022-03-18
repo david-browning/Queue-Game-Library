@@ -5,8 +5,8 @@ namespace qgl::content::buffers
 {
    RECTANGLE_BUFFER::RECTANGLE_BUFFER() :
       Flags(0),
-      Reserved1(0),
-      Reserved2(0),
+      reserved1(0),
+      reserved2(0),
       TopLeftX(),
       TopLeftY(),
       TopLeftZ(),

@@ -13,7 +13,7 @@ namespace qgl::graphics::gpu
      member description, 5 maps to ": register(t3,space5);" in HLSL.
     flags : https://tinyurl.com/d3d12-descriptorrangeflgs
    */
-   class QGL_GRAPHICS_API descriptor_range
+   class descriptor_range
    {
       public:
       /*
@@ -23,7 +23,14 @@ namespace qgl::graphics::gpu
                        size_t numDescriptors,
                        UINT baseRegister,
                        D3D12_DESCRIPTOR_RANGE_FLAGS flags,
-                       UINT regSpace = 0);
+                       UINT regSpace = 0)
+      {
+         m_range.Init(rangeType,
+             static_cast<UINT>(numDescriptors),
+             baseRegister,
+             regSpace,
+             flags);
+      }
 
       /*
        Copy constructor.
@@ -43,7 +50,10 @@ namespace qgl::graphics::gpu
       /*
        Returns a const pointer to the range.
        */
-      const D3D12_DESCRIPTOR_RANGE1* range() const noexcept;
+      const D3D12_DESCRIPTOR_RANGE1* range() const noexcept
+      {
+         return &m_range;
+      }
 
       private:
       CD3DX12_DESCRIPTOR_RANGE1 m_range;

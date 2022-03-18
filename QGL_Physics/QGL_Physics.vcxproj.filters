@@ -82,10 +82,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="QGL_Physics.def">
       <Filter>win_rt</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PropertySheet.props" />
@@ -94,5 +94,8 @@
     <Midl Include="QGL_PhysicsRT.idl">
       <Filter>win_rt</Filter>
     </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="QGLPhysics.natvis" />
   </ItemGroup>
 </Project>

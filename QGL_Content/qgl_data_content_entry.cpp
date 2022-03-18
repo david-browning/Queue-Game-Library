@@ -3,7 +3,7 @@
 
 namespace qgl::content::entries
 {
-   constexpr data_content_entry::data_content_entry()
+   data_content_entry::data_content_entry()
    {
    }
 
