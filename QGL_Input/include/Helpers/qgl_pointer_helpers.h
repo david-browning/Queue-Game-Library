@@ -1,6 +1,6 @@
 #pragma once
 #include "include/qgl_input_include.h"
-#include "include/qgl_input_state.h"
+#include "include/qgl_input_key.h"
 
 namespace qgl::input
 {

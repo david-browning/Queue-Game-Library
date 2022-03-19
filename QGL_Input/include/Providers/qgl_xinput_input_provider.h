@@ -1,7 +1,8 @@
 #pragma once
 #include "include/qgl_input_include.h"
+#include "include/qgl_input_state.h"
 #include "include/qgl_input_instance.h"
-#include "include/qgl_gamepad_helpers.h"
+#include "include/Helpers/qgl_gamepad_helpers.h"
 
 namespace qgl::input::providers
 {
@@ -13,9 +14,9 @@ namespace qgl::input::providers
       public:
       xinput_provider_traits(
          uint8_t controllerIndex,
-         const dead_zone_config& config) :
+         dead_zone_config&& config) :
          m_index(controllerIndex),
-         m_deadzoneConfig(config),
+         m_deadzoneConfig(std::forward<dead_zone_config>(config)),
          m_lastPacketNumber(0),
          m_lastRTrigger(false),
          m_lastLTrigger(false),
@@ -52,7 +53,7 @@ namespace qgl::input::providers
             // If the button is pressed:
             if (pressed(state.Gamepad.wButtons, xInputButton))
             {
-               inputs.emplace_back(xInputButton, 
+               inputs.emplace_back(xInputButton,
                   BUTTON_STATES::BUTTON_STATE_PRESSED);
             }
             else
@@ -72,7 +73,7 @@ namespace qgl::input::providers
          // Normalize the right trigger.
          auto rTrigger = normalize_trigger_input(
             state.Gamepad.bRightTrigger,
-            m_deadzoneConfig.rtrigger, 
+            m_deadzoneConfig.rtrigger,
             INPUT_AXIS_IDS::INPUT_AXIS_ID_RTRIGGER);
 
          // If it is not in the dead zone:

@@ -126,6 +126,11 @@ namespace qgl::graphics
          return static_cast<T>(m_wndImpl->height());
       }
 
+      auto rt_window()
+      {
+         return m_wnd_p.get();
+      }
+
       /*
        Returns an IUnknown pointer to the core window.
        */

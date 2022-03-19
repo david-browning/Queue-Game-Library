@@ -1,6 +1,7 @@
 #pragma once
 #include "include/qgl_input_include.h"
-#include "include/Input/qgl_input_state.h"
+#include "include/qgl_input_state.h"
+#include "include/Helpers/qgl_gamepad_helpers.h"
 
 namespace qgl::input
 {
@@ -19,14 +20,16 @@ namespace qgl::input
       input_trigger(input_key k, BUTTON_STATES btnState, TickT wait) :
          m_type(INPUT_TYPES::INPUT_TYPE_KEY), m_state(btnState), m_wait(wait),
          m_button(std::move(std::vector<input_key>{k}))
-      {}
+      {
+      }
 
       template<class InputKeyIterator>
       input_trigger(InputKeyIterator first, InputKeyIterator last,
          BUTTON_STATES btnState, TickT wait) :
          m_type(INPUT_TYPES::INPUT_TYPE_KEY), m_state(btnState), m_wait(wait),
          m_button(std::move(std::vector<input_key>{first, last}))
-      {}
+      {
+      }
 
       /*
        Trigger for when the given buttons are in the given state for the given
@@ -37,7 +40,8 @@ namespace qgl::input
       input_trigger(gamepad_button btns, BUTTON_STATES btnState, TickT wait) :
          m_type(INPUT_TYPES::INPUT_TYPE_GAMEPAD), m_state(btnState),
          m_wait(wait), m_button(btns)
-      {}
+      {
+      }
 
       /*
        Trigger for when the given buttons are in the given state for the given
@@ -48,7 +52,8 @@ namespace qgl::input
       input_trigger(xinput_button btns, BUTTON_STATES btnState, TickT wait) :
          m_type(INPUT_TYPES::INPUT_TYPE_XINPUT), m_state(btnState),
          m_wait(wait), m_button(btns)
-      {}
+      {
+      }
 
       /*
        Trigger for when the given axis is held at least "mag" amount for "wait"
@@ -58,7 +63,8 @@ namespace qgl::input
          m_type(INPUT_TYPES::INPUT_TYPE_AXIS),
          m_state(BUTTON_STATES::BUTTON_STATE_PRESSED), m_wait(wait),
          m_button(std::move(input_axis{ mag, axis }))
-      {}
+      {
+      }
 
       input_trigger(const input_trigger&) = default;
 
@@ -114,6 +120,11 @@ namespace qgl::input
       const const_key_iterator cend() const
       {
          return std::get<key_array>(m_button).cend();
+      }
+
+      const input_key* key_data() const
+      {
+         return std::get<key_array>(m_button).data();
       }
 
       friend void swap(input_trigger& l, input_trigger& r) noexcept
@@ -200,42 +211,72 @@ namespace std
       typedef std::size_t result_type;
       constexpr result_type operator()(const argument_type& t) const noexcept
       {
+         //[buttons: 32] [hold: 24] [state: 4] [type: 4]
+
          // First byte is the input type & button state.
          auto itbs = (static_cast<result_type>(t.state()) << 4) |
             static_cast<result_type>(t.type());
 
-         // While TickT is probably much bigger than 20 bits, its unlikely that
+         // While TickT is probably much bigger than 24 bits, its unlikely that
          // a button will be held for more than a few seconds (1,000,000 ticks).
-         auto hold = static_cast<result_type>(t.hold()) & 0x000F'FFFF;
+         auto hold = static_cast<result_type>(t.hold()) & 0x00FF'FFFF;
 
-         // There are 36 bits left:
+         // There are 32 bits left:
          result_type ret = 0;
          using namespace qgl::input;
          switch (t.type())
          {
             case INPUT_TYPES::INPUT_TYPE_KEY:
             {
+               ret = qgl::fast_hash_32(t.key_data(),
+                  t.key_count() * sizeof(qgl::input::input_key),
+                  0x981430F1);
                break;
             }
             case INPUT_TYPES::INPUT_TYPE_GAMEPAD:
             {
+               ret = static_cast<result_type>(t.gp_button());
                break;
             }
             case INPUT_TYPES::INPUT_TYPE_XINPUT:
             {
+               ret = t.xi_button();
                break;
             }
             case INPUT_TYPES::INPUT_TYPE_AXIS:
             {
+               qgl::math::decimal<qgl::input::AXIS_DENOMINATOR> x{
+                  t.axis().value()
+               };
+
+               ret = (static_cast<result_type>(t.axis().id()) <<
+                     (sizeof(x.numerator()) * CHAR_BIT)) |
+                  x.numerator();
+
                break;
             }
             case INPUT_TYPES::INPUT_TYPE_AXIS_2D:
             {
+               // [ID: 8] [y: 12] [x: 12]
+               qgl::math::decimal<qgl::input::AXIS_DENOMINATOR> x{
+                  t.axis_2d().x()
+               };
+
+               qgl::math::decimal<qgl::input::AXIS_DENOMINATOR> y{
+                  t.axis_2d().y()
+               };
+
+               auto id = static_cast<result_type>(t.axis_2d().id()) << 24;
+
+               ret = id |
+                  (static_cast<result_type>(y.numerator()) << 12) |
+                  (static_cast<result_type>(x.numerator()));
+
                break;
             }
          }
 
-         return (ret << 28) | itbs | hold;
+         return (ret << 32) | (hold << 8) | itbs;
       }
    };
 }

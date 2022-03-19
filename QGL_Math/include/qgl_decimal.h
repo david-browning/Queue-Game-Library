@@ -5,21 +5,18 @@
 namespace qgl::math
 {
 #pragma pack(push, 1)
-   template<size_t DecimalPlaces>
+   template<size_t Denominator>
    struct decimal
    {
+      static_assert(Denominator > 0, "Denominator must be greater than 0.");
+
       private:
 
-      struct bit_denom
-      {
-         static constexpr auto value = power<size_t>(10, DecimalPlaces - 1);
-      };
-
-      template<size_t Denominator>
+      template<size_t Denom>
       struct bit_round
       {
          static constexpr auto value = round_up(
-            qgl::mem::msb(Denominator), static_cast<size_t>(8));
+            qgl::mem::msb(Denom) + 1, static_cast<size_t>(8));
       };
 
       template<size_t Bits>
@@ -54,26 +51,33 @@ namespace qgl::math
 
       public:
       using numerator_type =
-         typename make_type<bit_round<bit_denom::value>::value>::type;
+         typename make_type<bit_round<Denominator>::value>::type;
 
       /*
        Stores the number 0.
        */
       constexpr decimal() :
          m_numerator(0)
-      {}
+      {
+      }
 
-      constexpr decimal(numerator_type num) :
+      template<typename T>
+      constexpr decimal(T num) :
          m_numerator(num)
-      {}
+      {
+      }
 
+      template<>
       constexpr decimal(float x) :
-         m_numerator(denominator() * x)
-      {}
+         m_numerator(denominator()* x)
+      {
+      }
 
+      template<>
       constexpr decimal(double x) :
-         m_numerator(denominator() * x)
-      {}
+         m_numerator(denominator()* x)
+      {
+      }
 
       decimal(const decimal&) = default;
 
@@ -81,18 +85,17 @@ namespace qgl::math
 
       ~decimal() noexcept = default;
 
-      constexpr auto numerator() const noexcept
+      constexpr numerator_type numerator() const noexcept
       {
          return m_numerator;
       }
 
-      constexpr auto denominator() const noexcept
+      constexpr numerator_type denominator() const noexcept
       {
-         return bit_denom::value;
+         return Denominator;
       }
 
-      template<size_t DecPlaces>
-      friend void swap(decimal<DecPlaces>& l, decimal<DecPlaces>& r) noexcept
+      friend void swap(decimal& l, decimal& r) noexcept
       {
          using std::swap;
          swap(l.m_numerator, r.m_numerator);
@@ -119,7 +122,22 @@ namespace qgl::math
       }
 
       private:
-      numerator_type m_numerator = 0;
+      numerator_type m_numerator;
    };
 #pragma pack(pop)
+
+   template<size_t LDenom, size_t RDenom>
+   inline bool operator==(const decimal<LDenom>& l,
+                                 const decimal<RDenom>& r) noexcept
+   {
+      return (l.numerator() * r.denominator() -
+         r.numerator() * l.denominator()) == 0;
+   }
+
+   template<size_t LDenom, size_t RDenom>
+   inline bool operator!=(const decimal<LDenom>& l,
+                                 const decimal<RDenom>& r) noexcept
+   {
+      return !(l == r);
+   }
 }

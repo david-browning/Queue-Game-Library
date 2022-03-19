@@ -66,29 +66,32 @@
     <ClInclude Include="include\qgl_input_trigger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_basic_input_provider.h">
+    <ClInclude Include="include\Providers\qgl_basic_input_provider.h">
       <Filter>Header Files\Input Providers</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_xinput_input_provider.h">
+    <ClInclude Include="include\Providers\qgl_uwp_background_point_input_provider.h">
       <Filter>Header Files\Input Providers</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_uwp_pointer_input_provider.h">
+    <ClInclude Include="include\Providers\qgl_uwp_gamepad_input_provider.h">
       <Filter>Header Files\Input Providers</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_uwp_key_input_provider.h">
+    <ClInclude Include="include\Providers\qgl_uwp_key_input_provider.h">
       <Filter>Header Files\Input Providers</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_uwp_background_point_input_provider.h">
+    <ClInclude Include="include\Providers\qgl_uwp_pointer_input_provider.h">
       <Filter>Header Files\Input Providers</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_uwp_gamepad_input_provider.h">
+    <ClInclude Include="include\Providers\qgl_xinput_input_provider.h">
       <Filter>Header Files\Input Providers</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_gamepad_helpers.h">
+    <ClInclude Include="include\Helpers\qgl_gamepad_helpers.h">
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_pointer_helpers.h">
+    <ClInclude Include="include\Helpers\qgl_pointer_helpers.h">
       <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_input_key.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

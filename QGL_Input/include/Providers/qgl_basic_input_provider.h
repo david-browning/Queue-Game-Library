@@ -3,11 +3,11 @@
 #include "include/qgl_input_trigger.h"
 #include "include/qgl_input_state.h"
 #include "include/qgl_input_instance.h"
-#include "include/qgl_uwp_gamepad_input_provider.h"
-#include "include/qgl_xinput_input_provider.h"
-#include "include/qgl_uwp_background_point_input_provider.h"
-#include "include/qgl_uwp_pointer_input_provider.h"
-#include "include/qgl_uwp_key_input_provider.h"
+#include "include/Providers/qgl_uwp_gamepad_input_provider.h"
+#include "include/Providers/qgl_xinput_input_provider.h"
+#include "include/Providers/qgl_uwp_background_point_input_provider.h"
+#include "include/Providers/qgl_uwp_pointer_input_provider.h"
+#include "include/Providers/qgl_uwp_key_input_provider.h"
 
 namespace qgl::input
 {

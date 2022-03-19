@@ -164,7 +164,9 @@ namespace qgl::mem
       return ret;
    }
 
-   static_assert(3 == msb<uint8_t>(13), "msb() returned the wrong result.");
+   static_assert(3 == msb<uint8_t>(13), "msb(13) is not 3.");
+   static_assert(7 == msb<uint8_t>(255), "msb(255) is not 7");
+   static_assert(16 == msb<size_t>(100000), "msb(100000) is not 16");
 
    /*
     Converts a type to its binary representation.

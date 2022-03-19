@@ -1,5 +1,6 @@
 #pragma once
 #include "include/qgl_input_include.h"
+#include "include/qgl_input_state.h"
 #include "include/qgl_input_instance.h"
 
 namespace qgl::input::providers
@@ -7,10 +8,10 @@ namespace qgl::input::providers
    class uwp_key_input_provider_traits
    {
       public:
-      using window = typename winrt::Windows::UI::Core::CoreWindow;
-      uwp_key_input_provider_traits(
-         const std::shared_ptr<window>& window_p) :
-         m_window_p(window_p)
+      using window_ptr = std::shared_ptr<qgl::graphics::window>;
+
+      uwp_key_input_provider_traits(window_ptr&& window_p) :
+         m_window_p(std::forward<window_ptr>(window_p))
       {
          hook();
       }
@@ -57,9 +58,9 @@ namespace qgl::input::providers
       private:
       void hook()
       {
-         m_keyDownToken = m_window_p->KeyDown(
+         m_keyDownToken = m_window_p->rt_window()->KeyDown(
             { this, uwp_key_input_provider_traits::on_key_down });
-         m_keyUpToken = m_window_p->KeyUp(
+         m_keyUpToken = m_window_p->rt_window()->KeyUp(
             { this, &uwp_key_input_provider_traits::on_key_up });
          hooked = true;
       }
@@ -70,8 +71,8 @@ namespace qgl::input::providers
          std::lock_guard(m_vecMutex);
          if (hooked)
          {
-            m_window_p->KeyDown(m_keyDownToken);
-            m_window_p->KeyUp(m_keyUpToken);
+            m_window_p->rt_window()->KeyDown(m_keyDownToken);
+            m_window_p->rt_window()->KeyUp(m_keyUpToken);
          }
 
          hooked = false;
@@ -108,7 +109,7 @@ namespace qgl::input::providers
       /*
        Handle to the window that raises the key pressed events.
        */
-      std::shared_ptr<window> m_window_p;
+      window_ptr m_window_p;
 
       /*
        Inputs that were pressed since the last game loop update.

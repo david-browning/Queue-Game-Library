@@ -1,10 +1,9 @@
 ﻿#pragma once
 #include <collection.h>
 #include <ppltasks.h>
-#include <QGLMath.h>
-
 #include "UnitTestApp.xaml.h"
 #include "CPPUnitTest.h"
+#include <QGLMath.h>
 
 namespace Microsoft::VisualStudio::CppUnitTestFramework
 {

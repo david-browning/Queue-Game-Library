@@ -40,7 +40,16 @@ namespace qgl
       size_t length,
       uint64_t seed)
    {
-      return impl::fast_hash(buffer, length, seed);
+      return impl::fast_hash_64(buffer, length, seed);
+   }
+
+   template<typename T>
+   constexpr uint32_t fast_hash_32(
+      const T* buffer,
+      size_t length,
+      uint32_t seed)
+   {
+      return impl::fast_hash_32(buffer, length, seed);
    }
 
 #ifndef WIN32

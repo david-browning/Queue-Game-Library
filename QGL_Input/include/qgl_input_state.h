@@ -1,12 +1,10 @@
 #pragma once
 #include "include/qgl_input_include.h"
-#include "include/Input/qgl_gamepad_helpers.h"
-#include "include/Memory/qgl_mem_helpers.h"
+#include "include/qgl_input_key.h"
+#include "include/Helpers/qgl_gamepad_helpers.h"
 
 namespace qgl::input
 {
-   using input_key = typename winrt::Windows::System::VirtualKey;
-
    enum class BUTTON_STATES : uint8_t
    {
       BUTTON_STATE_INVALID = 0,
@@ -70,16 +68,16 @@ namespace qgl::input
       }
 
       input_state(input_axis&& input, BUTTON_STATES state) :
-         input_state(std::forward<input_axis>(input), 
-            state, 
+         input_state(std::forward<input_axis>(input),
+            state,
             INPUT_TYPES::INPUT_TYPE_AXIS)
       {
 
       }
 
       input_state(input_axis2d&& input, BUTTON_STATES state) :
-         input_state(std::forward<input_axis2d>(input), 
-            state, 
+         input_state(std::forward<input_axis2d>(input),
+            state,
             INPUT_TYPES::INPUT_TYPE_AXIS_2D)
       {
 
@@ -89,8 +87,8 @@ namespace qgl::input
       input_state(Input&& i,
          BUTTON_STATES buttonState,
          INPUT_TYPES inputType) :
-         m_state(buttonState), 
-         m_type(inputType), 
+         m_state(buttonState),
+         m_type(inputType),
          m_pressed(std::forward<Input>(i))
       {
 
@@ -186,6 +184,9 @@ namespace std
       static constexpr uint32_t fracMask = 0x07FF'FFFF;
       static constexpr uint32_t signMask = 1 << (sizeof(float) * CHAR_BIT - 1);
 
+      static constexpr size_t typeOffset =
+         (sizeof(result_type) - sizeof(uint8_t)) * CHAR_BIT;
+      static constexpr size_t  stateOffset = typeOffset + 4;
       /*
        Button state and input type are 4 bits each.
        Squash them together and store it in the top byte of a result_type.
@@ -193,10 +194,8 @@ namespace std
       constexpr result_type type_state_hash(
          const argument_type& t) const noexcept
       {
-         auto typeOffset = (sizeof(result_type) - sizeof(uint8_t)) * CHAR_BIT;
-         auto stateOffset = typeOffset + 4;
-         return 
-            (static_cast<result_type>(t.type()) << typeOffset) | 
+         return
+            (static_cast<result_type>(t.type()) << typeOffset) |
             (static_cast<result_type>(t.state()) << stateOffset);
       }
 
@@ -217,61 +216,45 @@ namespace std
             }
             case INPUT_TYPES::INPUT_TYPE_XINPUT:
             {
-               return type_state_hash(t) | 
+               return type_state_hash(t) |
                   static_cast<result_type>(t.xi_button());
             }
             case INPUT_TYPES::INPUT_TYPE_AXIS:
             {
-               // Squash the axis down to a 4 byte float. While this loses 
+               // Squash the axis down to a 2 byte numerator. While this loses 
                // some precision, its unlikely that input states are expected
                // to be so precise that this actually matters.
-               auto value = static_cast<float>(t.axis().value());
-               qgl::mem::bit_convert<float, uint32_t> x{ value };
+               qgl::math::decimal<qgl::input::AXIS_DENOMINATOR> x{
+                  t.axis().value()
+               };
+
+               auto upper = type_state_hash(t) |
+                  (static_cast<result_type>(t.axis().id()) <<
+                     (sizeof(result_type) / 2 * CHAR_BIT));
 
                // OR the value and type together so the type is the upper 32
                // bits (Which is a lot of wasted storage) and the lower 32 bits
                // is the squashed value.
-               return type_state_hash(t) | 
-                  (static_cast<result_type>(t.axis().id()) << 
-                     (sizeof(value) * CHAR_BIT)) | 
-                  x.to();
+               return upper | x.numerator();
             }
             case INPUT_TYPES::INPUT_TYPE_AXIS_2D:
             {
-               // [63-56] [55] [54] [53-0]
-               // Axis type, Y axis sign, X axis sign, Y axis, X axis
+               auto upper = type_state_hash(t) |
+                  (static_cast<result_type>(t.axis_2d().id()) <<
+                     (sizeof(result_type) / 2 * CHAR_BIT));
 
-               // There are 4 constant bits per 32-bit float.
-               // 1-5 are the same for values between -1 and 1 at 1/100 
-               // presision. 
+               qgl::math::decimal<qgl::input::AXIS_DENOMINATOR> x{
+                  t.axis_2d().x()
+               };
 
-               // We can move the bits around so that there are 56 bits to 
-               // represent the 2 axis and the top 8 represent the axis type.
+               qgl::math::decimal<qgl::input::AXIS_DENOMINATOR> y{
+                  t.axis_2d().y()
+               };
 
-               // Squash the axis into 4 byte floats.
-               auto x = static_cast<float>(t.axis_2d().x());
-               auto y = static_cast<float>(t.axis_2d().y());
-
-               // Get a binary represenation of the floats.
-               qgl::mem::bit_convert<float, uint32_t> xBits{ x };
-               qgl::mem::bit_convert<float, uint32_t> yBits{ y };
-
-               // Move the x and y floats to the correct position.
-               auto xXForm = static_cast<result_type>(xBits.to() & fracMask);
-               auto yXForm = static_cast<result_type>(yBits.to() & fracMask) <<
-                  fracLen;
-
-               // Put the signs back in:
-               auto xSign = static_cast<result_type>(xBits.to() & signMask) << 
-                  (2 * fracLen);
-               auto ySign = static_cast<result_type>(yBits.to() & signMask) << 
-                  (2 * fracLen + 1);
-
-               // Put the type in the top 8 bits
-               auto type = static_cast<result_type>(t.axis().id()) << 
-                  (2 * fracLen + 2);
-
-               return type | ySign | xSign | yXForm | xXForm;
+               return upper |
+                  (static_cast<result_type>(y.numerator()) <<
+                     (sizeof(x.numerator()) * CHAR_BIT)) |
+                  static_cast<result_type>(x.numerator());
             }
          }
 
