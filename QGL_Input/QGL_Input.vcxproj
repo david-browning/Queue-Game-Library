@@ -163,20 +163,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\Helpers\qgl_gamepad_helpers.h" />
+    <ClInclude Include="include\Helpers\qgl_pointer_helpers.h" />
+    <ClInclude Include="include\Providers\qgl_basic_input_provider.h" />
+    <ClInclude Include="include\Providers\qgl_uwp_background_point_input_provider.h" />
+    <ClInclude Include="include\Providers\qgl_uwp_gamepad_input_provider.h" />
+    <ClInclude Include="include\Providers\qgl_uwp_key_input_provider.h" />
+    <ClInclude Include="include\Providers\qgl_uwp_pointer_input_provider.h" />
+    <ClInclude Include="include\Providers\qgl_xinput_input_provider.h" />
     <ClInclude Include="include\QGLInput.h" />
-    <ClInclude Include="include\qgl_basic_input_provider.h" />
-    <ClInclude Include="include\qgl_gamepad_helpers.h" />
     <ClInclude Include="include\qgl_input_dispatcher.h" />
     <ClInclude Include="include\qgl_input_include.h" />
     <ClInclude Include="include\qgl_input_instance.h" />
+    <ClInclude Include="include\qgl_input_key.h" />
     <ClInclude Include="include\qgl_input_state.h" />
     <ClInclude Include="include\qgl_input_trigger.h" />
-    <ClInclude Include="include\qgl_pointer_helpers.h" />
-    <ClInclude Include="include\qgl_uwp_background_point_input_provider.h" />
-    <ClInclude Include="include\qgl_uwp_gamepad_input_provider.h" />
-    <ClInclude Include="include\qgl_uwp_key_input_provider.h" />
-    <ClInclude Include="include\qgl_uwp_pointer_input_provider.h" />
-    <ClInclude Include="include\qgl_xinput_input_provider.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="QGL_InputRT.h">
       <DependentUpon>QGL_InputRT.idl</DependentUpon>

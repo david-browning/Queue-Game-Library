@@ -133,6 +133,7 @@
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <CompileAsWinRT>true</CompileAsWinRT>
     </ClCompile>
     <Link>
       <AdditionalDependencies>QGL_Math.lib;QGL_Model.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -143,6 +144,7 @@
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <CompileAsWinRT>true</CompileAsWinRT>
     </ClCompile>
     <Link>
       <AdditionalDependencies>QGL_Math.lib;QGL_Model.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -153,6 +155,7 @@
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <CompileAsWinRT>true</CompileAsWinRT>
     </ClCompile>
     <Link>
       <AdditionalDependencies>QGL_Math.lib;QGL_Model.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -163,6 +166,7 @@
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <CompileAsWinRT>true</CompileAsWinRT>
     </ClCompile>
     <Link>
       <AdditionalDependencies>QGL_Math.lib;QGL_Model.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -173,6 +177,7 @@
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <CompileAsWinRT>true</CompileAsWinRT>
     </ClCompile>
     <Link>
       <AdditionalDependencies>QGL_Math.lib;QGL_Model.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -183,6 +188,7 @@
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <CompileAsWinRT>true</CompileAsWinRT>
     </ClCompile>
     <Link>
       <AdditionalDependencies>QGL_Math.lib;QGL_Model.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -218,6 +224,7 @@
     <ClCompile Include="approx_equal_tests.cpp" />
     <ClCompile Include="dx_comparator_tests.cpp" />
     <ClCompile Include="math_func_tests.cpp" />
+    <ClCompile Include="Tests\decimal_tests.cpp" />
     <ClCompile Include="Tests\rational_number_tests.cpp" />
     <ClCompile Include="Tests\rectangle_tests.cpp" />
     <ClCompile Include="UnitTestApp.xaml.cpp">
@@ -245,6 +252,5 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets" />
 </Project>

@@ -1,7 +1,8 @@
 #pragma once
 #include "include/qgl_input_include.h"
+#include "include/qgl_input_state.h"
 #include "include/qgl_input_instance.h"
-#include "include/qgl_gamepad_helpers.h"
+#include "include/Helpers/qgl_gamepad_helpers.h"
 
 namespace qgl::input::providers
 {
@@ -9,12 +10,12 @@ namespace qgl::input::providers
    {
       public:
       using gamepad = typename winrt::Windows::Gaming::Input::Gamepad;
+      using gamepad_ptr = typename std::shared_ptr<gamepad>;
 
-      gamepad_provider_traits(
-         const std::shared_ptr<gamepad>& gamepad_p,
-         const dead_zone_config& deadzone) :
-         m_gamepad_p(gamepad_p),
-         m_deadZone(deadzone),
+      gamepad_provider_traits(gamepad_ptr&& gamepad_p,
+                              dead_zone_config&& deadzone) :
+         m_gamepad_p(std::forward<gamepad_ptr>(gamepad_p)),
+         m_deadZone(std::forward<dead_zone_config>(deadzone)),
          m_lastRTrigger(false),
          m_lastLTrigger(false),
          m_lastRStick(false),
@@ -59,7 +60,7 @@ namespace qgl::input::providers
 
          // Normalize the right trigger.
          auto rTrigger = normalize_axis(state.RightTrigger, GAMEPAD_TRIGGER_MIN,
-            GAMEPAD_TRIGGER_MAX, m_deadZone.rtrigger, 
+            GAMEPAD_TRIGGER_MAX, m_deadZone.rtrigger,
             INPUT_AXIS_IDS::INPUT_AXIS_ID_RTRIGGER);
 
          // If it is not in the dead zone:
@@ -125,7 +126,7 @@ namespace qgl::input::providers
       /*
        Handle to the gamepad.
        */
-      std::shared_ptr<gamepad> m_gamepad_p;
+      gamepad_ptr m_gamepad_p;
 
       dead_zone_config m_deadZone;
 

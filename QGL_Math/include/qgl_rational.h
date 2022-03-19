@@ -92,12 +92,12 @@ namespace qgl::math
       /*
        Returns a floating point representation of the rational number.
        */
-      explicit inline operator float() const noexcept
+      explicit operator float() const noexcept
       {
          return static_cast<float>(m_num) / static_cast<float>(m_den);
       }
 
-      explicit inline operator double() const noexcept
+      explicit operator double() const noexcept
       {
          return static_cast<double>(m_num) / static_cast<double>(m_den);
       }

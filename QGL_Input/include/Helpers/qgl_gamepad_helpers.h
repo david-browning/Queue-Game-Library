@@ -1,6 +1,5 @@
 #pragma once
 #include "include/qgl_input_include.h"
-#include "include/qgl_misc_helpers.h"
 
 namespace qgl::input
 {
@@ -27,6 +26,12 @@ namespace qgl::input
       axis_magnitude rtrigger;
    };
 
+   /*
+    Use 12 bits to store an axis value between -1 and -1.
+    This gives us a precision of 0.0005.
+    */
+   static constexpr size_t AXIS_DENOMINATOR = 2047;
+
    struct input_axis
    {
       public:
@@ -43,8 +48,7 @@ namespace qgl::input
 
       constexpr bool approx_zero() const noexcept
       {
-         return approx_equal(static_cast<axis_magnitude>(0), value(),
-            m_tolerance);
+         return math::approx_equal(0, value(), m_tolerance);
       }
 
       constexpr axis_magnitude value() const noexcept
@@ -80,8 +84,8 @@ namespace qgl::input
       constexpr bool approx_zero() const noexcept
       {
          return
-            approx_equal(static_cast<axis_magnitude>(0), x(), m_tolerance) &&
-            approx_equal(static_cast<axis_magnitude>(0), y(), m_tolerance);
+            math::approx_equal(0, x(), m_tolerance) &&
+            math::approx_equal(0, y(), m_tolerance);
       }
 
       constexpr axis_magnitude x() const noexcept
