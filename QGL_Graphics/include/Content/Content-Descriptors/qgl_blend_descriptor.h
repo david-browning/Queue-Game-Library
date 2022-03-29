@@ -22,27 +22,9 @@ namespace qgl::graphics::descriptors
        The logic operation is D3D12_LOGIC_OP_NOOP
        The render target write mask is D3D12_COLOR_WRITE_ENABLE_ALL
        */
-      constexpr blend_descriptor() :
-         reserved1(0),
-         reserved2(0),
-         blend(FALSE),
-         enable_logic_op(FALSE),
-         op_logic(D3D12_LOGIC_OP_NOOP),
-         blend_src(D3D12_BLEND_ONE),
-         blend_dest(D3D12_BLEND_ZERO),
-         blend_op(D3D12_BLEND_OP_ADD),
-         blend_alpha_src(D3D12_BLEND_ONE),
-         blend_alpha_dest(D3D12_BLEND_ZERO),
-         blend_alpha_op(D3D12_BLEND_OP_ADD),
-         write_mask(D3D12_COLOR_WRITE_ENABLE_ALL)
+      constexpr blend_descriptor()
       {
       }
-
-      blend_descriptor(const blend_descriptor&) = default;
-
-      blend_descriptor(blend_descriptor&&) = default;
-
-      ~blend_descriptor() noexcept = default;
 
       /*
        Returns a D3D12 interpretation of the blend description.
@@ -76,8 +58,6 @@ namespace qgl::graphics::descriptors
          swap(l.blend_alpha_op, r.blend_alpha_op);
          swap(l.op_logic, r.op_logic);
          swap(l.write_mask, r.write_mask);
-         swap(l.reserved1, r.reserved1);
-         swap(l.reserved2, r.reserved2);
       }
 
       blend_descriptor& operator=(blend_descriptor r) noexcept
@@ -86,40 +66,37 @@ namespace qgl::graphics::descriptors
          return *this;
       }
 
-      uint32_t reserved1;
-      uint16_t reserved2;
-
       /*
        Specifies whether to enable (or disable) blending.
        Set to TRUE to enable blending.
        */
-      uint8_t blend;
+      uint8_t blend = FALSE;
 
       /*
        Specifies whether to enable (or disable) a logical operation. Set to
        TRUE to enable a logical operation.
        */
-      uint8_t enable_logic_op;
+      uint8_t enable_logic_op = FALSE;
 
       /*
        A D3D12_BLEND-typed value that specifies the operation to perform on
        the RGB value that the pixel shader outputs. The blend_op member defines
        how to combine the blend_src and blend_dest operations.
        */
-      uint8_t blend_src;
+      uint8_t blend_src = D3D12_BLEND_ONE;
 
       /*
        A D3D12_BLEND-typed value that specifies the operation to perform on the
        current RGB value in the render target. The blend_op member defines how
        to combine the blend_src and blend_dest operations.
        */
-      uint8_t blend_dest;
+      uint8_t blend_dest = D3D12_BLEND_ZERO;
 
       /*
        A D3D12_BLEND_OP-typed value that defines how to combine the blend_src
        and blend_dest operations.
        */
-      uint8_t blend_op;
+      uint8_t blend_op = D3D12_BLEND_OP_ADD;
 
       /*
        A D3D12_BLEND-typed value that specifies the operation to perform on
@@ -127,7 +104,7 @@ namespace qgl::graphics::descriptors
        in _COLOR are not allowed. The blend_alpha_op member defines how to
        combine the blend_alpha_src and blend_alpha_dest operations.
        */
-      uint8_t blend_alpha_src;
+      uint8_t blend_alpha_src = D3D12_BLEND_ONE;
 
       /*
        A D3D12_BLEND-typed value that specifies the operation to perform on
@@ -135,37 +112,26 @@ namespace qgl::graphics::descriptors
        in _COLOR are not allowed. The blend_alpha_op member defines how to
        combine the blend_alpha_src and blend_alpha_dest operations.
        */
-      uint8_t blend_alpha_dest;
+      uint8_t blend_alpha_dest = D3D12_BLEND_ZERO;
 
       /*
        A D3D12_BLEND_OP-typed value that defines how to combine the
        blend_alpha_src and blend_alpha_dest operations.
        */
-      uint8_t blend_alpha_op;
+      uint8_t blend_alpha_op = D3D12_BLEND_OP_ADD;
 
       /*
        A D3D12_LOGIC_OP-typed value that specifies the logical operation to
        configure for the render target.
        */
-      uint8_t op_logic;
+      uint8_t op_logic = D3D12_LOGIC_OP_NOOP;
 
       /*
        A combination of D3D12_COLOR_WRITE_ENABLE-typed values that are
        combined by using a bitwise OR operation. The resulting value specifies
        a write mask.
        */
-      uint8_t write_mask;
-
-      private:
-      static constexpr D3D12_RENDER_TARGET_BLEND_DESC
-         DEFAULT_RENDER_TARGET_BLEND_DESC =
-      {
-          FALSE,FALSE,
-          D3D12_BLEND_ONE, D3D12_BLEND_ZERO, D3D12_BLEND_OP_ADD,
-          D3D12_BLEND_ONE, D3D12_BLEND_ZERO, D3D12_BLEND_OP_ADD,
-          D3D12_LOGIC_OP_NOOP,
-          D3D12_COLOR_WRITE_ENABLE_ALL,
-      };
+      uint8_t write_mask = D3D12_COLOR_WRITE_ENABLE_ALL;
    };
 #pragma pack(pop)
 }

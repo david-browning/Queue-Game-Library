@@ -1,6 +1,6 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include "include/Interfaces/qgl_igraphics_device.h"
+#include "include/qgl_graphics_device.h"
 #include "include/GPU/Root-Signature/qgl_ibindable.h"
 
 namespace qgl::graphics::gpu
@@ -102,14 +102,13 @@ namespace qgl::graphics::gpu
       void construct(const graphics_device_ptr& gdev, size_t nodeMask)
       {
          D3D12_FEATURE_DATA_ROOT_SIGNATURE featureData = {};
-         auto d3dDevice = gdev->d3d12_device();
 
          //This is the highest version the sample supports. 
          //If CheckFeatureSupport succeeds, the HighestVersion returned will 
          //not be greater than this.
          featureData.HighestVersion = D3D_ROOT_SIGNATURE_VERSION_1_1;
 
-         HRESULT hr = d3dDevice->CheckFeatureSupport(
+         HRESULT hr = gdev->dev_3d()->CheckFeatureSupport(
             D3D12_FEATURE_ROOT_SIGNATURE,
             &featureData,
             sizeof(featureData));
@@ -130,18 +129,16 @@ namespace qgl::graphics::gpu
          //Serialize the signature.
          winrt::com_ptr<ID3DBlob> signature;
          winrt::com_ptr<ID3DBlob> error;
-         hr = D3DX12SerializeVersionedRootSignature(&desc,
-                                                    featureData.HighestVersion,
-                                                    signature.put(),
-                                                    error.put());
-         winrt::check_hresult(hr);
+         winrt::check_hresult(D3DX12SerializeVersionedRootSignature(&desc,
+            featureData.HighestVersion,
+            signature.put(),
+            error.put()));
 
          //Create the signature.
-         hr = d3dDevice->CreateRootSignature(nodeMask,
-                                             signature->GetBufferPointer(),
-                                             signature->GetBufferSize(),
-                                             IID_PPV_ARGS(m_rootSig_p.put()));
-         winrt::check_hresult(hr);
+         winrt::check_hresult(gdev->dev_3d()->CreateRootSignature(nodeMask,
+            signature->GetBufferPointer(),
+            signature->GetBufferSize(),
+            IID_PPV_ARGS(m_rootSig_p.put())));
 
          NAME_D3D12_OBJECT(m_rootSig_p.get());
       }

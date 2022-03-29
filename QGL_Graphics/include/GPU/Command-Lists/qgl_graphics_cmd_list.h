@@ -28,7 +28,7 @@ namespace qgl::graphics::gpu
       virtual void begin()
       {
          m_renderTargetTransitions.clear();
-         m_pendingResourceTransitions.clear();
+         pendingResourceTransitions.clear();
          reset();
       }
 
@@ -58,8 +58,8 @@ namespace qgl::graphics::gpu
 
          //Flush
          get()->ResourceBarrier(
-            static_cast<UINT>(m_pendingResourceTransitions.size()),
-            m_pendingResourceTransitions.data());
+            static_cast<UINT>(pendingResourceTransitions.size()),
+            pendingResourceTransitions.data());
 
          //This gets called by close().
          //winrt::check_hresult(get()->Close());
@@ -226,84 +226,8 @@ namespace qgl::graphics::gpu
       {
          get()->ExecuteBundle(bndl.get());
       }
-
-      /*
-       Performs an immediate resource transition from one state to another.
-       Resource's current state is updated.
-       Transitions can be expensive.
-       */
-      template<
-         typename ResourceDescriptionT,
-         typename ViewDescriptionT,
-         typename ResourceT>
-         void transition(
-            igpu_buffer<ResourceDescriptionT,
-                        ViewDescriptionT,
-                        ResourceT>* resource,
-                        D3D12_RESOURCE_STATES newState)
-      {
-         if (resource->state != newState)
-         {
-            transition(resource->get(), resource->state(), newState);
-            resource->state(newState);
-         }
-      }
-
-      void transition(d3d_resource* resource,
-                D3D12_RESOURCE_STATES oldState,
-                D3D12_RESOURCE_STATES newState)
-      {
-         auto transition = CD3DX12_RESOURCE_BARRIER::Transition(
-        resource,
-        oldState,
-        newState);
-         get()->ResourceBarrier(1, &transition);
-      }
-
-      /*
-       Queues a transition to be flushed at the end of the command list.
-       Resource's current state is updated.
-       The transitions are not recorded until "end()" is called.
-       It is best to batch transitions at the end of the command list because
-       they may cause a pipeline stall.
-       */
-      template<
-         typename ResourceDescriptionT,
-         typename ViewDescriptionT,
-         typename ResourceT>
-         void transition_queue(
-            igpu_buffer<ResourceDescriptionT,
-                        ViewDescriptionT,
-                        ResourceT>* resource,
-                        D3D12_RESOURCE_STATES newState)
-      {
-         if (resource->state != newState)
-         {
-            transition_queue(resource->get(), resource->state(), newState);
-            resource->state(newState);
-         }
-      }
-
-
-      void transition_queue(d3d_resource* resource,
-                            D3D12_RESOURCE_STATES oldState,
-                            D3D12_RESOURCE_STATES newState)
-      {
-         m_pendingResourceTransitions.push_back(
-            CD3DX12_RESOURCE_BARRIER::Transition(
-               resource,
-               oldState,
-               newState));
-      }
-
+            
       private:
-      /*
-       List of pending resource transitions.
-       These are vectors instead of queues so that we can get the raw array
-       pointer and guarantee that it is contiguous.
-       */
-      std::vector<D3D12_RESOURCE_BARRIER> m_pendingResourceTransitions;
-
       std::array<float, 4> m_clearColor;
 
       std::vector<std::reference_wrapper<depth_stencil>> m_depthStencils;

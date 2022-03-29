@@ -5,88 +5,88 @@
 
 namespace qgl::input
 {
-   enum class BUTTON_STATES : uint8_t
+   enum class button_states : uint8_t
    {
-      BUTTON_STATE_INVALID = 0,
-      BUTTON_STATE_PRESSED = 1,
-      BUTTON_STATE_RELEASED = 2,
-      BUTTON_STATE_TOGGLED = 3,
+      invalid = 0,
+      pressed = 1,
+      released = 2,
+      toggled = 3,
    };
 
    /*
    Only the low 4 bits are set.
    */
-   enum class INPUT_TYPES : uint8_t
+   enum class input_types : uint8_t
    {
       /*
       Keyboard or mouse button pressed or released.
       */
-      INPUT_TYPE_KEY = 1,
+      key = 1,
 
       /*
       A 1D axis such as a trigger.
       */
-      INPUT_TYPE_AXIS = 2,
+      axis = 2,
 
       /*
       A 2D axis such as a mouse or thumbstick movement.
       */
-      INPUT_TYPE_AXIS_2D = 3,
+      axis_2d = 3,
 
       /*
       A gamepad button was pressed or released.
       Gamepads provided by the WinRT framework have more functionality than
       XInput.
       */
-      INPUT_TYPE_GAMEPAD = 4,
+      gamepad = 4,
 
       /*
       An XInput device button was pressed or released.
       */
-      INPUT_TYPE_XINPUT = 5,
+      xinput = 5,
    };
 
    class input_state final
    {
       public:
-      input_state(input_key input, BUTTON_STATES state) :
-         input_state(input, state, INPUT_TYPES::INPUT_TYPE_KEY)
+      input_state(input_key input, button_states state) :
+         input_state(input, state, input_types::key)
       {
 
       }
 
-      input_state(gamepad_button input, BUTTON_STATES state) :
-         input_state(input, state, INPUT_TYPES::INPUT_TYPE_GAMEPAD)
+      input_state(gamepad_button input, button_states state) :
+         input_state(input, state, input_types::gamepad)
       {
 
       }
 
-      input_state(xinput_button input, BUTTON_STATES state) :
-         input_state(input, state, INPUT_TYPES::INPUT_TYPE_XINPUT)
+      input_state(xinput_button input, button_states state) :
+         input_state(input, state, input_types::xinput)
       {
 
       }
 
-      input_state(input_axis&& input, BUTTON_STATES state) :
+      input_state(input_axis&& input, button_states state) :
          input_state(std::forward<input_axis>(input),
             state,
-            INPUT_TYPES::INPUT_TYPE_AXIS)
+            input_types::axis)
       {
 
       }
 
-      input_state(input_axis2d&& input, BUTTON_STATES state) :
+      input_state(input_axis2d&& input, button_states state) :
          input_state(std::forward<input_axis2d>(input),
             state,
-            INPUT_TYPES::INPUT_TYPE_AXIS_2D)
+            input_types::axis_2d)
       {
 
       }
 
       template<typename Input>
       input_state(Input&& i,
-         BUTTON_STATES buttonState,
-         INPUT_TYPES inputType) :
+         button_states buttonState,
+         input_types inputType) :
          m_state(buttonState),
          m_type(inputType),
          m_pressed(std::forward<Input>(i))
@@ -113,12 +113,12 @@ namespace qgl::input
        Returns the type of input.
        Use this to determine which property is valid for this.
        */
-      constexpr INPUT_TYPES type() const noexcept
+      constexpr input_types type() const noexcept
       {
          return m_type;
       }
 
-      constexpr BUTTON_STATES state() const noexcept
+      constexpr button_states state() const noexcept
       {
          return m_state;
       }
@@ -157,8 +157,8 @@ namespace qgl::input
       }
 
       private:
-      INPUT_TYPES m_type;
-      BUTTON_STATES m_state;
+      input_types m_type;
+      button_states m_state;
       std::variant<
          input_key, xinput_button, gamepad_button,
          input_axis, input_axis2d> m_pressed;
@@ -204,22 +204,22 @@ namespace std
          using namespace qgl::input;
          switch (t.type())
          {
-            case INPUT_TYPES::INPUT_TYPE_KEY:
+            case input_types::key:
             {
                return type_state_hash(t) |
                   static_cast<result_type>(t.key());
             }
-            case INPUT_TYPES::INPUT_TYPE_GAMEPAD:
+            case input_types::gamepad:
             {
                return type_state_hash(t) |
                   static_cast<result_type>(t.gp_button());
             }
-            case INPUT_TYPES::INPUT_TYPE_XINPUT:
+            case input_types::xinput:
             {
                return type_state_hash(t) |
                   static_cast<result_type>(t.xi_button());
             }
-            case INPUT_TYPES::INPUT_TYPE_AXIS:
+            case input_types::axis:
             {
                // Squash the axis down to a 2 byte numerator. While this loses 
                // some precision, its unlikely that input states are expected
@@ -237,7 +237,7 @@ namespace std
                // is the squashed value.
                return upper | x.numerator();
             }
-            case INPUT_TYPES::INPUT_TYPE_AXIS_2D:
+            case input_types::axis_2d:
             {
                auto upper = type_state_hash(t) |
                   (static_cast<result_type>(t.axis_2d().id()) <<

@@ -41,7 +41,7 @@ namespace qgl::input::providers
             // If the button is pressed:
             if (pressed<gamepad_button>(state.Buttons, button))
             {
-               inputs.emplace_back(button, BUTTON_STATES::BUTTON_STATE_PRESSED);
+               inputs.emplace_back(button, button_states::pressed);
             }
             else
             {
@@ -50,7 +50,7 @@ namespace qgl::input::providers
                {
                   // Add a button released event.
                   inputs.emplace_back(button,
-                     BUTTON_STATES::BUTTON_STATE_RELEASED);
+                     button_states::released);
                   m_lastUpdateButtons.erase(button);
                }
             }
@@ -61,61 +61,61 @@ namespace qgl::input::providers
          // Normalize the right trigger.
          auto rTrigger = normalize_axis(state.RightTrigger, GAMEPAD_TRIGGER_MIN,
             GAMEPAD_TRIGGER_MAX, m_deadZone.rtrigger,
-            INPUT_AXIS_IDS::INPUT_AXIS_ID_RTRIGGER);
+            input_axis_ids::right_trigger);
 
          // If it is not in the dead zone:
          if (!rTrigger.approx_zero())
          {
-            inputs.emplace_back(rTrigger, BUTTON_STATES::BUTTON_STATE_PRESSED);
+            inputs.emplace_back(rTrigger, button_states::pressed);
             m_lastRTrigger = true;
          }
          else if (m_lastRTrigger)
          {
             // Trigger not pressed but it was pressed last update.
-            inputs.emplace_back(rTrigger, BUTTON_STATES::BUTTON_STATE_RELEASED);
+            inputs.emplace_back(rTrigger, button_states::released);
             m_lastRTrigger = false;
          }
 
          auto lTrigger = normalize_axis(state.LeftTrigger, GAMEPAD_TRIGGER_MIN,
             GAMEPAD_TRIGGER_MAX, m_deadZone.ltrigger,
-            INPUT_AXIS_IDS::INPUT_AXIS_ID_LTRIGGER);
+            input_axis_ids::left_trigger);
          if (!lTrigger.approx_zero())
          {
-            inputs.emplace_back(lTrigger, BUTTON_STATES::BUTTON_STATE_PRESSED);
+            inputs.emplace_back(lTrigger, button_states::pressed);
             m_lastLTrigger = true;
          }
          else if (m_lastLTrigger)
          {
-            inputs.emplace_back(lTrigger, BUTTON_STATES::BUTTON_STATE_RELEASED);
+            inputs.emplace_back(lTrigger, button_states::released);
             m_lastLTrigger = false;
          }
 
          // Handle the thumbsticks
          auto rStick = normalize_axis(state.RightThumbstickX,
             state.RightThumbstickX, GAMEPAD_STICK_MIN, GAMEPAD_STICK_MAX,
-            m_deadZone.rstick, INPUT_AXIS_IDS::INPUT_AXIS_ID_RSTICK);
+            m_deadZone.rstick, input_axis_ids::right_stick);
          if (!rStick.approx_zero())
          {
-            inputs.emplace_back(rStick, BUTTON_STATES::BUTTON_STATE_PRESSED);
+            inputs.emplace_back(rStick, button_states::pressed);
             m_lastRStick = true;
          }
          else if (m_lastRStick)
          {
-            inputs.emplace_back(rStick, BUTTON_STATES::BUTTON_STATE_RELEASED);
+            inputs.emplace_back(rStick, button_states::released);
             m_lastRStick = false;
          }
 
          auto lStick = normalize_axis(state.LeftThumbstickX,
             state.LeftThumbstickY, GAMEPAD_STICK_MIN, GAMEPAD_STICK_MAX,
-            m_deadZone.lstick, INPUT_AXIS_IDS::INPUT_AXIS_ID_LSTICK);
+            m_deadZone.lstick, input_axis_ids::left_stick);
          if (!rStick.approx_zero())
          {
-            inputs.emplace_back(lStick, BUTTON_STATES::BUTTON_STATE_PRESSED);
+            inputs.emplace_back(lStick, button_states::pressed);
             m_lastLStick = true;
          }
          else if (m_lastLStick)
          {
-            inputs.emplace_back(lStick, BUTTON_STATES::BUTTON_STATE_RELEASED);
+            inputs.emplace_back(lStick, button_states::released);
             m_lastLStick = false;
          }
 

@@ -1,6 +1,6 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include "include/Interfaces/qgl_igraphics_device.h"
+#include "include/qgl_graphics_device.h"
 #include "include/qgl_window.h"
 #include "include/Content/qgl_device_configuration.h"
 
@@ -19,13 +19,11 @@ namespace qgl::graphics::gpu
        */
       viewport(const graphics_device_ptr& dev, const graphics::window& wnd)
       {
-         auto windowWidth = wnd.width<float>();
-         auto windowHeight = wnd.height<float>();
-         auto config = dev->config();
-         float viewWidthRatio = static_cast<float>(
-            config->width()) / windowWidth;
-         float viewHeightRatio = static_cast<float>(
-            config->height()) / windowHeight;
+         auto wndWidth = wnd.width<float>();
+         auto wndHeight = wnd.height<float>();
+         const auto& cfg = dev->config();
+         float viewWidthRatio = static_cast<float>(cfg.width()) / wndWidth;
+         float viewHeightRatio = static_cast<float>(cfg.height()) / wndHeight;
          float x = 1.0f;
          float y = 1.0f;
 
@@ -42,10 +40,10 @@ namespace qgl::graphics::gpu
             y = viewHeightRatio / viewWidthRatio;
          }
 
-         m_viewport.TopLeftX = windowWidth * (1.0f - x) / 2.0f;
-         m_viewport.TopLeftY = windowHeight * (1.0f - y) / 2.0f;
-         m_viewport.Width = x * windowWidth;
-         m_viewport.Height = y * windowHeight;
+         m_viewport.TopLeftX = wndWidth * (1.0f - x) / 2.0f;
+         m_viewport.TopLeftY = wndHeight * (1.0f - y) / 2.0f;
+         m_viewport.Width = x * wndWidth;
+         m_viewport.Height = y * wndHeight;
       }
 
       /*

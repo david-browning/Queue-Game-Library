@@ -56,8 +56,7 @@ namespace qgl::math
       /*
        Stores the number 0.
        */
-      constexpr decimal() :
-         m_numerator(0)
+      constexpr decimal()
       {
       }
 
@@ -69,13 +68,13 @@ namespace qgl::math
 
       template<>
       constexpr decimal(float x) :
-         m_numerator(denominator()* x)
+         m_numerator(numerator_type(x * float(denominator())))
       {
       }
 
       template<>
       constexpr decimal(double x) :
-         m_numerator(denominator()* x)
+         m_numerator(numerator_type(x * double(denominator())))
       {
       }
 
@@ -122,7 +121,7 @@ namespace qgl::math
       }
 
       private:
-      numerator_type m_numerator;
+      numerator_type m_numerator = 0;
    };
 #pragma pack(pop)
 

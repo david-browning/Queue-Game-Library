@@ -21,26 +21,9 @@ namespace qgl::graphics::descriptors
        Forced sample count is 0.
        Conservative rast is D3D12_CONSERVATIVE_RASTERIZATION_MODE_OFF
        */
-      constexpr rasterizer_descriptor() :
-         depth_bias_clamp(),
-         slope_scaled_depth_bias(),
-         depth_bias(D3D12_DEFAULT_DEPTH_BIAS),
-         forced_sample_count(0),
-         fill_mode(D3D12_FILL_MODE_SOLID),
-         cull_mode(D3D12_CULL_MODE_BACK),
-         conservative_raster(D3D12_CONSERVATIVE_RASTERIZATION_MODE_OFF),
-         front_counterclockwise(false),
-         depth_clip(true),
-         multisample(false),
-         antialiased_line(false)
+      constexpr rasterizer_descriptor()
       {
       }
-
-      rasterizer_descriptor(const rasterizer_descriptor&) = default;
-
-      rasterizer_descriptor(rasterizer_descriptor&&) = default;
-
-      ~rasterizer_descriptor() noexcept = default;
 
       friend void swap(rasterizer_descriptor& l,
          rasterizer_descriptor& r) noexcept
@@ -81,32 +64,32 @@ namespace qgl::graphics::descriptors
        Depth value added to a given pixel.
        For info about depth bias, see https://tinyurl.com/d3d-depth-bias
        */
-      int32_t depth_bias;
+      int32_t depth_bias = D3D12_DEFAULT_DEPTH_BIAS;
 
       /*
        The sample count that is forced while UAV rendering or rasterizing.
        Valid values are 0, 1, 2, 4, 8, and optionally 16.
        0 indicates that the sample count is not forced.
        */
-      uint32_t forced_sample_count;
+      uint32_t forced_sample_count = 0;
 
       /*
        A D3D12_FILL_MODE-typed value that specifies the fill mode to use
        when rendering.
        */
-      uint8_t fill_mode;
+      uint8_t fill_mode = D3D12_FILL_MODE_SOLID;
 
       /*
        A D3D12_CULL_MODE-typed value that specifies that triangles facing the
        specified direction are not drawn.
        */
-      uint8_t cull_mode;
+      uint8_t cull_mode = D3D12_CULL_MODE_BACK;
 
       /*
        A D3D12_CONSERVATIVE_RASTERIZATION_MODE-typed value that identifies
        whether conservative rasterization is on or off.
        */
-      uint8_t conservative_raster;
+      uint8_t conservative_raster = D3D12_CONSERVATIVE_RASTERIZATION_MODE_OFF;
 
       /*
        Determines if a triangle is front- or back-facing.
@@ -115,7 +98,7 @@ namespace qgl::graphics::descriptors
        back-facing if they are clockwise. If this parameter is FALSE,
        the opposite is true.
        */
-      uint8_t front_counterclockwise;
+      uint8_t front_counterclockwise = 0;
 
       /*
        Specifies whether to enable clipping based on distance.
@@ -130,7 +113,7 @@ namespace qgl::graphics::descriptors
        are simplified. In other words, you can avoid complex special-case
        handling for geometry that goes beyond the back clipping plane.
        */
-      uint8_t depth_clip;
+      uint8_t depth_clip = 1;
 
       /*
        Specifies whether to use the quadrilateral or alpha line anti-aliasing
@@ -138,13 +121,13 @@ namespace qgl::graphics::descriptors
        Set to TRUE to use the quadrilateral line anti-aliasing algorithm and
        to FALSE to use the alpha line anti-aliasing algorithm.
        */
-      uint8_t multisample;
+      uint8_t multisample = 0;
 
       /*
        Specifies whether to enable line antialiasing;
        only applies if doing line drawing and MultisampleEnable is FALSE.
        */
-      uint8_t antialiased_line;
+      uint8_t antialiased_line = 0;
    };
 #pragma pack(pop)
 }

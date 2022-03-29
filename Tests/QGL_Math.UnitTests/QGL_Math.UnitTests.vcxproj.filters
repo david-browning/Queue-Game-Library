@@ -36,6 +36,9 @@
     <ClCompile Include="Tests\decimal_tests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="boundary_tests.cpp">
+      <Filter>Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

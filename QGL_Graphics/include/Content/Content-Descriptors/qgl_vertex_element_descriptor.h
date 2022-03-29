@@ -10,16 +10,7 @@ namespace qgl::graphics::descriptors
        Default constructor. The element is invalid and all fields need to be
        overwritten before using this.
        */
-      vertex_element_descriptor() :
-         semantic_index(0),
-         format(DXGI_FORMAT_UNKNOWN),
-         slot(0),
-         data_class(D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA),
-         index(0),
-         reserved1(0),
-         reserved2(0),
-         reserved3(0),
-         reserved4(0)
+      vertex_element_descriptor()
       {
 
       }
@@ -36,30 +27,19 @@ namespace qgl::graphics::descriptors
        elementIdx: index of this element in a vertex description.
        Throws std::invalid_argument if the semantic name is too long.
        */
-      vertex_element_descriptor(
-         const char* semantic,
-         uint8_t semanticIdx,
-         DXGI_FORMAT fmt,
-         uint8_t inputSlot,
-         uint8_t elementIdx) :
+      vertex_element_descriptor(const std::string& semantic,
+                                uint8_t semanticIdx,
+                                DXGI_FORMAT fmt,
+                                uint8_t inputSlot,
+                                uint8_t elementIdx) :
+         semantic_name(semantic.c_str(), semantic.size()),
          semantic_index(semanticIdx),
          format(fmt),
          slot(inputSlot),
          data_class(D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA),
-         index(elementIdx),
-         reserved1(0),
-         reserved2(0),
-         reserved3(0),
-         reserved4(0)
+         index(elementIdx)
       {
-         auto nameLen = mem::mem_length(semantic, '\0');
-         if (nameLen > MAX_SEMANTIC_NAME_LEN)
-         {
-            throw std::invalid_argument("The semantic name is too long.");
-         }
 
-         memset(semantic_name, 0, MAX_SEMANTIC_NAME_LEN);
-         memcpy(semantic_name, semantic, sizeof(char) * nameLen);
       }
 
       vertex_element_descriptor(const vertex_element_descriptor&) = default;
@@ -96,7 +76,7 @@ namespace qgl::graphics::descriptors
        Semantic name.
        May or may not end with a null-terminator.
        */
-      char semantic_name[MAX_SEMANTIC_NAME_LEN] = { 0 };
+      qgl::fixed_buffer<char, MAX_SEMANTIC_NAME_LEN> semantic_name;
 
       /*
        The semantic index for the element. A semantic index modifies a
@@ -106,35 +86,25 @@ namespace qgl::graphics::descriptors
        semantic name matrix, however each of the four component would have
        different semantic indices (0, 1, 2, and 3).
        */
-      uint32_t semantic_index;
+      uint32_t semantic_index = 0;
 
       /*
        format of the element data. See DXGI_FORMAT.
        */
-      uint16_t format;
+      uint16_t format = DXGI_FORMAT_UNKNOWN;
 
-      uint8_t slot;
+      uint8_t slot = 0;
 
       /*
        A value that identifies the input data class for a single input slot.
        By default, this is D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA.
        */
-      uint8_t data_class;
+      uint8_t data_class = D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
 
       /*
        index of this element in a complete vertex description.
        */
-      uint8_t index;
-
-      uint8_t reserved1;
-
-      uint16_t reserved2;
-
-      uint32_t reserved3;
-
-      uint32_t reserved4;
-
-      uint8_t padding[12] = { 0 };
+      uint8_t index = 0;
    };
 #pragma pack(pop)
 }

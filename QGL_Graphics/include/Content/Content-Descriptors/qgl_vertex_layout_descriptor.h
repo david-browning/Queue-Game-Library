@@ -6,18 +6,9 @@ namespace qgl::graphics::descriptors
 #pragma pack(push, 1)
    struct vertex_layout_descriptor final
    {
-      constexpr vertex_layout_descriptor() :
-         topology(D3D12_PRIMITIVE_TOPOLOGY_TYPE_UNDEFINED),
-         strip_cut(D3D12_INDEX_BUFFER_STRIP_CUT_VALUE_DISABLED),
-         reserved1(0), reserved2(0)
+      constexpr vertex_layout_descriptor()
       {
       }
-
-      vertex_layout_descriptor(const vertex_layout_descriptor&) = default;
-
-      vertex_layout_descriptor(vertex_layout_descriptor&&) = default;
-
-      ~vertex_layout_descriptor() noexcept = default;
 
       friend void swap(
          vertex_layout_descriptor& l,
@@ -36,10 +27,10 @@ namespace qgl::graphics::descriptors
          return *this;
       }
 
-      uint8_t topology;
-      uint8_t strip_cut;
-      uint8_t reserved1;
-      uint8_t reserved2;
+      uint8_t topology = D3D12_PRIMITIVE_TOPOLOGY_TYPE_UNDEFINED;
+      uint8_t strip_cut = D3D12_INDEX_BUFFER_STRIP_CUT_VALUE_DISABLED;
+      uint8_t reserved1 = 0;
+      uint8_t reserved2 = 0;
    };
 #pragma pack(pop)
 }

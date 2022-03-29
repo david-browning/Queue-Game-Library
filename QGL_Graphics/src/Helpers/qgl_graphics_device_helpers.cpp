@@ -1,10 +1,10 @@
 
 #include "pch.h"
-#include "include/Helpers/qgl_window_helpers.h"
+#include "include/Helpers/qgl_graphics_device_helpers.h"
 
 namespace qgl::graphics::helpers
 {
-   bool support_tearing(dxgi_factory* fac_p)
+   bool support_tearing(factory_gpu* fac_p)
    {
       BOOL supported = false;
       winrt::check_hresult(fac_p->CheckFeatureSupport(
@@ -15,15 +15,19 @@ namespace qgl::graphics::helpers
       return static_cast<bool>(supported);
    }
 
-   bool support_hdr(IDXGIOutput6* output_p)
-   {
-      DXGI_OUTPUT_DESC1 desc;
-      winrt::check_hresult(output_p->GetDesc1(&desc));
-      return (desc.ColorSpace == DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020);
-   }
-
    bool support_stereo()
    {
       throw winrt::hresult_not_implemented{};
    }
+
+   bool support_tiling(device_3d* dev_p) noexcept
+   {
+      D3D12_FEATURE_DATA_D3D12_OPTIONS options = {};
+      dev_p->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS,
+         &options, sizeof(options));
+
+      return options.TiledResourcesTier !=
+         D3D12_TILED_RESOURCES_TIER_NOT_SUPPORTED;
+   }
+
 }

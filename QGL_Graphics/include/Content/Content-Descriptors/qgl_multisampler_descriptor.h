@@ -9,18 +9,9 @@ namespace qgl::graphics::descriptors
    struct multisampler_descriptor final
    {
       public:
-      constexpr multisampler_descriptor() :
-         count(1),
-         quality(0),
-         reserved1(0)
+      constexpr multisampler_descriptor()
       {
       }
-
-      multisampler_descriptor(const multisampler_descriptor&) = default;
-
-      multisampler_descriptor(multisampler_descriptor&&) = default;
-
-      ~multisampler_descriptor() noexcept = default;
 
       friend void swap(multisampler_descriptor& l,
          multisampler_descriptor& r) noexcept
@@ -28,7 +19,6 @@ namespace qgl::graphics::descriptors
          using std::swap;
          swap(l.count, r.count);
          swap(l.quality, r.quality);
-         swap(l.reserved1, r.reserved1);
       }
 
       multisampler_descriptor& operator=(multisampler_descriptor r) noexcept
@@ -41,14 +31,13 @@ namespace qgl::graphics::descriptors
        The number of multisamples per pixel.
        Default count is 1.
        */
-      uint16_t count;
+      uint16_t count = 1;
 
       /*
        The image quality level.
        Default is 0.
        */
-      uint16_t quality;
-      uint32_t reserved1;
+      uint16_t quality = 0;
    };
 #pragma pack(pop)
 }

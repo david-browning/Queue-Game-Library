@@ -7,27 +7,9 @@ namespace qgl::graphics::descriptors
    struct sampler_descriptor final
    {
       public:
-      constexpr sampler_descriptor() :
-         mip_lod_bias(),
-         lod_max(),
-         lod_min(),
-         anisotropy_max(1),
-         filter(D3D12_FILTER_MIN_MAG_MIP_POINT),
-         comparison_func(D3D12_COMPARISON_FUNC_LESS),
-         addressu(D3D12_TEXTURE_ADDRESS_MODE_BORDER),
-         addressv(D3D12_TEXTURE_ADDRESS_MODE_BORDER),
-         addressw(D3D12_TEXTURE_ADDRESS_MODE_BORDER),
-         reserved1(0),
-         reserved2(0),
-         reserved3(0)
+      constexpr sampler_descriptor()
       {
       }
-
-      sampler_descriptor(const sampler_descriptor&) = default;
-
-      sampler_descriptor(sampler_descriptor&&) = default;
-
-      ~sampler_descriptor() noexcept = default;
 
       friend void swap(sampler_descriptor& l,
                        sampler_descriptor& r) noexcept
@@ -59,7 +41,7 @@ namespace qgl::graphics::descriptors
        for AddressU, AddressV, or AddressW. Range must be between 0.0 and 1.0
        inclusive.
        */
-      math::rational<int32_t> border[4];
+      fixed_buffer<math::rational<int32_t>, 4> border;
 
       /*
        Offset from the calculated mipmap level. For example, if the runtime
@@ -88,43 +70,43 @@ namespace qgl::graphics::descriptors
        D3D12_FILTER_COMPARISON_ANISOTROPIC is specified in Filter. Valid values
        are between 1 and 16.
        */
-      uint32_t anisotropy_max;
+      uint32_t anisotropy_max = 1;
 
       /*
        A D3D12_FILTER-typed value that specifies the filtering method to use
        when sampling a texture.
        */
-      uint8_t filter;
+      uint8_t filter = D3D12_FILTER_MIN_MAG_MIP_POINT;
 
       /*
        A D3D12_TEXTURE_ADDRESS_MODE-typed value that specifies the method to
        use for resolving a u texture coordinate that is outside the 0 to 1
        range.
        */
-      uint8_t addressu;
+      uint8_t addressu = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
 
       /*
        A D3D12_TEXTURE_ADDRESS_MODE-typed value that specifies the method to
        use for resolving a v texture coordinate that is outside the 0 to 1
        range.
        */
-      uint8_t addressv;
+      uint8_t addressv = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
 
       /*
        A D3D12_TEXTURE_ADDRESS_MODE-typed value that specifies the method to
        use for resolving a w texture coordinate that is outside the 0 to 1
        range.
        */
-      uint8_t addressw;
+      uint8_t addressw = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
 
       /*
        A D3D12_COMPARISON_FUNC-typed value that specifies a function that
        compares sampled data against existing sampled data.
        */
-      uint8_t comparison_func;
-      uint8_t reserved1;
-      uint8_t reserved2;
-      uint8_t reserved3;
+      uint8_t comparison_func = D3D12_COMPARISON_FUNC_LESS;
+      uint8_t reserved1 = 0;
+      uint8_t reserved2 = 0;
+      uint8_t reserved3 = 0;
    };
 #pragma pack(pop)
 }

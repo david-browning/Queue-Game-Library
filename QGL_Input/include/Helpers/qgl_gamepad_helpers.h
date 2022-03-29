@@ -3,14 +3,14 @@
 
 namespace qgl::input
 {
-   enum class INPUT_AXIS_IDS : uint8_t
+   enum class input_axis_ids : uint8_t
    {
-      INPUT_AXIS_ID_NONE = 0,
-      INPUT_AXIS_ID_MOUSE = 1,
-      INPUT_AXIS_ID_RTRIGGER = 2,
-      INPUT_AXIS_ID_LTRIGGER = 4,
-      INPUT_AXIS_ID_RSTICK = 8,
-      INPUT_AXIS_ID_LSTICK = 16,
+      none = 0,
+      mouse = 1,
+      right_trigger = 2,
+      left_trigger = 4,
+      right_stick = 8,
+      left_stick = 16,
    };
 
    /*
@@ -35,7 +35,7 @@ namespace qgl::input
    struct input_axis
    {
       public:
-      constexpr input_axis(axis_magnitude val, INPUT_AXIS_IDS axis,
+      constexpr input_axis(axis_magnitude val, input_axis_ids axis,
          axis_magnitude tol = FLT_EPSILON) :
          m_value(val), m_id(axis), m_tolerance(tol)
       {
@@ -56,7 +56,7 @@ namespace qgl::input
          return m_value;
       }
 
-      constexpr INPUT_AXIS_IDS id() const noexcept
+      constexpr input_axis_ids id() const noexcept
       {
          return m_id;
       }
@@ -64,14 +64,14 @@ namespace qgl::input
       private:
       axis_magnitude m_value;
       axis_magnitude m_tolerance;
-      INPUT_AXIS_IDS m_id;
+      input_axis_ids m_id;
    };
 
    struct input_axis2d
    {
       public:
       constexpr input_axis2d(axis_magnitude xValue, axis_magnitude yValue,
-         INPUT_AXIS_IDS axis, axis_magnitude tol = FLT_EPSILON) :
+         input_axis_ids axis, axis_magnitude tol = FLT_EPSILON) :
          m_x(xValue), m_y(yValue), m_id(axis), m_tolerance(tol)
       {
 
@@ -98,7 +98,7 @@ namespace qgl::input
          return m_y;
       }
 
-      constexpr INPUT_AXIS_IDS id() const noexcept
+      constexpr input_axis_ids id() const noexcept
       {
          return m_id;
       }
@@ -107,7 +107,7 @@ namespace qgl::input
       axis_magnitude m_x;
       axis_magnitude m_y;
       axis_magnitude m_tolerance;
-      INPUT_AXIS_IDS m_id;
+      input_axis_ids m_id;
    };
 
    template<typename ButtonT>
@@ -126,7 +126,7 @@ namespace qgl::input
       ReadingT minValue,
       ReadingT maxValue,
       ReadingT deadZone,
-      INPUT_AXIS_IDS id,
+      input_axis_ids id,
       axis_magnitude tolerance = FLT_EPSILON)
    {
       if (value > deadZone)
@@ -158,7 +158,7 @@ namespace qgl::input
       ReadingT minValue,
       ReadingT maxValue,
       ReadingT deadZone,
-      INPUT_AXIS_IDS id,
+      input_axis_ids id,
       axis_magnitude tolerance = FLT_EPSILON)
    {
       auto mag = std::sqrt(static_cast<axis_magnitude>(

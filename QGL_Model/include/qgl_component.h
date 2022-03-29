@@ -13,38 +13,23 @@ namespace qgl
     states that should not be public.
    UpdateT: Type of object to update. Usually, this is the object being
      updated like a sprite, model, or physics state.
-    UpdateContextT: Update Context Type. This is context used to update the
+    ContextT: Update Context Type. This is context used to update the
      object. The context could be the elapsed time since the last render, the
      current input state, or a graphics context to render the object.
-    ReturnType: What the update function should return.
+    ReturnT: What the update function should return.
     UpdateFunctor: A functor that provides the component's logic. The functor
-     must have this signature: (ReturnType)(UpdateT&, UpdateContextT&)
+     must have this signature: (ReturnT)(UpdateT&, ContextT&)
     Components use a GUID so engine components can locate them at run time.
     Content references components using their GUID.
     */
-   template<class UpdateT,
-      class UpdateContextT,
-      class ReturnType,
-      typename UpdateFunctor>
+   template<class UpdateT, class ContextT, class ReturnT, class UpdateFunctor>
    class component
    {
       public:
-      /*
-       Constructor.
-       Components must have a GUID.
-       */
-      constexpr component(const qgl::guid& g,
-                          UpdateFunctor f = UpdateFunctor()) :
-         m_guid(g),
-         m_functor(f)
-      {
-
-      }
-
       constexpr component(qgl::guid&& g,
-                          UpdateFunctor f = UpdateFunctor()) :
-         m_guid(g),
-         m_functor(f)
+                          UpdateFunctor&& f = UpdateFunctor()) :
+         m_guid(std::forward<qgl::guid>(g)),
+         m_functor(std::forward<UpdateFunctor>(f))
       {
 
       }
@@ -64,10 +49,10 @@ namespace qgl
        */
       ~component() noexcept = default;
 
-      /* 
+      /*
        Applies the update function to object using the given context.
        */
-      ReturnType udpate(UpdateT& obj, UpdateContextT& context)
+      ReturnT udpate(UpdateT& obj, ContextT& context)
       {
          return m_functor(obj, context);
       }

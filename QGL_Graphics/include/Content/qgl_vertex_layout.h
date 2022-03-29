@@ -12,12 +12,10 @@ namespace qgl::graphics
    {
       public:
       template<class ElementIt>
-      vertex_layout(
-         ElementIt first, ElementIt last,
-         const descriptors::vertex_layout_descriptor& desc) :
+      vertex_layout(ElementIt first, ElementIt last,
+                    const descriptors::vertex_layout_descriptor& desc) :
          m_topo(static_cast<D3D12_PRIMITIVE_TOPOLOGY_TYPE>(desc.topology)),
-         m_strip_cut(static_cast<D3D12_INDEX_BUFFER_STRIP_CUT_VALUE>(
-            desc.strip_cut))
+         m_strip_cut(static_cast<D3D12_INDEX_BUFFER_STRIP_CUT_VALUE>(desc.strip_cut))
 
       {
          auto count = std::distance(first, last);

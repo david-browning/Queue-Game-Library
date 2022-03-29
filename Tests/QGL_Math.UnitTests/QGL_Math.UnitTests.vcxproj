@@ -222,6 +222,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="approx_equal_tests.cpp" />
+    <ClCompile Include="boundary_tests.cpp" />
     <ClCompile Include="dx_comparator_tests.cpp" />
     <ClCompile Include="math_func_tests.cpp" />
     <ClCompile Include="Tests\decimal_tests.cpp" />

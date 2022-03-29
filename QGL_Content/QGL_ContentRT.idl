@@ -1,8 +1,0 @@
-namespace QGL_Content
-{
-   [default_interface]
-   runtimeclass QGL_ContentRT
-   {
-      QGL_ContentRT();
-   }
-}

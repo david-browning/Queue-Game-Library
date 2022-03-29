@@ -17,16 +17,16 @@ namespace qgl::input
        Trigger for when the given key or mouse button is in the given state for
        the given amount of time.
        */
-      input_trigger(input_key k, BUTTON_STATES btnState, TickT wait) :
-         m_type(INPUT_TYPES::INPUT_TYPE_KEY), m_state(btnState), m_wait(wait),
+      input_trigger(input_key k, button_states btnState, TickT wait) :
+         m_type(input_types::key), m_state(btnState), m_wait(wait),
          m_button(std::move(std::vector<input_key>{k}))
       {
       }
 
       template<class InputKeyIterator>
       input_trigger(InputKeyIterator first, InputKeyIterator last,
-         BUTTON_STATES btnState, TickT wait) :
-         m_type(INPUT_TYPES::INPUT_TYPE_KEY), m_state(btnState), m_wait(wait),
+         button_states btnState, TickT wait) :
+         m_type(input_types::key), m_state(btnState), m_wait(wait),
          m_button(std::move(std::vector<input_key>{first, last}))
       {
       }
@@ -37,8 +37,8 @@ namespace qgl::input
        Bitwise OR buttons together so the trigger is raised only if all
        buttons are pressed.
        */
-      input_trigger(gamepad_button btns, BUTTON_STATES btnState, TickT wait) :
-         m_type(INPUT_TYPES::INPUT_TYPE_GAMEPAD), m_state(btnState),
+      input_trigger(gamepad_button btns, button_states btnState, TickT wait) :
+         m_type(input_types::gamepad), m_state(btnState),
          m_wait(wait), m_button(btns)
       {
       }
@@ -49,8 +49,8 @@ namespace qgl::input
        Bitwise OR buttons together so the trigger is raised only if all
        buttons are pressed.
        */
-      input_trigger(xinput_button btns, BUTTON_STATES btnState, TickT wait) :
-         m_type(INPUT_TYPES::INPUT_TYPE_XINPUT), m_state(btnState),
+      input_trigger(xinput_button btns, button_states btnState, TickT wait) :
+         m_type(input_types::xinput), m_state(btnState),
          m_wait(wait), m_button(btns)
       {
       }
@@ -59,9 +59,9 @@ namespace qgl::input
        Trigger for when the given axis is held at least "mag" amount for "wait"
        amount of time.
        */
-      input_trigger(INPUT_AXIS_IDS axis, axis_magnitude mag, TickT wait) :
-         m_type(INPUT_TYPES::INPUT_TYPE_AXIS),
-         m_state(BUTTON_STATES::BUTTON_STATE_PRESSED), m_wait(wait),
+      input_trigger(input_axis_ids axis, axis_magnitude mag, TickT wait) :
+         m_type(input_types::axis),
+         m_state(button_states::pressed), m_wait(wait),
          m_button(std::move(input_axis{ mag, axis }))
       {
       }
@@ -77,12 +77,12 @@ namespace qgl::input
          return m_wait;
       }
 
-      constexpr INPUT_TYPES type() const noexcept
+      constexpr input_types type() const noexcept
       {
          return m_type;
       }
 
-      constexpr BUTTON_STATES state() const noexcept
+      constexpr button_states state() const noexcept
       {
          return m_state;
       }
@@ -154,24 +154,24 @@ namespace qgl::input
             auto t = l.type();
             switch (t)
             {
-               case INPUT_TYPES::INPUT_TYPE_KEY:
+               case input_types::key:
                {
                   return std::get<key_array>(l.m_button) ==
                      std::get<key_array>(r.m_button)
                }
-               case INPUT_TYPES::INPUT_TYPE_XINPUT:
+               case input_types::xinput:
                {
                   return l.xi_button() == r.xi_button();
                }
-               case INPUT_TYPES::INPUT_TYPE_GAMEPAD:
+               case input_types::gamepad:
                {
                   return l.gp_button() == r.gp_button();
                }
-               case INPUT_TYPES::INPUT_TYPE_AXIS:
+               case input_types::axis:
                {
                   return l.axis() == r.axis();
                }
-               case INPUT_TYPES::INPUT_TYPE_AXIS_2D:
+               case input_types::axis_2d:
                {
                   return l.axis_2d() == r.axis_2d();
                }
@@ -187,8 +187,8 @@ namespace qgl::input
       }
 
       private:
-      INPUT_TYPES m_type;
-      BUTTON_STATES m_state;
+      input_types m_type;
+      button_states m_state;
       TickT m_wait;
 
       std::variant<
@@ -226,24 +226,24 @@ namespace std
          using namespace qgl::input;
          switch (t.type())
          {
-            case INPUT_TYPES::INPUT_TYPE_KEY:
+            case input_types::key:
             {
                ret = qgl::fast_hash_32(t.key_data(),
                   t.key_count() * sizeof(qgl::input::input_key),
                   0x981430F1);
                break;
             }
-            case INPUT_TYPES::INPUT_TYPE_GAMEPAD:
+            case input_types::gamepad:
             {
                ret = static_cast<result_type>(t.gp_button());
                break;
             }
-            case INPUT_TYPES::INPUT_TYPE_XINPUT:
+            case input_types::xinput:
             {
                ret = t.xi_button();
                break;
             }
-            case INPUT_TYPES::INPUT_TYPE_AXIS:
+            case input_types::axis:
             {
                qgl::math::decimal<qgl::input::AXIS_DENOMINATOR> x{
                   t.axis().value()
@@ -255,7 +255,7 @@ namespace std
 
                break;
             }
-            case INPUT_TYPES::INPUT_TYPE_AXIS_2D:
+            case input_types::axis_2d:
             {
                // [ID: 8] [y: 12] [x: 12]
                qgl::math::decimal<qgl::input::AXIS_DENOMINATOR> x{

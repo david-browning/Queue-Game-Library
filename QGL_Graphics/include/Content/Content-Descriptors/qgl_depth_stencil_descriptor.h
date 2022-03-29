@@ -13,19 +13,9 @@ namespace qgl::graphics::descriptors
       /*
        Creates default depth stencil parameters.
        */
-      constexpr depth_stencil_descriptor() :
-         depth(),
-         format(DXGI_FORMAT::DXGI_FORMAT_D32_FLOAT),
-         stencil(0),
-         flags1(0)
+      constexpr depth_stencil_descriptor()
       {
       }
-
-      depth_stencil_descriptor(const depth_stencil_descriptor&) = default;
-
-      depth_stencil_descriptor(depth_stencil_descriptor&&) = default;
-
-      ~depth_stencil_descriptor() noexcept = default;
 
       friend void swap(depth_stencil_descriptor& l,
          depth_stencil_descriptor& r) noexcept
@@ -48,7 +38,7 @@ namespace qgl::graphics::descriptors
        and 1.
        Default value is 0.
        */
-      math::rational<int32_t> depth;
+      math::rational<int32_t> depth{ 0, 1 };
 
       /*
        DXGI_FORMAT format to use for the depth stencil texture.
@@ -60,18 +50,18 @@ namespace qgl::graphics::descriptors
          DXGI_FORMAT_D32_FLOAT_S8X24_UINT
        QGL does not verify a that a valid format is set!
        */
-      uint16_t format;
+      uint16_t format = DXGI_FORMAT::DXGI_FORMAT_D32_FLOAT;
 
       /*
        When clearing the stencil buffer, this is the value that gets used.
        Default value is 0.
        */
-      uint8_t stencil;
+      uint8_t stencil = 0;
 
       /*
        Currently unused.
        */
-      uint8_t flags1;
+      uint8_t flags1 = 0;
    };
 #pragma pack(pop)
 }

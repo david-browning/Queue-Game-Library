@@ -24,18 +24,9 @@ namespace qgl::graphics::descriptors
        Independent Blend is disabled.
        The blend descriptions are default.
        */
-      constexpr blender_descriptor() :
-         flags(DEFAULT_FLAGS),
-         alpha_to_coverage(FALSE),
-         independent_blend(FALSE)
+      constexpr blender_descriptor()
       {
       }
-
-      blender_descriptor(const blender_descriptor&) = default;
-
-      blender_descriptor(blender_descriptor&&) = default;
-
-      ~blender_descriptor() noexcept = default;
 
       friend void swap(blender_descriptor& l,
          blender_descriptor& r) noexcept
@@ -55,15 +46,24 @@ namespace qgl::graphics::descriptors
       }
 
       /*
+       An array of D3D12_RENDER_TARGET_BLEND_DESC structures that describe the
+       blend states for render targets; these correspond to the eight render
+       targets that can be bound to the output-merger stage at one time.
+       */
+      fixed_buffer<blend_descriptor, NUM_RENDER_TARGETS> blend_descriptions;
+
+      fixed_buffer<math::rational<int32_t>, 4> blend_factor;
+
+      /*
        Unused right now.
        */
-      uint16_t flags;
+      uint16_t flags = 0;
 
       /*
        Specifies whether to use alpha-to-coverage as a multisampling
        technique when setting a pixel to a render target.
        */
-      uint8_t alpha_to_coverage;
+      uint8_t alpha_to_coverage = 0;
 
       /*
        Specifies whether to enable independent blending in simultaneous render
@@ -71,19 +71,7 @@ namespace qgl::graphics::descriptors
        only the RenderTarget[0] members are used; RenderTarget[1..7] are
        ignored.
        */
-      uint8_t independent_blend;
-
-      math::rational<int32_t> blend_factor[4];
-
-      /*
-       An array of D3D12_RENDER_TARGET_BLEND_DESC structures that describe the
-       blend states for render targets; these correspond to the eight render
-       targets that can be bound to the output-merger stage at one time.
-       */
-      blend_descriptor blend_descriptions[NUM_RENDER_TARGETS];
-
-      private:
-      static constexpr uint16_t DEFAULT_FLAGS = 0xEEEE;
+      uint8_t independent_blend = 0;
    };
 #pragma pack(pop)
 }

@@ -194,6 +194,70 @@ namespace qgl::graphics::gpu
       }
 
       /*
+       Performs an immediate resource transition from one state to another.
+       Resource's current state is updated.
+       Transitions can be expensive.
+       */
+      template<
+         typename ResourceDescriptionT,
+         typename ViewDescriptionT,
+         typename ResourceT>
+         void transition(
+            igpu_buffer<ResourceDescriptionT, ViewDescriptionT, ResourceT>* resource,
+            D3D12_RESOURCE_STATES newState)
+      {
+         if (resource->state != newState)
+         {
+            transition(resource->get(), resource->state(), newState);
+            resource->state(newState);
+         }
+      }
+
+      void transition(gpu_resource* resource,
+         D3D12_RESOURCE_STATES oldState,
+         D3D12_RESOURCE_STATES newState)
+      {
+         auto transition = CD3DX12_RESOURCE_BARRIER::Transition(
+            resource,
+            oldState,
+            newState);
+         get()->ResourceBarrier(1, &transition);
+      }
+
+      /*
+       Queues a transition to be flushed at the end of the command list.
+       Resource's current state is updated.
+       The transitions are not recorded until "end()" is called.
+       It is best to batch transitions at the end of the command list because
+       they may cause a pipeline stall.
+       */
+      template<
+         typename ResourceDescriptionT,
+         typename ViewDescriptionT,
+         typename ResourceT>
+         void transition_queue(
+            igpu_buffer<ResourceDescriptionT, ViewDescriptionT, ResourceT>* resource,
+            D3D12_RESOURCE_STATES newState)
+      {
+         if (resource->state != newState)
+         {
+            transition_queue(resource->get(), resource->state(), newState);
+            resource->state(newState);
+         }
+      }
+
+      void transition_queue(gpu_resource* resource,
+                            D3D12_RESOURCE_STATES oldState,
+                            D3D12_RESOURCE_STATES newState)
+      {
+         pendingResourceTransitions.push_back(
+            CD3DX12_RESOURCE_BARRIER::Transition(
+               resource,
+               oldState,
+               newState));
+      }
+
+      /*
        Clears the command list. It must be rebuilt using this class's member
        functions. This leaves the command list in the recording state.
        A typical pattern is to submit a command list and then immediately reset
@@ -224,7 +288,7 @@ namespace qgl::graphics::gpu
       /*
        Returns a pointer to the D3D command list.
        */
-      d3d_command_list* get() noexcept
+      cmd_list* get() noexcept
       {
          return m_cmdList.get();
       }
@@ -232,7 +296,7 @@ namespace qgl::graphics::gpu
       /*
        Returns a const pointer to the D3D command list.
        */
-      const d3d_command_list* get() const noexcept
+      const cmd_list* get() const noexcept
       {
          return m_cmdList.get();
       }
@@ -243,7 +307,7 @@ namespace qgl::graphics::gpu
        specified by D3D12_COMMAND_LIST_TYPE, must match the type of command
        list being created.
        */
-      void make_allocator(d3d_device* dev_p,
+      void make_allocator(device_3d* dev_p,
                           D3D12_COMMAND_LIST_TYPE listT)
       {
          winrt::check_hresult(dev_p->CreateCommandAllocator(
@@ -255,7 +319,7 @@ namespace qgl::graphics::gpu
        Immediately after being created, command lists are in the recording
        state. So, close it.
        */
-      void make_cmd_list(d3d_device* dev_p,
+      void make_cmd_list(device_3d* dev_p,
                          D3D12_COMMAND_LIST_TYPE listT,
                          size_t nodeMask)
       {
@@ -271,8 +335,8 @@ namespace qgl::graphics::gpu
       }
 
       std::shared_ptr<gpu::pso> m_pso_p;
-      winrt::com_ptr<d3d_cmd_allocator> m_allocator;
-      winrt::com_ptr<d3d_command_list> m_cmdList;
+      winrt::com_ptr<cmd_allocator> m_allocator;
+      winrt::com_ptr<cmd_list> m_cmdList;
 
       /*
        Keep a list of the descriptor heaps to set. This is here so that the
@@ -287,5 +351,13 @@ namespace qgl::graphics::gpu
       std::vector<D3D12_VERTEX_BUFFER_VIEW> m_vertBuffView;
 
       D3D12_INDEX_BUFFER_VIEW m_idxBuffView;
+
+      protected:
+      /*
+       List of pending resource transitions.
+       These are vectors instead of queues so that we can get the raw array
+       pointer and guarantee that it is contiguous.
+       */
+      std::vector<D3D12_RESOURCE_BARRIER> pendingResourceTransitions;
    };
 }

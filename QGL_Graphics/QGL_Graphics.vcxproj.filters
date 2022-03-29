@@ -23,9 +23,6 @@
     <Filter Include="Header Files\Content">
       <UniqueIdentifier>{831623e7-89c6-4d93-8698-5216925e345a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Engines">
-      <UniqueIdentifier>{a60964c3-5e42-48ca-828c-d51033be252a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\GPU">
       <UniqueIdentifier>{43420c1b-cc29-4d8c-a662-319913d3c971}</UniqueIdentifier>
     </Filter>
@@ -43,9 +40,6 @@
     </Filter>
     <Filter Include="Header Files\GPU\Buffers">
       <UniqueIdentifier>{bed9bf5d-485c-4471-ad1d-a3e230bdcd8f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Metrics">
-      <UniqueIdentifier>{4639ac77-f075-4021-993a-be0ff5ace062}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\GPU\Command-Lists">
       <UniqueIdentifier>{f8a19c8c-7acc-415e-b1d2-0d7b6e8d4ac1}</UniqueIdentifier>
@@ -82,11 +76,8 @@
     <ClCompile Include="src\Helpers\qgl_graphics_device_helpers.cpp">
       <Filter>Source Files\Helpers</Filter>
     </ClCompile>
-    <ClCompile Include="src\Interfaces\qgl_igraphics_device.cpp">
-      <Filter>Source Files\Interfaces</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Interfaces\qgl_iwindow.cpp">
-      <Filter>Source Files\Interfaces</Filter>
+    <ClCompile Include="src\Helpers\qgl_color_helpers.cpp">
+      <Filter>Source Files\Helpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -104,9 +95,6 @@
     </ClInclude>
     <ClInclude Include="include\Helpers\d3dx12.h">
       <Filter>Header Files\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\GPU\qgl_graphics_device_helpers.h">
-      <Filter>Header Files\GPU</Filter>
     </ClInclude>
     <ClInclude Include="include\GPU\Synchronization\qgl_fence.h">
       <Filter>Header Files\GPU\Synchronization</Filter>
@@ -129,22 +117,13 @@
     <ClInclude Include="include\GPU\Descriptors\qgl_descriptor_table.h">
       <Filter>Header Files\GPU\Descriptors</Filter>
     </ClInclude>
-    <ClInclude Include="include\GPU\Memory\qgl_igpu_memory_allocator.h">
-      <Filter>Header Files\GPU\Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="include\GPU\Buffers\igpu_buffer.h">
-      <Filter>Header Files\GPU\Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\GPU\Buffers\qgl_const_buffer.h">
+    <ClInclude Include="include\GPU\Buffers\qgl_igpu_buffer.h">
       <Filter>Header Files\GPU\Buffers</Filter>
     </ClInclude>
     <ClInclude Include="include\GPU\Buffers\qgl_index_buffer.h">
       <Filter>Header Files\GPU\Buffers</Filter>
     </ClInclude>
     <ClInclude Include="include\GPU\Buffers\qgl_vertex_buffer.h">
-      <Filter>Header Files\GPU\Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="include\GPU\Buffers\qgl_imappable.h">
       <Filter>Header Files\GPU\Buffers</Filter>
     </ClInclude>
     <ClInclude Include="include\GPU\Descriptors\qgl_cbv_descriptor_heap.h">
@@ -165,14 +144,8 @@
     <ClInclude Include="include\GPU\Descriptors\qgl_uav_descriptor_heap.h">
       <Filter>Header Files\GPU\Descriptors</Filter>
     </ClInclude>
-    <ClInclude Include="include\Metrics\qgl_shader_meta.h">
-      <Filter>Header Files\Metrics</Filter>
-    </ClInclude>
     <ClInclude Include="include\GPU\Command-Lists\qgl_icmd_list.h">
       <Filter>Header Files\GPU\Command-Lists</Filter>
-    </ClInclude>
-    <ClInclude Include="include\GPU\Render\qgl_render_target.h">
-      <Filter>Header Files\GPU\Render</Filter>
     </ClInclude>
     <ClInclude Include="include\GPU\Render\qgl_scissor.h">
       <Filter>Header Files\GPU\Render</Filter>
@@ -189,15 +162,6 @@
     <ClInclude Include="include\GPU\Command-Lists\qgl_graphics_cmd_list.h">
       <Filter>Header Files\GPU\Command-Lists</Filter>
     </ClInclude>
-    <ClInclude Include="include\Components\qgl_model_render_component.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Components\qgl_text_render_component.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Interfaces\qgl_igraphics_device.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="include\GPU\Render\qgl_blender.h">
       <Filter>Header Files\GPU\Render</Filter>
     </ClInclude>
@@ -211,9 +175,6 @@
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="include\Content\qgl_sampler.h">
-      <Filter>Header Files\Content</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Content\qgl_texture.h">
       <Filter>Header Files\Content</Filter>
     </ClInclude>
     <ClInclude Include="include\Content\Content-Descriptors\qgl_sampler_descriptor.h">
@@ -255,9 +216,6 @@
     <ClInclude Include="include\Content\qgl_device_configuration.h">
       <Filter>Header Files\Content</Filter>
     </ClInclude>
-    <ClInclude Include="include\Interfaces\qgl_iwindow.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="include\qgl_window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -269,6 +227,78 @@
     </ClInclude>
     <ClInclude Include="include\Content\Content-Descriptors\qgl_shader_descriptor.h">
       <Filter>Header Files\Content\Content-Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\Content-Descriptors\qgl_light_descriptor.h">
+      <Filter>Header Files\Content\Content-Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\Content-Descriptors\qgl_brush_descriptor.h">
+      <Filter>Header Files\Content\Content-Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Helpers\qgl_dx_constructors.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\qgl_brush.h">
+      <Filter>Header Files\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\Content-Descriptors\qgL_text_format_descriptor.h">
+      <Filter>Header Files\Content\Content-Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\qgl_text_format.h">
+      <Filter>Header Files\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\qgl_wtext.h">
+      <Filter>Header Files\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\Content-Descriptors\qgl_camera_descriptor.h">
+      <Filter>Header Files\Content\Content-Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Helpers\qgl_graphics_device_helpers.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Memory\qgl_igpu_allocator.h">
+      <Filter>Header Files\GPU\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Memory\qgl_slot_allocator.h">
+      <Filter>Header Files\GPU\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Buffers\qgl_const_buffer.h">
+      <Filter>Header Files\GPU\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Buffers\qgl_upload_buffer.h">
+      <Filter>Header Files\GPU\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Buffers\qgl_readback_buffer.h">
+      <Filter>Header Files\GPU\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Buffers\qgl_imappable.h">
+      <Filter>Header Files\GPU\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\qgl_camera.h">
+      <Filter>Header Files\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\qgl_light.h">
+      <Filter>Header Files\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\Content-Descriptors\qgl_hdr_descriptor.h">
+      <Filter>Header Files\Content\Content-Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Buffers\qgl_texture_buffer.h">
+      <Filter>Header Files\GPU\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Helpers\qgl_color_helpers.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_graphics_device.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Memory\qgl_committed_allocator.h">
+      <Filter>Header Files\GPU\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Render\qgl_render_target.h">
+      <Filter>Header Files\GPU\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Render\qgl_irender_target.h">
+      <Filter>Header Files\GPU\Render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

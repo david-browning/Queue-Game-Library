@@ -1,8 +1,9 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
+#include "include/qgl_graphics_device.h"
 #include "include/GPU/Synchronization/qgl_sync_object.h"
 
-namespace qgl::graphics
+namespace qgl::graphics::gpu
 {
    /*
     The fence provides a mechanism to synchronize CPU and GPU work.
@@ -15,17 +16,15 @@ namespace qgl::graphics
    class fence
    {
       public:
-      fence(winrt::com_ptr<d3d_device>& dev_p,
-            winrt::com_ptr<d3d_cmd_queue>& cmdQueue_p) :
+      fence(device_3d* dev_p, winrt::com_ptr<cmd_queue>&& cmdQueue_p) :
          m_nextSyncValue(1),
-         m_cmdQueue(cmdQueue_p),
-         m_mutex(),
-         m_waitEvent()
+         m_cmdQueue(std::forward<winrt::com_ptr<cmd_queue>>(cmdQueue_p))
       {
          //Create a fence using the d3d device.
-         winrt::check_hresult(dev_p->CreateFence(m_nextSyncValue,
-                                                 D3D12_FENCE_FLAG_NONE,
-                                                 IID_PPV_ARGS(m_fence.put())));
+         winrt::check_hresult(dev_p->CreateFence(
+            m_nextSyncValue, 
+            D3D12_FENCE_FLAG_NONE,
+            IID_PPV_ARGS(m_fence.put())));
 
          //Set up an event to use when waiting for the GPU.
          auto evnt = CreateEvent(nullptr, FALSE, FALSE, nullptr);
@@ -55,8 +54,7 @@ namespace qgl::graphics
        */
       ~fence()
       {
-         //Lock the mutex.
-         m_mutex.lock();
+         std::lock_guard m{ m_mutex };
 
          //Get the next sync value which will be the last.
          auto finalSyncValue = m_nextSyncValue;
@@ -66,7 +64,7 @@ namespace qgl::graphics
 
          //Wait for the last sync.
          //Get the last completed fence value.
-         auto lastCompletedValue = p_current();
+         auto lastCompletedValue = m_fence->GetCompletedValue();
 
          //If the last completed fence is less than what we are waiting for, 
          //then the GPU has not  completed that fence yet.
@@ -78,9 +76,6 @@ namespace qgl::graphics
                m_waitEvent.get()));
             WaitForSingleObject(m_waitEvent.get(), INFINITE);
          }
-
-         //Unlock the mutex.
-         m_mutex.unlock();
 
          //Final Cleanup
          m_nextSyncValue = static_cast<ValueT>(-1);
@@ -95,11 +90,10 @@ namespace qgl::graphics
       {
          //Lock the mutex so multiple threads cannot simultaneously 
          //get sync_objects with the same value.
-         m_mutex.lock();
+         std::lock_guard m{ m_mutex };
          auto ret = m_nextSyncValue;
          m_nextSyncValue++;
-         m_mutex.unlock();
-         return sync_object<ValueT>(ret);
+         return sync_object<ValueT>{ret};
       }
 
       /*
@@ -107,10 +101,8 @@ namespace qgl::graphics
        */
       sync_object<ValueT> current() const
       {
-         m_mutex.lock();
-         auto lastCompletedValue = p_current();
-         m_mutex.unlock();
-         return sync_object<ValueT>(lastCompletedValue);
+         std::lock_guard m{ m_mutex };
+         return sync_object<ValueT>{m_fence->GetCompletedValue()};
       }
 
       /*
@@ -118,11 +110,10 @@ namespace qgl::graphics
        */
       void wait(const sync_object<ValueT>& waitFor)
       {
-         //Lock the mutex.
-         m_mutex.lock();
+         std::lock_guard m{ m_mutex };
 
          //Get the last completed fence value.
-         auto lastCompletedValue = p_current();
+         auto lastCompletedValue = m_fence->GetCompletedValue();
 
          //If the last completed fence is less than what we are waiting for, 
          //then the GPU has not completed that fence yet.
@@ -134,9 +125,6 @@ namespace qgl::graphics
                m_waitEvent.get()));
             WaitForSingleObject(m_waitEvent.get(), INFINITE);
          }
-
-         //Unlock the mutex.
-         m_mutex.unlock();
       }
 
       /*
@@ -144,46 +132,37 @@ namespace qgl::graphics
        */
       void signal(const sync_object<ValueT>& toSignal)
       {
-         //Lock the mutex.
-         m_mutex.lock();
+         std::lock_guard m{ m_mutex };
 
          //Update the fence 
          winrt::check_hresult(m_cmdQueue->Signal(get(), toSignal.value()));
-
-         //Unlock the mutex.
-         m_mutex.unlock();
       }
 
-      inline d3d_fence* get()
+      inline gpu_fence* get()
       {
          return m_fence.get();
       }
 
-      inline const d3d_fence* get() const
+      inline const gpu_fence* get() const
       {
          return m_fence.get();
       }
 
-      const d3d_cmd_queue* queue() const
+      const cmd_queue* queue() const
       {
          return m_cmdQueue.get();
       }
 
-      d3d_cmd_queue* queue()
+      cmd_queue* queue()
       {
          return m_cmdQueue.get();
       }
 
       private:
-      ValueT p_current() const
-      {
-         return static_cast<ValueT>(m_fence->GetCompletedValue());
-      }
-
-      mutable std::mutex m_mutex;
+      std::mutex m_mutex;
       ValueT m_nextSyncValue;
-      winrt::com_ptr<d3d_fence> m_fence;
-      winrt::com_ptr<d3d_cmd_queue> m_cmdQueue;
+      winrt::com_ptr<gpu_fence> m_fence;
+      winrt::com_ptr<cmd_queue> m_cmdQueue;
       winrt::handle m_waitEvent;
    };
 }
