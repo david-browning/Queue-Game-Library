@@ -154,6 +154,9 @@
     <ClInclude Include="include\qgl_endian.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Structures\qgl_fixed_buffer.h">
+      <Filter>Header Files\Structures</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="QGL_Model.def">

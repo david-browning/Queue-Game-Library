@@ -75,6 +75,9 @@
     <ClCompile Include="misc_helpers_tests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
+    <ClCompile Include="Tests\Structures\fixed_buffer_tests.cpp">
+      <Filter>Tests\Structures</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

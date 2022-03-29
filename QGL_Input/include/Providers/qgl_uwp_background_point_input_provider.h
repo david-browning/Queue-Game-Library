@@ -116,7 +116,7 @@ namespace qgl::input::providers
          {
             m_currentlyPressed.insert(key);
             m_queuedInputs.emplace_back(key,
-               BUTTON_STATES::BUTTON_STATE_PRESSED);
+               button_states::pressed);
          }
       }
 
@@ -128,7 +128,7 @@ namespace qgl::input::providers
             args.CurrentPoint().Properties().PointerUpdateKind());
 
          m_queuedInputs.emplace_back(key,
-            BUTTON_STATES::BUTTON_STATE_RELEASED);
+            button_states::released);
          m_currentlyPressed.erase(key);
       }
 
@@ -144,8 +144,8 @@ namespace qgl::input::providers
          auto y = pos.Y / m_wndHeight;
 
          m_queuedInputs.emplace_back(input_axis2d{
-            x, y, INPUT_AXIS_IDS::INPUT_AXIS_ID_MOUSE },
-            BUTTON_STATES::BUTTON_STATE_INVALID);
+            x, y, input_axis_ids::mouse },
+            button_states::invalid);
       }
 
       void window_resized(

@@ -1,46 +1,46 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include "include/GPU/Buffers/igpu_buffer.h"
-#include "include/Interfaces/qgl_igraphics_device.h"
+#include "include/GPU/Buffers/qgl_igpu_buffer.h"
+#include "include/GPU/Memory/qgl_igpu_allocator.h"
 
 namespace qgl::graphics::gpu
 {
+   /*
+    Defines the index data.
+    This does not upload the index buffer to the GPU. Pass this to an
+    "upload_buffer" to upload the data this manages.
+    */
    template<typename IndexT>
    class index_buffer : public igpu_buffer<D3D12_SUBRESOURCE_DATA,
       D3D12_INDEX_BUFFER_VIEW,
-      d3d_resource>
+      gpu_resource>
    {
       //index size cannot only be 1, 2, or 4 bytes.
       static_assert(std::is_integral<IndexT>::value && (
          sizeof(IndexT) == sizeof(uint8_t) ||
          sizeof(IndexT) == sizeof(uint16_t) ||
-         sizeof(IndexT) == sizeof(uint32_t)));
+         sizeof(IndexT) == sizeof(uint32_t)),
+         "IndexT must be an unsigned 1, 2, or 4 byte integral.");
 
       public:
-      using ResourceDescriptionT = D3D12_SUBRESOURCE_DATA;
-      using ViewDescriptionT = D3D12_INDEX_BUFFER_VIEW;
+      using ResDescT = D3D12_SUBRESOURCE_DATA;
+      using ViewDescT = D3D12_INDEX_BUFFER_VIEW;
+      using index_data = typename std::vector<IndexT>;
 
-      index_buffer(static_ptr_ref<graphics::igraphics_device> gdev,
-                   const IndexT* indicies,
-                   size_t numIndicies) :
-         m_viewDesc(),
-         m_desc(),
-         m_indexDataSize(sizeof(IndexT) * numIndicies)
+      index_buffer(gpu_allocator_ptr&& allocator, index_data&& indicies) :
+         m_indices(std::forward<index_data>(indicies)),
+         m_allocator_p(std::forward<gpu_allocator_ptr>(allocator))
       {
-         m_indices.resize(numIndicies);
-         MemoryCopy(m_indices.data(), indicies, numIndicies);
-
-         construct(gdev);
+         construct();
       }
 
-      index_buffer(static_ptr_ref<graphics::igraphics_device> gdev,
-                   const std::vector<IndexT>& indicies) :
-         m_viewDesc(),
-         m_desc(),
-         m_indexDataSize(sizeof(IndexT) * indicies.size()),
-         m_indices(m_indices)
+      index_buffer(gpu_allocator_ptr&& allocator,
+         const IndexT* const indexData, size_t indexCount) :
+         m_allocator_p(std::forward<gpu_allocator_ptr>(allocator))
       {
-         construct(gdev);
+         m_indices.resize(indexCount);
+         memcpy(m_indices.data(), indexData, sizeof(IndexT) * indexCount);
+         construct();
       }
 
       /*
@@ -53,22 +53,42 @@ namespace qgl::graphics::gpu
        */
       index_buffer(index_buffer&&) = default;
 
-      virtual ~index_buffer() noexcept = default;
-
-      /*
-       Returns a description of the resource.
-       */
-      virtual const ResourceDescriptionT* description() const
+      virtual ~index_buffer() noexcept
       {
-         return &m_desc;
+         m_allocator_p->free(m_resHndl);
+      }
+
+      virtual const ResDescT* description() const
+      {
+         return &m_resDescription;
+      }
+
+      virtual const ViewDescT* view() const
+      {
+         return &m_viewDescription;
+      }
+
+      virtual gpu_alloc_handle alloc_handle() const noexcept
+      {
+         return m_resHndl;
+      }
+
+      virtual const gpu_resource* get() const
+      {
+         return m_allocator_p->resource(m_resHndl);
+      }
+
+      virtual gpu_resource* get()
+      {
+         return m_allocator_p->resource(m_resHndl);
       }
 
       /*
-       Returns a view pointer that can be bound to the shader pipeline.
+       Returns the size of the index buffer in bytes.
        */
-      virtual const ViewDescriptionT* view() const
+      virtual size_t size() const noexcept
       {
-         return &m_viewDesc;
+         return sizeof(IndexT) * m_indices.size();
       }
 
       /*
@@ -94,29 +114,38 @@ namespace qgl::graphics::gpu
       }
 
       private:
-      void construct(static_ptr_ref<graphics::igraphics_device> gdev)
+      void construct()
       {
-         m_desc.pData = m_indices.data();
-         m_desc.RowPitch = m_indexDataSize;
-         m_desc.SlicePitch = m_desc.RowPitch;
+         m_resDescription.pData = m_indices.data();
+         m_resDescription.RowPitch = size();
+         m_resDescription.SlicePitch = m_resDescription.RowPitch;
 
-         //Create the heap for the resource.
-         winrt::check_hresult(gdev->d3d12_device()->CreateCommittedResource(
-            &CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
-            D3D12_HEAP_FLAGS::D3D12_HEAP_FLAG_NONE,
-            &CD3DX12_RESOURCE_DESC::Buffer(m_indexDataSize),
-            D3D12_RESOURCE_STATE_COPY_DEST,
-            nullptr,
-            IID_PPV_ARGS(put())));
+         // TODO: if allocating index buffers fails, may need to restrict this 
+         // to use a committed resource allocator.
+         //winrt::check_hresult(gdev->d3d12_device()->CreateCommittedResource(
+         //   &CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
+         //   D3D12_HEAP_FLAGS::D3D12_HEAP_FLAG_NONE,
+         //   &CD3DX12_RESOURCE_DESC::Buffer(m_indexDataSize),
+         //   D3D12_RESOURCE_STATE_COPY_DEST,
+         //   nullptr,
+         //   IID_PPV_ARGS(put())));
 
-         m_viewDesc.BufferLocation = get()->GetGPUVirtualAddress();
-         m_viewDesc.format = index_format();
-         m_viewDesc.SizeInBytes = m_indexDataSize;
+         m_resHndl = m_allocator_p->alloc(
+            size(),
+            0,
+            CD3DX12_RESOURCE_DESC::Buffer(size()),
+            D3D12_RESOURCE_STATE_COPY_DEST);
+
+         auto res_p = m_allocator_p->resource(m_resHndl);
+         m_viewDescription.BufferLocation = res_p->GetGPUVirtualAddress();
+         m_viewDescription.Format = index_format();
+         m_viewDescription.SizeInBytes = size();
       }
 
-      ResourceDescriptionT m_desc;
-      ViewDescriptionT m_viewDesc;
-      std::vector<IndexT> m_indices;
-      size_t m_indexDataSize;
+      index_data m_indices;
+      gpu_allocator_ptr m_allocator_p;
+      gpu_alloc_handle m_resHndl;
+      ViewDescT m_viewDescription;
+      ResDescT m_resDescription;
    };
 }

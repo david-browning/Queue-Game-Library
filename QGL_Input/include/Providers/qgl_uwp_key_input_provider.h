@@ -89,7 +89,7 @@ namespace qgl::input::providers
          {
             m_currentlyPressed.insert(key);
             m_queuedInputs.emplace_back(key,
-               BUTTON_STATES::BUTTON_STATE_PRESSED);
+               button_states::pressed);
          }
       }
 
@@ -100,7 +100,7 @@ namespace qgl::input::providers
          auto key = args.VirtualKey();
 
          // Queue the key up input.
-         m_queuedInputs.emplace_back(key, BUTTON_STATES::BUTTON_STATE_RELEASED);
+         m_queuedInputs.emplace_back(key, button_states::released);
 
          // Remove the key from the set of pressed keys.
          m_currentlyPressed.erase(key);

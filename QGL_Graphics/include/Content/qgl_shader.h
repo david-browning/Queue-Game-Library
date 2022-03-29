@@ -51,7 +51,7 @@ namespace qgl::graphics
       /*
        Returns the type of shader.
        */
-      SHADER_TYPES type() const noexcept
+      shader_types type() const noexcept
       {
          return m_dsc.type;
       }
@@ -67,7 +67,7 @@ namespace qgl::graphics
       /*
        Returns the shader vendor.
        */
-      SHADER_VENDORS vendor() const noexcept
+      shader_vendors vendor() const noexcept
       {
          return m_dsc.vendor;
       }

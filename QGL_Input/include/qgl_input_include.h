@@ -2,7 +2,6 @@
 #include <QGLModel.h>
 #include <QGLMath.h>
 #include <QGLGraphics.h>
-#include <QGLContent.h>
 
 #include <Xinput.h>
 #include <winrt/Windows.Gaming.Input.h>

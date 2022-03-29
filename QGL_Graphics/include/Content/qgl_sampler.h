@@ -1,6 +1,6 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include "include/GPU/Buffers/igpu_buffer.h"
+#include "include/GPU/Buffers/qgl_igpu_buffer.h"
 #include "include/Content/Content-Descriptors/qgl_sampler_descriptor.h"
 
 namespace qgl::graphics
@@ -9,8 +9,9 @@ namespace qgl::graphics
     Represents a sampler. Samplers do not have a resource. Instead, they only
     have a description and can be added to a descriptor heap.
     */
-   class sampler :
-      public gpu::igpu_buffer<D3D12_SAMPLER_DESC, nullptr_t, d3d_resource>
+   class sampler : public gpu::igpu_buffer<D3D12_SAMPLER_DESC, 
+                                           nullptr_t, 
+                                           gpu_resource>
    {
       public:
       using ResourceDescriptionT = D3D12_SAMPLER_DESC;

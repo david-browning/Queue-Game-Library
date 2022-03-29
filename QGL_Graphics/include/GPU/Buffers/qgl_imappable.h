@@ -4,86 +4,50 @@
 namespace qgl::graphics::gpu
 {
    /*
-    
+    A mappable object is one that can be accessed by the CPU and GPU.
+    Note that unlike D3D11, the resource does not need to be unmapped for use
+    by the GPU.
     */
-   template<typename T>
+   template<class T>
    class imappable
    {
       public:
-      imappable() :
-         m_buffer(nullptr)
-      {
-         //The CPU pointer is populated by map()
-      }
+      imappable() {}
 
       imappable(const imappable&) = delete;
-
-      /*
-       Copies the pointer from r and unmaps r.
-       */
-      imappable(imappable&& r) :
-         m_buffer(r.m_buffer)
-      {
-         r.unmap();
-      }
 
       virtual ~imappable()
       {
          unmap();
       }
 
-      void map()
-      {
-         if (!mapped())
-         {
-            p_map();
-         }
-      }
-
-      void unmap()
-      {
-         if (mapped())
-         {
-            p_unmap();
-            m_buffer = nullptr;
-         }
-      }
-
-      const T* mapping() const noexcept
-      {
-         return m_buffer;
-      }
-
-      bool mapped() const noexcept
-      {
-         return m_buffer != nullptr;
-      }
-
-      protected:
-
-      T* mapping() noexcept
-      {
-         return m_buffer;
-      }
-
-      void** map_put()
-      {
-         return reinterpret_cast<void**>(&m_buffer);
-      }
-
-      private:
+      /*
+       Maps a GPU resource to the CPU pointer. if the resource is already 
+       mapped, this should do nothing.
+       */
+      virtual void map() = 0;
 
       /*
-       Maps a GPU resource to the CPU pointer. Use map_put() to get a pointer 
-       to the buffer pointer.
+       Unmaps the CPU pointer. If the resource is not mapped, this should do
+       nothing.
        */
-      virtual void p_map() = 0;
+      virtual void unmap() = 0;
 
-      virtual void p_unmap() = 0;
-      
       /*
-       Pointer to the cpu pointer.
+       Returns a pointer to the mapped CPU memory. Returns nullptr if not 
+       mapped.
        */
-      T* m_buffer;
+      virtual const T* mapping() const = 0;
+
+      /*
+       Returns a pointer to the mapped CPU memory. Returns nullptr if not
+       mapped.
+       */
+      virtual T* mapping() = 0;
+
+      /*
+       Returns true if the resource is mapped so the CPU can access it.
+       */
+      virtual bool mapped() const noexcept = 0;
    };
 }

@@ -81,28 +81,30 @@ namespace qgl::graphics
       return (byteSize + (D3D12_CONSTANT_BUFFER_DATA_PLACEMENT_ALIGNMENT - 1)) & ~(D3D12_CONSTANT_BUFFER_DATA_PLACEMENT_ALIGNMENT - 1);
    }
 
-   using d3d_device = typename ID3D12Device3;
+   using factory_gpu = typename IDXGIFactory6;
+   using factory_2d = typename ID2D1Factory7;
+   using factory_text = typename IDWriteFactory7;
 
-   using d3d11_device = typename ID3D11On12Device;
+   using gpu_adapter = typename IDXGIAdapter4;
+   using gpu_output = typename IDXGIOutput6;
+
+   using device_3d = typename ID3D12Device3;
+   using swap_chain = typename IDXGISwapChain4;
+   using device_2d = typename ID2D1Device6;
+   using context_2d = typename ID2D1DeviceContext6;
+
+   using cmd_list = typename ID3D12GraphicsCommandList3;
+   using cmd_allocator = typename ID3D12CommandAllocator;
+
+   using cmd_queue = typename ID3D12CommandQueue;
+
+   using gpu_resource = typename ID3D12Resource1;
+   using gpu_heap = typename ID3D12Heap1;
+   using gpu_fence = typename ID3D12Fence1;
+
+   using device_back_compat = typename ID3D11On12Device;
    using d3d11_context = typename ID3D11DeviceContext;
-
-   using d2d_device = typename ID2D1Device6;
-   using d2d_context = typename ID2D1DeviceContext6;
-
-   using dxgi_factory = typename IDXGIFactory6;
-   using d2d_factory = typename ID2D1Factory7;
-   using d_write_factory = typename IDWriteFactory7;
-
-   using d3d_command_list = typename ID3D12GraphicsCommandList3;
-   using d3d_cmd_allocator = typename ID3D12CommandAllocator;
-   using d3d_cmd_queue = typename ID3D12CommandQueue;
-
-   using d3d_resource = typename ID3D12Resource1;
-   using d3d_heap = typename ID3D12Heap1;
-   using d3d_fence = typename ID3D12Fence1;
-
-   using d3d_render_target = typename d3d_resource;
-   using d3d_swap_chain = typename IDXGISwapChain4;
+   using d3d_render_target = typename gpu_resource;
    using d2d_render_target = typename ID2D1Bitmap1;
    using d3d_wrapped_render_target = typename ID3D11Resource;
 
@@ -111,7 +113,7 @@ namespace qgl::graphics
     The definitions are stored in pch.cpp.
     */
    QGL_GRAPHICS_TEMPLATE template struct QGL_GRAPHICS_API
-      winrt::com_ptr<d3d_resource>;
+      winrt::com_ptr<gpu_resource>;
 
    QGL_GRAPHICS_TEMPLATE template struct QGL_GRAPHICS_API
       winrt::com_ptr<ID3D12DescriptorHeap>;

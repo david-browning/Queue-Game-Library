@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.220131.2\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.220131.2\build\native\Microsoft.Windows.CppWinRT.props')" />
+  <Import Project="..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.props" Condition="Exists('..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.props')" />
+  <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.220325.3\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.220325.3\build\native\Microsoft.Windows.CppWinRT.props')" />
   <PropertyGroup Label="Globals">
     <CppWinRTEnabled>true</CppWinRTEnabled>
     <MinimalCoreWin>true</MinimalCoreWin>
@@ -75,20 +76,20 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
-    <IncludePath>$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math;$(SolutionDir)QGL_Content;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Math;$(VC_LibraryPath_ARM);$(WindowsSDK_LibraryPath_ARM);$(NETFXKitsDir)Lib\um\arm</LibraryPath>
+    <IncludePath>$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Math;$(VC_LibraryPath_ARM);$(WindowsSDK_LibraryPath_ARM);$(NETFXKitsDir)Lib\um\arm</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
-    <IncludePath>$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math;$(SolutionDir)QGL_Content;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Math;$(VC_LibraryPath_ARM);$(WindowsSDK_LibraryPath_ARM);$(NETFXKitsDir)Lib\um\arm</LibraryPath>
+    <IncludePath>$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Math;$(VC_LibraryPath_ARM);$(WindowsSDK_LibraryPath_ARM);$(NETFXKitsDir)Lib\um\arm</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math;$(SolutionDir)QGL_Content;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Math;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+    <IncludePath>$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Math;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math;$(SolutionDir)QGL_Content;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Math;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+    <IncludePath>$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Math;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
@@ -121,7 +122,7 @@
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">d3dcompiler.lib;d2d1.lib;dwrite.lib;d3d11.lib;d3d12.lib;dxgi.lib;QGL_Math.lib;QGL_Model.lib;QGL_Content.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">d3dcompiler.lib;d2d1.lib;dwrite.lib;d3d11.lib;d3d12.lib;dxgi.lib;QGL_Math.lib;QGL_Model.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Link>
       <DelayLoadDLLs Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
@@ -130,7 +131,7 @@
     <Link />
     <Link />
     <Link>
-      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">d3dcompiler.lib;d2d1.lib;dwrite.lib;d3d11.lib;d3d12.lib;dxgi.lib;QGL_Math.lib;QGL_Model.lib;QGL_Content.lib;QGL_Model.lib;QGL_Content.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">d3dcompiler.lib;d2d1.lib;dwrite.lib;d3d11.lib;d3d12.lib;dxgi.lib;QGL_Math.lib;QGL_Model.lib;QGL_Model.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Link>
       <DelayLoadDLLs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -150,7 +151,7 @@
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">d3dcompiler.lib;d2d1.lib;dwrite.lib;d3d11.lib;d3d12.lib;dxgi.lib;QGL_Math.lib;QGL_Model.lib;QGL_Content.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">d3dcompiler.lib;d2d1.lib;dwrite.lib;d3d11.lib;d3d12.lib;dxgi.lib;QGL_Math.lib;QGL_Model.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Link>
       <DelayLoadDLLs Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
@@ -159,7 +160,7 @@
     <Link />
     <Link />
     <Link>
-      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">d3dcompiler.lib;d2d1.lib;dwrite.lib;d3d11.lib;d3d12.lib;dxgi.lib;QGL_Math.lib;QGL_Model.lib;QGL_Content.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">d3dcompiler.lib;d2d1.lib;dwrite.lib;d3d11.lib;d3d12.lib;dxgi.lib;QGL_Math.lib;QGL_Model.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Link>
       <DelayLoadDLLs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -167,28 +168,38 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\Components\qgl_model_render_component.h" />
-    <ClInclude Include="include\Components\qgl_text_render_component.h" />
     <ClInclude Include="include\Content\Content-Descriptors\qgl_blend_descriptor.h" />
+    <ClInclude Include="include\Content\Content-Descriptors\qgl_brush_descriptor.h" />
+    <ClInclude Include="include\Content\Content-Descriptors\qgl_camera_descriptor.h" />
     <ClInclude Include="include\Content\Content-Descriptors\qgl_depth_stencil_descriptor.h" />
     <ClInclude Include="include\Content\Content-Descriptors\qgl_engine_descriptor.h" />
     <ClInclude Include="include\Content\Content-Descriptors\qgl_blender_descriptor.h" />
+    <ClInclude Include="include\Content\Content-Descriptors\qgl_hdr_descriptor.h" />
+    <ClInclude Include="include\Content\Content-Descriptors\qgl_light_descriptor.h" />
     <ClInclude Include="include\Content\Content-Descriptors\qgl_multisampler_descriptor.h" />
     <ClInclude Include="include\Content\Content-Descriptors\qgl_rasterizer_descriptor.h" />
     <ClInclude Include="include\Content\Content-Descriptors\qgl_sampler_descriptor.h" />
     <ClInclude Include="include\Content\Content-Descriptors\qgl_shader_descriptor.h" />
+    <ClInclude Include="include\Content\Content-Descriptors\qgL_text_format_descriptor.h" />
     <ClInclude Include="include\Content\Content-Descriptors\qgl_vertex_element_descriptor.h" />
     <ClInclude Include="include\Content\Content-Descriptors\qgl_vertex_layout_descriptor.h" />
+    <ClInclude Include="include\Content\qgl_brush.h" />
+    <ClInclude Include="include\Content\qgl_camera.h" />
     <ClInclude Include="include\Content\qgl_device_configuration.h" />
+    <ClInclude Include="include\Content\qgl_light.h" />
     <ClInclude Include="include\Content\qgl_multisampler.h" />
     <ClInclude Include="include\Content\qgl_sampler.h" />
     <ClInclude Include="include\Content\qgl_shader.h" />
-    <ClInclude Include="include\Content\qgl_texture.h" />
     <ClInclude Include="include\Content\qgl_vertex_layout.h" />
-    <ClInclude Include="include\GPU\Buffers\igpu_buffer.h" />
+    <ClInclude Include="include\Content\qgl_wtext.h" />
+    <ClInclude Include="include\Content\qgl_text_format.h" />
+    <ClInclude Include="include\GPU\Buffers\qgl_igpu_buffer.h" />
     <ClInclude Include="include\GPU\Buffers\qgl_const_buffer.h" />
     <ClInclude Include="include\GPU\Buffers\qgl_imappable.h" />
     <ClInclude Include="include\GPU\Buffers\qgl_index_buffer.h" />
+    <ClInclude Include="include\GPU\Buffers\qgl_readback_buffer.h" />
+    <ClInclude Include="include\GPU\Buffers\qgl_texture_buffer.h" />
+    <ClInclude Include="include\GPU\Buffers\qgl_upload_buffer.h" />
     <ClInclude Include="include\GPU\Buffers\qgl_vertex_buffer.h" />
     <ClInclude Include="include\GPU\Command-Lists\qgl_cmd_bundle.h" />
     <ClInclude Include="include\GPU\Command-Lists\qgl_cpy_cmd_list.h" />
@@ -203,12 +214,14 @@
     <ClInclude Include="include\GPU\Descriptors\qgl_sampler_descriptor_heap.h" />
     <ClInclude Include="include\GPU\Descriptors\qgl_srv_descriptor_heap.h" />
     <ClInclude Include="include\GPU\Descriptors\qgl_uav_descriptor_heap.h" />
-    <ClInclude Include="include\GPU\Memory\qgl_igpu_memory_allocator.h" />
+    <ClInclude Include="include\GPU\Memory\qgl_committed_allocator.h" />
+    <ClInclude Include="include\GPU\Memory\qgl_igpu_allocator.h" />
+    <ClInclude Include="include\GPU\Memory\qgl_slot_allocator.h" />
     <ClInclude Include="include\GPU\qgl_frame.h" />
-    <ClInclude Include="include\GPU\qgl_graphics_device_helpers.h" />
     <ClInclude Include="include\GPU\qgl_pso.h" />
     <ClInclude Include="include\GPU\Render\qgl_blender.h" />
     <ClInclude Include="include\GPU\Render\qgl_depth_stencil.h" />
+    <ClInclude Include="include\GPU\Render\qgl_irender_target.h" />
     <ClInclude Include="include\GPU\Render\qgl_rasterizer.h" />
     <ClInclude Include="include\GPU\Render\qgl_render_target.h" />
     <ClInclude Include="include\GPU\Render\qgl_scissor.h" />
@@ -218,10 +231,11 @@
     <ClInclude Include="include\GPU\Synchronization\qgl_fence.h" />
     <ClInclude Include="include\GPU\Synchronization\qgl_sync_object.h" />
     <ClInclude Include="include\Helpers\d3dx12.h" />
+    <ClInclude Include="include\Helpers\qgl_color_helpers.h" />
+    <ClInclude Include="include\Helpers\qgl_dx_constructors.h" />
+    <ClInclude Include="include\Helpers\qgl_graphics_device_helpers.h" />
     <ClInclude Include="include\Helpers\qgl_window_helpers.h" />
-    <ClInclude Include="include\Interfaces\qgl_igraphics_device.h" />
-    <ClInclude Include="include\Interfaces\qgl_iwindow.h" />
-    <ClInclude Include="include\Metrics\qgl_shader_meta.h" />
+    <ClInclude Include="include\qgl_graphics_device.h" />
     <ClInclude Include="include\qgl_graphics_include.h" />
     <ClInclude Include="include\qgl_window.h" />
     <ClInclude Include="pch.h" />
@@ -234,9 +248,8 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
+    <ClCompile Include="src\Helpers\qgl_color_helpers.cpp" />
     <ClCompile Include="src\Helpers\qgl_graphics_device_helpers.cpp" />
-    <ClCompile Include="src\Interfaces\qgl_igraphics_device.cpp" />
-    <ClCompile Include="src\Interfaces\qgl_iwindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -246,19 +259,25 @@
     <Midl Include="QGL_GraphicsRT.idl" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\QGL_Content\QGL_Content.vcxproj">
-      <Project>{10667518-d86f-4faf-9a5c-78bf6966822d}</Project>
+    <ProjectReference Include="..\QGL_Math\QGL_Math.vcxproj">
+      <Project>{e6d80f1d-9959-4848-9d33-3b43211b0fc6}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\QGL_Model\QGL_Model.vcxproj">
+      <Project>{d5f8ec52-9052-4a1e-81ca-ea32c414ec11}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.220131.2\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.220131.2\build\native\Microsoft.Windows.CppWinRT.targets')" />
+    <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.220325.3\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.220325.3\build\native\Microsoft.Windows.CppWinRT.targets')" />
+    <Import Project="..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.targets" Condition="Exists('..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.220131.2\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.220131.2\build\native\Microsoft.Windows.CppWinRT.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.220131.2\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.220131.2\build\native\Microsoft.Windows.CppWinRT.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.220325.3\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.220325.3\build\native\Microsoft.Windows.CppWinRT.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.220325.3\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.220325.3\build\native\Microsoft.Windows.CppWinRT.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.targets'))" />
   </Target>
 </Project>

@@ -83,36 +83,36 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
-    <IncludePath>$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math;$(SolutionDir)QGL_Graphics;$(SolutionDir)QGL_Content;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Math;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Graphics;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math;$(SolutionDir)QGL_Graphics;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Math;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Graphics;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
-    <IncludePath>$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math;$(SolutionDir)QGL_Graphics;$(SolutionDir)QGL_Content;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Math;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Graphics;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math;$(SolutionDir)QGL_Graphics;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Math;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Graphics;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
-    <IncludePath>$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math;$(SolutionDir)QGL_Graphics;$(SolutionDir)QGL_Content;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Math;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Graphics;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math;$(SolutionDir)QGL_Graphics;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Math;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Graphics;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
-    <IncludePath>$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math;$(SolutionDir)QGL_Graphics;$(SolutionDir)QGL_Content;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Math;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Graphics;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math;$(SolutionDir)QGL_Graphics;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Math;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Graphics;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math;$(SolutionDir)QGL_Graphics;$(SolutionDir)QGL_Content;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Math;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Graphics;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math;$(SolutionDir)QGL_Graphics;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Math;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Graphics;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math;$(SolutionDir)QGL_Graphics;$(SolutionDir)QGL_Content;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Math;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Graphics;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math;$(SolutionDir)QGL_Graphics;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Math;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Graphics;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math;$(SolutionDir)QGL_Graphics;$(SolutionDir)QGL_Content;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Math;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Graphics;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math;$(SolutionDir)QGL_Graphics;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Math;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Graphics;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math;$(SolutionDir)QGL_Graphics;$(SolutionDir)QGL_Content;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Math;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Graphics;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Content;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)QGL_Model;$(SolutionDir)QGL_Math;$(SolutionDir)QGL_Graphics;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\QGL_Model;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Math;$(SolutionDir)$(Platform)\$(Configuration)\QGL_Graphics;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
@@ -137,16 +137,16 @@
       <PreprocessorDefinitions>QGL_INPUT_EXPORTS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">QGL_Model.lib;QGL_Math.lib;QGL_Graphics.lib;QGL_Content.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">QGL_Model.lib;QGL_Math.lib;QGL_Graphics.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Link>
-      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">QGL_Model.lib;QGL_Math.lib;QGL_Graphics.lib;QGL_Content.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">QGL_Model.lib;QGL_Math.lib;QGL_Graphics.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Link>
-      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">QGL_Model.lib;QGL_Math.lib;QGL_Graphics.lib;QGL_Content.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">QGL_Model.lib;QGL_Math.lib;QGL_Graphics.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Link>
-      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">QGL_Model.lib;QGL_Math.lib;QGL_Graphics.lib;QGL_Content.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">QGL_Model.lib;QGL_Math.lib;QGL_Graphics.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
@@ -156,10 +156,10 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">QGL_Model.lib;QGL_Math.lib;QGL_Graphics.lib;QGL_Content.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">QGL_Model.lib;QGL_Math.lib;QGL_Graphics.lib;QGL_Content.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">QGL_Model.lib;QGL_Math.lib;QGL_Graphics.lib;QGL_Content.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">QGL_Model.lib;QGL_Math.lib;QGL_Graphics.lib;QGL_Content.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">QGL_Model.lib;QGL_Math.lib;QGL_Graphics.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">QGL_Model.lib;QGL_Math.lib;QGL_Graphics.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">QGL_Model.lib;QGL_Math.lib;QGL_Graphics.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">QGL_Model.lib;QGL_Math.lib;QGL_Graphics.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -203,6 +203,9 @@
     <None Include="PropertySheet.props" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\QGL_Graphics\QGL_Graphics.vcxproj">
+      <Project>{61a27f7d-5f46-45b0-8c16-54e86eda2563}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\QGL_Math\QGL_Math.vcxproj">
       <Project>{e6d80f1d-9959-4848-9d33-3b43211b0fc6}</Project>
     </ProjectReference>

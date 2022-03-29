@@ -67,7 +67,7 @@ namespace qgl::graphics::gpu
 
       const float* blend_factor() const noexcept
       {
-         return m_blendFactor;
+         return m_blendFactor.data();
       }
 
       /*
@@ -93,6 +93,6 @@ namespace qgl::graphics::gpu
       private:
       D3D12_BLEND_DESC m_desc;
       UINT m_mask;
-      float m_blendFactor[4];
+      std::array<float, 4> m_blendFactor;
    };
 }

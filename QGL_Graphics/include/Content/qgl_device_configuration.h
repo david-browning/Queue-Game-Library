@@ -1,18 +1,19 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
+#include "include/Content/Content-Descriptors/qgl_hdr_descriptor.h"
 #include "include/Content/Content-Descriptors/qgl_engine_descriptor.h"
 
 namespace qgl::graphics
 {
-   class device_configuration
+   class gpu_config
    {
       public:
-      constexpr device_configuration(
-         const descriptors::engine_descriptor& desc) :
+      constexpr gpu_config(const descriptors::engine_descriptor& desc,
+                           descriptors::hdr_descriptor&& hdrDesc) :
+         m_hdr(std::forward<descriptors::hdr_descriptor>(hdrDesc)),
          m_buffers(desc.buffers),
          m_id(desc.pref_adapter_id),
          m_fullScreen(desc.fullscreen),
-         m_hdr(desc.hdr),
          m_stereo(desc.stereo),
          m_tearing(desc.tearing),
          m_highRes(desc.high_resolution),
@@ -21,12 +22,6 @@ namespace qgl::graphics
       {
 
       }
-
-      device_configuration(const device_configuration&) = default;
-
-      device_configuration(device_configuration&&) = default;
-
-      ~device_configuration() noexcept = default;
 
       constexpr bool full_screen() const noexcept
       {
@@ -48,9 +43,9 @@ namespace qgl::graphics
          return m_stereo;
       }
 
-      constexpr bool hdr() const noexcept
+      constexpr hdr_modes hdr_mode() const noexcept
       {
-         return m_hdr;
+         return m_hdr.mode;
       }
 
       constexpr UINT adapter_devID() const noexcept
@@ -73,9 +68,38 @@ namespace qgl::graphics
          return m_height;
       }
 
+      DXGI_HDR_METADATA_HDR10 hdr10() const
+      {
+         if (m_hdr.mode != hdr_modes::hdr10)
+         {
+            throw std::bad_optional_access{};
+         }
+
+         DXGI_HDR_METADATA_HDR10 ret = {};
+         ret.RedPrimary[0] = m_hdr.r_primary[0];
+         ret.RedPrimary[1] = m_hdr.r_primary[1];
+         ret.GreenPrimary[0] = m_hdr.g_primary[0];
+         ret.GreenPrimary[1] = m_hdr.g_primary[1];
+         ret.BluePrimary[0] = m_hdr.b_primary[0];
+         ret.BluePrimary[1] = m_hdr.b_primary[1];
+         ret.WhitePoint[0] = m_hdr.white[0];
+         ret.WhitePoint[1] = m_hdr.white[1];
+         ret.MaxMasteringLuminance = m_hdr.lum_max;
+         ret.MinMasteringLuminance = m_hdr.lum_min;
+         ret.MaxContentLightLevel = m_hdr.light_max;
+         ret.MaxFrameAverageLightLevel = m_hdr.light_avg;
+
+         return ret;
+      }
+
+      DXGI_HDR_METADATA_HDR10PLUS hdr10_plus() const
+      {
+         throw std::bad_optional_access{};
+      }
+
       friend void swap(
-         device_configuration& l,
-         device_configuration& r) noexcept
+         gpu_config& l,
+         gpu_config& r) noexcept
       {
          using std::swap;
          swap(l.m_width, r.m_width);
@@ -83,13 +107,13 @@ namespace qgl::graphics
          swap(l.m_buffers, r.m_buffers);
          swap(l.m_id, r.m_id);
          swap(l.m_fullScreen, r.m_fullScreen);
-         swap(l.m_hdr, r.m_hdr);
          swap(l.m_stereo, r.m_stereo);
          swap(l.m_tearing, r.m_tearing);
          swap(l.m_highRes, r.m_highRes);
+         swap(l.m_hdr, r.m_hdr);
       }
 
-      device_configuration& operator=(device_configuration r) noexcept
+      gpu_config& operator=(gpu_config r) noexcept
       {
          swap(*this, r);
          return *this;
@@ -97,12 +121,12 @@ namespace qgl::graphics
 
       private:
 
+      descriptors::hdr_descriptor m_hdr;
       size_t m_width;
       size_t m_height;
       size_t m_buffers;
       UINT m_id;
       bool m_fullScreen;
-      bool m_hdr;
       bool m_stereo;
       bool m_tearing;
       bool m_highRes;

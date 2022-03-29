@@ -84,15 +84,8 @@ may support ARM64.
   "Default Processor Architecture".
 
 ## TODO:
-* Fix failed HRESULT when opening existing files.
-* Support multi-instance with content builder.
-* Test qgl::content:: entry importers.
-* Test qgl::content:: file loaders.
 * Test qgl::qgl_version_t.
 * Test qgl::icommand.
-* Test icontent_file::erase.
-* Test content_project_entry.
-* Test static pointer.
 * Test component.
 * Test tree_map and unordered_tree_map
 * Test basic_graph_map
@@ -119,11 +112,8 @@ may support ARM64.
   * 140 years
   * 200 years
 * Cross compiler/VC Runtime integration tests.
-* qgl::content::buffers::BRUSH_BUFFER has floating point data types in it.
-* OBJ Importer. Needs to be aware of the vertex layout.
 * PSO supports steam output?
 * Resize frame? This resized render targets and depth stencils? Resize viewport 
   and scissor?
 * Provide CPU access to depth-stencil buffer.
 * Require AVX support?
-* Memory map the file that icontent_file points to?

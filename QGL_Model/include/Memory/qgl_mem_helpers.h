@@ -58,13 +58,23 @@ namespace qgl::mem
     Copies numElements from source to dest.
     */
    template<typename T, typename SizeT = size_t>
-   void copy_elements(T* const dest,
+   constexpr void copy_elements(T* const dest,
                       const T* const source,
                       SizeT numElements)
    {
       for (SizeT i = 0; i < numElements; i++)
       {
          dest[i] = source[i];
+      }
+   }
+
+   template<class T, typename SizeT = size_t>
+   constexpr void swap_elements(T* const left, T* const right, SizeT count)
+   {
+      using std::swap;
+      for (SizeT i = 0; i < count; i++)
+      {
+         swap(left[i], right[i]);
       }
    }
 

@@ -54,7 +54,7 @@ namespace qgl::input::providers
             if (pressed(state.Gamepad.wButtons, xInputButton))
             {
                inputs.emplace_back(xInputButton,
-                  BUTTON_STATES::BUTTON_STATE_PRESSED);
+                  button_states::pressed);
             }
             else
             {
@@ -62,7 +62,7 @@ namespace qgl::input::providers
                if (m_lastUpdateButtons.count(xInputButton) > 0)
                {
                   inputs.emplace_back(xInputButton,
-                     BUTTON_STATES::BUTTON_STATE_RELEASED);
+                     button_states::released);
                   m_lastUpdateButtons.erase(xInputButton);
                }
             }
@@ -74,7 +74,7 @@ namespace qgl::input::providers
          auto rTrigger = normalize_trigger_input(
             state.Gamepad.bRightTrigger,
             m_deadzoneConfig.rtrigger,
-            INPUT_AXIS_IDS::INPUT_AXIS_ID_RTRIGGER);
+            input_axis_ids::right_trigger);
 
          // If it is not in the dead zone:
          if (!rTrigger.approx_zero())
@@ -85,51 +85,51 @@ namespace qgl::input::providers
          else if (m_lastRTrigger)
          {
             // Trigger not pressed but it was pressed last update.
-            inputs.emplace_back(rTrigger, BUTTON_STATES::BUTTON_STATE_RELEASED);
+            inputs.emplace_back(rTrigger, button_states::released);
             m_lastRTrigger = false;
          }
 
          auto lTrigger = normalize_trigger_input(
             state.Gamepad.bLeftTrigger,
             m_deadzoneConfig.ltrigger,
-            INPUT_AXIS_IDS::INPUT_AXIS_ID_LTRIGGER);
+            input_axis_ids::left_trigger);
          if (!lTrigger.approx_zero())
          {
-            inputs.emplace_back(lTrigger, BUTTON_STATES::BUTTON_STATE_PRESSED);
+            inputs.emplace_back(lTrigger, button_states::pressed);
             m_lastLTrigger = true;
          }
          else if (m_lastLTrigger)
          {
-            inputs.emplace_back(lTrigger, BUTTON_STATES::BUTTON_STATE_RELEASED);
+            inputs.emplace_back(lTrigger, button_states::released);
             m_lastLTrigger = false;
          }
 
          // Handle the thumbsticks
          auto rStick = normalize_stick_input(state.Gamepad.sThumbRX,
             state.Gamepad.sThumbRY, m_deadzoneConfig.rstick,
-            INPUT_AXIS_IDS::INPUT_AXIS_ID_RSTICK);
+            input_axis_ids::right_stick);
          if (!rStick.approx_zero())
          {
-            inputs.emplace_back(rStick, BUTTON_STATES::BUTTON_STATE_PRESSED);
+            inputs.emplace_back(rStick, button_states::pressed);
             m_lastRStick = true;
          }
          else if (m_lastRStick)
          {
-            inputs.emplace_back(rStick, BUTTON_STATES::BUTTON_STATE_RELEASED);
+            inputs.emplace_back(rStick, button_states::released);
             m_lastRStick = false;
          }
 
          auto lStick = normalize_stick_input(state.Gamepad.sThumbLX,
             state.Gamepad.sThumbLY, m_deadzoneConfig.lstick,
-            INPUT_AXIS_IDS::INPUT_AXIS_ID_LSTICK);
+            input_axis_ids::left_stick);
          if (!lStick.approx_zero())
          {
-            inputs.emplace_back(lStick, BUTTON_STATES::BUTTON_STATE_PRESSED);
+            inputs.emplace_back(lStick, button_states::pressed);
             m_lastLStick = true;
          }
          else if (m_lastLStick)
          {
-            inputs.emplace_back(lStick, BUTTON_STATES::BUTTON_STATE_RELEASED);
+            inputs.emplace_back(lStick, button_states::released);
             m_lastLStick = false;
          }
 
@@ -140,7 +140,7 @@ namespace qgl::input::providers
       input_axis normalize_trigger_input(
          xinput_trigger triggerInput,
          axis_magnitude normalizedDeadZone,
-         INPUT_AXIS_IDS id) const noexcept
+         input_axis_ids id) const noexcept
       {
          auto deadZone = static_cast<xinput_trigger>(
             normalizedDeadZone * XINPUT_TRIGGER_AXIS_MAX);
@@ -157,7 +157,7 @@ namespace qgl::input::providers
          xinput_stick x,
          xinput_stick y,
          axis_magnitude normalizedDeadZone,
-         INPUT_AXIS_IDS id) const noexcept
+         input_axis_ids id) const noexcept
       {
          auto deadZone = static_cast<xinput_stick>(
             normalizedDeadZone * XINPUT_STICK_AXIS_MAX);

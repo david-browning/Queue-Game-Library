@@ -232,6 +232,7 @@
     <ClCompile Include="Tests\Observer-Observable\subject_notify_tests.cpp" />
     <ClCompile Include="Tests\Observer-Observable\subject_out_of_scope_tests.cpp" />
     <ClCompile Include="Tests\Observer-Observable\subject_remove_tests.cpp" />
+    <ClCompile Include="Tests\Structures\fixed_buffer_tests.cpp" />
     <ClCompile Include="Tests\version_tests.cpp" />
     <ClCompile Include="Tests\Structures\basic_graph_tests.cpp" />
     <ClCompile Include="Tests\Structures\basic_tree_map_tests.cpp" />

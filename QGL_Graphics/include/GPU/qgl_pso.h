@@ -21,12 +21,12 @@ namespace qgl::graphics::gpu
       template<class FrameIt, class ShaderIt>
       pso(FrameIt firstFrame, FrameIt lastFrame,
          ShaderIt firstShader, ShaderIt lastShader,
-         const winrt::com_ptr<d3d_device>& device,
+         device_3d_ptr&& device_p,
          const multisampler& smplr,
          const vertex_layout& vLayout,
          root_signature& rootSig,
          size_t nodeMask) :
-         m_dev(device)
+         m_dev(std::forward<device_3d_ptr>(device_p))
       {
          //Set the flags.
          m_psoDesc.Flags = PSO_DEFAULT_FLAG;
@@ -61,74 +61,7 @@ namespace qgl::graphics::gpu
          //m_psoDesc.StreamOutput;
 
          frames(firstFrame, lastFrame);
-
-         //Set the shaders. Keep track that no shader is set twice.
-         std::unordered_set<SHADER_TYPES> seenShaders;
-
-         for (auto shader = firstShader; shader != lastShader; shader++)
-         {
-            auto type = shader->type();
-
-            //Make sure we haven't seen this shader before.
-            if (seenShaders.count(type) > 0)
-            {
-#ifdef DEBUG
-               OutputDebugString(
-                  L"Two shaders of the same type were specified.");
-#endif
-               winrt::throw_hresult(E_INVALIDARG);
-            }
-
-            seenShaders.insert(type);
-
-            //Depending on the type of shader, set the appropriate parameters
-            //for the pipeline state.
-            switch (type)
-            {
-               case SHADER_TYPES::SHADER_TYPE_DS:
-               {
-                  m_psoDesc.DS = shader->byte_code();
-                  break;
-               }
-               case SHADER_TYPES::SHADER_TYPE_GS:
-               {
-                  m_psoDesc.GS = shader->byte_code();
-                  break;
-               }
-               case SHADER_TYPES::SHADER_TYPE_HS:
-               {
-                  m_psoDesc.HS = shader->byte_code();
-                  break;
-               }
-               case SHADER_TYPES::SHADER_TYPE_VS:
-               {
-                  m_psoDesc.VS = shader->byte_code();
-                  break;
-               }
-               case SHADER_TYPES::SHADER_TYPE_PS:
-               {
-                  m_psoDesc.PS = shader->byte_code();
-                  break;
-               }
-               default:
-               {
-#ifdef DEBUG
-                  OutputDebugString(L"A shader has an unknown type.");
-#endif
-                  winrt::throw_hresult(E_UNEXPECTED);
-               }
-            }
-
-            //Make sure we have a PS and VS as they are required.
-            if (seenShaders.count(SHADER_TYPES::SHADER_TYPE_VS) == 0 ||
-                seenShaders.count(SHADER_TYPES::SHADER_TYPE_PS) == 0)
-            {
-#ifdef DEBUG
-               OutputDebugString(L"No vertex or pixel shader was found.");
-#endif
-               winrt::throw_hresult(E_INVALIDARG);
-            }
-         }
+         shaders(firstShader, lastShader);
 
          winrt::check_hresult(m_dev->CreateGraphicsPipelineState(
             &m_psoDesc,
@@ -197,6 +130,79 @@ namespace qgl::graphics::gpu
       }
 
       private:
+      
+      template<class ShaderIt>
+      void shaders(ShaderIt firstShader, ShaderIt lastShader)
+      {
+         // Keep track that no shader is set twice.
+         std::unordered_set<shader_types> seenShaders;
+
+         for (auto shader = firstShader; shader != lastShader; shader++)
+         {
+            auto type = shader->type();
+
+            //Make sure we haven't seen this shader before.
+            if (seenShaders.count(type) > 0)
+            {
+#ifdef DEBUG
+               OutputDebugString(
+                  L"Two shaders of the same type were specified.");
+#endif
+               winrt::throw_hresult(E_INVALIDARG);
+            }
+
+            seenShaders.insert(type);
+
+            //Depending on the type of shader, set the appropriate parameters
+            //for the pipeline state.
+            switch (type)
+            {
+               case shader_types::ds:
+               {
+                  m_psoDesc.DS = shader->byte_code();
+                  break;
+               }
+               case shader_types::gs:
+               {
+                  m_psoDesc.GS = shader->byte_code();
+                  break;
+               }
+               case shader_types::hs:
+               {
+                  m_psoDesc.HS = shader->byte_code();
+                  break;
+               }
+               case shader_types::vs:
+               {
+                  m_psoDesc.VS = shader->byte_code();
+                  break;
+               }
+               case shader_types::ps:
+               {
+                  m_psoDesc.PS = shader->byte_code();
+                  break;
+               }
+               default:
+               {
+#ifdef DEBUG
+                  OutputDebugString(L"A shader has an unknown type.");
+#endif
+                  winrt::throw_hresult(E_UNEXPECTED);
+               }
+            }
+
+            //Make sure we have a PS and VS as they are required.
+            if (seenShaders.count(shader_types::vs) == 0 ||
+                seenShaders.count(shader_types::ps) == 0)
+            {
+#ifdef DEBUG
+               OutputDebugString(L"No vertex or pixel shader was found.");
+#endif
+               winrt::throw_hresult(E_INVALIDARG);
+            }
+         }
+      }
+
       /*
        The D3D12 pipeline state.
        */
@@ -207,7 +213,7 @@ namespace qgl::graphics::gpu
        */
       D3D12_GRAPHICS_PIPELINE_STATE_DESC m_psoDesc;
 
-      winrt::com_ptr<d3d_device> m_dev;
+      device_3d_ptr m_dev;
 
 #ifdef DEBUG
       static constexpr D3D12_PIPELINE_STATE_FLAGS PSO_DEFAULT_FLAG =

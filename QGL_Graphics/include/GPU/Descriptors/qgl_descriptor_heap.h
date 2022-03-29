@@ -1,7 +1,7 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include "include/Interfaces/qgl_igraphics_device.h"
-#include "include/GPU/Buffers/igpu_buffer.h"
+#include "include/qgl_graphics_device.h"
+#include "include/GPU/Buffers/qgl_igpu_buffer.h"
 #include "include/GPU/Buffers/qgl_const_buffer.h"
 
 namespace qgl::graphics::gpu
@@ -25,11 +25,11 @@ namespace qgl::graphics::gpu
    class descriptor_heap
    {
       public:
-      using dev_ptr = typename winrt::com_ptr<d3d_device>;
+      using dev_ptr = typename winrt::com_ptr<device_3d>;
       using depth_stencil_type = typename igpu_buffer<
          CD3DX12_RESOURCE_DESC,
          D3D12_DEPTH_STENCIL_VIEW_DESC,
-         d3d_resource>;
+         gpu_resource>;
       using render_target_type = typename igpu_buffer<
          DXGI_SWAP_CHAIN_DESC1,
          D3D12_RENDER_TARGET_VIEW_DESC,
@@ -37,12 +37,11 @@ namespace qgl::graphics::gpu
       using sampler_type = typename igpu_buffer<
          D3D12_SAMPLER_DESC,
          nullptr_t,
-         d3d_resource>;
+         gpu_resource>;
       using texture_type = typename igpu_buffer<D3D12_RESOURCE_DESC,
-         D3D12_SHADER_RESOURCE_VIEW_DESC, d3d_resource>;
+         D3D12_SHADER_RESOURCE_VIEW_DESC, gpu_resource>;
 
       /*
-       dev_p: Pointer to a D3D12 Device.
        numEntries: Number of entries in the descriptor heap. For a DSV or RTV
         heap, set this to the number of render targets.
        nodeMask: GPU mask where to put the descriptor heap.
@@ -83,48 +82,48 @@ namespace qgl::graphics::gpu
        Adds a shader resource view at the idx'th position in the descriptor
        heap.
        */
-      void insert(const graphics_device_ref& dev_p,
+      void insert(const graphics_device_ptr& dev_p,
                   size_t idx,
                   texture_type& textureBuffer)
       {
          auto handle = at_cpu(idx);
-         dev_p.lock()->d3d12_device()->CreateShaderResourceView(
+         dev_p->dev_3d()->CreateShaderResourceView(
             textureBuffer.get(), textureBuffer.view(), handle);
       }
 
       /*
        Adds a sampler view at the idx'th position in the descriptor heap.
        */
-      void insert(const graphics_device_ref& dev_p,
+      void insert(const graphics_device_ptr& dev_p,
                   size_t idx,
                   sampler_type& samplerBuffer)
       {
          auto handle = at_cpu(idx);
-         dev_p.lock()->d3d12_device()->CreateSampler(
+         dev_p->dev_3d()->CreateSampler(
             samplerBuffer.description(), handle);
       }
 
       /*
        Adds a depth stencil view at the idx'th position in the descriptor heap.
        */
-      void insert(const graphics_device_ref& dev_p,
+      void insert(const graphics_device_ptr& dev_p,
                   size_t idx,
                   depth_stencil_type& depthStencil)
       {
          auto handle = at_cpu(idx);
-         dev_p.lock()->d3d12_device()->CreateDepthStencilView(
+         dev_p->dev_3d()->CreateDepthStencilView(
             depthStencil.get(), depthStencil.view(), handle);
       }
 
       /*
        Adds a render target view at the idx'th position in the descriptor heap.
        */
-      void insert(const std::weak_ptr<igraphics_device>& dev_p,
+      void insert(const graphics_device_ptr& dev_p,
                   size_t idx,
                   render_target_type& renderTarget)
       {
          auto handle = at_cpu(idx);
-         dev_p.lock()->d3d12_device()->CreateRenderTargetView(
+         dev_p->dev_3d()->CreateRenderTargetView(
             renderTarget.get(), renderTarget.view(), handle);
       }
 
@@ -133,12 +132,12 @@ namespace qgl::graphics::gpu
        heap.
        */
       template<typename T>
-      void insert(const graphics_device_ref& dev_p,
+      void insert(const graphics_device_ptr& dev_p,
                   size_t idx,
                   const const_buffer<T>& constBuffer)
       {
          auto handle = at_cpu(idx);
-         dev_p.lock()->d3d12_device()->CreateConstantBufferView(
+         dev_p->dev_3d()->CreateConstantBufferView(
             constBuffer.view(), handle);
       }
 

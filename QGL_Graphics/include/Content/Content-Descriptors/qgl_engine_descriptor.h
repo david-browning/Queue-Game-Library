@@ -6,32 +6,13 @@ namespace qgl::graphics::descriptors
 #pragma pack(push, 1)
    struct engine_descriptor final
    {
-      constexpr engine_descriptor() :
-         flags(0),
-         pref_adapter_id(0),
-         width(640),
-         height(480),
-         refresh(60),
-         buffers(3),
-         fullscreen(false),
-         tearing(false),
-         high_resolution(true),
-         stereo(false),
-         hdr(false),
-         interlacing(true)
+      constexpr engine_descriptor()
       {
       }
-
-      engine_descriptor(const engine_descriptor&) = default;
-
-      engine_descriptor(engine_descriptor&&) = default;
-
-      ~engine_descriptor() noexcept = default;
 
       friend void swap(engine_descriptor& l, engine_descriptor& r) noexcept
       {
          using std::swap;
-         swap(l.flags, r.flags);
          swap(l.width, r.width);
          swap(l.height, r.height);
          swap(l.refresh, r.refresh);
@@ -40,7 +21,6 @@ namespace qgl::graphics::descriptors
          swap(l.tearing, r.tearing);
          swap(l.high_resolution, r.high_resolution);
          swap(l.stereo, r.stereo);
-         swap(l.hdr, r.hdr);
          swap(l.interlacing, r.interlacing);
          swap(l.pref_adapter_id, r.pref_adapter_id);
       }
@@ -51,50 +31,46 @@ namespace qgl::graphics::descriptors
          return *this;
       }
 
-      uint32_t flags;
-
-      uint32_t pref_adapter_id;
+      uint32_t pref_adapter_id = 0;
 
       /*
        The horizontal resolution in pixels.
        */
-      uint32_t width;
+      uint32_t width = 800;
 
       /*
        The vertical resolution in pixels.
        */
-      uint32_t height;
+      uint32_t height = 600;
 
       /*
        Monitor refresh rate in hertz.
        */
-      uint32_t refresh;
+      uint32_t refresh = 30;
 
       /*
        Number of render target back buffers the engine will use.
        */
-      uint8_t buffers;
+      uint8_t buffers = 3;
 
       /*
        True if the engine should be in full screen.
        */
-      uint8_t fullscreen;
+      uint8_t fullscreen = 0;
 
       /*
        True if the engine should allow an uncapped render rate.
        */
-      uint8_t tearing;
+      uint8_t tearing = 1;
 
       /*
        True if the engine uses high resolution rendering.
        */
-      uint8_t high_resolution;
+      uint8_t high_resolution = 1;
 
-      uint8_t stereo;
+      uint8_t stereo = 0;
 
-      uint8_t hdr;
-
-      uint8_t interlacing;
+      uint8_t interlacing = 0;
    };
 #pragma pack(pop)
 }

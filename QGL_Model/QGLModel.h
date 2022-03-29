@@ -16,5 +16,6 @@
 #include "include/Structures/qgl_tree_helpers.h"
 #include "include/Structures/qgl_basic_tree_map.h"
 #include "include/Structures/qgl_basic_graph.h"
+#include "include/Structures/qgl_fixed_buffer.h"
 
 #include "include/qgl_misc_helpers.h"

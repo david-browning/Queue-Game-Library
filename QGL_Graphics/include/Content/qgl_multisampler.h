@@ -7,18 +7,12 @@ namespace qgl::graphics
    class multisampler
    {
       public:
-      multisampler(const descriptors::multisampler_descriptor& desc) :
+      constexpr multisampler(const descriptors::multisampler_descriptor& desc) :
          m_count(desc.count),
          m_quality(desc.quality)
       {
 
       }
-
-      multisampler(const multisampler&) = default;
-
-      multisampler(multisampler&&) = default;
-
-      ~multisampler() noexcept = default;
 
       constexpr size_t count() const noexcept
       {

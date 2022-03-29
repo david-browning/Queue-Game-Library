@@ -1,7 +1,6 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
 #include "include/Helpers/qgl_window_helpers.h"
-#include "include/Interfaces/qgl_iwindow.h"
 
 namespace qgl::graphics
 {
@@ -23,9 +22,11 @@ namespace qgl::graphics
          m_wnd_p(std::forward<corewnd_ptr>(coreWnd_p)),
          m_view_p(std::forward<view_ptr>(view_p))
       {
-         iwindow* i = nullptr;
-         winrt::check_hresult(make_window(m_wnd_p.get(), m_view_p.get(), &i));
-         m_wndImpl = qgl::make_unique<iwindow>(i);
+         auto dims = window_dimmensions(m_wnd_p.get());
+         m_hPixels = dims.first;
+         m_wPixels = dims.second;
+
+         m_wnd_p->SizeChanged({ this, &window::resize_completed });
       }
 
       /*
@@ -48,7 +49,7 @@ namespace qgl::graphics
        */
       bool full_screen() const
       {
-         return m_wndImpl->full_screen();
+         return m_view_p->IsFullScreen();
       }
 
       /*
@@ -77,7 +78,7 @@ namespace qgl::graphics
        */
       bool enter_full_screen()
       {
-         return m_wndImpl->enter_full_screen();
+         return m_view_p->TryEnterFullScreenMode();
       }
 
       /*
@@ -86,7 +87,8 @@ namespace qgl::graphics
        */
       bool exit_full_screen()
       {
-         return m_wndImpl->exit_full_screen();
+         m_view_p->ExitFullScreenMode();
+         return true;
       }
 
       /*
@@ -111,19 +113,31 @@ namespace qgl::graphics
        */
       float ratio() const noexcept
       {
-         return m_wndImpl->ratio();
+         return m_wPixels / m_hPixels;
       }
 
       template<typename T>
       T width() const noexcept
       {
-         return static_cast<T>(m_wndImpl->width());
+         return static_cast<T>(m_wPixels);
       }
 
       template<typename T>
       T height() const noexcept
       {
-         return static_cast<T>(m_wndImpl->height());
+         return static_cast<T>(m_hPixels);
+      }
+
+      template<typename T>
+      T top() const noexcept
+      {
+         return static_cast<T>(window_position(m_wnd_p.get()).second);
+      }
+
+      template<typename T>
+      T left() const noexcept
+      {
+         return static_cast<T>(window_position(m_wnd_p.get()).first);
       }
 
       auto rt_window()
@@ -139,20 +153,20 @@ namespace qgl::graphics
          return winrt::get_unknown(*m_wnd_p);
       }
 
-      iwindow* iwnd()
-      {
-         return m_wndImpl.get();
-      }
-
       private:
 
-      /*
-       Cannot pass smart pointers across the ABI. So save them into smart 
-       pointers that will be released when this is released and pass their 
-       "raw" pointers to the window implementation.
-       */
+      void resize_completed(
+        winrt::Windows::Foundation::IInspectable const&,
+        winrt::Windows::UI::Core::WindowSizeChangedEventArgs const& args)
+      {
+         auto dims = window_dimmensions(args);
+         m_hPixels = dims.first;
+         m_wPixels = dims.second;
+      }
+
       corewnd_ptr m_wnd_p;
       view_ptr m_view_p;
-      qgl_unique_ptr<iwindow> m_wndImpl;
+      float m_wPixels;
+      float m_hPixels;
    };
 }
