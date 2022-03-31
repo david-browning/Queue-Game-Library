@@ -17,11 +17,11 @@ namespace qgl::graphics::gpu
        target.
        The viewport is then scaled to fit in the window.
        */
-      viewport(const graphics_device_ptr& dev, const graphics::window& wnd)
+      viewport(const graphics_device& dev, const graphics::window& wnd)
       {
          auto wndWidth = wnd.width<float>();
          auto wndHeight = wnd.height<float>();
-         const auto& cfg = dev->config();
+         const auto& cfg = dev.config();
          float viewWidthRatio = static_cast<float>(cfg.width()) / wndWidth;
          float viewHeightRatio = static_cast<float>(cfg.height()) / wndHeight;
          float x = 1.0f;

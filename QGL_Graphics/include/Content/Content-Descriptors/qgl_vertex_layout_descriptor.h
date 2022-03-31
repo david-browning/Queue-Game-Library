@@ -17,8 +17,6 @@ namespace qgl::graphics::descriptors
          using std::swap;
          swap(l.topology, r.topology);
          swap(l.strip_cut, r.strip_cut);
-         swap(l.reserved1, r.reserved1);
-         swap(l.reserved2, r.reserved2);
       }
 
       vertex_layout_descriptor& operator=(vertex_layout_descriptor r) noexcept
@@ -29,8 +27,6 @@ namespace qgl::graphics::descriptors
 
       uint8_t topology = D3D12_PRIMITIVE_TOPOLOGY_TYPE_UNDEFINED;
       uint8_t strip_cut = D3D12_INDEX_BUFFER_STRIP_CUT_VALUE_DISABLED;
-      uint8_t reserved1 = 0;
-      uint8_t reserved2 = 0;
    };
 #pragma pack(pop)
 }

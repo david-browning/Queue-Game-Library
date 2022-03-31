@@ -14,7 +14,7 @@ namespace qgl::graphics::gpu
    class upload_buffer : public igpu_buffer<
       D3D12_SUBRESOURCE_DATA,
       ViewDescT,
-      gpu_resource>
+      igpu_resource>
    {
       public:
       template<class T>
@@ -44,9 +44,9 @@ namespace qgl::graphics::gpu
 
       virtual gpu_alloc_handle alloc_handle() const noexcept;
 
-      virtual const gpu_resource* get() const;
+      virtual const igpu_resource* get() const;
 
-      virtual gpu_resource* get();
+      virtual igpu_resource* get();
 
       private:
    };

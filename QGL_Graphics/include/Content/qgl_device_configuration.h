@@ -18,7 +18,8 @@ namespace qgl::graphics
          m_tearing(desc.tearing),
          m_highRes(desc.high_resolution),
          m_width(desc.width),
-         m_height(desc.height)
+         m_height(desc.height),
+         m_textMode(static_cast<DWRITE_RENDERING_MODE>(desc.text_mode))
       {
 
       }
@@ -66,6 +67,11 @@ namespace qgl::graphics
       constexpr size_t height() const noexcept
       {
          return m_height;
+      }
+
+      constexpr DWRITE_RENDERING_MODE text_mode() const noexcept
+      {
+         return m_textMode;
       }
 
       DXGI_HDR_METADATA_HDR10 hdr10() const
@@ -126,6 +132,7 @@ namespace qgl::graphics
       size_t m_height;
       size_t m_buffers;
       UINT m_id;
+      DWRITE_RENDERING_MODE m_textMode;
       bool m_fullScreen;
       bool m_stereo;
       bool m_tearing;

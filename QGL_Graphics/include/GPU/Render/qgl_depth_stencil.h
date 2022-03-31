@@ -19,7 +19,7 @@ namespace qgl::graphics::gpu
    class depth_stencil : public irender_target,
                          public igpu_buffer<CD3DX12_RESOURCE_DESC,
                            D3D12_DEPTH_STENCIL_VIEW_DESC,
-                           gpu_resource>
+                           igpu_resource>
    {
       public:
       using ResourceDescriptionT = CD3DX12_RESOURCE_DESC;
@@ -31,16 +31,16 @@ namespace qgl::graphics::gpu
        */
       depth_stencil(descriptors::depth_stencil_descriptor&& buffer,
                     committed_allocator_ptr&& allocator,
-                    graphics_device_ptr&& dev_p,
+                    graphics_device_ptr&& dev_sp,
                     dsv_descriptor_heap& dsvHeap,
                     size_t frameIndex) :
-         m_allocator_p(std::forward<committed_allocator_ptr>(allocator)),
+         m_allocator_sp(std::forward<committed_allocator_ptr>(allocator)),
          m_buffer(std::forward<descriptors::depth_stencil_descriptor>(buffer)),
-         m_dev_p(std::forward<graphics_device_ptr>(dev_p))
+         m_dev_sp(std::forward<graphics_device_ptr>(dev_sp))
       {
          m_cpuHandle = dsvHeap.at_cpu(frameIndex);
          acquire();
-         dsvHeap.insert(dev_p, frameIndex, *this);
+         dsvHeap.insert(dev_sp, frameIndex, *this);
       }
 
       /*
@@ -86,17 +86,17 @@ namespace qgl::graphics::gpu
 
       virtual gpu_alloc_handle alloc_handle() const noexcept
       {
-         return m_resHndl;
+         return m_alloc_h;
       }
 
-      virtual const gpu_resource* get() const
+      virtual const igpu_resource* get() const
       {
-         return m_allocator_p->resource(m_resHndl);
+         return m_allocator_sp->resource(m_alloc_h);
       }
 
-      virtual gpu_resource* get()
+      virtual igpu_resource* get()
       {
-         return m_allocator_p->resource(m_resHndl);
+         return m_allocator_sp->resource(m_alloc_h);
       }
 
       /*
@@ -127,7 +127,7 @@ namespace qgl::graphics::gpu
 
       void release()
       {
-         m_allocator_p->free(m_resHndl);
+         m_allocator_sp->free(m_alloc_h);
       }
 
       void acquire()
@@ -138,8 +138,8 @@ namespace qgl::graphics::gpu
 
          m_desc = CD3DX12_RESOURCE_DESC(D3D12_RESOURCE_DIMENSION_TEXTURE2D,
             0,
-            m_dev_p->wnd()->width<UINT>(),
-            m_dev_p->wnd()->height<UINT>(),
+            m_dev_sp->wnd()->width<UINT>(),
+            m_dev_sp->wnd()->height<UINT>(),
             1,
             1,
             format(),
@@ -156,7 +156,7 @@ namespace qgl::graphics::gpu
          m_depthDesc = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
          auto heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
 
-         m_resHndl = m_allocator_p->alloc(heapProps, D3D12_HEAP_FLAG_NONE,
+         m_alloc_h = m_allocator_sp->alloc(heapProps, D3D12_HEAP_FLAG_NONE,
             m_desc, D3D12_RESOURCE_STATE_DEPTH_WRITE, &m_clearValue);
 
          // texture width * texture height * 4 bytes per pixel.
@@ -164,9 +164,9 @@ namespace qgl::graphics::gpu
       }
 
       private:
-      committed_allocator_ptr m_allocator_p;
-      gpu_alloc_handle m_resHndl;
-      graphics_device_ptr m_dev_p;
+      committed_allocator_ptr m_allocator_sp;
+      gpu_alloc_handle m_alloc_h;
+      graphics_device_ptr m_dev_sp;
 
       size_t m_size;
       ResourceDescriptionT m_desc;

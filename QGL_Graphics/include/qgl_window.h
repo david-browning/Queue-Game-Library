@@ -22,7 +22,7 @@ namespace qgl::graphics
          m_wnd_p(std::forward<corewnd_ptr>(coreWnd_p)),
          m_view_p(std::forward<view_ptr>(view_p))
       {
-         auto dims = window_dimmensions(m_wnd_p.get());
+         auto dims = helpers::window_dimmensions(m_wnd_p.get());
          m_hPixels = dims.first;
          m_wPixels = dims.second;
 
@@ -131,13 +131,13 @@ namespace qgl::graphics
       template<typename T>
       T top() const noexcept
       {
-         return static_cast<T>(window_position(m_wnd_p.get()).second);
+         return static_cast<T>(helpers::window_position(m_wnd_p.get()).second);
       }
 
       template<typename T>
       T left() const noexcept
       {
-         return static_cast<T>(window_position(m_wnd_p.get()).first);
+         return static_cast<T>(helpers::window_position(m_wnd_p.get()).first);
       }
 
       auto rt_window()
@@ -159,7 +159,7 @@ namespace qgl::graphics
         winrt::Windows::Foundation::IInspectable const&,
         winrt::Windows::UI::Core::WindowSizeChangedEventArgs const& args)
       {
-         auto dims = window_dimmensions(args);
+         auto dims = helpers::window_dimmensions(args);
          m_hPixels = dims.first;
          m_wPixels = dims.second;
       }

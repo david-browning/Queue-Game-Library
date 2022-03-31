@@ -5,11 +5,11 @@ namespace qgl::graphics::gpu
 {
    /*
     baseRegister: The base shader register in the range.
-    For example, for shader - resource views(SRVs), 3 maps to ": register(t3);" 
+    For example, for shader - resource views(SRVs), 3 maps to ": register(t3);"
     in HLSL.
-    regSpace : The register space. Can typically be 0, but allows multiple 
-     descriptor arrays of unknown size to not appear to overlap. 
-     For example, for SRVs, by extending the example in the BaseShaderRegister 
+    regSpace : The register space. Can typically be 0, but allows multiple
+     descriptor arrays of unknown size to not appear to overlap.
+     For example, for SRVs, by extending the example in the BaseShaderRegister
      member description, 5 maps to ": register(t3,space5);" in HLSL.
     flags : https://tinyurl.com/d3d12-descriptorrangeflgs
    */

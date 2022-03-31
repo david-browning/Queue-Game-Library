@@ -12,6 +12,11 @@ namespace qgl::graphics
 
 namespace qgl::graphics::helpers
 {
+   /*
+    Returns the size (in bytes) that an element of type "f" uses.
+    */
+   extern QGL_GRAPHICS_API size_t format_size(DXGI_FORMAT f) noexcept;
+
    inline auto make_gpu_factory()
    {
       UINT flags = 0;
@@ -25,7 +30,7 @@ namespace qgl::graphics::helpers
       flags |= DXGI_CREATE_FACTORY_DEBUG;
 #endif
 
-      winrt::com_ptr<factory_gpu> ret = nullptr;
+      winrt::com_ptr<igpu_factory> ret = nullptr;
       winrt::check_hresult(CreateDXGIFactory2(flags, IID_PPV_ARGS(ret.put())));
       return ret;
    }
@@ -37,7 +42,7 @@ namespace qgl::graphics::helpers
       d2dFactoryOptions.debugLevel = D2D1_DEBUG_LEVEL_INFORMATION;
 #endif
 
-      winrt::com_ptr<factory_2d> ret = nullptr;
+      winrt::com_ptr<i2d_factory> ret = nullptr;
       winrt::check_hresult(D2D1CreateFactory(
          D2D1_FACTORY_TYPE::D2D1_FACTORY_TYPE_SINGLE_THREADED,
          IID_PPV_ARGS(ret.put())));
@@ -47,23 +52,23 @@ namespace qgl::graphics::helpers
 
    inline auto make_text_factory()
    {
-      winrt::com_ptr<factory_text> ret;
+      winrt::com_ptr<itext_factory> ret;
       winrt::check_hresult(DWriteCreateFactory(
          DWRITE_FACTORY_TYPE::DWRITE_FACTORY_TYPE_SHARED,
-         __uuidof(factory_text),
+         __uuidof(itext_factory),
          reinterpret_cast<IUnknown**>(ret.put())));
 
       return ret;
    }
 
    inline auto enum_hardware_adapters(
-      factory_gpu* factory_p,
+      igpu_factory* factory_p,
       D3D_FEATURE_LEVEL minFeatureLevel)
    {
-      std::vector<winrt::com_ptr<gpu_adapter>> adapters;
+      std::vector<winrt::com_ptr<igpu_adapter>> adapters;
 
       //Temp adapter
-      winrt::com_ptr<gpu_adapter> adapter = nullptr;
+      winrt::com_ptr<igpu_adapter> adapter = nullptr;
 
       //Enumerate adapters until the HRESULT fails.
       for (UINT i = 0;
@@ -82,10 +87,9 @@ namespace qgl::graphics::helpers
          {
             //If we can create a d3d device with the MinimumFeatureLevel, 
             //then add it to the vector.
-            if (SUCCEEDED(D3D12CreateDevice(adapter.get(),
-                                            minFeatureLevel,
-                                            __uuidof(ID3D12Device),
-                                            nullptr)))
+            if (SUCCEEDED(D3D12CreateDevice(
+               adapter.get(), minFeatureLevel, 
+               __uuidof(ID3D12Device), nullptr)))
             {
                adapters.push_back(adapter);
             }
@@ -100,14 +104,14 @@ namespace qgl::graphics::helpers
    /*
     Gets a collection of outputs
     */
-   inline auto enum_adapter_outputs(gpu_adapter* adptr_p)
+   inline auto enum_adapter_outputs(igpu_adapter* adptr_p)
    {
-      std::vector<winrt::com_ptr<gpu_output>> ret;
+      std::vector<winrt::com_ptr<igpu_output>> ret;
       UINT i = 0;
       winrt::com_ptr<IDXGIOutput> curOutput = nullptr;
       while (adptr_p->EnumOutputs(i, curOutput.put()) != DXGI_ERROR_NOT_FOUND)
       {
-         ret.push_back(curOutput.as<gpu_output>());
+         ret.push_back(curOutput.as<igpu_output>());
          i++;
       }
 
@@ -124,7 +128,7 @@ namespace qgl::graphics::helpers
     Apps should check fac_p->IsCurrent() before finding the best output.
     If the factory is not current, it should be recreated.
     */
-   inline auto find_output(gpu_adapter* adapter_p, const window& wnd)
+   inline auto find_output(igpu_adapter* adapter_p, const window& wnd)
    {
       // Get window bound of the app
       qgl::math::boundary<LONG, true> wndBounds{
@@ -140,7 +144,7 @@ namespace qgl::graphics::helpers
       // greatest).
 
       LONG bestIntersectArea = -1;
-      winrt::com_ptr<gpu_output> ret = nullptr;
+      winrt::com_ptr<igpu_output> ret = nullptr;
       auto outputs = enum_adapter_outputs(adapter_p);
       for (auto& curOutput : outputs)
       {
@@ -165,17 +169,17 @@ namespace qgl::graphics::helpers
       return ret;
    }
 
-   extern QGL_GRAPHICS_API bool support_tiling(device_3d* dev_p) noexcept;
+   extern QGL_GRAPHICS_API bool support_tiling(i3d_device* dev_p) noexcept;
 
    /*
     Returns true if the GPU factory supports tearing on the monitor.
     */
-   extern QGL_GRAPHICS_API bool support_tearing(factory_gpu* fac_p);
+   extern QGL_GRAPHICS_API bool support_tearing(igpu_factory* fac_p);
 
    /*
     Returns true if the GPU factory supports tearing on the monitor.
     */
-   inline bool support_tearing(const factory_gpu* fac_p)
+   inline bool support_tearing(const igpu_factory* fac_p)
    {
       return support_tearing(fac_p);
    }
@@ -204,8 +208,7 @@ namespace qgl::graphics::helpers
     Returns the synchronization interval to use for the swap chain.
     See https://tinyurl.com/nf-dxgi-idxgiswapchain-present
     */
-   inline sync_interval_t get_sync_interval(
-      const gpu_config& cnfg) noexcept
+   inline sync_interval_t get_sync_interval(const gpu_config& cnfg) noexcept
    {
       return cnfg.tearing() ? 0 : 1;
    }
@@ -215,7 +218,7 @@ namespace qgl::graphics::helpers
     DXGI_FORMAT. Pass true for includeStereo to enumerate stereo modes.
     */
    inline std::vector<DXGI_MODE_DESC1> enum_display_modes(
-      gpu_output* monitor,
+      igpu_output* monitor_p,
       DXGI_FORMAT monitorFmt,
       bool includeInterlacing,
       bool includeStereo)
@@ -233,46 +236,40 @@ namespace qgl::graphics::helpers
 
       //Get the number of modes.
       UINT numModes = 0;
-      winrt::check_hresult(monitor->GetDisplayModeList1(monitorFmt,
-                                                        flgs,
-                                                        &numModes,
-                                                        nullptr));
+      winrt::check_hresult(monitor_p->GetDisplayModeList1(
+         monitorFmt, flgs, &numModes, nullptr));
 
       //Fill the list of modes.
       std::vector<DXGI_MODE_DESC1> ret(static_cast<size_t>(numModes));
-      winrt::check_hresult(monitor->GetDisplayModeList1(monitorFmt,
-                                                        flgs,
-                                                        &numModes,
-                                                        ret.data()));
+      winrt::check_hresult(monitor_p->GetDisplayModeList1(
+         monitorFmt, flgs, &numModes, ret.data()));
 
       return ret;
    }
 
-   inline winrt::com_ptr<cmd_queue> make_cmd_queue(
+   inline winrt::com_ptr<icmd_queue> make_cmd_queue(
       const D3D12_COMMAND_QUEUE_DESC& desc,
-      const winrt::com_ptr<device_3d>& dev_p)
+      i3d_device* dev_p)
    {
-      winrt::com_ptr<cmd_queue> ret;
-      winrt::check_hresult(dev_p->CreateCommandQueue(&desc,
-                                                     IID_PPV_ARGS(ret.put())));
+      winrt::com_ptr<icmd_queue> ret;
+      winrt::check_hresult(dev_p->CreateCommandQueue(
+         &desc, IID_PPV_ARGS(ret.put())));
       return ret;
    }
 
-   inline auto make_3d_device(gpu_adapter* adapter_p, D3D_FEATURE_LEVEL ftrLvl)
+   inline auto make_3d_device(igpu_adapter* adapter_p, D3D_FEATURE_LEVEL ftrLvl)
    {
-      winrt::com_ptr<device_3d> ret;
-      winrt::check_hresult(D3D12CreateDevice(adapter_p,
-                                             ftrLvl,
-                                             IID_PPV_ARGS(ret.put())));
+      winrt::com_ptr<i3d_device> ret;
+      winrt::check_hresult(D3D12CreateDevice(
+         adapter_p, ftrLvl, IID_PPV_ARGS(ret.put())));
       name_d3d(ret.get(), L"D3D 12 Device");
       return ret;
    }
 
-   inline auto make_2d_device(
-      device_back_compat* d3d11on12Dev_p,
-      factory_2d* d2dFactory_p)
+   inline auto make_2d_device(i3d_bridge_device* d3d11on12Dev_p,
+                              i2d_factory* d2dFactory_p)
    {
-      winrt::com_ptr<device_2d> d2dDev_p;
+      winrt::com_ptr<i2d_device> d2dDev_p;
       winrt::check_hresult(d2dFactory_p->CreateDevice(
          dynamic_cast<IDXGIDevice*>(d3d11on12Dev_p),
          d2dDev_p.put()));
@@ -280,20 +277,18 @@ namespace qgl::graphics::helpers
       return d2dDev_p;
    }
 
-   inline auto make_2d_context(
-      const D2D1_DEVICE_CONTEXT_OPTIONS& opts,
-      device_2d* d2dDev_p)
+   inline auto make_2d_context(const D2D1_DEVICE_CONTEXT_OPTIONS& opts,
+                               i2d_device* d2dDev_p)
    {
-      winrt::com_ptr<context_2d> ret;
+      winrt::com_ptr<i2d_context> ret;
       winrt::check_hresult(d2dDev_p->CreateDeviceContext(opts, ret.put()));
       return ret;
    }
 
-   inline auto make_swap_chain(
-      const gpu_config& config,
-      window& wnd,
-      factory_gpu* dxgiFactory_p,
-      cmd_queue* cmdQueue_p)
+   inline auto make_swap_chain(const gpu_config& config,
+                               window& wnd,
+                               igpu_factory* dxgiFactory_p,
+                               icmd_queue* cmdQueue_p)
    {
       // Need a down-casted pointer for now.
       winrt::com_ptr<IDXGISwapChain1> swapChain;
@@ -335,7 +330,7 @@ namespace qgl::graphics::helpers
          swapChain.put()));
 
 
-      auto ret = swapChain.as<swap_chain>();
+      auto ret = swapChain.as<iswap_chain>();
       set_hdr(config, ret.get());
       return ret;
    }
@@ -343,13 +338,13 @@ namespace qgl::graphics::helpers
    inline void resize_swap_chain(
       const gpu_config& config,
       const window& wnd,
-      swap_chain* swpChain)
+      iswap_chain* swpChain_p)
    {
       //Use the old swap chain description to resize swpChain.
       DXGI_SWAP_CHAIN_DESC1 swapChainDesc;
-      winrt::check_hresult(swpChain->GetDesc1(&swapChainDesc));
+      winrt::check_hresult(swpChain_p->GetDesc1(&swapChainDesc));
 
-      winrt::check_hresult(swpChain->ResizeBuffers(
+      winrt::check_hresult(swpChain_p->ResizeBuffers(
          static_cast<UINT>(config.buffers()),
          wnd.width<UINT>(),
          wnd.height<UINT>(),

@@ -9,7 +9,7 @@ namespace qgl::graphics::gpu
      D3D12_SUBRESOURCE_DATA.
     ViewDescT is the type of view that gets exposed to the shader
      pipeline. Most likely it is D3D_*_BUFFER_VIEW
-    ResourceT is the type of resource. Often, this will be a gpu_resource.
+    ResourceT is the type of resource. Often, this will be a igpu_resource.
 
     GPU buffers can offer their resources to the OS to free video memory.
     It is the application's responsibility to offer and reclaim a resource

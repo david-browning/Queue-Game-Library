@@ -25,28 +25,28 @@ namespace qgl::graphics::gpu
    class descriptor_heap
    {
       public:
-      using dev_ptr = typename winrt::com_ptr<device_3d>;
+      using dev_ptr = typename winrt::com_ptr<i3d_device>;
       using depth_stencil_type = typename igpu_buffer<
          CD3DX12_RESOURCE_DESC,
          D3D12_DEPTH_STENCIL_VIEW_DESC,
-         gpu_resource>;
+         igpu_resource>;
       using render_target_type = typename igpu_buffer<
          DXGI_SWAP_CHAIN_DESC1,
          D3D12_RENDER_TARGET_VIEW_DESC,
-         d3d_render_target>;
+         i3d_render_target>;
       using sampler_type = typename igpu_buffer<
          D3D12_SAMPLER_DESC,
          nullptr_t,
-         gpu_resource>;
+         igpu_resource>;
       using texture_type = typename igpu_buffer<D3D12_RESOURCE_DESC,
-         D3D12_SHADER_RESOURCE_VIEW_DESC, gpu_resource>;
+         D3D12_SHADER_RESOURCE_VIEW_DESC, igpu_resource>;
 
       /*
        numEntries: Number of entries in the descriptor heap. For a DSV or RTV
         heap, set this to the number of render targets.
        nodeMask: GPU mask where to put the descriptor heap.
        */
-      descriptor_heap(const dev_ptr& dev_p,
+      descriptor_heap(i3d_device* dev_p,
                       size_t numEntries,
                       UINT nodeMask = 0) :
          m_heapSize(numEntries)
@@ -178,8 +178,7 @@ namespace qgl::graphics::gpu
       }
 
       private:
-      void p_allocate(const dev_ptr& dev_p,
-                      UINT nodeMask)
+      void p_allocate(i3d_device* dev_p, UINT nodeMask)
       {
          //Create the description
          D3D12_DESCRIPTOR_HEAP_DESC heapDesc;

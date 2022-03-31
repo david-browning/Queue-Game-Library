@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.props" Condition="Exists('..\..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.props')" />
   <PropertyGroup Label="Globals">
     <ProjectGuid>{165baf02-7752-4927-ba51-0d2e6caf4a70}</ProjectGuid>
     <RootNamespace>QGL_Input_UnitTests</RootNamespace>
@@ -282,13 +283,34 @@
     <Xml Include="UnitTestApp.rd.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\QGL_Graphics\QGL_Graphics.vcxproj">
+      <Project>{61a27f7d-5f46-45b0-8c16-54e86eda2563}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\QGL_Input\QGL_Input.vcxproj">
       <Project>{b0444de7-aee3-43bc-8dfb-cafc8d634c40}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\QGL_Math\QGL_Math.vcxproj">
+      <Project>{e6d80f1d-9959-4848-9d33-3b43211b0fc6}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\QGL_Model\QGL_Model.vcxproj">
+      <Project>{d5f8ec52-9052-4a1e-81ca-ea32c414ec11}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="QGL_Input.UnitTests_TemporaryKey.pfx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\..\packages\directxtex_uwp.2022.3.24.1\build\native\directxtex_uwp.targets" Condition="Exists('..\..\packages\directxtex_uwp.2022.3.24.1\build\native\directxtex_uwp.targets')" />
+    <Import Project="..\..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.targets" Condition="Exists('..\..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.targets')" />
+  </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\directxtex_uwp.2022.3.24.1\build\native\directxtex_uwp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\directxtex_uwp.2022.3.24.1\build\native\directxtex_uwp.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.props'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.targets'))" />
+  </Target>
 </Project>

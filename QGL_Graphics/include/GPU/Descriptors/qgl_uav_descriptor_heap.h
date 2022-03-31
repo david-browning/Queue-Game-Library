@@ -10,7 +10,7 @@ namespace qgl::graphics::gpu
       D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE>
    {
       public:
-      uav_descriptor_heap(const winrt::com_ptr<device_3d>& dev_p,
+      uav_descriptor_heap(i3d_device* dev_p,
                           size_t numEntries,
                           UINT nodeMask = 0) :
          descriptor_heap(dev_p, numEntries, nodeMask)

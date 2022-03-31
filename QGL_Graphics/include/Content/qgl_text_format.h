@@ -6,8 +6,9 @@ namespace qgl::graphics
 {
    class text_format
    {
+      public:
       text_format(const descriptors::text_format_descriptor& desc,
-                  IDWriteFactory* fact_p)
+                  itext_factory* fact_p)
       {
          winrt::check_hresult(fact_p->CreateTextFormat(
             desc.font_family.data(),
@@ -17,25 +18,25 @@ namespace qgl::graphics
             static_cast<DWRITE_FONT_STRETCH>(desc.stretch),
             static_cast<float>(desc.font_size),
             desc.font_locale.data(),
-            m_fmt.put()));
+            m_fmt_p.put()));
 
-         winrt::check_hresult(m_fmt->SetFlowDirection(
+         winrt::check_hresult(m_fmt_p->SetFlowDirection(
             static_cast<DWRITE_FLOW_DIRECTION>(desc.flow)));
 
-         winrt::check_hresult(m_fmt->SetIncrementalTabStop(
+         winrt::check_hresult(m_fmt_p->SetIncrementalTabStop(
             static_cast<float>(desc.tab_stop)));
 
-         winrt::check_hresult(m_fmt->SetParagraphAlignment(
+         winrt::check_hresult(m_fmt_p->SetParagraphAlignment(
             static_cast<DWRITE_PARAGRAPH_ALIGNMENT>(
                desc.alignment)));
 
-         winrt::check_hresult(m_fmt->SetReadingDirection(
+         winrt::check_hresult(m_fmt_p->SetReadingDirection(
             static_cast<DWRITE_READING_DIRECTION>(desc.read_direction)));
 
-         winrt::check_hresult(m_fmt->SetTextAlignment(
+         winrt::check_hresult(m_fmt_p->SetTextAlignment(
             static_cast<DWRITE_TEXT_ALIGNMENT>(desc.alignment)));
 
-         winrt::check_hresult(m_fmt->SetWordWrapping(
+         winrt::check_hresult(m_fmt_p->SetWordWrapping(
             static_cast<DWRITE_WORD_WRAPPING>(desc.wrapping)));
       }
 
@@ -50,7 +51,7 @@ namespace qgl::graphics
        */
       const IDWriteTextFormat* get() const noexcept
       {
-         return m_fmt.get();
+         return m_fmt_p.get();
       }
 
       /*
@@ -58,10 +59,10 @@ namespace qgl::graphics
        */
       IDWriteTextFormat* get() noexcept
       {
-         return m_fmt.get();
+         return m_fmt_p.get();
       }
 
       private:
-      winrt::com_ptr<IDWriteTextFormat> m_fmt;
+      winrt::com_ptr<IDWriteTextFormat> m_fmt_p;
    };
 }

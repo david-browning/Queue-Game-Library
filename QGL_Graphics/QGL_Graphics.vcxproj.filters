@@ -93,9 +93,6 @@
     <ClInclude Include="include\qgl_graphics_include.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Helpers\d3dx12.h">
-      <Filter>Header Files\Helpers</Filter>
-    </ClInclude>
     <ClInclude Include="include\GPU\Synchronization\qgl_fence.h">
       <Filter>Header Files\GPU\Synchronization</Filter>
     </ClInclude>
@@ -299,6 +296,9 @@
     </ClInclude>
     <ClInclude Include="include\GPU\Render\qgl_irender_target.h">
       <Filter>Header Files\GPU\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Helpers\d3dx12.h">
+      <Filter>Header Files\Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

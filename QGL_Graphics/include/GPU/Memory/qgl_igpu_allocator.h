@@ -21,7 +21,7 @@ namespace qgl::graphics::gpu
        calling "synchronize".
        Throws std::bad_alloc if there is no memory available.
        */
-      virtual gpu_alloc_handle alloc(size_t bytes, size_t alignment,
+      virtual gpu_alloc_handle alloc(size_t bytes,
          const D3D12_RESOURCE_DESC& description,
          D3D12_RESOURCE_STATES initialState) = 0;
 
@@ -54,7 +54,7 @@ namespace qgl::graphics::gpu
        that replaced the freed one. It is the caller's responsibility to
        ensure that they only call this method with a valid handle.
        */
-      virtual gpu_resource* resource(gpu_alloc_handle) = 0;
+      virtual igpu_resource* resource(gpu_alloc_handle) = 0;
 
       /*
        Looks up a resource from the resource handle.
@@ -63,17 +63,17 @@ namespace qgl::graphics::gpu
        that replaced the freed one. It is the caller's responsibility to
        ensure that they only call this method with a valid handle.
        */
-      virtual const gpu_resource* resource(gpu_alloc_handle) const = 0;
+      virtual const igpu_resource* resource(gpu_alloc_handle) const = 0;
 
       /*
        Returns a pointer to the heap that backs the allocated memory.
        */
-      virtual gpu_heap* backing() = 0;
+      virtual igpu_heap* backing() = 0;
 
       /*
        Returns a const pointer to the heap that backs the allocated memory.
        */
-      virtual const gpu_heap* backing() const = 0;
+      virtual const igpu_heap* backing() const = 0;
 
 
       /*

@@ -55,5 +55,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="QGL_Input.UnitTests_TemporaryKey.pfx" />
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

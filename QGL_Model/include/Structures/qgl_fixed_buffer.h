@@ -15,7 +15,7 @@ namespace qgl
       /*
        Copies the buffer.
        */
-      fixed_buffer(const T* buf, size_t len)
+      constexpr fixed_buffer(const T* buf, size_t len)
       {
          assert(size() >= len);
          mem::copy_elements(m_data, buf, len);

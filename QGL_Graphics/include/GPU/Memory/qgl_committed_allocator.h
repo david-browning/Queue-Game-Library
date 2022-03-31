@@ -8,9 +8,9 @@ namespace qgl::graphics::gpu
    class committed_allocator : public igpu_allocator
    {
       public:
-      committed_allocator(graphics_device_ptr&& dev) :
-         m_dev(std::forward<graphics_device_ptr>(dev)),
-         m_totalSize(0)
+      committed_allocator(graphics_device_ptr&& dev_sp) :
+         m_dev_sp(std::forward<graphics_device_ptr>(dev_sp)),
+         m_totalSize_b(0)
       {
 
       }
@@ -25,9 +25,9 @@ namespace qgl::graphics::gpu
        Committed resources need more info to allocate. This throws
        std::bad_alloc.
        */
-      virtual gpu_alloc_handle alloc(size_t bytes, size_t alignment,
+      gpu_alloc_handle alloc(size_t bytes,
          const D3D12_RESOURCE_DESC& description,
-         D3D12_RESOURCE_STATES initialState)
+         D3D12_RESOURCE_STATES initialState) override
       {
          throw std::bad_alloc{};
       }
@@ -35,20 +35,20 @@ namespace qgl::graphics::gpu
       /*
        Allocates a committed resource on the GPU.
        */
-      virtual gpu_alloc_handle alloc(const D3D12_HEAP_PROPERTIES props,
-                                     D3D12_HEAP_FLAGS flgs,
-                                     const D3D12_RESOURCE_DESC& description,
-                                     D3D12_RESOURCE_STATES initialState,
-                                     const D3D12_CLEAR_VALUE* clear_p = nullptr)
+      gpu_alloc_handle alloc(const D3D12_HEAP_PROPERTIES props,
+                             D3D12_HEAP_FLAGS flgs,
+                             const D3D12_RESOURCE_DESC& description,
+                             D3D12_RESOURCE_STATES initialState,
+                             const D3D12_CLEAR_VALUE* clear_p = nullptr)
       {
          std::lock_guard allocationLock{ m_allocationMutex };
 
-         winrt::com_ptr<gpu_resource> resc;
-         winrt::check_hresult(m_dev->dev_3d()->CreateCommittedResource(
+         winrt::com_ptr<igpu_resource> resc;
+         winrt::check_hresult(m_dev_sp->dev_3d()->CreateCommittedResource(
             &props, flgs, &description, initialState, clear_p,
             IID_PPV_ARGS(resc.put())));
 
-         auto allocInfo = m_dev->dev_3d()->GetResourceAllocationInfo(
+         auto allocInfo = m_dev_sp->dev_3d()->GetResourceAllocationInfo(
             0, 1, &description);
 
          auto plusSize = allocInfo.SizeInBytes;
@@ -58,7 +58,7 @@ namespace qgl::graphics::gpu
             throw std::bad_alloc();
          }
 
-         m_totalSize += plusSize;
+         m_totalSize_b += plusSize;
          return p.first->first;
       }
 
@@ -73,7 +73,7 @@ namespace qgl::graphics::gpu
          // destructor on the resource.
          m_resources.erase(hndl);
 
-         m_totalSize -= subtractSize;
+         m_totalSize_b -= subtractSize;
       }
 
       /*
@@ -87,24 +87,24 @@ namespace qgl::graphics::gpu
 
       virtual size_t used() const noexcept
       {
-         return m_totalSize;
+         return m_totalSize_b;
       }
 
-      virtual gpu_resource* resource(gpu_alloc_handle hndl)
+      virtual igpu_resource* resource(gpu_alloc_handle hndl)
       {
          if (m_resources.count(hndl) > 0)
          {
-            return m_resources.at(hndl).resource_p.get();
+            return m_resources.at(hndl).resource_up.get();
          }
 
          return nullptr;
       }
 
-      virtual const gpu_resource* resource(gpu_alloc_handle hndl) const
+      virtual const igpu_resource* resource(gpu_alloc_handle hndl) const
       {
          if (m_resources.count(hndl) > 0)
          {
-            return m_resources.at(hndl).resource_p.get();
+            return m_resources.at(hndl).resource_up.get();
          }
 
          return nullptr;
@@ -113,7 +113,7 @@ namespace qgl::graphics::gpu
       /*
        Committed allocators do not have 1 central heap. This returns nullptr.
        */
-      virtual gpu_heap* backing()
+      virtual igpu_heap* backing()
       {
          return nullptr;
       }
@@ -121,7 +121,7 @@ namespace qgl::graphics::gpu
       /*
        Committed allocators do not have 1 central heap. This returns nullptr.
        */
-      virtual const gpu_heap* backing() const
+      virtual const igpu_heap* backing() const
       {
          return nullptr;
       }
@@ -131,9 +131,9 @@ namespace qgl::graphics::gpu
       {
          public:
          resource_info(D3D12_RESOURCE_ALLOCATION_INFO&& i,
-                       winrt::com_ptr<gpu_resource>&& ptr) :
+                       winrt::com_ptr<igpu_resource>&& up) :
             info(std::forward<D3D12_RESOURCE_ALLOCATION_INFO>(i)),
-            resource_p(std::forward<winrt::com_ptr<gpu_resource>>(ptr))
+            resource_up(std::forward<winrt::com_ptr<igpu_resource>>(up))
          {
 
          }
@@ -145,13 +145,13 @@ namespace qgl::graphics::gpu
          ~resource_info() = default;
 
          D3D12_RESOURCE_ALLOCATION_INFO info;
-         winrt::com_ptr<gpu_resource> resource_p;
+         winrt::com_ptr<igpu_resource> resource_up;
       };
 
       /*
        Pointer to the graphics device. Use this to create resources.
        */
-      graphics_device_ptr m_dev;
+      graphics_device_ptr m_dev_sp;
 
       /*
        Used to block multiple threads from allocating simultaneously.
@@ -163,7 +163,7 @@ namespace qgl::graphics::gpu
        */
       std::unordered_map<gpu_alloc_handle, resource_info> m_resources;
 
-      size_t m_totalSize;
+      size_t m_totalSize_b;
    };
 
    using committed_allocator_ptr = typename std::shared_ptr<committed_allocator>;

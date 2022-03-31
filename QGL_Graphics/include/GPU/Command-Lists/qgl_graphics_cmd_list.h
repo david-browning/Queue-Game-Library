@@ -2,7 +2,6 @@
 #include "include/qgl_graphics_include.h"
 #include "include/GPU/Command-Lists/qgl_icmd_list.h"
 #include "include/GPU/Command-Lists/qgl_cmd_bundle.h"
-#include "include/GPU/Buffers/igpu_buffer.h"
 
 namespace qgl::graphics::gpu
 {

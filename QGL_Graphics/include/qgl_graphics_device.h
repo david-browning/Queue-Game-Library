@@ -86,22 +86,22 @@ namespace qgl::graphics
          return m_config;
       }
 
-      device_3d* dev_3d()
+      i3d_device* dev_3d()
       {
          return m_3dDevice_p.get();
       }
 
-      swap_chain* swp_chn()
+      iswap_chain* swp_chn()
       {
          return m_swapChain_p.get();
       }
 
-      context_2d* ctx_2d()
+      i2d_context* ctx_2d()
       {
          return m_2dContext_p.get();
       }
 
-      device_back_compat* dev_back_compat()
+      i3d_bridge_device* dev_back_compat()
       {
          return m_d3d11On12Device_p.get();
       }
@@ -154,17 +154,17 @@ namespace qgl::graphics
             }
          }
 
-         auto adptr = adapters[adapterIdx];
+         m_adapter_p = adapters[adapterIdx];
 
          //Now that we know which adapter to use, make the 3D device.
-         m_3dDevice_p = helpers::make_3d_device(adptr.get(), FEATURE_LEVEL);
-
+         m_3dDevice_p = helpers::make_3d_device(
+            m_adapter_p.get(), FEATURE_LEVEL);
 
          //Create the command queue for the device.
          D3D12_COMMAND_QUEUE_DESC desc = {};
          desc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
          desc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
-         auto q1 = helpers::make_cmd_queue(desc, m_3dDevice_p);
+         auto q1 = helpers::make_cmd_queue(desc, m_3dDevice_p.get());
 
          //Create the D3D11 Device and context
          m_cmdQueues_p = { q1 };
@@ -172,7 +172,8 @@ namespace qgl::graphics
 
          //Create the 2d device and context.
          m_2dDevice_p = helpers::make_2d_device(m_d3d11On12Device_p.get(),
-                                                m_2dFactory_p.get());
+                                                m_2dFactory_p.get());        
+
          D2D1_DEVICE_CONTEXT_OPTIONS opts =
             D2D1_DEVICE_CONTEXT_OPTIONS_ENABLE_MULTITHREADED_OPTIMIZATIONS;
          m_d2dDeviceContext_p = helpers::make_2d_context(opts,
@@ -208,6 +209,8 @@ namespace qgl::graphics
        */
       void make_context_sensitive_members()
       {
+         m_output_p = helpers::find_output(m_adapter_p.get(), *m_wnd_p);
+         
          auto fmt = helpers::color_format(m_config.hdr_mode());
 
          //Create the swap chain. Use the 0th command queue.
@@ -256,38 +259,39 @@ namespace qgl::graphics
       gpu_config m_config;
 
       ////////////////////////////////Factories////////////////////////////////
-      winrt::com_ptr<factory_gpu> m_gpuFactory_p;
-      winrt::com_ptr<factory_2d> m_2dFactory_p;
-      winrt::com_ptr<factory_text> m_textFactory_p;
+      winrt::com_ptr<igpu_factory> m_gpuFactory_p;
+      winrt::com_ptr<i2d_factory> m_2dFactory_p;
+      winrt::com_ptr<itext_factory> m_textFactory_p;
 
       /////////////////////////////////Devices/////////////////////////////////
+      winrt::com_ptr<igpu_adapter> m_adapter_p;
       /*
        Used for 3D rendering and work submission.
       */
-      winrt::com_ptr<device_3d> m_3dDevice_p;
+      winrt::com_ptr<i3d_device> m_3dDevice_p;
 
-      winrt::com_ptr<device_2d> m_2dDevice_p;
+      winrt::com_ptr<i2d_device> m_2dDevice_p;
 
-      winrt::com_ptr<context_2d> m_2dContext_p;
+      winrt::com_ptr<i2d_context> m_2dContext_p;
 
       /*
        Used to provide a D2D device for 2D rendering.
        */
-      winrt::com_ptr<device_back_compat> m_d3d11On12Device_p;
+      winrt::com_ptr<i3d_bridge_device> m_d3d11On12Device_p;
 
-      winrt::com_ptr<d3d11_context> m_d3d11DeviceContext_p;
+      winrt::com_ptr<i3d_context> m_d3d11DeviceContext_p;
 
       /*
        Device context for the D2D device. Used  for 2D rendering.
        */
-      winrt::com_ptr<context_2d> m_d2dDeviceContext_p;
+      winrt::com_ptr<i2d_context> m_d2dDeviceContext_p;
       /////////////////////////////////////////////////////////////////////////
 
-      std::vector< winrt::com_ptr<cmd_queue>> m_cmdQueues_p;
+      std::vector< winrt::com_ptr<icmd_queue>> m_cmdQueues_p;
 
-      winrt::com_ptr<swap_chain> m_swapChain_p;
+      winrt::com_ptr<iswap_chain> m_swapChain_p;
 
-      winrt::com_ptr<gpu_output> m_output_p;
+      winrt::com_ptr<igpu_output> m_output_p;
 
       std::shared_ptr<window> m_wnd_p;
 

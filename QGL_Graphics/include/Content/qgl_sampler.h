@@ -11,7 +11,7 @@ namespace qgl::graphics
     */
    class sampler : public gpu::igpu_buffer<D3D12_SAMPLER_DESC, 
                                            nullptr_t, 
-                                           gpu_resource>
+                                           igpu_resource>
    {
       public:
       using ResourceDescriptionT = D3D12_SAMPLER_DESC;

@@ -9,7 +9,7 @@ namespace qgl::graphics
    {
       public:
       brush(descriptors::brush_descriptor&& desc,
-            context_2d* devContext_p) :
+            i2d_context* devContext_p) :
          m_desc(std::forward<descriptors::brush_descriptor>(desc))
       {
          make_brush(devContext_p);
@@ -20,7 +20,7 @@ namespace qgl::graphics
        */
       const ID2D1Brush* get() const noexcept
       {
-         return m_brush.get();
+         return m_brush_up.get();
       }
 
       /*
@@ -28,11 +28,11 @@ namespace qgl::graphics
        */
       ID2D1Brush* get() noexcept
       {
-         return m_brush.get();
+         return m_brush_up.get();
       }
 
       private:
-      void make_brush(context_2d* devContext_p)
+      void make_brush(i2d_context* devContext_p)
       {
          switch (m_desc.style)
          {
@@ -40,7 +40,7 @@ namespace qgl::graphics
             {
                winrt::check_hresult(devContext_p->CreateSolidColorBrush(
                   to_d2d_color(m_desc.stops.at(0).color),
-                  reinterpret_cast<ID2D1SolidColorBrush**>(m_brush.put())));
+                  reinterpret_cast<ID2D1SolidColorBrush**>(m_brush_up.put())));
                break;
             }
             case brush_styles::gradient_linear:
@@ -60,7 +60,7 @@ namespace qgl::graphics
                winrt::check_hresult(devContext_p->CreateLinearGradientBrush(
                   *linearProps,
                   stopCollection.get(),
-                  reinterpret_cast<ID2D1LinearGradientBrush**>(m_brush.put())));
+                  reinterpret_cast<ID2D1LinearGradientBrush**>(m_brush_up.put())));
                break;
             }
             case brush_styles::gradient_radial:
@@ -82,7 +82,7 @@ namespace qgl::graphics
                   devContext_p->CreateRadialGradientBrush(
                      *radialProps,
                      stopCollection.get(),
-                     reinterpret_cast<ID2D1RadialGradientBrush**>(m_brush.put())));
+                     reinterpret_cast<ID2D1RadialGradientBrush**>(m_brush_up.put())));
                break;
             }
             default:
@@ -92,7 +92,7 @@ namespace qgl::graphics
          }
       }
 
-      winrt::com_ptr<ID2D1Brush> m_brush;
+      winrt::com_ptr<ID2D1Brush> m_brush_up;
       descriptors::brush_descriptor m_desc;
    };
 }

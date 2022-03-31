@@ -7,15 +7,15 @@ namespace qgl::graphics
    class shader
    {
       public:
-      using shader_vector = typename std::vector<std::byte>;
+      using shader_data = typename std::vector<std::byte>;
 
       /*
        Creates a shader from the give shader byte code. The byte code must be
        compiled. It cannot be source code.
        */
       shader(descriptors::shader_descriptor&& desc,
-         void* shaderData,
-         size_t shaderSize) :
+             void* shaderData,
+             size_t shaderSize) :
          m_dsc(std::forward<descriptors::shader_descriptor>(desc))
       {
          m_shaderData.resize(shaderSize);
@@ -25,9 +25,9 @@ namespace qgl::graphics
       }
 
       shader(descriptors::shader_descriptor&& desc,
-        shader_vector&& shaderData) :
+             shader_data&& shaderData) :
          m_dsc(std::forward<descriptors::shader_descriptor>(desc)),
-         m_shaderData(std::forward<shader_vector>(shaderData))
+         m_shaderData(std::forward<shader_data>(shaderData))
       {
          m_byteCode.BytecodeLength = m_shaderData.size();
          m_byteCode.pShaderBytecode = m_shaderData.data();
@@ -74,7 +74,7 @@ namespace qgl::graphics
 
       private:
       descriptors::shader_descriptor m_dsc;
-      shader_vector m_shaderData;
+      shader_data m_shaderData;
       D3D12_SHADER_BYTECODE m_byteCode;
    };
 }
