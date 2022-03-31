@@ -5,7 +5,8 @@ namespace qgl::graphics
 {
    class wtext
    {
-      wtext(std::wstring&& text, D2D_RECT_F&& rect) :
+      wtext(std::wstring&& text, 
+            D2D_RECT_F&& rect) :
          m_text(std::forward<std::wstring>(text)),
          m_layout(std::forward<D2D_RECT_F>(rect))
       {

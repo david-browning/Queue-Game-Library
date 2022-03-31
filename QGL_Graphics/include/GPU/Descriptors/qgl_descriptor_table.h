@@ -16,11 +16,10 @@ namespace qgl::graphics::gpu
        Sets the descriptor ranges and GPU handle.
        rootIndex: index in the root signature where the table will be bound.
        */
-      descriptor_table(
-         std::initializer_list<descriptor_range> ranges,
-         CD3DX12_GPU_DESCRIPTOR_HANDLE handle,
-         UINT rootIndex,
-         D3D12_SHADER_VISIBILITY visibility = D3D12_SHADER_VISIBILITY_ALL) :
+      descriptor_table(std::initializer_list<descriptor_range> ranges,
+                       CD3DX12_GPU_DESCRIPTOR_HANDLE handle,
+                       UINT rootIndex,
+                       D3D12_SHADER_VISIBILITY visibility = D3D12_SHADER_VISIBILITY_ALL) :
          m_where(handle),
          m_visibility(visibility),
          m_ranges(ranges.size()),
@@ -40,12 +39,11 @@ namespace qgl::graphics::gpu
        Sets the descriptor ranges and GPU handle.
        rootIndex: index in the root signature where the table will be bound.
        */
-      descriptor_table(
-         descriptor_range* ranges,
-         size_t numRanges,
-         CD3DX12_GPU_DESCRIPTOR_HANDLE handle,
-         UINT rootIndex,
-         D3D12_SHADER_VISIBILITY visibility = D3D12_SHADER_VISIBILITY_ALL) :
+      descriptor_table(descriptor_range* ranges,
+                       size_t numRanges,
+                       CD3DX12_GPU_DESCRIPTOR_HANDLE handle,
+                       UINT rootIndex,
+                       D3D12_SHADER_VISIBILITY visibility = D3D12_SHADER_VISIBILITY_ALL) :
          m_where(handle),
          m_visibility(visibility),
          m_ranges(numRanges),

@@ -1,7 +1,7 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
 
-namespace qgl::graphics
+namespace qgl::graphics::helpers
 {
    constexpr float dev_independent_pixels()
    {

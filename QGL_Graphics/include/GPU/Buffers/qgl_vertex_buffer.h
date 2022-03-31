@@ -12,17 +12,17 @@ namespace qgl::graphics::gpu
    template<typename VertexT, D3D_PRIMITIVE_TOPOLOGY TopologyT>
    class vertex_buffer : public igpu_buffer<D3D12_SUBRESOURCE_DATA,
       D3D12_VERTEX_BUFFER_VIEW,
-      gpu_resource>
+      igpu_resource>
    {
       public:
       using ResDescT = D3D12_SUBRESOURCE_DATA;
       using ViewDescT = D3D12_VERTEX_BUFFER_VIEW;
       using vertex_data = typename std::vector<VertexT>;
 
-      vertex_buffer(gpu_allocator_ptr&& allocator,
+      vertex_buffer(gpu_allocator_ptr&& allocator_sp,
                     vertex_data&& vertices) :
          m_verts(std::forward<vertex_data>(vertices)),
-         m_allocator_p(std::forward<gpu_allocator_ptr>(allocator))
+         m_allocator_sp(std::forward<gpu_allocator_ptr>(allocator_sp))
       {
          construct();
       }
@@ -30,7 +30,7 @@ namespace qgl::graphics::gpu
       vertex_buffer(gpu_allocator_ptr&& allocator,
                     const VertexT* const vertices,
                     size_t numVertices) :
-         m_allocator_p(std::forward<gpu_allocator_ptr>(allocator))
+         m_allocator_sp(std::forward<gpu_allocator_ptr>(allocator))
       {
          m_verts.resize(numVertices);
          memcpy(m_verts.data(), vertices, sizeof(VertexT) * numVertices);
@@ -43,7 +43,7 @@ namespace qgl::graphics::gpu
 
       virtual ~vertex_buffer()
       {
-         m_allocator_p->free(m_resHndl);
+         m_allocator_sp->free(m_alloc_h);
       }
 
       constexpr size_t stride() const noexcept
@@ -68,17 +68,17 @@ namespace qgl::graphics::gpu
 
       virtual gpu_alloc_handle alloc_handle() const noexcept
       {
-         return m_resHndl;
+         return m_alloc_h;
       }
 
-      virtual const gpu_resource* get() const
+      virtual const igpu_resource* get() const
       {
-         return m_allocator_p->resource(m_resHndl);
+         return m_allocator_sp->resource(m_alloc_h);
       }
 
-      virtual gpu_resource* get()
+      virtual igpu_resource* get()
       {
-         return m_allocator_p->resource(m_resHndl);
+         return m_allocator_sp->resource(m_alloc_h);
       }
 
       virtual size_t size() const noexcept
@@ -95,7 +95,7 @@ namespace qgl::graphics::gpu
          m_resDescription.SlicePitch = m_resDescription.RowPitch;
 
          // TODO: if allocating index buffers fails, may need to restrict this 
-         // to use a committed resource allocator.
+         // to use a committed resource allocator_sp.
          //winrt::check_hresult(gdev->d3d12_device()->CreateCommittedResource(
          //   &CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
          //   D3D12_HEAP_FLAG_NONE,
@@ -104,7 +104,7 @@ namespace qgl::graphics::gpu
          //   nullptr,
          //   IID_PPV_ARGS(put())));
 
-         m_resHndl = m_allocator_p->alloc(
+         m_alloc_h = m_allocator_sp->alloc(
             size(),
             0,
             CD3DX12_RESOURCE_DESC::Buffer(size()),
@@ -117,8 +117,8 @@ namespace qgl::graphics::gpu
       }
 
       vertex_data m_verts;
-      gpu_allocator_ptr m_allocator_p;
-      gpu_alloc_handle m_resHndl;
+      gpu_allocator_ptr m_allocator_sp;
+      gpu_alloc_handle m_alloc_h;
       ViewDescT m_viewDescription;
       ResDescT m_resDescription;
    };

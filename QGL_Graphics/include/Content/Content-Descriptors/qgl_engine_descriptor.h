@@ -23,6 +23,8 @@ namespace qgl::graphics::descriptors
          swap(l.stereo, r.stereo);
          swap(l.interlacing, r.interlacing);
          swap(l.pref_adapter_id, r.pref_adapter_id);
+         swap(l.text_mode, r.text_mode);
+         swap(l.reserved1, r.reserved1);
       }
 
       engine_descriptor& operator=(engine_descriptor r) noexcept
@@ -71,6 +73,18 @@ namespace qgl::graphics::descriptors
       uint8_t stereo = 0;
 
       uint8_t interlacing = 0;
+
+      /*
+       Represents a method of rendering glyphs.
+       You may not want to set it to any of these or the text quality may be 
+       low:
+       * DWRITE_RENDERING_MODE_ALIASED
+       * DWRITE_RENDERING_MODE_OUTLINE
+       https://docs.microsoft.com/en-us/windows/win32/api/d2d1/ne-d2d1-d2d1_text_antialias_mode
+       */
+      uint8_t text_mode = DWRITE_RENDERING_MODE::DWRITE_RENDERING_MODE_DEFAULT;
+
+      uint8_t reserved1 = 0;
    };
 #pragma pack(pop)
 }

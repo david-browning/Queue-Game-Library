@@ -1,4 +1,9 @@
 #pragma once
+// https://devblogs.microsoft.com/directx/gettingstarted-dx12agility/
+//extern "C" { __declspec(dllexport) extern const UINT D3D12SDKVersion = 600; }
+//
+//extern "C" { __declspec(dllexport) extern const char* D3D12SDKPath = u8".\\D3D12\\"; }
+
 #include <Unknwn.h>
 
 #include <QGLModel.h>
@@ -9,15 +14,6 @@
 #endif
 
 #include <windows.h>
-#include <d3d12.h>
-#include <d2d1_3.h>
-#include <dxgi1_6.h>
-#include <d3d11on12.h>
-#include <dwrite_3.h>
-#include <DirectXMath.h>
-#include <DirectXCollision.h>
-#include "include/Helpers/d3dx12.h"
-
 #include <winrt/base.h>
 #include "winrt/Windows.ApplicationModel.Core.h"
 #include <winrt/Windows.Foundation.h>
@@ -25,11 +21,18 @@
 #include <winrt/Windows.UI.ViewManagement.Core.h>
 #include <winrt/Windows.Graphics.Display.h>
 
-#ifdef _DEBUG
-#include <D3d12SDKLayers.h>
-#endif
+#include <d3d12.h>
+#include <d2d1_3.h>
+#include <dxgi1_6.h>
+#include <d3d11on12.h>
+#include <dwrite_3.h>
+#include <DirectXMath.h>
+#include <DirectXCollision.h>
+#include <DirectXTex.h>
+#include "include/Helpers/d3dx12.h"
 
 #ifdef _DEBUG
+#include <D3d12SDKLayers.h>
 #define D3DCOMPILE_DEBUG 1
 #endif
 
@@ -81,39 +84,38 @@ namespace qgl::graphics
       return (byteSize + (D3D12_CONSTANT_BUFFER_DATA_PLACEMENT_ALIGNMENT - 1)) & ~(D3D12_CONSTANT_BUFFER_DATA_PLACEMENT_ALIGNMENT - 1);
    }
 
-   using factory_gpu = typename IDXGIFactory6;
-   using factory_2d = typename ID2D1Factory7;
-   using factory_text = typename IDWriteFactory7;
+   using igpu_factory = typename IDXGIFactory6;
+   using i2d_factory = typename ID2D1Factory7;
+   using itext_factory = typename IDWriteFactory7;
 
-   using gpu_adapter = typename IDXGIAdapter4;
-   using gpu_output = typename IDXGIOutput6;
+   using igpu_adapter = typename IDXGIAdapter4;
+   using igpu_output = typename IDXGIOutput6;
 
-   using device_3d = typename ID3D12Device3;
-   using swap_chain = typename IDXGISwapChain4;
-   using device_2d = typename ID2D1Device6;
-   using context_2d = typename ID2D1DeviceContext6;
+   using i3d_device = typename ID3D12Device3;
+   using iswap_chain = typename IDXGISwapChain4;
+   using i3d_context = typename ID3D11DeviceContext;
+   using i2d_device = typename ID2D1Device6;
+   using i2d_context = typename ID2D1DeviceContext6;
 
-   using cmd_list = typename ID3D12GraphicsCommandList3;
-   using cmd_allocator = typename ID3D12CommandAllocator;
+   using icmd_list = typename ID3D12GraphicsCommandList3;
+   using icmd_allocator = typename ID3D12CommandAllocator;
+   using icmd_queue = typename ID3D12CommandQueue;
 
-   using cmd_queue = typename ID3D12CommandQueue;
+   using igpu_resource = typename ID3D12Resource1;
+   using igpu_heap = typename ID3D12Heap1;
+   using igpu_fence = typename ID3D12Fence1;
 
-   using gpu_resource = typename ID3D12Resource1;
-   using gpu_heap = typename ID3D12Heap1;
-   using gpu_fence = typename ID3D12Fence1;
-
-   using device_back_compat = typename ID3D11On12Device;
-   using d3d11_context = typename ID3D11DeviceContext;
-   using d3d_render_target = typename gpu_resource;
-   using d2d_render_target = typename ID2D1Bitmap1;
-   using d3d_wrapped_render_target = typename ID3D11Resource;
+   using i3d_bridge_device = typename ID3D11On12Device;
+   using i3d_render_target = typename igpu_resource;
+   using i2d_render_target = typename ID2D1Bitmap1;
+   using i3d_bridge_render_target = typename ID3D11Resource;
 
    /*
     Explicit specializations of com_ptr.
     The definitions are stored in pch.cpp.
     */
    QGL_GRAPHICS_TEMPLATE template struct QGL_GRAPHICS_API
-      winrt::com_ptr<gpu_resource>;
+      winrt::com_ptr<igpu_resource>;
 
    QGL_GRAPHICS_TEMPLATE template struct QGL_GRAPHICS_API
       winrt::com_ptr<ID3D12DescriptorHeap>;

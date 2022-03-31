@@ -26,7 +26,7 @@ namespace qgl::graphics::gpu
          const vertex_layout& vLayout,
          root_signature& rootSig,
          size_t nodeMask) :
-         m_dev(std::forward<device_3d_ptr>(device_p))
+         m_dev_sp(std::forward<device_3d_ptr>(device_p))
       {
          //Set the flags.
          m_psoDesc.Flags = PSO_DEFAULT_FLAG;
@@ -63,7 +63,7 @@ namespace qgl::graphics::gpu
          frames(firstFrame, lastFrame);
          shaders(firstShader, lastShader);
 
-         winrt::check_hresult(m_dev->CreateGraphicsPipelineState(
+         winrt::check_hresult(m_dev_sp->CreateGraphicsPipelineState(
             &m_psoDesc,
             IID_PPV_ARGS(m_pipelineState.put())));
       }
@@ -213,7 +213,7 @@ namespace qgl::graphics::gpu
        */
       D3D12_GRAPHICS_PIPELINE_STATE_DESC m_psoDesc;
 
-      device_3d_ptr m_dev;
+      device_3d_ptr m_dev_sp;
 
 #ifdef DEBUG
       static constexpr D3D12_PIPELINE_STATE_FLAGS PSO_DEFAULT_FLAG =

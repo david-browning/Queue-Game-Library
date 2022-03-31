@@ -9,18 +9,17 @@ namespace qgl::graphics::gpu
    {
       public:
       /*
-       gdev: Pointer to the graphics device.
        descriptors: Pointer to an array of descriptors.
        nodeMask: Which GPU to upload the root signature to.
        */
       template<class IBindableIt>
-      root_signature(const graphics_device_ptr& gdev,
-                     IBindableIt first,
+      root_signature(IBindableIt first,
                      IBindableIt last,
+                     i3d_device* dev_p,
                      size_t nodeMask = 0)
       {
          collect(first, last);
-         construct(gdev, nodeMask);
+         construct(dev, nodeMask);
       }
 
       /*
@@ -79,7 +78,7 @@ namespace qgl::graphics::gpu
             std::is_same<itType, ibindable*>::value,
             "IBindableIt must point to an ibindable pointer.");
 
-         std::unordered_set<ibindable::index_type> seenSlots;
+         std::unordered_set<ibindable::index_t> seenSlots;
          for (auto it = first; it != last; it++)
          {
             auto cur = *it;
@@ -99,7 +98,7 @@ namespace qgl::graphics::gpu
          }
       }
 
-      void construct(const graphics_device_ptr& gdev, size_t nodeMask)
+      void construct(i3d_device* dev_p, size_t nodeMask)
       {
          D3D12_FEATURE_DATA_ROOT_SIGNATURE featureData = {};
 
@@ -108,7 +107,7 @@ namespace qgl::graphics::gpu
          //not be greater than this.
          featureData.HighestVersion = D3D_ROOT_SIGNATURE_VERSION_1_1;
 
-         HRESULT hr = gdev->dev_3d()->CheckFeatureSupport(
+         HRESULT hr = dev_p->CheckFeatureSupport(
             D3D12_FEATURE_ROOT_SIGNATURE,
             &featureData,
             sizeof(featureData));
@@ -135,7 +134,7 @@ namespace qgl::graphics::gpu
             error.put()));
 
          //Create the signature.
-         winrt::check_hresult(gdev->dev_3d()->CreateRootSignature(nodeMask,
+         winrt::check_hresult(dev_p->CreateRootSignature(nodeMask,
             signature->GetBufferPointer(),
             signature->GetBufferSize(),
             IID_PPV_ARGS(m_rootSig_p.put())));

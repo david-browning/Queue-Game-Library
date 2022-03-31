@@ -9,13 +9,13 @@ namespace qgl::graphics::gpu
    class ibindable
    {
       public:
-      using index_type = typename UINT;
+      using index_t = typename UINT;
 
       /*
        Constructor.
        rootIndex: index into the root signature where to bind this.
        */
-      ibindable(index_type rootIndex) :
+      ibindable(index_t rootIndex) :
          m_rootIndex(rootIndex)
       {
 
@@ -40,7 +40,7 @@ namespace qgl::graphics::gpu
       /*
        Returns the root signature index where this is bound.
        */
-      index_type root_index() const noexcept
+      index_t root_index() const noexcept
       {
          return m_rootIndex;
       }
@@ -52,6 +52,6 @@ namespace qgl::graphics::gpu
       virtual const CD3DX12_ROOT_PARAMETER1& root_param() const = 0;
 
       private:
-      index_type m_rootIndex;
+      index_t m_rootIndex;
    };
 }

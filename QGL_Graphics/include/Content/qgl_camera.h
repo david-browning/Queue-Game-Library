@@ -22,8 +22,9 @@ namespace qgl::graphics
    class alignas(alignof(DirectX::XMMATRIX)) camera :
       public gpu::const_buffer<CONST_CAMERA_BUFFER>
    {
-      camera(const descriptors::camera_descriptor& desc, float aspectRatio,
-         gpu::gpu_allocator_ptr&& allocator) :
+      camera(const descriptors::camera_descriptor& desc,
+             float aspectRatio,
+             gpu::gpu_allocator_ptr&& allocator) :
          const_buffer(std::forward<gpu::gpu_allocator_ptr>(allocator))
       {
          map();

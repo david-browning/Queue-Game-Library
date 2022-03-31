@@ -19,9 +19,10 @@ namespace qgl::graphics::gpu
        The "placeSize" is aligned so this may allocate a larger heap than
        "placeSize * initialNumPlaces".
        */
-      slot_allocator(size_t placeSize, size_t initialNumPlaces,
-         graphics_device_ptr&& dev) :
-         m_dev(std::forward<graphics_device_ptr>(dev)),
+      slot_allocator(size_t placeSize, 
+                     size_t initialNumPlaces,
+                     graphics_device_ptr&& dev_sp) :
+         m_dev_p(std::forward<graphics_device_ptr>(dev_sp)),
          m_numPlaces(initialNumPlaces)
       {
          // Align the placement size.
@@ -36,8 +37,8 @@ namespace qgl::graphics::gpu
          // Allocate a heap to hold all the memory.
          CD3DX12_HEAP_DESC heapDesc(size(), D3D12_HEAP_TYPE_DEFAULT, 0,
             HeapFlags);
-         winrt::check_hresult(m_dev->dev_3d()->CreateHeap(
-            &heapDesc, IID_PPV_ARGS(m_heap.put())));
+         winrt::check_hresult(m_dev_p->dev_3d()->CreateHeap(
+            &heapDesc, IID_PPV_ARGS(m_heap_up.put())));
       }
 
       /*
@@ -59,9 +60,9 @@ namespace qgl::graphics::gpu
        */
       virtual ~slot_allocator() = default;
 
-      virtual gpu_alloc_handle alloc(size_t bytes, size_t alignment,
+      gpu_alloc_handle alloc(size_t bytes,
          const D3D12_RESOURCE_DESC& description,
-         D3D12_RESOURCE_STATES initialState)
+         D3D12_RESOURCE_STATES initialState) override
       {
          // Do not allow multiple threads to allocate or free at the same time.
          std::lock_guard allocationLock{ m_allocationMutex };
@@ -75,9 +76,9 @@ namespace qgl::graphics::gpu
          m_freeList.pop_front();
 
          // Create a resource for the memory allocation.
-         winrt::com_ptr<gpu_resource> resource;
-         winrt::check_hresult(m_dev->dev_3d()->CreatePlacedResource(
-            m_heap.get(),
+         winrt::com_ptr<igpu_resource> resource;
+         winrt::check_hresult(m_dev_p->dev_3d()->CreatePlacedResource(
+            m_heap_up.get(),
             static_cast<UINT64>(offset),
             &description,
             initialState,
@@ -115,17 +116,17 @@ namespace qgl::graphics::gpu
          return size() - m_freeList.size() * m_placeSize;
       }
 
-      virtual gpu_heap* backing()
+      virtual igpu_heap* backing()
       {
-         return m_heap.get();
+         return m_heap_up.get();
       }
 
-      virtual const gpu_heap* backing() const
+      virtual const igpu_heap* backing() const
       {
-         return m_heap.get();
+         return m_heap_up.get();
       }
 
-      virtual gpu_resource* resource(gpu_alloc_handle hndl)
+      virtual igpu_resource* resource(gpu_alloc_handle hndl)
       {
          if (m_resources.count(hndl) > 0)
          {
@@ -135,7 +136,7 @@ namespace qgl::graphics::gpu
          return nullptr;
       }
 
-      virtual const gpu_resource* resource(gpu_alloc_handle hndl) const
+      virtual const igpu_resource* resource(gpu_alloc_handle hndl) const
       {
          if (m_resources.count(hndl) > 0)
          {
@@ -146,12 +147,12 @@ namespace qgl::graphics::gpu
       }
 
       private:
-      using resource_pair = typename std::pair<D3D12_RESOURCE_STATES, winrt::com_ptr<gpu_resource>>;
+      using resource_pair = typename std::pair<D3D12_RESOURCE_STATES, winrt::com_ptr<igpu_resource>>;
 
       /*
        The heap that backs the placed resources.
        */
-      winrt::com_ptr<gpu_heap> m_heap;
+      winrt::com_ptr<igpu_heap> m_heap_up;
 
       /*
        The resources managed by this allocator. Map the offset to the resource
@@ -162,7 +163,7 @@ namespace qgl::graphics::gpu
       /*
        Pointer to the graphics device. Use this to create resources.
        */
-      graphics_device_ptr m_dev;
+      graphics_device_ptr m_dev_p;
 
       /*
        Used to block multiple threads from allocating simultaneously.

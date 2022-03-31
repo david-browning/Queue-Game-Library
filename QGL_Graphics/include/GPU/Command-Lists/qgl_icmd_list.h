@@ -213,7 +213,7 @@ namespace qgl::graphics::gpu
          }
       }
 
-      void transition(gpu_resource* resource,
+      void transition(igpu_resource* resource,
          D3D12_RESOURCE_STATES oldState,
          D3D12_RESOURCE_STATES newState)
       {
@@ -246,7 +246,7 @@ namespace qgl::graphics::gpu
          }
       }
 
-      void transition_queue(gpu_resource* resource,
+      void transition_queue(igpu_resource* resource,
                             D3D12_RESOURCE_STATES oldState,
                             D3D12_RESOURCE_STATES newState)
       {
@@ -288,7 +288,7 @@ namespace qgl::graphics::gpu
       /*
        Returns a pointer to the D3D command list.
        */
-      cmd_list* get() noexcept
+      icmd_list* get() noexcept
       {
          return m_cmdList.get();
       }
@@ -296,7 +296,7 @@ namespace qgl::graphics::gpu
       /*
        Returns a const pointer to the D3D command list.
        */
-      const cmd_list* get() const noexcept
+      const icmd_list* get() const noexcept
       {
          return m_cmdList.get();
       }
@@ -307,7 +307,7 @@ namespace qgl::graphics::gpu
        specified by D3D12_COMMAND_LIST_TYPE, must match the type of command
        list being created.
        */
-      void make_allocator(device_3d* dev_p,
+      void make_allocator(i3d_device* dev_p,
                           D3D12_COMMAND_LIST_TYPE listT)
       {
          winrt::check_hresult(dev_p->CreateCommandAllocator(
@@ -319,7 +319,7 @@ namespace qgl::graphics::gpu
        Immediately after being created, command lists are in the recording
        state. So, close it.
        */
-      void make_cmd_list(device_3d* dev_p,
+      void make_cmd_list(i3d_device* dev_p,
                          D3D12_COMMAND_LIST_TYPE listT,
                          size_t nodeMask)
       {
@@ -335,8 +335,8 @@ namespace qgl::graphics::gpu
       }
 
       std::shared_ptr<gpu::pso> m_pso_p;
-      winrt::com_ptr<cmd_allocator> m_allocator;
-      winrt::com_ptr<cmd_list> m_cmdList;
+      winrt::com_ptr<icmd_allocator> m_allocator;
+      winrt::com_ptr<icmd_list> m_cmdList;
 
       /*
        Keep a list of the descriptor heaps to set. This is here so that the

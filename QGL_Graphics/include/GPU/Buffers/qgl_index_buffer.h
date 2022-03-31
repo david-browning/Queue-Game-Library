@@ -13,7 +13,7 @@ namespace qgl::graphics::gpu
    template<typename IndexT>
    class index_buffer : public igpu_buffer<D3D12_SUBRESOURCE_DATA,
       D3D12_INDEX_BUFFER_VIEW,
-      gpu_resource>
+      igpu_resource>
    {
       //index size cannot only be 1, 2, or 4 bytes.
       static_assert(std::is_integral<IndexT>::value && (
@@ -27,16 +27,17 @@ namespace qgl::graphics::gpu
       using ViewDescT = D3D12_INDEX_BUFFER_VIEW;
       using index_data = typename std::vector<IndexT>;
 
-      index_buffer(gpu_allocator_ptr&& allocator, index_data&& indicies) :
+      index_buffer(gpu_allocator_ptr&& allocator_sp, 
+                   index_data&& indicies) :
          m_indices(std::forward<index_data>(indicies)),
-         m_allocator_p(std::forward<gpu_allocator_ptr>(allocator))
+         m_allocator_sp(std::forward<gpu_allocator_ptr>(allocator_sp))
       {
          construct();
       }
 
       index_buffer(gpu_allocator_ptr&& allocator,
          const IndexT* const indexData, size_t indexCount) :
-         m_allocator_p(std::forward<gpu_allocator_ptr>(allocator))
+         m_allocator_sp(std::forward<gpu_allocator_ptr>(allocator))
       {
          m_indices.resize(indexCount);
          memcpy(m_indices.data(), indexData, sizeof(IndexT) * indexCount);
@@ -55,7 +56,7 @@ namespace qgl::graphics::gpu
 
       virtual ~index_buffer() noexcept
       {
-         m_allocator_p->free(m_resHndl);
+         m_allocator_sp->free(m_alloc_h);
       }
 
       virtual const ResDescT* description() const
@@ -70,17 +71,17 @@ namespace qgl::graphics::gpu
 
       virtual gpu_alloc_handle alloc_handle() const noexcept
       {
-         return m_resHndl;
+         return m_alloc_h;
       }
 
-      virtual const gpu_resource* get() const
+      virtual const igpu_resource* get() const
       {
-         return m_allocator_p->resource(m_resHndl);
+         return m_allocator_sp->resource(m_alloc_h);
       }
 
-      virtual gpu_resource* get()
+      virtual igpu_resource* get()
       {
-         return m_allocator_p->resource(m_resHndl);
+         return m_allocator_sp->resource(m_alloc_h);
       }
 
       /*
@@ -130,21 +131,21 @@ namespace qgl::graphics::gpu
          //   nullptr,
          //   IID_PPV_ARGS(put())));
 
-         m_resHndl = m_allocator_p->alloc(
+         m_alloc_h = m_allocator_sp->alloc(
             size(),
             0,
             CD3DX12_RESOURCE_DESC::Buffer(size()),
             D3D12_RESOURCE_STATE_COPY_DEST);
 
-         auto res_p = m_allocator_p->resource(m_resHndl);
+         auto res_p = m_allocator_sp->resource(m_alloc_h);
          m_viewDescription.BufferLocation = res_p->GetGPUVirtualAddress();
          m_viewDescription.Format = index_format();
          m_viewDescription.SizeInBytes = size();
       }
 
       index_data m_indices;
-      gpu_allocator_ptr m_allocator_p;
-      gpu_alloc_handle m_resHndl;
+      gpu_allocator_ptr m_allocator_sp;
+      gpu_alloc_handle m_alloc_h;
       ViewDescT m_viewDescription;
       ResDescT m_resDescription;
    };

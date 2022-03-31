@@ -28,7 +28,7 @@ namespace qgl::graphics::helpers
          DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709} }
    };
 
-   bool support_hdr(IDXGIOutput6* output_p)
+   bool support_hdr(igpu_output* output_p)
    {
       DXGI_OUTPUT_DESC1 desc;
       winrt::check_hresult(output_p->GetDesc1(&desc));
@@ -45,7 +45,7 @@ namespace qgl::graphics::helpers
       return HDR_LOOKUP.at(mode).color_space;
    }
 
-   bool color_supported(DXGI_COLOR_SPACE_TYPE spc, swap_chain* sc_p)
+   bool color_supported(DXGI_COLOR_SPACE_TYPE spc, iswap_chain* sc_p)
    {
       UINT sptr = 0;
       winrt::check_hresult(sc_p->CheckColorSpaceSupport(spc, &sptr));
