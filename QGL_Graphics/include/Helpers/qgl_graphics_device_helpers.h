@@ -15,7 +15,8 @@ namespace qgl::graphics::helpers
    /*
     Returns the size (in bytes) that an element of type "f" uses.
     */
-   extern "C" QGL_GRAPHICS_API size_t format_size(DXGI_FORMAT f) noexcept;
+   extern "C" QGL_GRAPHICS_API size_t QGL_CC format_size(
+      DXGI_FORMAT f) noexcept;
 
    inline auto make_gpu_factory(bool enableDebug)
    {
@@ -37,12 +38,13 @@ namespace qgl::graphics::helpers
       return ret;
    }
 
-   inline auto make_2d_factory()
+   inline auto make_2d_factory(bool enableDebug)
    {
       D2D1_FACTORY_OPTIONS d2dFactoryOptions = {};
-#ifdef _DEBUG
-      d2dFactoryOptions.debugLevel = D2D1_DEBUG_LEVEL_INFORMATION;
-#endif
+      if (enableDebug)
+      {
+         d2dFactoryOptions.debugLevel = D2D1_DEBUG_LEVEL_INFORMATION;
+      }
 
       winrt::com_ptr<i2d_factory> ret = nullptr;
       winrt::check_hresult(D2D1CreateFactory(
@@ -90,7 +92,7 @@ namespace qgl::graphics::helpers
             //If we can create a d3d device with the MinimumFeatureLevel, 
             //then add it to the vector.
             if (SUCCEEDED(D3D12CreateDevice(
-               adapter.get(), minFeatureLevel, 
+               adapter.get(), minFeatureLevel,
                __uuidof(ID3D12Device), nullptr)))
             {
                adapters.push_back(adapter);
@@ -132,31 +134,27 @@ namespace qgl::graphics::helpers
     */
    inline auto find_output(igpu_adapter* adapter_p, const window& wnd)
    {
-      // Get window bound of the app
-      qgl::math::boundary<LONG, true> wndBounds{
-         wnd.left<LONG>(),
-         wnd.top<LONG>(),
-         wnd.left<LONG>() + wnd.width<LONG>(),
-         wnd.top<LONG>() + wnd.height<LONG>()
-      };
+      // Get window bounds (in DIP) of the app.
+      auto wndBounds = wnd.boundary();
 
       // Iterate through the DXGI outputs associated with the DXGI adapter,
       // and find the output whose bounds have the greatest overlap with the
       // app window (i.e. the output for which the intersection area is the
       // greatest).
 
-      LONG bestIntersectArea = -1;
+      auto bestIntersectArea = static_cast<dip_t>(-1);
       winrt::com_ptr<igpu_output> ret = nullptr;
       auto outputs = enum_adapter_outputs(adapter_p);
       for (auto& curOutput : outputs)
       {
+         // description's desktop coordinates are dip
          DXGI_OUTPUT_DESC desc;
          winrt::check_hresult(curOutput->GetDesc(&desc));
-         qgl::math::boundary<LONG, true> outBounds{ desc.DesktopCoordinates };
+         decltype(wndBounds) outBounds{ desc.DesktopCoordinates };
 
          if (wndBounds.intersects(outBounds))
          {
-            qgl::math::boundary<LONG, true> intersectWnd{
+            decltype(wndBounds) intersectWnd{
                wndBounds, outBounds
             };
 
@@ -239,7 +237,8 @@ namespace qgl::graphics::helpers
       return ret;
    }
 
-   inline auto make_3d_device(igpu_adapter* adapter_p, D3D_FEATURE_LEVEL ftrLvl)
+   inline auto make_3d_device(igpu_adapter* adapter_p,
+                              D3D_FEATURE_LEVEL ftrLvl)
    {
       winrt::com_ptr<i3d_device> ret;
       winrt::check_hresult(D3D12CreateDevice(
@@ -279,8 +278,10 @@ namespace qgl::graphics::helpers
 
       DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
       swapChainDesc.BufferCount = static_cast<UINT>(config.buffers());
-      swapChainDesc.Width = wnd.width<UINT>();
-      swapChainDesc.Height = wnd.height<UINT>();
+      swapChainDesc.Width = static_cast<UINT>(
+         pixels_to_dip(wnd.width(), wnd.dpi_x()));
+      swapChainDesc.Height = static_cast<UINT>(
+         pixels_to_dip(wnd.height(), wnd.dpi_y()));
       swapChainDesc.Format = color_format(config.hdr_mode());
       swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
       //DXGI_SWAP_EFFECT Enumeration: https://tinyurl.com/yypnyzu7
@@ -316,10 +317,9 @@ namespace qgl::graphics::helpers
       return ret;
    }
 
-   inline void resize_swap_chain(
-      const gpu_config& config,
-      const window& wnd,
-      iswap_chain* swpChain_p)
+   inline void resize_swap_chain(const gpu_config& config,
+                                 const window& wnd,
+                                 iswap_chain* swpChain_p)
    {
       //Use the old swap chain description to resize swpChain.
       DXGI_SWAP_CHAIN_DESC1 swapChainDesc;
@@ -327,8 +327,8 @@ namespace qgl::graphics::helpers
 
       winrt::check_hresult(swpChain_p->ResizeBuffers(
          static_cast<UINT>(config.buffers()),
-         wnd.width<UINT>(),
-         wnd.height<UINT>(),
+         static_cast<UINT>(pixels_to_dip(wnd.width(), wnd.dpi_x())),
+         static_cast<UINT>(pixels_to_dip(wnd.height(), wnd.dpi_y())),
          swapChainDesc.Format,
          swapChainDesc.Flags));
    }

@@ -2,43 +2,10 @@
 #include "include/qgl_graphics_include.h"
 #include "include/GPU/Buffers/qgl_igpu_buffer.h"
 #include "include/GPU/Memory/qgl_igpu_allocator.h"
-
-namespace qgl::graphics
-{
-   enum class texure_depth_types
-   {
-      normal = 0,
-      hdr = 1,
-   };
-}
+#include "include/Content/Content-Descriptors/texture_descriptor.h"
 
 namespace qgl::graphics::gpu
 {
-   struct texture_config
-   {
-      constexpr texture_config()
-      {
-
-      }
-
-      /*
-       Index of the most detailed mipmap level to use.
-       */
-      size_t highest_mip = 0;
-
-      /*
-       The index of the first texture to use in an array of textures.
-       */
-      size_t index = 0;
-
-      /*
-       A value to clamp sample LOD values to. For example, if you specify 2.0f 
-       for the clamp value, you ensure that no individual sample accesses a 
-       mip level less than 2.0f.
-       */
-      math::rational<int> clamp;
-   };
-
    class texture_buffer : public gpu::igpu_buffer<D3D12_RESOURCE_DESC,
       D3D12_SHADER_RESOURCE_VIEW_DESC,
       igpu_resource>
@@ -48,27 +15,27 @@ namespace qgl::graphics::gpu
       using ViewDescT = D3D12_SHADER_RESOURCE_VIEW_DESC;
       using texture_data = typename std::vector<uint8_t>;
 
-      texture_buffer(texture_data&& data, 
+      texture_buffer(texture_data&& data,
                      gpu_allocator_ptr&& allocator_sp,
-                     texture_config&& config, 
+                     descriptors::texture_descriptor&& config,
                      i3d_device* dev_p) :
          m_allocator_sp(std::forward<gpu_allocator_ptr>(allocator_sp)),
          m_data(std::forward<texture_data>(data)),
-         m_config(std::forward<texture_config>(config))
+         m_config(std::forward<descriptors::texture_descriptor>(config))
       {
          construct(dev_p);
       }
 
       /*
-       Copies the texture data to an internal buffer. After construction, it 
+       Copies the texture data to an internal buffer. After construction, it
        can be freed.
        */
       texture_buffer(const std::byte* textureData, size_t textureSizeBytes,
                      gpu_allocator_ptr&& allocator_p,
-                     texture_config&& config, i3d_device* dev_p) :
+                     descriptors::texture_descriptor&& config, i3d_device* dev_p) :
          m_allocator_sp(std::forward<gpu_allocator_ptr>(allocator_p)),
          m_data(textureSizeBytes),
-         m_config(std::forward<texture_config>(config))
+         m_config(std::forward<descriptors::texture_descriptor>(config))
       {
          std::memcpy(m_data.data(), textureData, textureSizeBytes);
          construct(dev_p);
@@ -114,17 +81,17 @@ namespace qgl::graphics::gpu
       }
 
       /*
-       Returns the width (in pixels) of the texture.
+       Returns the width (in physical pixels) of the texture.
        */
-      size_t width() const noexcept
+      physp_t width() const noexcept
       {
          return m_meta.width;
       }
 
       /*
-       Returns the height (in pixels) of the texture.
+       Returns the height (in physical pixels) of the texture.
        */
-      size_t height() const noexcept
+      physp_t height() const noexcept
       {
          return m_meta.height;
       }
@@ -189,7 +156,7 @@ namespace qgl::graphics::gpu
          m_view.Shader4ComponentMapping =
             D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
          m_view.ViewDimension = srv_dim();
-         
+
          // Finalize making the view description.
 
          if (cube())
@@ -272,7 +239,7 @@ namespace qgl::graphics::gpu
             {
                m_view.Texture1D.MipLevels = mip_levels();
                m_view.Texture1D.MostDetailedMip = m_config.highest_mip;
-               m_view.Texture1D.ResourceMinLODClamp = 
+               m_view.Texture1D.ResourceMinLODClamp =
                   m_config.clamp.operator float();
                break;
             }
@@ -288,7 +255,7 @@ namespace qgl::graphics::gpu
             {
                m_view.Texture3D.MipLevels = mip_levels();
                m_view.Texture3D.MostDetailedMip = m_config.highest_mip;
-               
+
                // TODO: What is this? Make it configurable?
                m_view.Texture2D.PlaneSlice = 0;
                m_view.Texture3D.ResourceMinLODClamp =
@@ -322,7 +289,7 @@ namespace qgl::graphics::gpu
                m_view.Texture2DArray.FirstArraySlice = m_config.index;
                m_view.Texture2DArray.MipLevels = mip_levels();
                m_view.Texture2DArray.MostDetailedMip = m_config.highest_mip;
-               
+
                // TODO: What is this? Make it configurable?
                m_view.Texture2DArray.PlaneSlice = 0;
                m_view.Texture2DArray.ResourceMinLODClamp =
@@ -391,7 +358,7 @@ namespace qgl::graphics::gpu
          }
       }
 
-      texture_config m_config;
+      descriptors::texture_descriptor m_config;
       texture_data m_data;
       gpu_allocator_ptr m_allocator_sp;
       DirectX::TexMetadata m_meta;

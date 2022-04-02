@@ -74,9 +74,18 @@ namespace qgl::graphics::gpu
          return &m_viewDesc;
       }
 
-      virtual size_t size() const noexcept;
+      virtual size_t size() const noexcept
+      {
+         return 0;
+      }
 
-      virtual gpu_alloc_handle alloc_handle() const noexcept;
+      virtual gpu_alloc_handle alloc_handle() const noexcept
+      {
+         // Despite this being marked as "noexcept", it is still OK to throw an
+         // exception. This will cause the application to crash.
+         throw std::invalid_argument{ 
+            "Render targets do not have an alloc handle." };
+      }
 
       virtual const i3d_render_target* get() const
       {
@@ -135,21 +144,20 @@ namespace qgl::graphics::gpu
          // used it in this state - and the Out resource state as PRESENT. When 
          // ReleaseWrappedResources() is called on the 11On12 device, the resource 
          // will be transitioned to the PRESENT state.
-         auto displayProps = winrt::Windows::Graphics::Display::
-            DisplayInformation::GetForCurrentView();
          auto bitmapProperties = D2D1::BitmapProperties1(
             D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CANNOT_DRAW,
             D2D1::PixelFormat(DXGI_FORMAT_UNKNOWN, D2D1_ALPHA_MODE_PREMULTIPLIED),
-            displayProps.RawDpiX(),
-            displayProps.RawDpiY());
+            m_dev_sp->wnd()->dpi_x(),
+            m_dev_sp->wnd()->dpi_y());
 
          D3D11_RESOURCE_FLAGS d3d11Flags = { D3D11_BIND_RENDER_TARGET };
-         winrt::check_hresult(m_dev_sp->dev_back_compat()->CreateWrappedResource(
-            get(),
-            &d3d11Flags,
-            D3D12_RESOURCE_STATE_RENDER_TARGET,
-            D3D12_RESOURCE_STATE_PRESENT,
-            IID_PPV_ARGS(m_wrappedRenderTarget_up.put())));
+         winrt::check_hresult(
+            m_dev_sp->dev_back_compat()->CreateWrappedResource(
+               get(),
+               &d3d11Flags,
+               D3D12_RESOURCE_STATE_RENDER_TARGET,
+               D3D12_RESOURCE_STATE_PRESENT,
+               IID_PPV_ARGS(m_wrappedRenderTarget_up.put())));
 
          // Create a render target for 2D calls
          auto surface = m_wrappedRenderTarget_up.as<IDXGISurface>();

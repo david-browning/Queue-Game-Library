@@ -183,6 +183,7 @@
     <ClInclude Include="include\Content\Content-Descriptors\qgL_text_format_descriptor.h" />
     <ClInclude Include="include\Content\Content-Descriptors\qgl_vertex_element_descriptor.h" />
     <ClInclude Include="include\Content\Content-Descriptors\qgl_vertex_layout_descriptor.h" />
+    <ClInclude Include="include\Content\Content-Descriptors\texture_descriptor.h" />
     <ClInclude Include="include\Content\qgl_brush.h" />
     <ClInclude Include="include\Content\qgl_camera.h" />
     <ClInclude Include="include\Content\qgl_device_configuration.h" />

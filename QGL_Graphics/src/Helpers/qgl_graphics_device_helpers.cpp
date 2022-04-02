@@ -4,7 +4,7 @@
 
 namespace qgl::graphics::helpers
 {
-   size_t format_size(DXGI_FORMAT f) noexcept
+   size_t QGL_CC format_size(DXGI_FORMAT f) noexcept
    {
       return DirectX::BitsPerPixel(f) / size_t(8);
    }

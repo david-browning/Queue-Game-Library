@@ -35,7 +35,7 @@ namespace QGL_Graphics_UnitTests
       {
          try
          {
-            auto factory = helpers::make_2d_factory();
+            auto factory = helpers::make_2d_factory(true);
          }
          catch (...)
          {

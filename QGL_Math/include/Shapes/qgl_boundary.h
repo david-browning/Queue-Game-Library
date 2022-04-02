@@ -3,7 +3,13 @@
 
 namespace qgl::math
 {
-   template<typename T, bool YDown>
+   enum boundary_y_axis
+   {
+      y_down_positive,
+      y_down_negative,
+   };
+
+   template<typename T, boundary_y_axis YDown>
    class boundary
    {
       public:
@@ -29,10 +35,8 @@ namespace qgl::math
        */
       boundary(const RECT& r1, const RECT& r2)
       {
-         static_assert(YDown,
+         static_assert(YDown == boundary_y_axis::y_down_positive,
                        "Y axis must increment downward for RECT constructor.");
-         assert(r1.left < r2.right&& r1.right > r2.left &&
-                r1.top > r2.bottom && r1.bottom < r2.top);
          intersection(r1.left, r1.top, r1.right, r1.bottom,
                       r2.left, r2.top, r2.right, r2.bottom);
       }
@@ -57,13 +61,13 @@ namespace qgl::math
          top(t), left(l), bottom(b), right(r)
       {
          assert(l < r);
-         if constexpr (YDown)
+         if constexpr (YDown == boundary_y_axis::y_down_positive)
          {
-            assert(t < b);
+            assert(t <= b);
          }
          else
          {
-            assert(t > b);
+            assert(t >= b);
          }
       }
 
@@ -85,7 +89,7 @@ namespace qgl::math
 
       constexpr T height() const noexcept
       {
-         if constexpr (YDown)
+         if constexpr (YDown == boundary_y_axis::y_down_positive)
          {
             return bottom - top;
          }
@@ -155,7 +159,7 @@ namespace qgl::math
          }
       };
 
-      template<bool y_down>
+      template<boundary_y_axis y_down>
       struct y_op
       {
          typedef boundary::less_than less_op;
@@ -165,7 +169,7 @@ namespace qgl::math
       };
 
       template<>
-      struct y_op<true>
+      struct y_op<y_down_positive>
       {
          typedef boundary::greater_than less_op;
          typedef boundary::less_than great_op;
@@ -182,11 +186,13 @@ namespace qgl::math
          left = std::max<T>(r1L, r2L);
          right = std::min<T>(r1R, r2R);
 
-         //top = std::max<T>(r1T, r2T);
-         //bottom = std::min<T>(r1B, r2B);
-
          top = y_op<YDown>::min_op()(r1T, r2T);
          bottom = y_op<YDown>::max_op()(r1B, r2B);
       }
    };
+
+   template<typename T>
+   using window_boundary = typename math::boundary<
+      T, 
+      math::boundary_y_axis::y_down_positive>;
 }

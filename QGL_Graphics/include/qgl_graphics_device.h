@@ -109,27 +109,32 @@ namespace qgl::graphics
          return m_config;
       }
 
-      i3d_device* dev_3d()
+      i3d_device* dev_3d() noexcept
       {
          return m_3dDevice_p.get();
       }
 
-      iswap_chain* swp_chn()
+      iswap_chain* swp_chn() noexcept
       {
          return m_swapChain_p.get();
       }
 
-      i2d_context* ctx_2d()
+      i2d_context* ctx_2d() noexcept
       {
          return m_2dContext_p.get();
       }
 
-      i3d_bridge_device* dev_back_compat()
+      i3d_bridge_device* dev_back_compat() noexcept
       {
          return m_d3d11On12Device_p.get();
       }
 
-      window* wnd()
+      window* wnd() noexcept
+      {
+         return m_wnd_p.get();
+      }
+
+      const window* wnd() const noexcept
       {
          return m_wnd_p.get();
       }
@@ -143,7 +148,7 @@ namespace qgl::graphics
       void make_factories()
       {
          m_gpuFactory_p = helpers::make_gpu_factory(m_config.console());
-         m_2dFactory_p = helpers::make_2d_factory();
+         m_2dFactory_p = helpers::make_2d_factory(m_config.console());
          m_textFactory_p = helpers::make_text_factory();
       }
 
