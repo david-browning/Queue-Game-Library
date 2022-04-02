@@ -54,12 +54,20 @@ namespace qgl::graphics
          return m_buffers;
       }
 
-      constexpr size_t width() const noexcept
+      /*
+       Render target width (in physical pixels). This gets transformed to 
+       device independent pixels later.
+       */
+      constexpr physp_t width() const noexcept
       {
          return m_width;
       }
 
-      constexpr size_t height() const noexcept
+      /*
+       Render target height (in physical pixels). This gets transformed to
+       device independent pixels later.
+       */
+      constexpr physp_t height() const noexcept
       {
          return m_height;
       }
@@ -128,8 +136,8 @@ namespace qgl::graphics
       private:
 
       descriptors::hdr_descriptor m_hdr;
-      size_t m_width;
-      size_t m_height;
+      physp_t m_width;
+      physp_t m_height;
       size_t m_buffers;
       UINT m_id;
       DWRITE_RENDERING_MODE m_textMode;

@@ -306,6 +306,9 @@
     <ClInclude Include="include\Helpers\qgl_supported_helpers.h">
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="include\Content\Content-Descriptors\texture_descriptor.h">
+      <Filter>Header Files\Content\Content-Descriptors</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="QGL_Graphics.def">

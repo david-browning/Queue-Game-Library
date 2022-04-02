@@ -107,4 +107,20 @@ namespace qgl::graphics
    using i3d_render_target = typename igpu_resource;
    using i2d_render_target = typename ID2D1Bitmap1;
    using i3d_bridge_render_target = typename ID3D11Resource;
+
+   /*
+    Device independent pixel.
+    */
+   using dip_t = typename float;
+
+   /*
+    Physical pixel.
+    This must be an integer type so it can be serialized.
+    */
+   using physp_t = typename uint32_t;
+
+   /*
+    Dots per inch.
+    */
+   using dpi_t = typename dip_t;
 }

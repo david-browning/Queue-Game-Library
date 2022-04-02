@@ -138,8 +138,10 @@ namespace qgl::graphics::gpu
 
          m_desc = CD3DX12_RESOURCE_DESC(D3D12_RESOURCE_DIMENSION_TEXTURE2D,
             0,
-            m_dev_sp->wnd()->width<UINT>(),
-            m_dev_sp->wnd()->height<UINT>(),
+            helpers::dip_to_pixels(m_dev_sp->wnd()->width(), 
+                                   m_dev_sp->wnd()->dpi()),
+            helpers::dip_to_pixels(m_dev_sp->wnd()->height(), 
+                                   m_dev_sp->wnd()->dpi()),
             1,
             1,
             format(),

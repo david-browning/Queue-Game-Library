@@ -13,14 +13,14 @@ namespace qgl::graphics::gpu
    {
       public:
       /*
-       Construct a viewport that is the same width and height as the render
-       target.
+       Construct a viewport that is the same width and height as the graphics
+       device.
        The viewport is then scaled to fit in the window.
        */
-      viewport(const graphics_device& dev, const graphics::window& wnd)
+      viewport(const graphics_device& dev)
       {
-         auto wndWidth = wnd.width<float>();
-         auto wndHeight = wnd.height<float>();
+         auto wndWidth = dev.wnd()->width();
+         auto wndHeight = dev.wnd()->height();
          const auto& cfg = dev.config();
          float viewWidthRatio = static_cast<float>(cfg.width()) / wndWidth;
          float viewHeightRatio = static_cast<float>(cfg.height()) / wndHeight;

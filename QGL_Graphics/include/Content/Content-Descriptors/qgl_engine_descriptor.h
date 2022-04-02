@@ -38,12 +38,12 @@ namespace qgl::graphics::descriptors
       /*
        The horizontal resolution in pixels.
        */
-      uint32_t width = 800;
+      physp_t width = 800;
 
       /*
        The vertical resolution in pixels.
        */
-      uint32_t height = 600;
+      physp_t height = 600;
 
       /*
        Monitor refresh rate in hertz.
