@@ -5,13 +5,13 @@ namespace qgl::math
 {
    /*
     2D rectangle existing in 3D space. The normal is available by calling
-    norm() or norm_cache(). 
-    norm() computes and caches the normal vector. The cached vector can be 
+    norm() or norm_cache().
+    norm() computes and caches the normal vector. The cached vector can be
     retrieved by calling norm_cache().
     If the rectangle coordinates change, the normal will need to be recomputed.
     The constructor calculates the normal vector.
     */
-   class QGL_MATH_API rectangle
+   class rectangle
    {
       public:
       /*
@@ -20,7 +20,12 @@ namespace qgl::math
        The W component is ignored in calculations.
        */
       rectangle(DirectX::FXMVECTOR upperLeft,
-                DirectX::FXMVECTOR bottomRight);
+                DirectX::FXMVECTOR bottomRight)
+      {
+         m_ul = upperLeft;
+         m_br = bottomRight;
+         norm();
+      }
 
       /*
        Copy constructor.
@@ -70,42 +75,86 @@ namespace qgl::math
       /*
        Returns the rectangle's upper left corner.
        */
-      DirectX::XMVECTOR XM_CALLCONV ul() const noexcept;
+      DirectX::XMVECTOR XM_CALLCONV ul() const noexcept
+      {
+         return m_ul;
+      }
 
       /*
        Returns the rectangle's bottom right corner.
        */
-      DirectX::XMVECTOR XM_CALLCONV br() const noexcept;
+      DirectX::XMVECTOR XM_CALLCONV br() const noexcept
+      {
+         return m_br;
+      }
 
       /*
        Sets the rectangle's upper left corner.
        This may invalidate the cached normal vector.
        */
-      void XM_CALLCONV ul(DirectX::FXMVECTOR pos) noexcept;
+      void XM_CALLCONV ul(DirectX::FXMVECTOR pos) noexcept
+      {
+         m_ul = pos;
+      }
 
       /*
        Sets the rectangle's bottom right corner.
        This may invalidate the cached normal vector.
        */
-      void XM_CALLCONV br(DirectX::FXMVECTOR pos) noexcept;
+      void XM_CALLCONV br(DirectX::FXMVECTOR pos) noexcept
+      {
+         m_br = pos;
+      }
 
       /*
        Computes the rectangle's normal vector and returns it.
        Caches the normal so it can be retried again with recomputing it.
        */
-      DirectX::XMVECTOR XM_CALLCONV norm() const noexcept;
+      DirectX::XMVECTOR XM_CALLCONV norm() const noexcept
+      {
+         /*
+          U------
+          |\    |
+          | \   |
+          |  \  |
+          |   \ |
+          |    \|
+          a-----B
+
+          N = aU X aB
+          aU = a - U
+          aB = a - B
+          a = min(U, B)
+         */
+         const DirectX::XMVECTOR a = DirectX::XMVectorMin(m_ul, m_br);
+         m_norm = DirectX::XMVector3Cross(
+            DirectX::XMVectorSubtract(a, m_ul),
+            DirectX::XMVectorSubtract(a, m_br));
+         return m_norm;
+      }
 
       /*
-       Return's the rectangle's cached normal vector. If the rectangle 
-       coordinates change, this may be invalid. The cached normal can be 
+       Return's the rectangle's cached normal vector. If the rectangle
+       coordinates change, this may be invalid. The cached normal can be
        updated by calling norm().
        */
-      DirectX::XMVECTOR XM_CALLCONV norm_cache() const noexcept;
+      DirectX::XMVECTOR XM_CALLCONV norm_cache() const noexcept
+      {
+         return m_norm;
+      }
 
       /*
        Returns a 2D rectangle. The Z coordinates in this are discarded.
        */
-      D2D_RECT_F rect_2d() const noexcept;
+      D2D_RECT_F rect_2d() const noexcept
+      {
+         D2D_RECT_F ret;
+         ret.left = DirectX::XMVectorGetX(m_ul);
+         ret.top = DirectX::XMVectorGetY(m_ul);
+         ret.right = DirectX::XMVectorGetX(m_br);
+         ret.bottom = DirectX::XMVectorGetY(m_br);
+         return ret;
+      }
 
       private:
       /*

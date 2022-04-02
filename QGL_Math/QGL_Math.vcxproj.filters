@@ -35,10 +35,7 @@
     <ClCompile Include="QGL_MathRT.cpp">
       <Filter>winrt_rt</Filter>
     </ClCompile>
-    <ClCompile Include="qgl_rectangle.cpp">
-      <Filter>Source Files\Shapes</Filter>
-    </ClCompile>
-    <ClCompile Include="qgl_aabb_helpers.cpp">
+    <ClCompile Include="src\Shapes\qgl_aabb_helpers.cpp">
       <Filter>Source Files\Shapes</Filter>
     </ClCompile>
   </ItemGroup>

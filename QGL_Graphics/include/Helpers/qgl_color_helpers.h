@@ -5,20 +5,20 @@
 namespace qgl::graphics::helpers
 {
    /*
-    Returns true if the monitor supports HDR.
-    HDR information is included in "desc".
+    Looks up the color format from an hdr_modes.
     */
-   extern QGL_GRAPHICS_API bool support_hdr(igpu_output* output_p);
-
-   extern QGL_GRAPHICS_API DXGI_FORMAT color_format(hdr_modes mode) noexcept;
-
-   extern QGL_GRAPHICS_API DXGI_COLOR_SPACE_TYPE color_space(
+   extern "C" QGL_GRAPHICS_API DXGI_FORMAT color_format(
       hdr_modes mode) noexcept;
 
-   extern QGL_GRAPHICS_API bool color_supported(
-      DXGI_COLOR_SPACE_TYPE spc, iswap_chain* sc_p);
+   /*
+    Looks up the color space from an hdr_modes.
+    */
+   extern "C" QGL_GRAPHICS_API DXGI_COLOR_SPACE_TYPE color_space(
+      hdr_modes mode) noexcept;
 
-
+   /*
+    Sets the HDR mode for the given swap chain.
+    */
    inline void set_hdr(const gpu_config& config, iswap_chain* sc_p)
    {
       switch (config.hdr_mode())

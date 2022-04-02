@@ -21,6 +21,8 @@
 #include <winrt/Windows.UI.ViewManagement.Core.h>
 #include <winrt/Windows.Graphics.Display.h>
 
+#pragma warning(push)
+#pragma warning(disable : 26812)
 #include <d3d12.h>
 #include <d2d1_3.h>
 #include <dxgi1_6.h>
@@ -30,8 +32,9 @@
 #include <DirectXCollision.h>
 #include <DirectXTex.h>
 #include "include/Helpers/d3dx12.h"
+#pragma warning(pop)
 
-#ifdef _DEBUG
+#ifdef DEBUG
 #include <D3d12SDKLayers.h>
 #define D3DCOMPILE_DEBUG 1
 #endif
@@ -47,7 +50,7 @@
 namespace qgl::graphics
 {
    //Assign a name to the object to aid with debugging.
-#if defined(_DEBUG) || defined(DBG)
+#ifdef DEBUG
    inline void name_d3d(ID3D12Object* pObject, LPCWSTR name)
    {
       pObject->SetName(name);
@@ -72,16 +75,11 @@ namespace qgl::graphics
 
 #endif
 
-   // Naming helper for ComPtr<T>.
-   // Assigns the name of the variable as the name of the object.
-   // The indexed variant will include the index in the name of the object.
-#define NAME_D3D12_OBJECT(x) (name_d3d(((ID3D12Object*)(x)), L#x))
-#define NAME_D3D12_OBJECT_INDEXED(x, n) name_d3d_indexed((x)[n].Get(), L#x, n)
-
    constexpr UINT CalculateConstantBufferByteSize(UINT byteSize)
    {
       // Constant buffer size is required to be aligned.
-      return (byteSize + (D3D12_CONSTANT_BUFFER_DATA_PLACEMENT_ALIGNMENT - 1)) & ~(D3D12_CONSTANT_BUFFER_DATA_PLACEMENT_ALIGNMENT - 1);
+      return (byteSize + (D3D12_CONSTANT_BUFFER_DATA_PLACEMENT_ALIGNMENT - 1)) &
+         ~(D3D12_CONSTANT_BUFFER_DATA_PLACEMENT_ALIGNMENT - 1);
    }
 
    using igpu_factory = typename IDXGIFactory6;
@@ -109,14 +107,4 @@ namespace qgl::graphics
    using i3d_render_target = typename igpu_resource;
    using i2d_render_target = typename ID2D1Bitmap1;
    using i3d_bridge_render_target = typename ID3D11Resource;
-
-   /*
-    Explicit specializations of com_ptr.
-    The definitions are stored in pch.cpp.
-    */
-   QGL_GRAPHICS_TEMPLATE template struct QGL_GRAPHICS_API
-      winrt::com_ptr<igpu_resource>;
-
-   QGL_GRAPHICS_TEMPLATE template struct QGL_GRAPHICS_API
-      winrt::com_ptr<ID3D12DescriptorHeap>;
 }

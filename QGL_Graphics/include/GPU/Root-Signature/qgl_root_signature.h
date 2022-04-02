@@ -139,7 +139,7 @@ namespace qgl::graphics::gpu
             signature->GetBufferSize(),
             IID_PPV_ARGS(m_rootSig_p.put())));
 
-         NAME_D3D12_OBJECT(m_rootSig_p.get());
+         name_d3d(m_rootSig_p.get(), L"Root Signature");
       }
 
       winrt::com_ptr<ID3D12RootSignature> m_rootSig_p;

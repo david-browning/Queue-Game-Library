@@ -15,20 +15,22 @@ namespace qgl::graphics::helpers
    /*
     Returns the size (in bytes) that an element of type "f" uses.
     */
-   extern QGL_GRAPHICS_API size_t format_size(DXGI_FORMAT f) noexcept;
+   extern "C" QGL_GRAPHICS_API size_t format_size(DXGI_FORMAT f) noexcept;
 
-   inline auto make_gpu_factory()
+   inline auto make_gpu_factory(bool enableDebug)
    {
       UINT flags = 0;
       //Create a debug interface if compiled in debug mode.
-#ifdef _DEBUG
+      if (enableDebug)
+      {
          //If in debug mode and cannot create a debug layer, then crash.
-      winrt::com_ptr<ID3D12Debug> dbgCtrl;
-      winrt::check_hresult(D3D12GetDebugInterface(IID_PPV_ARGS(dbgCtrl.put())));
+         winrt::com_ptr<ID3D12Debug> dbgCtrl;
+         winrt::check_hresult(D3D12GetDebugInterface(
+            IID_PPV_ARGS(dbgCtrl.put())));
 
-      dbgCtrl->EnableDebugLayer();
-      flags |= DXGI_CREATE_FACTORY_DEBUG;
-#endif
+         dbgCtrl->EnableDebugLayer();
+         flags |= DXGI_CREATE_FACTORY_DEBUG;
+      }
 
       winrt::com_ptr<igpu_factory> ret = nullptr;
       winrt::check_hresult(CreateDXGIFactory2(flags, IID_PPV_ARGS(ret.put())));
@@ -169,26 +171,6 @@ namespace qgl::graphics::helpers
       return ret;
    }
 
-   extern QGL_GRAPHICS_API bool support_tiling(i3d_device* dev_p) noexcept;
-
-   /*
-    Returns true if the GPU factory supports tearing on the monitor.
-    */
-   extern QGL_GRAPHICS_API bool support_tearing(igpu_factory* fac_p);
-
-   /*
-    Returns true if the GPU factory supports tearing on the monitor.
-    */
-   inline bool support_tearing(const igpu_factory* fac_p)
-   {
-      return support_tearing(fac_p);
-   }
-
-   /*
-    Returns true if the monitor supports stereoscopic rendering.
-    */
-   extern QGL_GRAPHICS_API bool support_stereo();
-
    /*
     Returns the correct swap chain flag to use for the given graphics config.
     See https://tinyurl.com/dxgi-present
@@ -305,8 +287,7 @@ namespace qgl::graphics::helpers
       swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
 
       swapChainDesc.SampleDesc.Count = 1;
-      //swapChainDesc.SampleDesc.Quality = 0;
-      swapChainDesc.Stereo = config.stereo();
+      swapChainDesc.SampleDesc.Quality = 0;
       swapChainDesc.Scaling = scaling;
 
       //D2D1_ALPHA_MODE Enumeration: https://tinyurl.com/y4xjkw4q

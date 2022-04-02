@@ -238,15 +238,6 @@ namespace qgl::math
       NumberT m_den;
    };
    #pragma pack(pop)
-
-   /*
-    Explicit specializations of rational.
-    The definitions are stored in pch.cpp.
-    */
-   QGL_MATH_TEMPLATE template struct QGL_MATH_API rational<int8_t>;
-   QGL_MATH_TEMPLATE template struct QGL_MATH_API rational<int16_t>;
-   QGL_MATH_TEMPLATE template struct QGL_MATH_API rational<int32_t>;
-   QGL_MATH_TEMPLATE template struct QGL_MATH_API rational<int64_t>;
    
    template<typename U>
    std::ostream& operator<<(std::ostream& os, const rational<U>& r)

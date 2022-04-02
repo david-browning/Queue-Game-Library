@@ -165,7 +165,9 @@
     <ClInclude Include="include\Impl\fast_hash_impl.h" />
     <ClInclude Include="include\Impl\qgl_mem_helpers_impl.h" />
     <ClInclude Include="include\Impl\qgl_misc_helpers_impl.h" />
+    <ClInclude Include="include\Interfaces\qgl_icontent_map.h" />
     <ClInclude Include="include\Interfaces\qgl_icommand.h" />
+    <ClInclude Include="include\Interfaces\qgl_icontent_type.h" />
     <ClInclude Include="include\Interfaces\qgl_interface.h" />
     <ClInclude Include="include\Memory\qgl_basic_heap.h" />
     <ClInclude Include="include\Memory\qgl_heap_traits.h" />
@@ -175,6 +177,7 @@
     <ClInclude Include="include\Observer-Observable\qgl_iobserver.h" />
     <ClInclude Include="include\Observer-Observable\qgl_subject.h" />
     <ClInclude Include="include\qgl_component.h" />
+    <ClInclude Include="include\qgl_console.h" />
     <ClInclude Include="include\qgl_endian.h" />
     <ClInclude Include="include\qgl_guid.h" />
     <ClInclude Include="include\qgl_misc_helpers.h" />
@@ -203,6 +206,7 @@
     </ClCompile>
     <ClCompile Include="qgl_misc_helpers.cpp" />
     <ClCompile Include="QGL_ModelRT.cpp" />
+    <ClCompile Include="src\Interfaces\qgl_icontent_map.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

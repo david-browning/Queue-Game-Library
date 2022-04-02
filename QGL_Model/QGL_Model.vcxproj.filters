@@ -50,6 +50,12 @@
     <Filter Include="Header Files\Impl">
       <UniqueIdentifier>{0ed4ef31-20cd-4e87-950b-de166fe00133}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Content">
+      <UniqueIdentifier>{3db28767-ff6e-4426-98c8-67fa9cba1671}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Interfaces">
+      <UniqueIdentifier>{9e84af05-1e60-4d1f-ade6-1b50400f454d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLModel.h">
@@ -157,6 +163,15 @@
     <ClInclude Include="include\Structures\qgl_fixed_buffer.h">
       <Filter>Header Files\Structures</Filter>
     </ClInclude>
+    <ClInclude Include="include\qgl_console.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Interfaces\qgl_icontent_type.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Interfaces\qgl_icontent_map.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="QGL_Model.def">
@@ -176,6 +191,9 @@
     </ClCompile>
     <ClCompile Include="qgl_misc_helpers.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Interfaces\qgl_icontent_map.cpp">
+      <Filter>Source Files\Interfaces</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

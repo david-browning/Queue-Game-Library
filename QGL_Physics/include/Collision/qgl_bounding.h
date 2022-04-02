@@ -14,9 +14,13 @@ namespace qgl::physics
    template<class ForwardIterator>
    DirectX::BoundingBox bound_aabb(ForwardIterator first, ForwardIterator last)
    {
+      using namespace DirectX;
       static_assert(std::numeric_limits<float>::is_iec559,
                     L"The function requires IEEE 754.");
-      using namespace DirectX;
+      static_assert(
+         std::is_same<std::remove_reference<decltype(*first)>::type,
+            XMFLOAT3>::value,
+         "ForwardIterator does not point to an XMFLOAT3.");
 
       //Set up the plane normals.
       static const auto xyN = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
@@ -62,7 +66,9 @@ namespace qgl::physics
       auto mins = XMVectorSet(xMin, yMin, zMin, 0.0f);
       auto maxs = XMVectorSet(xMax, yMax, zMax, 0.0f);
 
-      return math::aabb_from_minmax(mins, maxs);
+      BoundingBox ret;
+      math::aabb_from_minmax(mins, maxs, &ret);
+      return ret;
    }
 
    /*
@@ -78,6 +84,10 @@ namespace qgl::physics
                                         ForwardIterator last)
    {
       using namespace DirectX;
+      static_assert(
+         std::is_same<std::remove_reference<decltype(*first)>::type,
+            XMFLOAT3>::value,
+         "ForwardIterator does not point to an XMFLOAT3.");
 
       //Accumulate all vertex positions. Used to calculate the sphere center.
       XMVECTOR accum = XMVectorZero();
@@ -123,8 +133,9 @@ namespace qgl::physics
     Transforms a bounding box and returns an AABB large enough to hold the
     transformed bounding box.
     */
-   DirectX::BoundingBox XM_CALLCONV resize_aabb(
-      const DirectX::BoundingBox& aabb,
-      DirectX::FXMMATRIX xform);
-   
+   extern "C" QGL_PHYSICS_API void XM_CALLCONV resize_aabb(
+      const DirectX::BoundingBox* aabb_p, 
+      DirectX::FXMMATRIX xform, 
+      DirectX::BoundingBox* out_p);
+
 }

@@ -23,7 +23,7 @@ namespace QGL_Graphics_UnitTests
       {
          try
          {
-            auto factory = helpers::make_gpu_factory();
+            auto factory = helpers::make_gpu_factory(true);
          }
          catch (...)
          {
@@ -59,7 +59,7 @@ namespace QGL_Graphics_UnitTests
       {
          try
          {
-            auto factory = helpers::make_gpu_factory();
+            auto factory = helpers::make_gpu_factory(true);
             auto adapters = helpers::enum_hardware_adapters(
                factory.get(), D3D_FEATURE_LEVEL_12_0);
 
@@ -75,7 +75,7 @@ namespace QGL_Graphics_UnitTests
       {
          try
          {
-            auto factory = helpers::make_gpu_factory();
+            auto factory = helpers::make_gpu_factory(true);
             auto adapters = helpers::enum_hardware_adapters(
                factory.get(), D3D_FEATURE_LEVEL_12_0);
 

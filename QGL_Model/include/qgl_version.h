@@ -1,6 +1,13 @@
 #pragma once
 #include "include/qgl_model_include.h"
 
+/*
+Bit layout: {2 OS Flag} { 14 flags} {8 Major} {8 Minor}
+*/
+using qgl_version_t = uint32_t;
+
+static_assert(sizeof(qgl_version_t) == 4, "QGL versions must be 4 bytes.");
+
 namespace qgl
 {
    enum class QGL_OS_VERSION_FLAGS : uint8_t
@@ -18,14 +25,6 @@ namespace qgl
 
    static constexpr uint8_t QGL_VERSION_MAJOR_LATEST = QGL_VERSION_MAJOR_0;
    static constexpr uint8_t QGL_VERSION_MINOR_LATEST = QGL_VERSION_MINOR_1;
-
-   /*
-    Bit layout: {2 OS Flag} { 14 flags} {8 Major} {8 Minor}
-    */
-   using qgl_version_t = uint32_t;
-
-   static_assert(sizeof(qgl_version_t) == 4,
-                 "QGL versions must be 4 bytes.");
 
    /*
     Returns the OS flags from version.
@@ -70,7 +69,7 @@ namespace qgl
    inline constexpr qgl_version_t make_win_version(uint8_t versionMajor,
                                                    uint8_t versionMinor)
    {
-      return make_version(versionMajor, 
+      return make_version(versionMajor,
                           versionMinor,
                           QGL_OS_VERSION_FLAGS::OS_WINDOWS);
    }
@@ -93,14 +92,14 @@ namespace std
     set. The lowest byte is a version's minor. The next byte is the version's
     major.
     */
-   template<> struct hash<qgl::qgl_version_t>
+   template<> struct hash<qgl_version_t>
    {
       constexpr hash()
       {
 
       }
 
-      typedef qgl::qgl_version_t argument_type;
+      typedef qgl_version_t argument_type;
       typedef std::size_t result_type;
       constexpr result_type operator()(const argument_type& v) const noexcept
       {

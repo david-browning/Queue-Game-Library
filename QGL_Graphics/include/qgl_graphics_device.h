@@ -4,19 +4,34 @@
 #include "include/Content/qgl_device_configuration.h"
 #include "include/Helpers/qgl_graphics_device_helpers.h"
 #include "include/Helpers/qgl_color_helpers.h"
+#include "include/Helpers/qgl_supported_helpers.h"
 
 namespace qgl::graphics
 {
    class graphics_device
    {
       public:
+      using console_t = typename console<char>;
+      using console_ptr = typename std::shared_ptr<console_t>;
+
       graphics_device(gpu_config&& cfg,
-         std::shared_ptr<window>&& wnd) :
+                      std::shared_ptr<window>&& wnd) :
          m_config(std::forward<gpu_config>(cfg)),
          m_wnd_p(std::forward<std::shared_ptr<window>>(wnd))
       {
          make_factories();
          make_devices();
+         make_context_sensitive_members();
+      }
+
+      graphics_device(gpu_config&& cfg,
+                      std::shared_ptr<window>&& wnd,
+                      std::initializer_list<console_ptr> cons) :
+         m_config(std::forward<gpu_config>(cfg)),
+         m_wnd_p(std::forward<std::shared_ptr<window>>(wnd))
+      {
+         make_factories();
+         make_devices(cons);
          make_context_sensitive_members();
       }
 
@@ -33,9 +48,17 @@ namespace qgl::graphics
 
          //Order in which com_ptrs are destroyed is imported.
          //Destroy pointers in reverse order they were created.
-         
+
+         for (auto& con_p : m_cons_p)
+         {
+            m_infoQueue_up->UnregisterMessageCallback(con_p.first);
+         }
+
+         m_cons_p.clear();
+
          m_swapChain_p = nullptr;
 
+         m_infoQueue_up = nullptr;
          m_d2dDeviceContext_p = nullptr;
          m_2dDevice_p = nullptr;
          m_d3d11DeviceContext_p = nullptr;
@@ -119,7 +142,7 @@ namespace qgl::graphics
       */
       void make_factories()
       {
-         m_gpuFactory_p = helpers::make_gpu_factory();
+         m_gpuFactory_p = helpers::make_gpu_factory(m_config.console());
          m_2dFactory_p = helpers::make_2d_factory();
          m_textFactory_p = helpers::make_text_factory();
       }
@@ -160,6 +183,8 @@ namespace qgl::graphics
          m_3dDevice_p = helpers::make_3d_device(
             m_adapter_p.get(), FEATURE_LEVEL);
 
+         m_infoQueue_up = m_3dDevice_p.as<ID3D12InfoQueue1>();
+
          //Create the command queue for the device.
          D3D12_COMMAND_QUEUE_DESC desc = {};
          desc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
@@ -172,7 +197,7 @@ namespace qgl::graphics
 
          //Create the 2d device and context.
          m_2dDevice_p = helpers::make_2d_device(m_d3d11On12Device_p.get(),
-                                                m_2dFactory_p.get());        
+                                                m_2dFactory_p.get());
 
          D2D1_DEVICE_CONTEXT_OPTIONS opts =
             D2D1_DEVICE_CONTEXT_OPTIONS_ENABLE_MULTITHREADED_OPTIMIZATIONS;
@@ -180,9 +205,32 @@ namespace qgl::graphics
                                                           m_2dDevice_p.get());
       }
 
+      void make_devices(std::initializer_list<console_ptr> cons)
+      {
+         make_devices();
+         for (auto& con : cons)
+         {
+            DWORD cookie;
+            //https://microsoft.github.io/DirectX-Specs/d3d/MessageCallback.html
+            winrt::check_hresult(m_infoQueue_up->RegisterMessageCallback(
+               graphics_device::on_d3d_message,
+               D3D12_MESSAGE_CALLBACK_FLAGS::D3D12_MESSAGE_CALLBACK_FLAG_NONE,
+               con.get(),
+               &cookie));
+            if (cookie == 0)
+            {
+               throw std::system_error{
+                  std::make_error_code(std::errc::no_message),
+                  "The callback cookie is 0."
+               };
+            }
+            m_cons_p.emplace_back(cookie, std::move(con));
+         }
+      }
+
       /*
        DirectX supports two combinations of swapchain pixel formats and
-       colorspaces for HDR content.
+       color spaces for HDR content.
        Option 1: FP16 + DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709
        Option 2: R10G10B10A2 + DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020
          (NOT SUPPORTED ON ALL MONITORS)
@@ -210,7 +258,7 @@ namespace qgl::graphics
       void make_context_sensitive_members()
       {
          m_output_p = helpers::find_output(m_adapter_p.get(), *m_wnd_p);
-         
+
          auto fmt = helpers::color_format(m_config.hdr_mode());
 
          //Create the swap chain. Use the 0th command queue.
@@ -223,7 +271,7 @@ namespace qgl::graphics
          m_syncInterval = helpers::get_sync_interval(m_config);
          m_swapFlags = helpers::get_swap_flag(m_config);
       }
-          
+
       void make_d3d11_device_and_context()
       {
          UINT d3d11DeviceFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
@@ -254,6 +302,16 @@ namespace qgl::graphics
             &usingFeatureLevel));
 
          m_d3d11On12Device_p = std::move(d3d11Dev);
+      }
+
+      static void on_d3d_message(D3D12_MESSAGE_CATEGORY cat,
+                                 D3D12_MESSAGE_SEVERITY sev,
+                                 D3D12_MESSAGE_ID idm,
+                                 LPCSTR desc,
+                                 void* context_p)
+      {
+         auto con_p = reinterpret_cast<console_t*>(context_p);
+         con_p->cout(desc);
       }
 
       gpu_config m_config;
@@ -297,6 +355,11 @@ namespace qgl::graphics
 
       sync_interval_t m_syncInterval;
       swap_flag_t m_swapFlags;
+
+      winrt::com_ptr<ID3D12InfoQueue1> m_infoQueue_up;
+
+
+      std::vector<std::pair<DWORD, console_ptr>> m_cons_p;
 
       static constexpr D3D_FEATURE_LEVEL FEATURE_LEVEL = D3D_FEATURE_LEVEL_12_0;
    };

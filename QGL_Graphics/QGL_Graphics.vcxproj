@@ -234,6 +234,7 @@
     <ClInclude Include="include\Helpers\qgl_color_helpers.h" />
     <ClInclude Include="include\Helpers\qgl_dx_constructors.h" />
     <ClInclude Include="include\Helpers\qgl_graphics_device_helpers.h" />
+    <ClInclude Include="include\Helpers\qgl_supported_helpers.h" />
     <ClInclude Include="include\Helpers\qgl_window_helpers.h" />
     <ClInclude Include="include\qgl_graphics_device.h" />
     <ClInclude Include="include\qgl_graphics_include.h" />
@@ -250,6 +251,7 @@
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
     <ClCompile Include="src\Helpers\qgl_color_helpers.cpp" />
     <ClCompile Include="src\Helpers\qgl_graphics_device_helpers.cpp" />
+    <ClCompile Include="src\Helpers\qgl_supported_helpers.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
