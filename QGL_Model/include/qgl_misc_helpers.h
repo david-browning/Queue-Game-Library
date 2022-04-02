@@ -75,5 +75,5 @@ namespace qgl
    /*
     Returns the type of hardware the engine is running on.
     */
-   extern QGL_MODEL_API hw_types hw_type();
+   extern "C" QGL_MODEL_API hw_types hw_type();
 }

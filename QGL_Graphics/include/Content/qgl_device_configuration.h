@@ -14,11 +14,11 @@ namespace qgl::graphics
          m_buffers(desc.buffers),
          m_id(desc.pref_adapter_id),
          m_fullScreen(desc.fullscreen),
-         m_stereo(desc.stereo),
          m_tearing(desc.tearing),
          m_highRes(desc.high_resolution),
          m_width(desc.width),
          m_height(desc.height),
+         m_console(desc.console),
          m_textMode(static_cast<DWRITE_RENDERING_MODE>(desc.text_mode))
       {
 
@@ -37,11 +37,6 @@ namespace qgl::graphics
       constexpr bool high_resolution() const noexcept
       {
          return m_highRes;
-      }
-
-      constexpr bool stereo() const noexcept
-      {
-         return m_stereo;
       }
 
       constexpr hdr_modes hdr_mode() const noexcept
@@ -72,6 +67,11 @@ namespace qgl::graphics
       constexpr DWRITE_RENDERING_MODE text_mode() const noexcept
       {
          return m_textMode;
+      }
+
+      constexpr bool console() const noexcept
+      {
+         return m_console;
       }
 
       DXGI_HDR_METADATA_HDR10 hdr10() const
@@ -113,10 +113,10 @@ namespace qgl::graphics
          swap(l.m_buffers, r.m_buffers);
          swap(l.m_id, r.m_id);
          swap(l.m_fullScreen, r.m_fullScreen);
-         swap(l.m_stereo, r.m_stereo);
          swap(l.m_tearing, r.m_tearing);
          swap(l.m_highRes, r.m_highRes);
          swap(l.m_hdr, r.m_hdr);
+         swap(l.m_console, r.m_console);
       }
 
       gpu_config& operator=(gpu_config r) noexcept
@@ -134,8 +134,8 @@ namespace qgl::graphics
       UINT m_id;
       DWRITE_RENDERING_MODE m_textMode;
       bool m_fullScreen;
-      bool m_stereo;
       bool m_tearing;
       bool m_highRes;
+      bool m_console;
    };
 }

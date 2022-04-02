@@ -79,6 +79,9 @@
     <ClCompile Include="src\Helpers\qgl_color_helpers.cpp">
       <Filter>Source Files\Helpers</Filter>
     </ClCompile>
+    <ClCompile Include="src\Helpers\qgl_supported_helpers.cpp">
+      <Filter>Source Files\Helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLGraphics.h">
@@ -298,6 +301,9 @@
       <Filter>Header Files\GPU\Render</Filter>
     </ClInclude>
     <ClInclude Include="include\Helpers\d3dx12.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Helpers\qgl_supported_helpers.h">
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
   </ItemGroup>

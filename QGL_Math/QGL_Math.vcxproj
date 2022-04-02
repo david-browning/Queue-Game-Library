@@ -166,9 +166,8 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
-    <ClCompile Include="qgl_aabb_helpers.cpp" />
     <ClCompile Include="QGL_MathRT.cpp" />
-    <ClCompile Include="qgl_rectangle.cpp" />
+    <ClCompile Include="src\Shapes\qgl_aabb_helpers.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="QGL_MathRT.idl" />

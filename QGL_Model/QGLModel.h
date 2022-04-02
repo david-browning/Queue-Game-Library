@@ -1,5 +1,9 @@
 #pragma once
 #include "include/Interfaces/qgl_interface.h"
+#include "include/Interfaces/qgl_icontent_type.h"
+#include "include/Interfaces/qgl_icontent_map.h"
+#include "include/Interfaces/qgl_icommand.h"
+
 #include "include/Memory/qgl_mem.h"
 
 #include "include/qgl_version.h"
@@ -18,4 +22,5 @@
 #include "include/Structures/qgl_basic_graph.h"
 #include "include/Structures/qgl_fixed_buffer.h"
 
+#include "include/qgl_console.h"
 #include "include/qgl_misc_helpers.h"

@@ -3,8 +3,9 @@
 
 namespace qgl::math
 {
-   DirectX::BoundingBox XM_CALLCONV aabb_from_minmax(DirectX::FXMVECTOR mins,
-                                                     DirectX::FXMVECTOR maxs)
+   void XM_CALLCONV aabb_from_minmax(DirectX::FXMVECTOR mins, 
+                                     DirectX::FXMVECTOR maxs, 
+                                     DirectX::BoundingBox* out_p)
    {
       using namespace DirectX;
       //Calculate the center:
@@ -21,15 +22,15 @@ namespace qgl::math
       XMStoreFloat3(&aabbCenter, center);
       XMStoreFloat3(&aabbExtents, extents);
 
-      return DirectX::BoundingBox(aabbCenter, aabbExtents);
+      *out_p = DirectX::BoundingBox(aabbCenter, aabbExtents);
    }
 
-   void XM_CALLCONV aabb_verts(const DirectX::BoundingBox& aabb,
+   void XM_CALLCONV aabb_verts(const DirectX::BoundingBox* aabb,
                                DirectX::XMVECTOR verts[VERTS_PER_BOX])
    {
       using namespace DirectX;
-      auto center = XMLoadFloat3(&aabb.Center);
-      auto extents = XMLoadFloat3(&aabb.Extents);
+      auto center = XMLoadFloat3(&aabb->Center);
+      auto extents = XMLoadFloat3(&aabb->Extents);
 
       verts[0] = center + extents;
       verts[1] = center + extents * XMVectorSet(1.0f, -1.0f, 1.0f, 0.0f);

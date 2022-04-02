@@ -35,12 +35,4 @@ namespace qgl
          throw_last_error();
       }
    }
-
-   /*
-    Throws a not_implemented exception.
-    */
-   inline void throw_not_implemented()
-   {
-      throw not_implemented();
-   }
 }

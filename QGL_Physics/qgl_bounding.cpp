@@ -3,9 +3,9 @@
 
 namespace qgl::physics
 {
-   DirectX::BoundingBox XM_CALLCONV resize_aabb(
-      const DirectX::BoundingBox& aabb,
-      DirectX::FXMMATRIX xform)
+   void XM_CALLCONV resize_aabb(const DirectX::BoundingBox* aabb,
+                               DirectX::FXMMATRIX xform, 
+                               DirectX::BoundingBox* out_p)
    {
       using namespace DirectX;
       //Set up the plane normals.
@@ -56,6 +56,6 @@ namespace qgl::physics
       auto mins = XMVectorSet(xMin, yMin, zMin, 0.0f);
       auto maxs = XMVectorSet(xMax, yMax, zMax, 0.0f);
 
-      return math::aabb_from_minmax(mins, maxs);
+      math::aabb_from_minmax(mins, maxs, out_p);
    }
 }

@@ -20,11 +20,11 @@ namespace qgl::graphics::descriptors
          swap(l.fullscreen, r.fullscreen);
          swap(l.tearing, r.tearing);
          swap(l.high_resolution, r.high_resolution);
-         swap(l.stereo, r.stereo);
          swap(l.interlacing, r.interlacing);
          swap(l.pref_adapter_id, r.pref_adapter_id);
          swap(l.text_mode, r.text_mode);
          swap(l.reserved1, r.reserved1);
+         swap(l.console, r.console);
       }
 
       engine_descriptor& operator=(engine_descriptor r) noexcept
@@ -70,8 +70,6 @@ namespace qgl::graphics::descriptors
        */
       uint8_t high_resolution = 1;
 
-      uint8_t stereo = 0;
-
       uint8_t interlacing = 0;
 
       /*
@@ -84,6 +82,10 @@ namespace qgl::graphics::descriptors
        */
       uint8_t text_mode = DWRITE_RENDERING_MODE::DWRITE_RENDERING_MODE_DEFAULT;
 
+      /*
+       True if the graphics devices should write to a console.
+       */
+      uint8_t console = 0;
       uint8_t reserved1 = 0;
    };
 #pragma pack(pop)
