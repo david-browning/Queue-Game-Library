@@ -18,7 +18,7 @@
   <ItemGroup>
     <ClCompile Include="UnitTestApp.xaml.cpp" />
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="bvh_tree_tests.cpp">
+    <ClCompile Include="static_bvh_tree_tests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
   </ItemGroup>
