@@ -279,9 +279,9 @@ namespace qgl::graphics::helpers
       DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
       swapChainDesc.BufferCount = static_cast<UINT>(config.buffers());
       swapChainDesc.Width = static_cast<UINT>(
-         pixels_to_dip(wnd.width(), wnd.dpi_x()));
+         dip_to_pixels(wnd.width(), wnd.dpi_x()));
       swapChainDesc.Height = static_cast<UINT>(
-         pixels_to_dip(wnd.height(), wnd.dpi_y()));
+         dip_to_pixels(wnd.height(), wnd.dpi_y()));
       swapChainDesc.Format = color_format(config.hdr_mode());
       swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
       //DXGI_SWAP_EFFECT Enumeration: https://tinyurl.com/yypnyzu7
@@ -327,8 +327,8 @@ namespace qgl::graphics::helpers
 
       winrt::check_hresult(swpChain_p->ResizeBuffers(
          static_cast<UINT>(config.buffers()),
-         static_cast<UINT>(pixels_to_dip(wnd.width(), wnd.dpi_x())),
-         static_cast<UINT>(pixels_to_dip(wnd.height(), wnd.dpi_y())),
+         static_cast<UINT>(dip_to_pixels(wnd.width(), wnd.dpi_x())),
+         static_cast<UINT>(dip_to_pixels(wnd.height(), wnd.dpi_y())),
          swapChainDesc.Format,
          swapChainDesc.Flags));
    }

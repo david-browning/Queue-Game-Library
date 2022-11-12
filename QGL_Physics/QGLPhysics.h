@@ -1,4 +1,5 @@
 #pragma once
-#include "include/Collision/QGLCollision.h"
-#include "include/Rigid-Bodies/QGLRigidBody.h"
-#include "include/World/QGLWorld.h"
+#include "include/Collision/qgl_bounding.h"
+#include "include/Collision/qgl_collision_adapters.h"
+#include "include/Collision/qgl_bvh_tree_builder.h"
+#include "include/Collision/qgl_static_bvh_tree.h"
