@@ -77,6 +77,9 @@
     <ClInclude Include="include\Shapes\qgl_boundary.h">
       <Filter>Header Files\Shapes</Filter>
     </ClInclude>
+    <ClInclude Include="include\qgl_tile_helpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="QGL_Math.def">

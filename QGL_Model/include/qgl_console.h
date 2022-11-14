@@ -5,13 +5,13 @@
 namespace qgl
 {
    template<typename CharT>
-   void default_con_out(const std::basic_string<CharT>& s)
+   inline void default_con_out(const std::basic_string<CharT>& s)
    {
       OutputDebugStringA(s.c_str());
    }
 
    template<>
-   void default_con_out(const std::wstring& s)
+   inline void default_con_out<wchar_t>(const std::wstring& s)
    {
       OutputDebugStringW(s.c_str());
    }

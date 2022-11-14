@@ -10,7 +10,7 @@ namespace QGL_Math_Unit_Tests
    {
       public:
       /*
-       Construct a rational and verify its numerator and denominator are 
+       Construct a rational and verify its numerator and denominator are
        correct.
        */
       TEST_METHOD(Construct)
@@ -37,7 +37,7 @@ namespace QGL_Math_Unit_Tests
       }
 
       /*
-       Verify that constructing a rational with 0 as the denominator throws 
+       Verify that constructing a rational with 0 as the denominator throws
        std::invalid_argument.
        */
       TEST_METHOD(ConstructWith0Denom)
@@ -133,7 +133,7 @@ namespace QGL_Math_Unit_Tests
       }
 
       /*
-       Create a rational, convert it to a float and verify that float is 
+       Create a rational, convert it to a float and verify that float is
        approximately equal to an expected value.
        */
       TEST_METHOD(FloatConversion)
@@ -141,21 +141,26 @@ namespace QGL_Math_Unit_Tests
          rational<int> zero;
          rational<int> one(1, 1);
          rational<int> netagiveOne(-1, 1);
-         Assert::IsTrue(approx_equal(0.0f, static_cast<float>(zero)),
-                        L"Should be 0");
+         Assert::IsTrue(
+            approx_equal(0.0f, static_cast<float>(zero), FLT_EPSILON),
+            L"Should be 0");
 
-         Assert::IsTrue(approx_equal(1.0f, static_cast<float>(one)),
-                        L"Should be 1");
+         Assert::IsTrue(
+            approx_equal(1.0f, static_cast<float>(one), FLT_EPSILON),
+            L"Should be 1");
 
-         Assert::IsTrue(approx_equal(-1.0f, static_cast<float>(netagiveOne)),
-                        L"Should be -1");
+         Assert::IsTrue(
+            approx_equal(-1.0f, static_cast<float>(netagiveOne), FLT_EPSILON),
+            L"Should be -1");
 
          rational<int> oneTenth(1, 10);
-         Assert::IsTrue(approx_equal(0.1f, static_cast<float>(oneTenth)),
-                        L"Should be 1/10");
+         Assert::IsTrue(
+            approx_equal(0.1f, static_cast<float>(oneTenth), FLT_EPSILON),
+            L"Should be 1/10");
 
-         Assert::IsTrue(!approx_equal(0.099999f, static_cast<float>(oneTenth)),
-                        L"Should be 1/10");
+         Assert::IsTrue(
+            !approx_equal(0.099999f, static_cast<float>(oneTenth), FLT_EPSILON),
+            L"Should be 1/10");
       }
 
       /*
@@ -167,21 +172,26 @@ namespace QGL_Math_Unit_Tests
          rational<int> zero;
          rational<int> one(1, 1);
          rational<int> netagiveOne(-1, 1);
-         Assert::IsTrue(approx_equal(0.0, static_cast<double>(zero)),
-                        L"Should be 0");
+         Assert::IsTrue(
+            approx_equal(0.0, static_cast<double>(zero), DBL_EPSILON),
+            L"Should be 0");
 
-         Assert::IsTrue(approx_equal(1.0, static_cast<double>(one)),
-                        L"Should be 1");
+         Assert::IsTrue(
+            approx_equal(1.0, static_cast<double>(one), DBL_EPSILON),
+            L"Should be 1");
 
-         Assert::IsTrue(approx_equal(-1.0, static_cast<double>(netagiveOne)),
-                        L"Should be -1");
+         Assert::IsTrue(
+            approx_equal(-1.0, static_cast<double>(netagiveOne), DBL_EPSILON),
+            L"Should be -1");
 
          rational<int> oneTenth(1, 10);
-         Assert::IsTrue(approx_equal(0.1, static_cast<double>(oneTenth)),
-                        L"Should be 1/10");
+         Assert::IsTrue(
+            approx_equal(0.1, static_cast<double>(oneTenth), DBL_EPSILON),
+            L"Should be 1/10");
 
-         Assert::IsTrue(!approx_equal(0.099999, static_cast<double>(oneTenth)),
-                        L"Should be 1/10");
+         Assert::IsTrue(
+            !approx_equal(0.099999, static_cast<double>(oneTenth), DBL_EPSILON),
+            L"Should be 1/10");
       }
 
       /*
@@ -242,8 +252,9 @@ namespace QGL_Math_Unit_Tests
          Assert::AreEqual(rational<int>(3, 2), oneHalf / oneThird,
                           L"Should be 3/2");
 
-         Assert::IsTrue(approx_equal(1.5f, 
-                                     static_cast<float>(oneHalf / oneThird)),
+         Assert::IsTrue(approx_equal(1.5f,
+                                     static_cast<float>(oneHalf / oneThird),
+                                     FLT_EPSILON),
                         L"Should be 1.5");
       }
 

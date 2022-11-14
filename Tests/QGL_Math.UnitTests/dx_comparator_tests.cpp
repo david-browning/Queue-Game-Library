@@ -113,5 +113,18 @@ namespace QGL_Math_Unit_Tests
          Assert::IsTrue(s1 != s2, L"s1 and s2 should not be equal.");
          Assert::IsTrue(s1 != s3, L"s1 and s3 should not be equal.");
       }
+
+      TEST_METHOD(DXHardwareVectorEquals)
+      {
+         auto x1 = DirectX::XMVectorSet(1.0f, 2.0f, 3.0f, 4.0f);
+         auto x1Copy = DirectX::XMVectorSet(1.0f, 2.0f, 3.0f, 4.0f);
+         auto x2 = DirectX::XMVectorSet(1.0f, 2.0f, 3.0f, 5.0f);
+
+         Assert::IsTrue(x1 == x1Copy,
+                        L"X1 does not equal itself.");
+
+         Assert::IsTrue(x1 != x2,
+                        L"X1 should not equal x2");
+      }
    };
 }

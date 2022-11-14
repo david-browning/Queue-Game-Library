@@ -34,11 +34,11 @@ namespace QGL_Math_Unit_Tests
             "45681 round 1000 should be 46000");
 
          //Round 0.5 to the nearest 1 => 1
-         Assert::IsTrue(approx_equal(round_up(0.5, 1.0), 1.0),
+         Assert::IsTrue(approx_equal(round_up(0.5, 1.0), 1.0, DBL_EPSILON),
             L"0.5 round 1 should be close to 1");
 
          //Round 0.5f to the nearest 0.1f => 0.5f
-         Assert::IsTrue(approx_equal(round_up(0.5f, 0.1f), 0.5f),
+         Assert::IsTrue(approx_equal(round_up(0.5f, 0.1f), 0.5f, FLT_EPSILON),
             L"0.5 round 0.1 should be 0.5");
       }
 
@@ -51,10 +51,10 @@ namespace QGL_Math_Unit_Tests
       TEST_METHOD(FloatApproxEqual)
       {
          //Test with the default epsilon.
-         Assert::IsTrue(approx_equal(1.0f, 1.0f),
+         Assert::IsTrue(approx_equal(1.0f, 1.0f, FLT_EPSILON),
             L"1.0 and 1.0 should be equal.");
 
-         Assert::IsFalse(approx_equal(1.0f, 0.9999f),
+         Assert::IsFalse(approx_equal(1.0f, 0.9999f, FLT_EPSILON),
             L"1.0 and 0.9999 should not be equal.");
 
          //Test with custom epsilon.
@@ -66,10 +66,10 @@ namespace QGL_Math_Unit_Tests
       TEST_METHOD(DoubleApproxEqual)
       {
          //Test with the default epsilon.
-         Assert::IsTrue(approx_equal(1.0, 1.0),
+         Assert::IsTrue(approx_equal(1.0, 1.0, DBL_EPSILON),
             L"1.0 and 1.0 should be equal.");
 
-         Assert::IsFalse(approx_equal(1.0, 0.9999),
+         Assert::IsFalse(approx_equal(1.0, 0.9999, DBL_EPSILON),
             L"1.0 and 0.9999 should not be equal.");
 
          //Test with custom epsilon.

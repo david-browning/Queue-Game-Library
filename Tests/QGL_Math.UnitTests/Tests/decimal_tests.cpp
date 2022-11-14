@@ -131,15 +131,18 @@ namespace QGL_Math_Unit_Tests
       TEST_METHOD(FloatConversion)
       {
          decimal<100> d1{ 10 };
-         Assert::IsTrue(approx_equal(0.1f, static_cast<float>(d1)),
+         Assert::IsTrue(
+            approx_equal(0.1f, static_cast<float>(d1), FLT_EPSILON),
             L"Should be 1/10");
 
          decimal<100> d2{};
-         Assert::IsTrue(approx_equal(0.0f, static_cast<float>(d2)),
+         Assert::IsTrue(
+            approx_equal(0.0f, static_cast<float>(d2), FLT_EPSILON),
             L"Should be 0.");
 
          decimal<10000> d3{ 3333 };
-         Assert::IsTrue(approx_equal(0.3333f, static_cast<float>(d3)),
+         Assert::IsTrue(
+            approx_equal(0.3333f, static_cast<float>(d3), FLT_EPSILON),
             L"Should be 1/3");
       }
 
@@ -150,15 +153,18 @@ namespace QGL_Math_Unit_Tests
       TEST_METHOD(DoubleConversion)
       {
          decimal<100> d1{ 10 };
-         Assert::IsTrue(approx_equal(0.1, static_cast<double>(d1)),
+         Assert::IsTrue(
+            approx_equal(0.1, static_cast<double>(d1), DBL_EPSILON),
             L"Should be 1/10");
 
          decimal<100> d2{};
-         Assert::IsTrue(approx_equal(0.0, static_cast<double>(d2)),
+         Assert::IsTrue(
+            approx_equal(0.0, static_cast<double>(d2), DBL_EPSILON),
             L"Should be 0.");
 
          decimal<10000> d3{ 3333 };
-         Assert::IsTrue(approx_equal(0.3333, static_cast<double>(d3)),
+         Assert::IsTrue(
+            approx_equal(0.3333, static_cast<double>(d3), DBL_EPSILON),
             L"Should be 1/3");
       }
    };
