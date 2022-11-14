@@ -153,6 +153,7 @@
     <ClInclude Include="include\qgl_math_funcs.h" />
     <ClInclude Include="include\qgl_math_includes.h" />
     <ClInclude Include="include\qgl_rational.h" />
+    <ClInclude Include="include\qgl_tile_helpers.h" />
     <ClInclude Include="include\Shapes\qgl_aabb_helpers.h" />
     <ClInclude Include="include\Shapes\qgl_boundary.h" />
     <ClInclude Include="include\Shapes\qgl_dx_comparators.h" />

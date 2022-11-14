@@ -1,17 +1,12 @@
 #pragma once
-#include "include/qgl_math_funcs.h"
+#include "include/qgl_math_includes.h"
 
 namespace qgl::math
 {
    template<typename T>
-   constexpr T absolute_value(T x) noexcept
+   inline T absolute_value(T x) noexcept
    {
-      if (x < 0)
-      {
-         return -x;
-      }
-
-      return x;
+      return std::abs(x);
    }
 
    /*
@@ -19,31 +14,61 @@ namespace qgl::math
     tolerance.
     */
    template<typename T>
-   constexpr bool approx_equal(T expected,
-      T actual,
-      T tolerance) noexcept
+   inline bool approx_equal(T expected,
+                                      T actual,
+                                      T tolerance) noexcept
    {
       return absolute_value(expected - actual) <= tolerance;
    }
 
    /*
     Specialization of approx_equal for floats.
+    Use FLT_EPSILON for the tolerance.
     */
-   constexpr bool approx_equal(float expected,
-      float actual,
-      float tolerance = FLT_EPSILON) noexcept
+   template<>
+   inline bool approx_equal<float>(float expected,
+                                             float actual,
+                                             float tolerance) noexcept
    {
       return absolute_value(expected - actual) <= tolerance;
    }
 
    /*
     Specialization of approx_equal for doubles.
+    Use DBL_EPSILON for the tolerance.
     */
-   constexpr bool approx_equal(double expected,
-      double actual,
-      double tolerance = DBL_EPSILON) noexcept
+   template<>
+   inline bool approx_equal<double>(double expected,
+                                              double actual,
+                                              double tolerance) noexcept
    {
       return absolute_value(expected - actual) <= tolerance;
+   }
+
+   template<typename RetT>
+   inline RetT ceiling(float x) noexcept
+   {
+      static_assert(std::is_integral<RetT>::value,
+                    "The return type RetT must be integral.");
+
+      // Cast x to an int and then back to a float. If the casted value equals
+      // the original value, then no need to round up.
+      return static_cast<RetT>(std::ceilf(x));
+   }
+
+   template<typename RetT>
+   inline RetT ceiling(double x) noexcept
+   {
+      static_assert(std::is_integral<RetT>::value,
+                    "The return type RetT must be integral.");
+
+      return static_cast<RetT>(std::ceil(x));
+   }
+
+   template<typename RetT>
+   inline RetT XM_CALLCONV ceiling(DirectX::FXMVECTOR x) noexcept
+   {
+      return DirectX::XMVectorCeiling(x);
    }
 
    /*
@@ -65,7 +90,8 @@ namespace qgl::math
    inline float round_up<float>(float val, float nearest) noexcept
    {
       auto remainder = fmod(val, nearest);
-      return approx_equal(remainder, 0.0f) ? val : val + nearest - remainder;
+      return approx_equal(remainder, 0.0f, FLT_EPSILON) ?
+         val : val + nearest - remainder;
    }
 
    /*
@@ -75,7 +101,8 @@ namespace qgl::math
    inline double round_up<double>(double val, double nearest) noexcept
    {
       auto remainder = fmod(val, nearest);
-      return approx_equal(remainder, 0.0) ? val : val + nearest - remainder;
+      return approx_equal(remainder, 0.0, LDBL_EPSILON) ?
+         val : val + nearest - remainder;
    }
 
    /*

@@ -8,3 +8,5 @@
 #include "include/Shapes/qgl_rectangle.h"
 #include "include/Shapes/qgl_aabb_helpers.h"
 #include "include/Shapes/qgl_boundary.h"
+
+#include "include/qgl_tile_helpers.h"

@@ -175,13 +175,13 @@ namespace QGL_Math_Unit_Tests
 
          D2D_RECT_F expected{ 1.0f, -1.0f, 2.0f, 1.0f };
          auto actual = r.rect_2d();
-         Assert::IsTrue(approx_equal(expected.top, actual.top), 
+         Assert::IsTrue(approx_equal(expected.top, actual.top, FLT_EPSILON),
                         L"Tops are not equal.");
-         Assert::IsTrue(approx_equal(expected.right, actual.right),
+         Assert::IsTrue(approx_equal(expected.right, actual.right, FLT_EPSILON),
                         L"Rights are not equal.");
-         Assert::IsTrue(approx_equal(expected.left, actual.left),
+         Assert::IsTrue(approx_equal(expected.left, actual.left, FLT_EPSILON),
                         L"Lefts are not equal.");
-         Assert::IsTrue(approx_equal(expected.bottom, actual.bottom),
+         Assert::IsTrue(approx_equal(expected.bottom, actual.bottom, FLT_EPSILON),
                         L"Bottoms are not equal.");
       }
    };
