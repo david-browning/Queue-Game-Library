@@ -8,6 +8,13 @@
 #define QGL_MODEL_API __declspec(dllimport)
 #endif
 
+#ifdef DEBUG
+#define NOEXCEPT_DEBUG
+#else
+#define NOEXCEPT_DEBUG noexcept
+#endif
+
+
 #ifndef QGL_CC
 /*
  Use the x64 calling convention. Pass integral arguments in RCX, RDX, R8, R9.

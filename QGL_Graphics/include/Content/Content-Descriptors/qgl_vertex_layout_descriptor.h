@@ -10,6 +10,18 @@ namespace qgl::graphics::descriptors
       {
       }
 
+      vertex_layout_descriptor(const vertex_layout_descriptor&) = default;
+
+      vertex_layout_descriptor(vertex_layout_descriptor&&) = default;
+
+      constexpr vertex_layout_descriptor(
+         D3D12_PRIMITIVE_TOPOLOGY_TYPE topo,
+         D3D12_INDEX_BUFFER_STRIP_CUT_VALUE strip) :
+         topology(static_cast<uint8_t>(topo)),
+         strip_cut(static_cast<uint8_t>(strip))
+      {
+      }
+
       friend void swap(
          vertex_layout_descriptor& l,
          vertex_layout_descriptor& r) noexcept

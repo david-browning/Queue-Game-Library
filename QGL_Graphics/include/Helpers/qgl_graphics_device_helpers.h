@@ -197,11 +197,10 @@ namespace qgl::graphics::helpers
     Returns a vector of display modes supported by the monitor and the
     DXGI_FORMAT. Pass true for includeStereo to enumerate stereo modes.
     */
-   inline std::vector<DXGI_MODE_DESC1> enum_display_modes(
-      igpu_output* monitor_p,
-      DXGI_FORMAT monitorFmt,
-      bool includeInterlacing,
-      bool includeStereo)
+   inline auto enum_display_modes(igpu_output* monitor_p,
+                                  DXGI_FORMAT monitorFmt,
+                                  bool includeInterlacing,
+                                  bool includeStereo)
    {
       //DXGI_ENUM_MODES: https://tinyurl.com/y6fqcnqt
       UINT flgs = DXGI_ENUM_MODES_SCALING;
@@ -247,12 +246,15 @@ namespace qgl::graphics::helpers
       return ret;
    }
 
-   inline auto make_2d_device(i3d_bridge_device* d3d11on12Dev_p,
+   inline auto make_2d_device(
+      IDXGIDevice* d3d11on12Dev_p,
+      //i3d_bridge_device* d3d11on12Dev_p,
                               i2d_factory* d2dFactory_p)
    {
       winrt::com_ptr<i2d_device> d2dDev_p;
       winrt::check_hresult(d2dFactory_p->CreateDevice(
-         dynamic_cast<IDXGIDevice*>(d3d11on12Dev_p),
+         //dynamic_cast<IDXGIDevice*>(d3d11on12Dev_p),
+         d3d11on12Dev_p,
          d2dDev_p.put()));
 
       return d2dDev_p;
@@ -291,12 +293,8 @@ namespace qgl::graphics::helpers
       swapChainDesc.SampleDesc.Quality = 0;
       swapChainDesc.Scaling = scaling;
 
-      //D2D1_ALPHA_MODE Enumeration: https://tinyurl.com/y4xjkw4q
-      swapChainDesc.AlphaMode = DXGI_ALPHA_MODE_PREMULTIPLIED;
-
       //DXGI_SWAP_CHAIN_FLAG Enumeration: https://tinyurl.com/yxq7s75x
-      UINT swapChainFlags = DXGI_SWAP_CHAIN_FLAG_FOREGROUND_LAYER |
-         DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+      UINT swapChainFlags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
       if (config.tearing())
       {
          swapChainFlags |= DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING;
@@ -305,12 +303,11 @@ namespace qgl::graphics::helpers
       swapChainDesc.Flags = swapChainFlags;
 
       winrt::check_hresult(dxgiFactory_p->CreateSwapChainForCoreWindow(
-         dynamic_cast<IUnknown*>(cmdQueue_p),
+         cmdQueue_p,
          wnd.unknown(),
          &swapChainDesc,
          nullptr,
          swapChain.put()));
-
 
       auto ret = swapChain.as<iswap_chain>();
       set_hdr(config, ret.get());

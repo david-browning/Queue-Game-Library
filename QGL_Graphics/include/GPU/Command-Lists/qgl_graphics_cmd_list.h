@@ -2,19 +2,23 @@
 #include "include/qgl_graphics_include.h"
 #include "include/GPU/Command-Lists/qgl_icmd_list.h"
 #include "include/GPU/Command-Lists/qgl_cmd_bundle.h"
+#include "include/GPU/Render/qgl_blender.h"
+#include "include/GPU/Render/qgl_depth_stencil.h"
+#include "include/GPU/Render/qgl_render_target.h"
+#include "include/Content/Content-Descriptors/qgl_vector_descriptor.h"
 
 namespace qgl::graphics::gpu
 {
    class graphics_command_list : public icommand_list
    {
       public:
-      graphics_command_list(graphics_device_ptr& dev_p,
-                            const std::shared_ptr<gpu::pso>& pipelineState_p,
+      graphics_command_list(graphics_device& dev,
+                            gpu::ipso& pso,
                             size_t nodeMask = 0) :
-         icommand_list(dev_p,
-            D3D12_COMMAND_LIST_TYPE_DIRECT,
-            pipelineState_p,
-            nodeMask)
+         icommand_list(dev,
+                       pso,
+                       D3D12_COMMAND_LIST_TYPE_DIRECT,
+                       nodeMask)
       {
       }
 
@@ -198,7 +202,7 @@ namespace qgl::graphics::gpu
        */
       void stencil_ref(size_t ref)
       {
-         get()->OMSetStencilRef(ref);
+         get()->OMSetStencilRef(static_cast<UINT>(ref));
       }
 
       /*
@@ -206,7 +210,26 @@ namespace qgl::graphics::gpu
        */
       void clear_color(const std::array<float, 4>& rgba) noexcept
       {
-         m_clearColor = rgba;
+         memcpy(m_clearColor.data(), rgba.data(), sizeof(float) * rgba.size());
+      }
+
+      /*
+       Sets the color to clear the render targets to.
+       */
+      void clear_color(const descriptors::vector_descriptor& rgba) noexcept
+      {
+         m_clearColor[0] = rgba[0].operator float();
+         m_clearColor[1] = rgba[1].operator float();
+         m_clearColor[2] = rgba[2].operator float();
+         m_clearColor[3] = rgba[3].operator float();
+      }
+
+      /*
+       Sets the color to clear the render targets to.
+       */
+      void clear_color(const fixed_buffer<float, 4>& rgba) noexcept
+      {
+         memcpy(m_clearColor.data(), rgba.data(), sizeof(float) * rgba.size());
       }
 
       /*
@@ -227,7 +250,7 @@ namespace qgl::graphics::gpu
       }
             
       private:
-      std::array<float, 4> m_clearColor;
+      fixed_buffer<float, 4> m_clearColor;
 
       std::vector<std::reference_wrapper<depth_stencil>> m_depthStencils;
       std::vector<std::reference_wrapper<render_target>> m_renderTargets;

@@ -208,7 +208,7 @@ namespace qgl::math
 
       template<typename U>
       friend std::ostream& operator<<(std::ostream& os,
-                                             const rational<U>& r);
+                                      const rational<U>& r);
 
       private:
 

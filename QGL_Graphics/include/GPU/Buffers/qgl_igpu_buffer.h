@@ -20,8 +20,6 @@ namespace qgl::graphics::gpu
    class igpu_buffer
    {
       public:
-      //igpu_buffer(gpu_allocator_ptr&&) { }
-
       virtual ~igpu_buffer() noexcept = default;
 
       /*
@@ -42,11 +40,6 @@ namespace qgl::graphics::gpu
        Returns the size, in bytes, of the buffer.
        */
       virtual size_t size() const noexcept = 0;
-
-      ///*
-      // Returns the state the resource is in.
-      // */
-      //virtual D3D12_RESOURCE_STATES state() const noexcept = 0;
 
       virtual gpu_alloc_handle alloc_handle() const noexcept = 0;
 

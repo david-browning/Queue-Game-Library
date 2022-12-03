@@ -1,5 +1,6 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
+#include "include/Content/Content-Descriptors/qgl_qgl_vector_descriptor.h"
 
 namespace qgl::graphics::descriptors
 {
@@ -31,17 +32,17 @@ namespace qgl::graphics::descriptors
       /*
        Spawn location
        */
-      fixed_buffer<math::rational<int32_t>, 4> position;
+      vector_descriptor position;
 
       /*
        Spawn up
        */
-      fixed_buffer<math::rational<int32_t>, 4> up;
+      vector_descriptor up;
 
       /*
        Spawn look at.
        */
-      fixed_buffer<math::rational<int32_t>, 4> look;
+      vector_descriptor look;
 
       /*
        Field of view.

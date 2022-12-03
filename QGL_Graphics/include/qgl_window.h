@@ -20,9 +20,9 @@ namespace qgl::graphics
        Constructs a window using a CoreWindow and ApplicationView.
        Pointers are forwarded in case they are expected to be moved.
        */
-      window(corewnd_ptr&& coreWnd_p, view_ptr&& view_p) :
-         m_wnd_p(std::forward<corewnd_ptr>(coreWnd_p)),
-         m_view_p(std::forward<view_ptr>(view_p)),
+      window(corewnd_ptr& coreWnd_p, view_ptr& view_p) :
+         m_wnd_p(coreWnd_p),
+         m_view_p(view_p),
          m_nextCallbackHandle(0)
       {
          using namespace winrt::Windows::Graphics;

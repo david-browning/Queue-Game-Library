@@ -29,18 +29,19 @@ namespace qgl::graphics::gpu
        Constructs a depth stencil texture. Once constructed, this inserts
        itself into the DSV heap.
        */
-      depth_stencil(descriptors::depth_stencil_descriptor&& buffer,
-                    committed_allocator_ptr&& allocator,
-                    graphics_device_ptr&& dev_sp,
+      depth_stencil(const descriptors::depth_stencil_descriptor& buffer,
+                    committed_allocator* allocator,
+                    graphics_device* dev_p,
                     dsv_descriptor_heap& dsvHeap,
                     size_t frameIndex) :
-         m_allocator_sp(std::forward<committed_allocator_ptr>(allocator)),
-         m_buffer(std::forward<descriptors::depth_stencil_descriptor>(buffer)),
-         m_dev_sp(std::forward<graphics_device_ptr>(dev_sp))
+         m_allocator_sp(allocator),
+         m_buffer(buffer),
+         m_dev_p(dev_p),
+         m_frameIndex(frameIndex)
       {
          m_cpuHandle = dsvHeap.at_cpu(frameIndex);
          acquire();
-         dsvHeap.insert(dev_sp, frameIndex, *this);
+         dsvHeap.insert(dev_p, frameIndex, *this);
       }
 
       /*
@@ -52,7 +53,27 @@ namespace qgl::graphics::gpu
       /*
        Move constructor.
        */
-      depth_stencil(depth_stencil&&) = default;
+      depth_stencil(depth_stencil&& x) noexcept :
+         irender_target(std::move(x)),
+         igpu_buffer(std::move(x)),
+         m_allocator_sp(x.m_allocator_sp),
+         m_alloc_h(x.m_alloc_h),
+         m_dev_p(std::move(x.m_dev_p)),
+         m_depthDesc(std::move(x.m_depthDesc)),
+         m_rects(std::move(x.m_rects)),
+         m_frameIndex(x.m_frameIndex),
+         m_size(x.m_size),
+         m_desc(std::move(x.m_desc)),
+         m_viewDesc(std::move(x.m_viewDesc)),
+         m_clearValue(std::move(x.m_clearValue)),
+         m_cpuHandle(std::move(x.m_cpuHandle)),
+         m_buffer(std::move(x.m_buffer))
+      {
+         x.m_allocator_sp = nullptr;
+         x.m_dev_p = nullptr;
+         x.m_frameIndex = static_cast<size_t>(-1);
+         x.m_size = static_cast<size_t>(-1);
+      }
 
       /*
        Destructor.
@@ -60,6 +81,8 @@ namespace qgl::graphics::gpu
       virtual ~depth_stencil() noexcept
       {
          release();
+         m_allocator_sp = nullptr;
+         m_dev_p = nullptr;
       }
 
       /*
@@ -77,6 +100,11 @@ namespace qgl::graphics::gpu
       virtual const ViewDescriptionT* view() const
       {
          return &m_viewDesc;
+      }
+
+      D3D12_DEPTH_STENCIL_DESC depth_desc() const noexcept
+      {
+         return m_depthDesc;
       }
 
       virtual size_t size() const noexcept
@@ -107,7 +135,10 @@ namespace qgl::graphics::gpu
          return static_cast<DXGI_FORMAT>(m_buffer.format);
       }
 
-      virtual D3D12_CPU_DESCRIPTOR_HANDLE where() const noexcept;
+      virtual D3D12_CPU_DESCRIPTOR_HANDLE where() const noexcept
+      {
+         return m_cpuHandle;
+      }
 
       /*
        Value to use when clearing the depth buffer.
@@ -127,7 +158,10 @@ namespace qgl::graphics::gpu
 
       void release()
       {
-         m_allocator_sp->free(m_alloc_h);
+         if (m_allocator_sp)
+         {
+            m_allocator_sp->free(m_alloc_h);
+         }
       }
 
       void acquire()
@@ -138,10 +172,10 @@ namespace qgl::graphics::gpu
 
          m_desc = CD3DX12_RESOURCE_DESC(D3D12_RESOURCE_DIMENSION_TEXTURE2D,
             0,
-            helpers::dip_to_pixels(m_dev_sp->wnd()->width(), 
-                                   m_dev_sp->wnd()->dpi()),
-            helpers::dip_to_pixels(m_dev_sp->wnd()->height(), 
-                                   m_dev_sp->wnd()->dpi()),
+            helpers::dip_to_pixels(m_dev_p->wnd()->width(), 
+                                   m_dev_p->wnd()->dpi_x()),
+            helpers::dip_to_pixels(m_dev_p->wnd()->height(), 
+                                   m_dev_p->wnd()->dpi_y()),
             1,
             1,
             format(),
@@ -154,23 +188,71 @@ namespace qgl::graphics::gpu
          m_clearValue.Format = format();
          m_clearValue.DepthStencil.Depth = depth();
          m_clearValue.DepthStencil.Stencil = stencil();
-         D3D12_DEPTH_STENCIL_DESC m_depthDesc;
-         m_depthDesc = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
          auto heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
 
-         m_alloc_h = m_allocator_sp->alloc(heapProps, D3D12_HEAP_FLAG_NONE,
-            m_desc, D3D12_RESOURCE_STATE_DEPTH_WRITE, &m_clearValue);
+         m_depthDesc.StencilWriteMask = m_buffer.stencil_write_mask;
+         m_depthDesc.StencilReadMask = m_buffer.stencil_read_mask;
+         m_depthDesc.StencilEnable = m_buffer.stencil_enabled();
+         m_depthDesc.DepthWriteMask =  
+            static_cast<D3D12_DEPTH_WRITE_MASK>(m_buffer.write_mask);
+         m_depthDesc.DepthFunc = 
+            static_cast<D3D12_COMPARISON_FUNC>(m_buffer.depth_func);
+         m_depthDesc.DepthEnable = m_buffer.depth_enabled();
+
+         m_depthDesc.BackFace.StencilFunc = 
+            static_cast<D3D12_COMPARISON_FUNC>(m_buffer.back_face_op.func);
+         m_depthDesc.BackFace.StencilDepthFailOp = 
+            static_cast<D3D12_STENCIL_OP>(m_buffer.back_face_op.depth_fail_op);
+         m_depthDesc.BackFace.StencilFailOp = 
+            static_cast<D3D12_STENCIL_OP>(m_buffer.back_face_op.fail_op);
+         m_depthDesc.BackFace.StencilPassOp = 
+            static_cast<D3D12_STENCIL_OP>(m_buffer.back_face_op.pass_op);
+
+         m_depthDesc.FrontFace.StencilFunc = 
+            static_cast<D3D12_COMPARISON_FUNC>(m_buffer.front_face_op.func);
+         m_depthDesc.FrontFace.StencilDepthFailOp = 
+            static_cast<D3D12_STENCIL_OP>(m_buffer.front_face_op.depth_fail_op);
+         m_depthDesc.FrontFace.StencilFailOp = 
+            static_cast<D3D12_STENCIL_OP>(m_buffer.front_face_op.fail_op);
+         m_depthDesc.FrontFace.StencilPassOp = 
+            static_cast<D3D12_STENCIL_OP>(m_buffer.front_face_op.pass_op);
+
+         m_alloc_h = m_allocator_sp->alloc(
+            m_desc, D3D12_RESOURCE_STATE_DEPTH_WRITE);
 
          // texture width * texture height * 4 bytes per pixel.
          m_size = m_desc.Width * m_desc.Height * 4;
       }
 
-      private:
-      committed_allocator_ptr m_allocator_sp;
-      gpu_alloc_handle m_alloc_h;
-      graphics_device_ptr m_dev_sp;
+      const D3D12_RECT* rectangles() const noexcept
+      {
+         return m_rects.data();
+      }
 
-      size_t m_size;
+      template<class RectIt>
+      void rectangles(RectIt first, RectIt last)
+      {
+         m_rects.clear();
+         for (auto it = first; it != last; ++it)
+         {
+            m_rects.push_back(*it);
+         }
+      }
+
+      size_t rectangle_count() const noexcept
+      {
+         return m_rects.size();
+      }
+
+      private:
+      committed_allocator* m_allocator_sp = nullptr;
+      gpu_alloc_handle m_alloc_h = -1;
+      graphics_device* m_dev_p = nullptr;
+      D3D12_DEPTH_STENCIL_DESC m_depthDesc;
+
+      std::vector<D3D12_RECT> m_rects;
+      size_t m_frameIndex = -1;
+      size_t m_size = -1;
       ResourceDescriptionT m_desc;
       ViewDescriptionT m_viewDesc;
       D3D12_CLEAR_VALUE m_clearValue;

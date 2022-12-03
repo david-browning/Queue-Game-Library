@@ -13,4 +13,12 @@ namespace qgl::impl
       return (((i >> N * CHAR_BIT & std::uint8_t(-1)) <<
          (sizeof(T) - 1 - N) * CHAR_BIT) | ...);
    }
+
+   template<typename T>
+   constexpr T mask(size_t start, size_t end, T cur) noexcept
+   {
+      return start > end ? 
+         cur :
+         mask(start + 1, end, cur | (T(1) << T(start)));
+   }
 }

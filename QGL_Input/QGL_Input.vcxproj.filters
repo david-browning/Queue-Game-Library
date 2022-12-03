@@ -28,18 +28,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Generated Files\module.g.cpp">
+      <Filter>winrt_rt</Filter>
+    </ClCompile>
+    <ClCompile Include="QGL_InputRT.cpp">
+      <Filter>winrt_rt</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="QGL_Input.def">
       <Filter>winrt_rt</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PropertySheet.props" />
@@ -92,6 +95,9 @@
     </ClInclude>
     <ClInclude Include="include\qgl_input_key.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QGL_InputRT.h">
+      <Filter>winrt_rt</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

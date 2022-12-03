@@ -10,7 +10,7 @@ namespace qgl::graphics::descriptors
        Default constructor. The element is invalid and all fields need to be
        overwritten before using this.
        */
-      vertex_element_descriptor()
+      constexpr vertex_element_descriptor()
       {
 
       }
@@ -34,7 +34,7 @@ namespace qgl::graphics::descriptors
                                 uint8_t elementIdx) :
          semantic_name(semantic.c_str(), semantic.size()),
          semantic_index(semanticIdx),
-         format(fmt),
+         format(static_cast<uint16_t>(fmt)),
          slot(inputSlot),
          data_class(D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA),
          index(elementIdx)
@@ -76,7 +76,7 @@ namespace qgl::graphics::descriptors
        Semantic name.
        May or may not end with a null-terminator.
        */
-      qgl::fixed_buffer<char, MAX_SEMANTIC_NAME_LEN> semantic_name;
+      qgl::fixed_buffer<char, MAX_SEMANTIC_NAME_LEN> semantic_name = { '\0' };
 
       /*
        The semantic index for the element. A semantic index modifies a

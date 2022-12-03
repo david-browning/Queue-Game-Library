@@ -7,12 +7,12 @@ namespace qgl::graphics::gpu
    class cmd_bundle : public icommand_list
    {
       public:
-      cmd_bundle(graphics_device_ptr& dev_p,
-                    const std::shared_ptr<gpu::pso>& pipelineState_p,
-                    size_t nodeMask = 0) :
-         icommand_list(dev_p,
+      cmd_bundle(graphics_device& dev,
+                 gpu::ipso& pso,
+                 size_t nodeMask = 0) :
+         icommand_list(dev,
+                       pso,
                        D3D12_COMMAND_LIST_TYPE_BUNDLE,
-                       pipelineState_p,
                        nodeMask)
       {
 

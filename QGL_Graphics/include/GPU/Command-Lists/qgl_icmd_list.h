@@ -1,6 +1,6 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include "include/GPU/qgl_pso.h"
+#include "include/GPU/qgl_ipso.h"
 #include "include/GPU/Root-Signature/qgl_root_signature.h"
 #include "include/GPU/Descriptors/qgl_descriptor_table.h"
 #include "include/GPU/Descriptors/qgl_descriptor_heap.h"
@@ -15,14 +15,14 @@ namespace qgl::graphics::gpu
    class icommand_list
    {
       public:
-      icommand_list(graphics_device_ptr& dev_p,
+      icommand_list(graphics_device& dev,
+                    gpu::ipso& pso,
                     D3D12_COMMAND_LIST_TYPE listT,
-                    const std::shared_ptr<gpu::pso>& pipelineState_p,
                     size_t nodeMask = 0) :
-         m_pso_p(pipelineState_p)
+         m_pso(pso)
       {
-         make_allocator(dev_p->d3d12_device(), listT);
-         make_cmd_list(dev_p->d3d12_device(), listT, nodeMask);
+         make_allocator(dev.dev_3d(), listT);
+         make_cmd_list(dev.dev_3d(), listT, nodeMask);
       }
 
       /*
@@ -83,10 +83,10 @@ namespace qgl::graphics::gpu
        Note that bundles don't inherit the pipeline state set by previous
        calls in direct command lists that are their parents.
        */
-      void pso(const std::shared_ptr<pso>& pipeline_p)
+      void pso(ipso& pso)
       {
-         m_pso_p = pipeline_p;
-         m_cmdList->SetPipelineState(m_pso_p->get());
+         m_pso = pso;
+         m_cmdList->SetPipelineState(m_pso.get().get());
       }
 
       /*
@@ -100,7 +100,7 @@ namespace qgl::graphics::gpu
       template<
          D3D12_DESCRIPTOR_HEAP_TYPE DescriptorHeapT,
          D3D12_DESCRIPTOR_HEAP_FLAGS Flag>
-         void descriptors(
+      void descriptors(
             std::initializer_list<descriptor_heap<DescriptorHeapT, Flag>> heaps)
       {
          m_heapsToSet.clear();
@@ -202,7 +202,7 @@ namespace qgl::graphics::gpu
          typename ResourceDescriptionT,
          typename ViewDescriptionT,
          typename ResourceT>
-         void transition(
+      void transition(
             igpu_buffer<ResourceDescriptionT, ViewDescriptionT, ResourceT>* resource,
             D3D12_RESOURCE_STATES newState)
       {
@@ -235,7 +235,7 @@ namespace qgl::graphics::gpu
          typename ResourceDescriptionT,
          typename ViewDescriptionT,
          typename ResourceT>
-         void transition_queue(
+      void transition_queue(
             igpu_buffer<ResourceDescriptionT, ViewDescriptionT, ResourceT>* resource,
             D3D12_RESOURCE_STATES newState)
       {
@@ -280,7 +280,7 @@ namespace qgl::graphics::gpu
           called on the same allocator at the same time from multiple threads.
           */
          winrt::check_hresult(m_cmdList->Reset(m_allocator.get(),
-            m_pso_p->get()));
+            m_pso.get().get()));
          m_vertBuffView.resize(0);
          m_heapsToSet.resize(0);
       }
@@ -327,14 +327,14 @@ namespace qgl::graphics::gpu
             static_cast<UINT>(nodeMask),
             listT,
             m_allocator.get(),
-            m_pso_p->get(),
+            m_pso.get().get(),
             IID_PPV_ARGS(m_cmdList.put())));
 
          //Close command list.
          winrt::check_hresult(m_cmdList->Close());
       }
 
-      std::shared_ptr<gpu::pso> m_pso_p;
+      std::reference_wrapper<gpu::ipso> m_pso;
       winrt::com_ptr<icmd_allocator> m_allocator;
       winrt::com_ptr<icmd_list> m_cmdList;
 

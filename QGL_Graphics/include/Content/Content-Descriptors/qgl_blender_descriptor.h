@@ -1,6 +1,7 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
 #include "include/Content/Content-Descriptors/qgl_blend_descriptor.h"
+#include "include/Content/Content-Descriptors/qgl_vector_descriptor.h"
 
 namespace qgl::graphics::descriptors
 {
@@ -52,7 +53,7 @@ namespace qgl::graphics::descriptors
        */
       fixed_buffer<blend_descriptor, NUM_RENDER_TARGETS> blend_descriptions;
 
-      fixed_buffer<math::rational<int32_t>, 4> blend_factor;
+      vector_descriptor blend_factor;
 
       /*
        Unused right now.

@@ -78,7 +78,6 @@ namespace qgl::impl
             v ^= (uint64_t)pos2[0];
             h ^= mix(v);
             h *= m;
-            [[fallthrough]];
       }
 
       return mix(h);

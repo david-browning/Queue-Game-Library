@@ -1,6 +1,8 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
 #include "include/Helpers/qgl_dx_constructors.h"
+#include "include/Content/Content-Descriptors/qgl_vector_descriptor.h"
+#include "include/Content/Content-Descriptors/qgl_brush_outline_descriptor.h"
 
 namespace qgl::graphics
 {
@@ -42,13 +44,13 @@ namespace qgl::graphics::descriptors
        the brush. This value must be in the [0.0f, 1.0f] range if the gradient
        stop is to be seen explicitly.
        */
-      qgl::math::rational<uint32_t> position;
+      qgl::math::rational<int32_t> position;
 
       /*
-       The color of the gradient stop. Each element corisponds to the
-       R, G, B, A values respectivly.
+       The color of the gradient stop. Each element corresponds to the
+       R, G, B, A values respectively.
        */
-      fixed_buffer<qgl::math::rational<uint32_t>, 4> color;
+      vector_descriptor color;
    };
 #pragma pack(pop)
 
@@ -64,6 +66,8 @@ namespace qgl::graphics::descriptors
       static constexpr std::array<uint8_t, BRUSH_DESCRIPTOR_MAX_PROPRTY_SIZE>
          EMPTY_PROPS{ 0 };
 
+      static constexpr uint16_t DEFAULT_FLAGS = 0;
+
       public:
       constexpr brush_descriptor()
       {
@@ -75,7 +79,7 @@ namespace qgl::graphics::descriptors
          using std::swap;
          swap(l.style, r.style);
          swap(l.stop_count, r.stop_count);
-         swap(l.reserved, r.reserved);
+         swap(l.flags, r.flags);
          swap(l.properties, r.properties);
          swap(l.stops, r.stops);
       }
@@ -106,9 +110,9 @@ namespace qgl::graphics::descriptors
       uint8_t stop_count = 1;
 
       /*
-       Reserved
+       Flags
        */
-      uint16_t reserved = 0;
+      uint16_t flags = DEFAULT_FLAGS;
    };
 #pragma pack(pop)
 }
@@ -148,9 +152,10 @@ namespace qgl::graphics
       std::vector<D2D1_GRADIENT_STOP> ret;
       for (size_t i = 0; i < n; i++)
       {
+         auto& stop = stops[i];
          D2D1_GRADIENT_STOP grad;
-         grad.color = to_d2d_color(first->color);
-         grad.position = first->position.operator float();
+         grad.color = to_d2d_color(stop.color);
+         grad.position = stop.position.operator float();
          ret.push_back(std::move(grad));
       }
 

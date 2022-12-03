@@ -4,54 +4,22 @@
 
 namespace qgl::math
 {
+   /*
+    Represents a number between -1 and 1, inclusive;
+    Stores a numerator. The denominator is the template constant.
+    This only allocates enough memory needed to store the denominator.
+    Ex: A denominator of 255 will only allocate 1 byte.
+    */
 #pragma pack(push, 1)
    template<size_t Denominator>
    struct decimal
    {
       static_assert(Denominator > 0, "Denominator must be greater than 0.");
 
-      private:
-
-      template<size_t Denom>
-      struct bit_round
-      {
-         static constexpr auto value = round_up(
-            qgl::mem::msb(Denom) + 1, static_cast<size_t>(8));
-      };
-
-      template<size_t Bits>
-      struct make_type
-      {
-         typedef int64_t type;
-      };
-
-      template<>
-      struct make_type<8>
-      {
-         typedef int8_t type;
-      };
-
-      template<>
-      struct make_type<16>
-      {
-         typedef int16_t type;
-      };
-
-      template<>
-      struct make_type<24>
-      {
-         typedef int32_t type;
-      };
-
-      template<>
-      struct make_type<32>
-      {
-         typedef int32_t type;
-      };
-
       public:
       using numerator_type =
-         typename make_type<bit_round<Denominator>::value>::type;
+         typename qgl::mem::traits::make_type<
+            qgl::mem::traits::bit_round<Denominator>::value>::type;
 
       /*
        Stores the number 0.
@@ -125,9 +93,21 @@ namespace qgl::math
    };
 #pragma pack(pop)
 
+   static_assert(sizeof(decimal<255>) == 1,
+                 "Decimal size if not correct (255)");
+
+   static_assert(sizeof(decimal<1000>) == 2,
+                 "Decimal size if not correct (255)");
+
+   static_assert(sizeof(decimal<67000>) == 4,
+                 "Decimal size if not correct (6700)");
+
+   static_assert(sizeof(decimal<1099511627776>::numerator_type) == 8,
+                 "Decimal size if not correct (1,099,511,627,776)");
+
    template<size_t LDenom, size_t RDenom>
    inline bool operator==(const decimal<LDenom>& l,
-                                 const decimal<RDenom>& r) noexcept
+                          const decimal<RDenom>& r) noexcept
    {
       return (l.numerator() * r.denominator() -
          r.numerator() * l.denominator()) == 0;
@@ -135,7 +115,7 @@ namespace qgl::math
 
    template<size_t LDenom, size_t RDenom>
    inline bool operator!=(const decimal<LDenom>& l,
-                                 const decimal<RDenom>& r) noexcept
+                          const decimal<RDenom>& r) noexcept
    {
       return !(l == r);
    }

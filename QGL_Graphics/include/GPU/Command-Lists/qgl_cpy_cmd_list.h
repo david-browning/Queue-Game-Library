@@ -7,11 +7,10 @@ namespace qgl::graphics::gpu
    class copy_command_list : public icommand_list
    {
       public:
-      copy_command_list(graphics_device_ptr& dev_p,
-                        const std::shared_ptr<gpu::pso>& pipelineState_p,
+      copy_command_list(graphics_device& dev,
+                        gpu::ipso& pso,
                         size_t nodeMask = 0) :
-         icommand_list(dev_p, D3D12_COMMAND_LIST_TYPE_COPY,
-            pipelineState_p, nodeMask)
+         icommand_list(dev, pso, D3D12_COMMAND_LIST_TYPE_COPY, nodeMask)
       {
       }
 

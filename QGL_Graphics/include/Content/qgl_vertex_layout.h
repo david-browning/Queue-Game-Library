@@ -19,27 +19,32 @@ namespace qgl::graphics
          m_strip_cut(static_cast<D3D12_INDEX_BUFFER_STRIP_CUT_VALUE>(desc.strip_cut))
 
       {
-         auto count = std::distance(first, last);
+         using itType = typename std::remove_reference<decltype(*first)>::type;
+         static_assert(std::is_same<
+                          descriptors::vertex_element_descriptor,
+                          itType>::value,
+                       "ElementIt must point to a vertex_layout_descriptor");
 
          using idx_type = decltype(descriptors::vertex_element_descriptor::index);
+         auto count = std::distance(first, last);
 
-         // Keep track of the indicies so that no element can occupie the same
+         // Keep track of the indices so that no element can occupies the same
          // index.
          std::unordered_set<idx_type> seen;
-         for (auto it = first; it != last; it++)
+         for (; first != last; first++)
          {
             //Make sure the index isn't already used.
-            if (seen.count(it->index) > 0)
+            if (seen.count(first->index) > 0)
             {
                throw std::invalid_argument(
                   "Two elements occupy the same index.");
             }
 
             // Mark the index as occupied
-            seen.insert(it->index);
+            seen.insert(first->index);
 
-            // Copy the sematic name.
-            m_sematicNames.emplace_back(it->semantic_index);
+            // Copy the semantic name.
+            m_sematicNames.emplace_back(first->semantic_name.data());
 
             // Create a D3D12_INPUT_ELEMENT_DESC from the current element.
             D3D12_INPUT_ELEMENT_DESC e;
@@ -56,7 +61,7 @@ namespace qgl::graphics
          }
 
          //Verify there are no holes.
-         for (size_t i = 0; i < count; i++)
+         for (idx_type i = 0; i < count; i++)
          {
             if (seen.count(i) == 0)
             {
@@ -74,7 +79,7 @@ namespace qgl::graphics
       /*
        Returns the number of input element descriptions.
        */
-      constexpr size_t size() const noexcept
+      size_t size() const noexcept
       {
          return m_elements.size();
       }

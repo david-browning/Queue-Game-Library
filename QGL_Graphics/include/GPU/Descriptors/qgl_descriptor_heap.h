@@ -82,7 +82,7 @@ namespace qgl::graphics::gpu
        Adds a shader resource view at the idx'th position in the descriptor
        heap.
        */
-      void insert(const graphics_device_ptr& dev_p,
+      void insert(graphics_device* dev_p,
                   size_t idx,
                   texture_type& textureBuffer)
       {
@@ -94,7 +94,7 @@ namespace qgl::graphics::gpu
       /*
        Adds a sampler view at the idx'th position in the descriptor heap.
        */
-      void insert(const graphics_device_ptr& dev_p,
+      void insert(graphics_device* dev_p,
                   size_t idx,
                   sampler_type& samplerBuffer)
       {
@@ -106,7 +106,7 @@ namespace qgl::graphics::gpu
       /*
        Adds a depth stencil view at the idx'th position in the descriptor heap.
        */
-      void insert(const graphics_device_ptr& dev_p,
+      void insert(graphics_device* dev_p,
                   size_t idx,
                   depth_stencil_type& depthStencil)
       {
@@ -118,7 +118,7 @@ namespace qgl::graphics::gpu
       /*
        Adds a render target view at the idx'th position in the descriptor heap.
        */
-      void insert(const graphics_device_ptr& dev_p,
+      void insert(graphics_device* dev_p,
                   size_t idx,
                   render_target_type& renderTarget)
       {
@@ -132,7 +132,7 @@ namespace qgl::graphics::gpu
        heap.
        */
       template<typename T>
-      void insert(const graphics_device_ptr& dev_p,
+      void insert(graphics_device* dev_p,
                   size_t idx,
                   const const_buffer<T>& constBuffer)
       {

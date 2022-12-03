@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.props" Condition="Exists('..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.props')" />
-  <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.220325.3\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.220325.3\build\native\Microsoft.Windows.CppWinRT.props')" />
+  <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.221121.5\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.221121.5\build\native\Microsoft.Windows.CppWinRT.props')" />
+  <Import Project="..\packages\Microsoft.Direct3D.D3D12.1.608.0\build\native\Microsoft.Direct3D.D3D12.props" Condition="Exists('..\packages\Microsoft.Direct3D.D3D12.1.608.0\build\native\Microsoft.Direct3D.D3D12.props')" />
   <PropertyGroup Label="Globals">
     <CppWinRTEnabled>true</CppWinRTEnabled>
     <MinimalCoreWin>true</MinimalCoreWin>
@@ -168,8 +168,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\Content\Content-Descriptors\qgl_atlas_descriptor.h" />
+    <ClInclude Include="include\Content\Content-Descriptors\qgl_atlas_entry_descriptor.h" />
     <ClInclude Include="include\Content\Content-Descriptors\qgl_blend_descriptor.h" />
     <ClInclude Include="include\Content\Content-Descriptors\qgl_brush_descriptor.h" />
+    <ClInclude Include="include\Content\Content-Descriptors\qgl_brush_outline_descriptor.h" />
     <ClInclude Include="include\Content\Content-Descriptors\qgl_camera_descriptor.h" />
     <ClInclude Include="include\Content\Content-Descriptors\qgl_depth_stencil_descriptor.h" />
     <ClInclude Include="include\Content\Content-Descriptors\qgl_engine_descriptor.h" />
@@ -177,20 +180,26 @@
     <ClInclude Include="include\Content\Content-Descriptors\qgl_hdr_descriptor.h" />
     <ClInclude Include="include\Content\Content-Descriptors\qgl_light_descriptor.h" />
     <ClInclude Include="include\Content\Content-Descriptors\qgl_multisampler_descriptor.h" />
+    <ClInclude Include="include\Content\Content-Descriptors\qgl_screen_space_descriptor.h" />
+    <ClInclude Include="include\Content\Content-Descriptors\qgl_vector_descriptor.h" />
     <ClInclude Include="include\Content\Content-Descriptors\qgl_rasterizer_descriptor.h" />
     <ClInclude Include="include\Content\Content-Descriptors\qgl_sampler_descriptor.h" />
     <ClInclude Include="include\Content\Content-Descriptors\qgl_shader_descriptor.h" />
     <ClInclude Include="include\Content\Content-Descriptors\qgL_text_format_descriptor.h" />
     <ClInclude Include="include\Content\Content-Descriptors\qgl_vertex_element_descriptor.h" />
     <ClInclude Include="include\Content\Content-Descriptors\qgl_vertex_layout_descriptor.h" />
-    <ClInclude Include="include\Content\Content-Descriptors\texture_descriptor.h" />
+    <ClInclude Include="include\Content\Content-Descriptors\qgl_texture_descriptor.h" />
+    <ClInclude Include="include\Content\qgl_atlas.h" />
     <ClInclude Include="include\Content\qgl_brush.h" />
     <ClInclude Include="include\Content\qgl_camera.h" />
     <ClInclude Include="include\Content\qgl_device_configuration.h" />
+    <ClInclude Include="include\Content\qgl_image.h" />
     <ClInclude Include="include\Content\qgl_light.h" />
     <ClInclude Include="include\Content\qgl_multisampler.h" />
+    <ClInclude Include="include\Content\qgl_outline_brush.h" />
     <ClInclude Include="include\Content\qgl_sampler.h" />
     <ClInclude Include="include\Content\qgl_shader.h" />
+    <ClInclude Include="include\Content\qgl_texture.h" />
     <ClInclude Include="include\Content\qgl_vertex_layout.h" />
     <ClInclude Include="include\Content\qgl_wtext.h" />
     <ClInclude Include="include\Content\qgl_text_format.h" />
@@ -199,7 +208,6 @@
     <ClInclude Include="include\GPU\Buffers\qgl_imappable.h" />
     <ClInclude Include="include\GPU\Buffers\qgl_index_buffer.h" />
     <ClInclude Include="include\GPU\Buffers\qgl_readback_buffer.h" />
-    <ClInclude Include="include\GPU\Buffers\qgl_texture_buffer.h" />
     <ClInclude Include="include\GPU\Buffers\qgl_upload_buffer.h" />
     <ClInclude Include="include\GPU\Buffers\qgl_vertex_buffer.h" />
     <ClInclude Include="include\GPU\Command-Lists\qgl_cmd_bundle.h" />
@@ -219,7 +227,8 @@
     <ClInclude Include="include\GPU\Memory\qgl_igpu_allocator.h" />
     <ClInclude Include="include\GPU\Memory\qgl_slot_allocator.h" />
     <ClInclude Include="include\GPU\qgl_frame.h" />
-    <ClInclude Include="include\GPU\qgl_pso.h" />
+    <ClInclude Include="include\GPU\qgl_graphics_pso.h" />
+    <ClInclude Include="include\GPU\qgl_ipso.h" />
     <ClInclude Include="include\GPU\Render\qgl_blender.h" />
     <ClInclude Include="include\GPU\Render\qgl_depth_stencil.h" />
     <ClInclude Include="include\GPU\Render\qgl_irender_target.h" />
@@ -271,18 +280,18 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.220325.3\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.220325.3\build\native\Microsoft.Windows.CppWinRT.targets')" />
-    <Import Project="..\packages\directxtex_uwp.2022.3.24.1\build\native\directxtex_uwp.targets" Condition="Exists('..\packages\directxtex_uwp.2022.3.24.1\build\native\directxtex_uwp.targets')" />
-    <Import Project="..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.targets" Condition="Exists('..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.targets')" />
+    <Import Project="..\packages\directxtex_uwp.2022.10.18.1\build\native\directxtex_uwp.targets" Condition="Exists('..\packages\directxtex_uwp.2022.10.18.1\build\native\directxtex_uwp.targets')" />
+    <Import Project="..\packages\Microsoft.Direct3D.D3D12.1.608.0\build\native\Microsoft.Direct3D.D3D12.targets" Condition="Exists('..\packages\Microsoft.Direct3D.D3D12.1.608.0\build\native\Microsoft.Direct3D.D3D12.targets')" />
+    <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.221121.5\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.221121.5\build\native\Microsoft.Windows.CppWinRT.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.220325.3\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.220325.3\build\native\Microsoft.Windows.CppWinRT.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.220325.3\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.220325.3\build\native\Microsoft.Windows.CppWinRT.targets'))" />
-    <Error Condition="!Exists('..\packages\directxtex_uwp.2022.3.24.1\build\native\directxtex_uwp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\directxtex_uwp.2022.3.24.1\build\native\directxtex_uwp.targets'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Direct3D.D3D12.1.600.10\build\native\Microsoft.Direct3D.D3D12.targets'))" />
+    <Error Condition="!Exists('..\packages\directxtex_uwp.2022.10.18.1\build\native\directxtex_uwp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\directxtex_uwp.2022.10.18.1\build\native\directxtex_uwp.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Direct3D.D3D12.1.608.0\build\native\Microsoft.Direct3D.D3D12.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Direct3D.D3D12.1.608.0\build\native\Microsoft.Direct3D.D3D12.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Direct3D.D3D12.1.608.0\build\native\Microsoft.Direct3D.D3D12.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Direct3D.D3D12.1.608.0\build\native\Microsoft.Direct3D.D3D12.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.221121.5\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.221121.5\build\native\Microsoft.Windows.CppWinRT.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.221121.5\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.221121.5\build\native\Microsoft.Windows.CppWinRT.targets'))" />
   </Target>
 </Project>

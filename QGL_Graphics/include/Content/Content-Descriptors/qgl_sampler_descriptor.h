@@ -1,5 +1,6 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
+#include "include/Content/Content-Descriptors/qgl_vector_descriptor.h"
 
 namespace qgl::graphics::descriptors
 {
@@ -41,7 +42,7 @@ namespace qgl::graphics::descriptors
        for AddressU, AddressV, or AddressW. Range must be between 0.0 and 1.0
        inclusive.
        */
-      fixed_buffer<math::rational<int32_t>, 4> border;
+      vector_descriptor border;
 
       /*
        Offset from the calculated mipmap level. For example, if the runtime
@@ -107,6 +108,28 @@ namespace qgl::graphics::descriptors
       uint8_t reserved1 = 0;
       uint8_t reserved2 = 0;
       uint8_t reserved3 = 0;
+
+      explicit operator D3D12_SAMPLER_DESC() const noexcept
+      {
+         D3D12_SAMPLER_DESC desc = {};
+         desc.AddressU = static_cast<D3D12_TEXTURE_ADDRESS_MODE>(addressu);
+         desc.AddressV = static_cast<D3D12_TEXTURE_ADDRESS_MODE>(addressv);
+         desc.AddressW = static_cast<D3D12_TEXTURE_ADDRESS_MODE>(addressw);
+         
+         desc.BorderColor[0] = static_cast<float>(border[0]);
+         desc.BorderColor[1] = static_cast<float>(border[1]);
+         desc.BorderColor[2] = static_cast<float>(border[2]);
+         desc.BorderColor[3] = static_cast<float>(border[3]);
+         
+         desc.ComparisonFunc = static_cast<D3D12_COMPARISON_FUNC>(
+            comparison_func);
+         desc.Filter = static_cast<D3D12_FILTER>(filter);
+         desc.MaxAnisotropy = anisotropy_max;
+         desc.MaxLOD = static_cast<float>(lod_max);
+         desc.MinLOD = static_cast<float>(lod_min);
+         desc.MipLODBias = static_cast<float>(mip_lod_bias);
+         return desc;
+      }
    };
 #pragma pack(pop)
 }

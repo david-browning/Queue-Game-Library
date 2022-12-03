@@ -13,6 +13,7 @@ namespace QGL_Graphics_UnitTests
          descriptors::text_format_descriptor desc;
          auto fac_p = helpers::make_text_factory();
          text_format f{ desc, fac_p.get() };
+         Assert::IsNotNull(f.get());
       }
    };
 }

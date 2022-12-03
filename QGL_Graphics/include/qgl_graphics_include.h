@@ -31,6 +31,8 @@
 #include <DirectXMath.h>
 #include <DirectXCollision.h>
 #include <DirectXTex.h>
+#include <d2d1_1helper.h>
+#include <d2d1_3helper.h>
 #include "include/Helpers/d3dx12.h"
 #pragma warning(pop)
 

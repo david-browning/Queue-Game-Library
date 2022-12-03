@@ -9,8 +9,8 @@ namespace qgl::graphics
    {
       public:
       constexpr gpu_config(const descriptors::engine_descriptor& desc,
-                           descriptors::hdr_descriptor&& hdrDesc) :
-         m_hdr(std::forward<descriptors::hdr_descriptor>(hdrDesc)),
+                           descriptors::hdr_descriptor& hdrDesc) :
+         m_hdr(hdrDesc),
          m_buffers(desc.buffers),
          m_id(desc.pref_adapter_id),
          m_fullScreen(desc.fullscreen),

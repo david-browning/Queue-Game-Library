@@ -60,9 +60,8 @@ namespace qgl::graphics::gpu
        */
       virtual ~slot_allocator() = default;
 
-      gpu_alloc_handle alloc(size_t bytes,
-         const D3D12_RESOURCE_DESC& description,
-         D3D12_RESOURCE_STATES initialState) override
+      gpu_alloc_handle alloc(const D3D12_RESOURCE_DESC& description,
+                             D3D12_RESOURCE_STATES initialState) override
       {
          // Do not allow multiple threads to allocate or free at the same time.
          std::lock_guard allocationLock{ m_allocationMutex };

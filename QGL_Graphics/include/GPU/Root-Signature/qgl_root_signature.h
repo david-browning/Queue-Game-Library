@@ -5,21 +5,123 @@
 
 namespace qgl::graphics::gpu
 {
+   using ibindable_stager = typename std::list<ibindable*>;
+
+   /*
+    Creates a collection of ibindable pointers that will be passed to another 
+    object. The ibindable stager returned by this contains only references to 
+    the ibindables. Freeing the ibindables that were passed to this will cause 
+    this to point to invalid memory.
+    */
+   template<class ForwardIt>
+   inline ibindable_stager make_ibindable_stager(ForwardIt first, 
+                                                 ForwardIt last)
+   {
+      using itType = std::remove_reference<decltype(*first)>::type;
+      ibindable_stager ret;
+      if constexpr (std::is_pointer<itType>::value)
+      {
+         // If the iterators point to a pointer
+         static_assert(std::is_same<ibindable*, itType>::value,
+                    "Dereferencing first does not yield a pointer to 'ibindable'.");
+
+         for (; first != last; first++)
+         {
+            ret.push_back(*first);
+         }
+      }
+      else if constexpr(std::is_reference<itType>::value ||
+                        std::is_same<itType, std::reference_wrapper<ibindable>>::value)
+      {
+         // The iterator points to a reference.
+         static_assert(std::is_same<
+                          std::add_lvalue_reference<ibindable>::type, 
+                          itType>::value ||
+                       std::is_same<
+                          std::reference_wrapper<ibindable>, 
+                          itType>::value,
+                       "Dereferencing first does not yield a pointer to 'ibindable'.");
+
+         for (; first != last; first++)
+         {
+            ret.push_back(std::addressof(first->get()));
+         }
+      }
+      else
+      {
+         static_assert(false,
+                       "Dereferencing first must yield a pointer or reference.");
+      }
+
+      return ret;
+   }
+
+   /*
+    Creates a collection of ibindable pointers that will be passed to another
+    object. The ibindable stager returned by this contains only references to
+    the ibindables. Freeing the ibindables that were passed to this will cause
+    this to point to invalid memory.
+    */
+   inline ibindable_stager make_ibindable_stager(
+      std::initializer_list<std::reference_wrapper<ibindable>> bindings)
+   {
+      ibindable_stager ret;
+      for (auto& b : bindings)
+      {
+         ret.push_back(std::addressof(b.get()));
+      }
+
+      return ret;
+   }
+
+   /*
+    Creates a collection of ibindable pointers that will be passed to another
+    object. The ibindable stager returned by this contains only references to
+    the ibindables. Freeing the ibindables that were passed to this will cause
+    this to point to invalid memory.
+    */
+   inline ibindable_stager make_ibindable_stager(
+      std::initializer_list<std::shared_ptr<ibindable>> bindings)
+   {
+      ibindable_stager ret;
+      for (auto& b : bindings)
+      {
+         ret.push_back(b.get());
+      }
+
+      return ret;
+   }
+
+   /*
+    Creates a collection of ibindable pointers that will be passed to another
+    object. The ibindable stager returned by this contains only references to
+    the ibindables. Freeing the ibindables that were passed to this will cause
+    this to point to invalid memory.
+    */
+   inline ibindable_stager make_ibindable_stager(
+      std::initializer_list<std::unique_ptr<ibindable>> bindings)
+   {
+      ibindable_stager ret;
+      for (auto& b : bindings)
+      {
+         ret.push_back(b.get());
+      }
+
+      return ret;
+   }
+
    class root_signature
    {
       public:
       /*
-       descriptors: Pointer to an array of descriptors.
        nodeMask: Which GPU to upload the root signature to.
        */
-      template<class IBindableIt>
-      root_signature(IBindableIt first,
-                     IBindableIt last,
+      root_signature(const ibindable_stager& bindables,
                      i3d_device* dev_p,
                      size_t nodeMask = 0)
       {
-         collect(first, last);
-         construct(dev, nodeMask);
+         collect(bindables);
+         construct(dev_p, nodeMask);
       }
 
       /*
@@ -70,31 +172,24 @@ namespace qgl::graphics::gpu
       }
 
       private:
-      template<class IBindableIt>
-      void collect(IBindableIt first, IBindableIt last)
+      void collect(const ibindable_stager& bindables)
       {
-         using itType = std::remove_reference<decltype(*first)>::type;
-         static_assert(
-            std::is_same<itType, ibindable*>::value,
-            "IBindableIt must point to an ibindable pointer.");
-
          std::unordered_set<ibindable::index_t> seenSlots;
-         for (auto it = first; it != last; it++)
+         for (auto it = bindables.begin(); it != bindables.end(); it++)
          {
-            auto cur = *it;
-            if (seenSlots.count(cur->root_index()))
+            if (seenSlots.count((*it)->root_index()))
             {
                //Throw an exception.
                char exceptionMessage[128];
                sprintf_s(exceptionMessage,
                          "Two root parameters cannot use the same slot. "
                          "Slot %i is already occupied.",
-                         cur->root_index());
+                         (*it)->root_index());
                throw std::invalid_argument(exceptionMessage);
             }
 
-            seenSlots.insert(cur->root_index());
-            m_params.push_back(cur->root_param());
+            seenSlots.insert((*it)->root_index());
+            m_params.push_back((*it)->root_param());
          }
       }
 
@@ -120,7 +215,9 @@ namespace qgl::graphics::gpu
          CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC desc;
          desc.Init_1_1(
             static_cast<UINT>(m_params.size()),
-            m_params.data(),
+            m_params.size() > 0 ?
+               m_params.data() :
+               nullptr,
             0,
             nullptr,
             D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
@@ -129,12 +226,13 @@ namespace qgl::graphics::gpu
          winrt::com_ptr<ID3DBlob> signature;
          winrt::com_ptr<ID3DBlob> error;
          winrt::check_hresult(D3DX12SerializeVersionedRootSignature(&desc,
-            featureData.HighestVersion,
-            signature.put(),
-            error.put()));
+                                                                    featureData.HighestVersion,
+                                                                    signature.put(),
+                                                                    error.put()));
 
          //Create the signature.
-         winrt::check_hresult(dev_p->CreateRootSignature(nodeMask,
+         winrt::check_hresult(dev_p->CreateRootSignature(
+            static_cast<UINT>(nodeMask),
             signature->GetBufferPointer(),
             signature->GetBufferSize(),
             IID_PPV_ARGS(m_rootSig_p.put())));

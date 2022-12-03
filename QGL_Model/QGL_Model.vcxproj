@@ -13,7 +13,7 @@
     <ApplicationType>Windows Store</ApplicationType>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
     <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0.19041.0</WindowsTargetPlatformVersion>
-    <WindowsTargetPlatformMinVersion>10.0.10240.0</WindowsTargetPlatformMinVersion>
+    <WindowsTargetPlatformMinVersion>10.0.19041.0</WindowsTargetPlatformMinVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <ItemGroup Label="ProjectConfigurations">
@@ -170,6 +170,7 @@
     <ClInclude Include="include\Interfaces\qgl_icontent_type.h" />
     <ClInclude Include="include\Interfaces\qgl_interface.h" />
     <ClInclude Include="include\Memory\qgl_basic_heap.h" />
+    <ClInclude Include="include\Memory\qgl_flags.h" />
     <ClInclude Include="include\Memory\qgl_heap_traits.h" />
     <ClInclude Include="include\Memory\qgl_mem.h" />
     <ClInclude Include="include\Memory\qgl_mem_helpers.h" />
@@ -179,6 +180,7 @@
     <ClInclude Include="include\qgl_component.h" />
     <ClInclude Include="include\qgl_console.h" />
     <ClInclude Include="include\qgl_endian.h" />
+    <ClInclude Include="include\qgl_eptr.h" />
     <ClInclude Include="include\qgl_guid.h" />
     <ClInclude Include="include\qgl_misc_helpers.h" />
     <ClInclude Include="include\qgl_model_include.h" />
@@ -187,6 +189,7 @@
     <ClInclude Include="include\String\qgl_string.h" />
     <ClInclude Include="include\String\qgl_strings.h" />
     <ClInclude Include="include\String\qgl_string_fmt.h" />
+    <ClInclude Include="include\Structures\qgl_handle_map.h" />
     <ClInclude Include="include\Structures\qgl_basic_graph.h" />
     <ClInclude Include="include\Structures\qgl_basic_tree_map.h" />
     <ClInclude Include="include\Structures\qgl_fixed_buffer.h" />

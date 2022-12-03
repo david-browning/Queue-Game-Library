@@ -1,6 +1,7 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
 #include "include/Content/Content-Descriptors/qgl_brush_descriptor.h"
+#include "include/Content/qgl_outline_brush.h"
 #include "include/Helpers/qgl_dx_constructors.h"
 
 namespace qgl::graphics

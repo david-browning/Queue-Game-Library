@@ -62,6 +62,9 @@
     <Filter Include="Source Files\Helpers">
       <UniqueIdentifier>{08699265-7943-4f73-a1c7-b73707cfc07b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{b2037920-f56a-4a2d-9698-ca7084fd663d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
@@ -180,7 +183,7 @@
     <ClInclude Include="include\Content\Content-Descriptors\qgl_sampler_descriptor.h">
       <Filter>Header Files\Content\Content-Descriptors</Filter>
     </ClInclude>
-    <ClInclude Include="include\GPU\qgl_pso.h">
+    <ClInclude Include="include\GPU\qgl_ipso.h">
       <Filter>Header Files\GPU</Filter>
     </ClInclude>
     <ClInclude Include="include\GPU\qgl_frame.h">
@@ -282,9 +285,6 @@
     <ClInclude Include="include\Content\Content-Descriptors\qgl_hdr_descriptor.h">
       <Filter>Header Files\Content\Content-Descriptors</Filter>
     </ClInclude>
-    <ClInclude Include="include\GPU\Buffers\qgl_texture_buffer.h">
-      <Filter>Header Files\GPU\Buffers</Filter>
-    </ClInclude>
     <ClInclude Include="include\Helpers\qgl_color_helpers.h">
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
@@ -306,8 +306,38 @@
     <ClInclude Include="include\Helpers\qgl_supported_helpers.h">
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
-    <ClInclude Include="include\Content\Content-Descriptors\texture_descriptor.h">
+    <ClInclude Include="include\Content\Content-Descriptors\qgl_texture_descriptor.h">
       <Filter>Header Files\Content\Content-Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\Content-Descriptors\qgl_vector_descriptor.h">
+      <Filter>Header Files\Content\Content-Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\Content-Descriptors\qgl_brush_outline_descriptor.h">
+      <Filter>Header Files\Content\Content-Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\qgl_outline_brush.h">
+      <Filter>Header Files\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\Content-Descriptors\qgl_screen_space_descriptor.h">
+      <Filter>Header Files\Content\Content-Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\Content-Descriptors\qgl_atlas_descriptor.h">
+      <Filter>Header Files\Content\Content-Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\Content-Descriptors\qgl_atlas_entry_descriptor.h">
+      <Filter>Header Files\Content\Content-Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\qgl_image.h">
+      <Filter>Header Files\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\qgl_atlas.h">
+      <Filter>Header Files\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Content\qgl_texture.h">
+      <Filter>Header Files\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\qgl_graphics_pso.h">
+      <Filter>Header Files\GPU</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

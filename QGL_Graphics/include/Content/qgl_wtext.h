@@ -1,14 +1,24 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
+#include "include/Content/Content-Descriptors/qgl_screen_space_descriptor.h"
 
 namespace qgl::graphics
 {
    class wtext
    {
-      wtext(std::wstring&& text, 
-            D2D_RECT_F&& rect) :
-         m_text(std::forward<std::wstring>(text)),
-         m_layout(std::forward<D2D_RECT_F>(rect))
+      public:
+      wtext(std::wstring& text, 
+            descriptors::screen_space_descriptor& rect) :
+         m_text(text),
+         m_layout(rect)
+      {
+
+      }
+
+      wtext(const wchar_t* text,
+            descriptors::screen_space_descriptor& rect) :
+         m_text(text),
+         m_layout(rect)
       {
 
       }
@@ -32,13 +42,13 @@ namespace qgl::graphics
       /*
        Returns how big and where to draw the text.
        */
-      const D2D_RECT_F& layout() const noexcept
+      const descriptors::screen_space_descriptor& layout() const noexcept
       {
          return m_layout;
       }
 
       private:
       std::wstring m_text;
-      D2D_RECT_F m_layout;
+      descriptors::screen_space_descriptor m_layout;
    };
 }

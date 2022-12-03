@@ -1,11 +1,23 @@
 ﻿#pragma once
 
-#include "include/qgl_window.h"
-#include "include/Helpers/qgl_graphics_device_helpers.h"
+// Helpers
 #include "include/Helpers/qgl_color_helpers.h"
 #include "include/Helpers/qgl_window_helpers.h"
 
-#include "include/Content/Content-Descriptors/qgL_text_format_descriptor.h"
+// Core Objects
+#include "include/qgl_window.h"
+#include "include/Helpers/qgl_graphics_device_helpers.h"
+#include "include/GPU/Command-Lists/qgl_icmd_list.h"
+#include "include/GPU/Command-Lists/qgl_graphics_cmd_list.h"
 
+#include "include/GPU/qgl_ipso.h"
+#include "include/GPU/qgl_graphics_pso.h"
+#include "include/GPU/qgl_frame.h"
+
+// Content
 #include "include/Content/qgl_text_format.h"
 #include "include/Content/qgl_wtext.h"
+#include "include/Content/qgl_atlas.h"
+#include "include/Content/qgl_image.h"
+#include "include/Content/qgl_texture.h"
+

@@ -1,5 +1,6 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
+#include "include/Content/Content-Descriptors/qgl_qgl_vector_descriptor.h"
 
 namespace qgl::graphics::descriptors
 {
@@ -36,19 +37,19 @@ namespace qgl::graphics::descriptors
        Array of 4 rational numbers. Each number represents the R, G, B, and A
        color values. Values must be between 0 and 1.0.
        */
-      fixed_buffer<math::rational<uint32_t>, 4> color;
+      vector_descriptor color;
 
       /*
        Array of 4 rational numbers. Each number represents the X, Y, and Z
        components. The last value is unused.
        */
-      fixed_buffer<math::rational<int32_t>, 4> look;
+      vector_descriptor look;
 
       /*
        Array of 4 rational numbers. Each number represents the X, Y, and Z
        components. The last value is unused.
        */
-      fixed_buffer<math::rational<int32_t>, 4> position;
+      vector_descriptor position;
 
       /*
        Light intensity. Value must be between 0 and 1.0;

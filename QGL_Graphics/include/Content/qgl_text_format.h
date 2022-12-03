@@ -1,6 +1,6 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include "include/Content/Content-Descriptors/qgL_text_format_descriptor.h"
+#include "include/Content/Content-Descriptors/qgl_text_format_descriptor.h"
 
 namespace qgl::graphics
 {

@@ -1,10 +1,9 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include "include/GPU/qgl_frame.h"
-#include "include/GPU/Root-Signature/qgl_root_signature.h"
 #include "include/Content/qgl_shader.h"
 #include "include/Content/qgl_multisampler.h"
 #include "include/Content/qgl_vertex_layout.h"
+#include "include/GPU/qgl_frame.h"
 
 namespace qgl::graphics::gpu
 {
@@ -15,21 +14,23 @@ namespace qgl::graphics::gpu
     Creating the pipeline state object is deferred until calling get(). The
     pipeline state parameters must be set first.
     */
-   class pso
+   class graphics_pso : public ipso
    {
       public:
-      template<class FrameIt, class ShaderIt>
-      pso(FrameIt firstFrame, FrameIt lastFrame,
-         ShaderIt firstShader, ShaderIt lastShader,
-         device_3d_ptr&& device_p,
-         const multisampler& smplr,
-         const vertex_layout& vLayout,
-         root_signature& rootSig,
-         size_t nodeMask) :
-         m_dev_sp(std::forward<device_3d_ptr>(device_p))
+      graphics_pso(root_signature& rootSig,
+                   const frame_stager& frms,
+                   const shader_stager& shdrs,
+                   const multisampler& smplr,
+                   const vertex_layout& vLayout,
+                   i3d_device* device_p,
+                   size_t nodeMask) :
+         m_dev_p(device_p)
       {
          //Set the flags.
          m_psoDesc.Flags = PSO_DEFAULT_FLAG;
+
+
+         auto& firstFrame = frms.front();
 
          //Set the blender
          auto blndr = firstFrame->frame_blender();
@@ -60,19 +61,32 @@ namespace qgl::graphics::gpu
          //TODO: Add support for stream output?
          //m_psoDesc.StreamOutput;
 
-         frames(firstFrame, lastFrame);
-         shaders(firstShader, lastShader);
+         frames(frms);
+         shaders(shdrs);
 
-         winrt::check_hresult(m_dev_sp->CreateGraphicsPipelineState(
+         winrt::check_hresult(m_dev_p->CreateGraphicsPipelineState(
             &m_psoDesc,
             IID_PPV_ARGS(m_pipelineState.put())));
       }
 
-      pso(const pso&) = delete;
+      graphics_pso(const graphics_pso&) = delete;
 
-      pso(pso&&) = default;
+      graphics_pso(graphics_pso&& x) :
+         ipso(std::move(x)),
+         m_pipelineState(std::move(x.m_pipelineState)),
+         m_psoDesc(std::move(x.m_psoDesc)),
+         m_dev_p(std::move(x.m_dev_p))
+      {
+         x.m_pipelineState = nullptr;
+         x.m_dev_p = nullptr;
+      }
 
-      virtual ~pso() noexcept = default;
+
+      virtual ~graphics_pso() noexcept
+      {
+         m_pipelineState = nullptr;
+         m_dev_p = nullptr;
+      }
 
       /*
        Sets the depth stencil state, format, and render target views. If the
@@ -82,14 +96,13 @@ namespace qgl::graphics::gpu
        unlikely after the PSO is built.
        Throws E_INVALIDARG if there are too many frames.
        */
-      template<class FrameIt>
-      void frames(FrameIt first, FrameIt last)
+      void frames(const frame_stager& frms)
       {
          static constexpr auto maxRTVs =
             sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC::RTVFormats) /
             sizeof(DXGI_FORMAT);
 
-         auto numFrames = std::distance(first, last);
+         auto numFrames = frms.size();
          if (numFrames > maxRTVs)
          {
             OutputDebugString(L"Maximum of 8 RTVs allowed.");
@@ -97,15 +110,14 @@ namespace qgl::graphics::gpu
          }
 
          m_psoDesc.NumRenderTargets = static_cast<UINT>(numFrames);
-         for (size_t i = 0; i < numFrames; i++)
-         {
-            auto frameIt = first + i;
-            m_psoDesc.RTVFormats[i] = frameIt->frame_buffer().format();
-            m_psoDesc.DSVFormat = frameIt->frame_stencil().format();
-            m_psoDesc.DepthStencilState = frameIt->frame_stencil().depth_desc();
 
-            // TODO: Why was this here?
-            //i++;
+         auto frmIt = frms.begin();
+         for (size_t i = 0; i < numFrames; i++, frmIt++)
+         {
+            m_psoDesc.RTVFormats[i] = (*frmIt)->frame_buffer().format();
+            m_psoDesc.DSVFormat = (*frmIt)->frame_stencil().format();
+            m_psoDesc.DepthStencilState =
+               (*frmIt)->frame_stencil().depth_desc();
          }
       }
 
@@ -114,7 +126,7 @@ namespace qgl::graphics::gpu
        Returns nullptr if the pipeline cannot be
        created, possibly due to an incorrect parameter.
        */
-      const ID3D12PipelineState* get() const noexcept
+      virtual const ID3D12PipelineState* get() const noexcept override
       {
          return m_pipelineState.get();
       }
@@ -124,22 +136,21 @@ namespace qgl::graphics::gpu
        Returns nullptr if the pipeline cannot be
        created, possibly due to an incorrect parameter.
        */
-      ID3D12PipelineState* get() noexcept
+      virtual ID3D12PipelineState* get() noexcept override
       {
          return m_pipelineState.get();
       }
 
       private:
-      
-      template<class ShaderIt>
-      void shaders(ShaderIt firstShader, ShaderIt lastShader)
+
+      void shaders(const shader_stager& shdrs)
       {
          // Keep track that no shader is set twice.
          std::unordered_set<shader_types> seenShaders;
 
-         for (auto shader = firstShader; shader != lastShader; shader++)
+         for (auto& shdr : shdrs)
          {
-            auto type = shader->type();
+            auto type = shdr->type();
 
             //Make sure we haven't seen this shader before.
             if (seenShaders.count(type) > 0)
@@ -159,27 +170,27 @@ namespace qgl::graphics::gpu
             {
                case shader_types::ds:
                {
-                  m_psoDesc.DS = shader->byte_code();
+                  m_psoDesc.DS = shdr->byte_code();
                   break;
                }
                case shader_types::gs:
                {
-                  m_psoDesc.GS = shader->byte_code();
+                  m_psoDesc.GS = shdr->byte_code();
                   break;
                }
                case shader_types::hs:
                {
-                  m_psoDesc.HS = shader->byte_code();
+                  m_psoDesc.HS = shdr->byte_code();
                   break;
                }
                case shader_types::vs:
                {
-                  m_psoDesc.VS = shader->byte_code();
+                  m_psoDesc.VS = shdr->byte_code();
                   break;
                }
                case shader_types::ps:
                {
-                  m_psoDesc.PS = shader->byte_code();
+                  m_psoDesc.PS = shdr->byte_code();
                   break;
                }
                default:
@@ -190,16 +201,16 @@ namespace qgl::graphics::gpu
                   winrt::throw_hresult(E_UNEXPECTED);
                }
             }
-
-            //Make sure we have a PS and VS as they are required.
-            if (seenShaders.count(shader_types::vs) == 0 ||
-                seenShaders.count(shader_types::ps) == 0)
-            {
+         }
+         
+         //Make sure we have a PS and VS as they are required.
+         if (seenShaders.count(shader_types::vs) == 0 ||
+             seenShaders.count(shader_types::ps) == 0)
+         {
 #ifdef DEBUG
-               OutputDebugString(L"No vertex or pixel shader was found.");
+            OutputDebugString(L"No vertex or pixel shader was found.");
 #endif
-               winrt::throw_hresult(E_INVALIDARG);
-            }
+            winrt::throw_hresult(E_INVALIDARG);
          }
       }
 
@@ -213,7 +224,7 @@ namespace qgl::graphics::gpu
        */
       D3D12_GRAPHICS_PIPELINE_STATE_DESC m_psoDesc;
 
-      device_3d_ptr m_dev_sp;
+      i3d_device* m_dev_p;
 
 #ifdef DEBUG
       static constexpr D3D12_PIPELINE_STATE_FLAGS PSO_DEFAULT_FLAG =

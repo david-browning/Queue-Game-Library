@@ -1,5 +1,6 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
+#include "include/Content/Content-Descriptors/qgl_vector_descriptor.h"
 
 namespace qgl::graphics
 {
@@ -37,6 +38,11 @@ namespace qgl::graphics
       return ret;
    }
 
+   inline D2D1_COLOR_F to_d2d_color(const descriptors::vector_descriptor& v)
+   {
+      return to_d2d_color(v.vector);
+   }
+
    template<typename T>
    inline DirectX::XMVECTOR XM_CALLCONV to_xmvector(
       const std::array<math::rational<T>, 4>& a) noexcept
@@ -46,5 +52,11 @@ namespace qgl::graphics
          a[1].operator float(),
          a[2].operator float(),
          a[3].operator float());
+   }
+
+   inline DirectX::XMVECTOR XM_CALLCONV to_xmvector(
+      const descriptors::vector_descriptor& v)
+   {
+      return static_cast<DirectX::XMVECTOR>(v);
    }
 }

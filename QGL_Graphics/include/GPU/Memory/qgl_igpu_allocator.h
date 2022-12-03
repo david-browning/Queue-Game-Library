@@ -21,9 +21,8 @@ namespace qgl::graphics::gpu
        calling "synchronize".
        Throws std::bad_alloc if there is no memory available.
        */
-      virtual gpu_alloc_handle alloc(size_t bytes,
-         const D3D12_RESOURCE_DESC& description,
-         D3D12_RESOURCE_STATES initialState) = 0;
+      virtual gpu_alloc_handle alloc(const D3D12_RESOURCE_DESC& description,
+                                     D3D12_RESOURCE_STATES initialState) = 0;
 
       /*
        Only free resources that were allocated by the same allocator.

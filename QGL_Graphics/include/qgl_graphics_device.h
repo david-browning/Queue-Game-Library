@@ -14,21 +14,21 @@ namespace qgl::graphics
       using console_t = typename console<char>;
       using console_ptr = typename std::shared_ptr<console_t>;
 
-      graphics_device(gpu_config&& cfg,
-                      std::shared_ptr<window>&& wnd) :
-         m_config(std::forward<gpu_config>(cfg)),
-         m_wnd_p(std::forward<std::shared_ptr<window>>(wnd))
+      graphics_device(gpu_config& cfg,
+                      std::shared_ptr<window>& wnd) :
+         m_config(cfg),
+         m_wnd_p(wnd)
       {
          make_factories();
          make_devices();
          make_context_sensitive_members();
       }
 
-      graphics_device(gpu_config&& cfg,
-                      std::shared_ptr<window>&& wnd,
+      graphics_device(gpu_config& cfg,
+                      std::shared_ptr<window>& wnd,
                       std::initializer_list<console_ptr> cons) :
-         m_config(std::forward<gpu_config>(cfg)),
-         m_wnd_p(std::forward<std::shared_ptr<window>>(wnd))
+         m_config(cfg),
+         m_wnd_p(wnd)
       {
          make_factories();
          make_devices(cons);
@@ -42,16 +42,19 @@ namespace qgl::graphics
       virtual ~graphics_device()
       {
          //Close any contexts that might be executing.
-         m_2dContext_p->EndDraw();
-         m_2dContext_p->Flush();
+         m_d2dDeviceContext_p->EndDraw();
+         m_d2dDeviceContext_p->Flush();
          m_d3d11DeviceContext_p->Flush();
 
          //Order in which com_ptrs are destroyed is imported.
          //Destroy pointers in reverse order they were created.
 
-         for (auto& con_p : m_cons_p)
+         if (m_config.console())
          {
-            m_infoQueue_up->UnregisterMessageCallback(con_p.first);
+            //for (auto& con_p : m_cons_p)
+            //{
+            //   m_infoQueue_up->UnregisterMessageCallback(con_p.first);
+            //}
          }
 
          m_cons_p.clear();
@@ -79,7 +82,7 @@ namespace qgl::graphics
       {
          auto wasFullScreen = m_config.full_screen();
          m_config = std::forward<gpu_config>(cfg);
-         m_2dContext_p->SetTarget(nullptr);
+         m_d2dDeviceContext_p->SetTarget(nullptr);
          m_d3d11DeviceContext_p->Flush();
 
          //Set full-screen / window mode for the window.
@@ -121,7 +124,7 @@ namespace qgl::graphics
 
       i2d_context* ctx_2d() noexcept
       {
-         return m_2dContext_p.get();
+         return m_d2dDeviceContext_p.get();
       }
 
       i3d_bridge_device* dev_back_compat() noexcept
@@ -188,7 +191,10 @@ namespace qgl::graphics
          m_3dDevice_p = helpers::make_3d_device(
             m_adapter_p.get(), FEATURE_LEVEL);
 
-         m_infoQueue_up = m_3dDevice_p.as<ID3D12InfoQueue1>();
+         if (m_config.console())
+         {
+            m_infoQueue_up = m_3dDevice_p.as<ID3D12InfoQueue>();
+         }
 
          //Create the command queue for the device.
          D3D12_COMMAND_QUEUE_DESC desc = {};
@@ -201,7 +207,8 @@ namespace qgl::graphics
          make_d3d11_device_and_context();
 
          //Create the 2d device and context.
-         m_2dDevice_p = helpers::make_2d_device(m_d3d11On12Device_p.get(),
+         auto asDXGI = m_d3d11On12Device_p.as<IDXGIDevice>();
+         m_2dDevice_p = helpers::make_2d_device(asDXGI.get(),
                                                 m_2dFactory_p.get());
 
          D2D1_DEVICE_CONTEXT_OPTIONS opts =
@@ -213,23 +220,26 @@ namespace qgl::graphics
       void make_devices(std::initializer_list<console_ptr> cons)
       {
          make_devices();
-         for (auto& con : cons)
+         if (m_config.console())
          {
-            DWORD cookie;
-            //https://microsoft.github.io/DirectX-Specs/d3d/MessageCallback.html
-            winrt::check_hresult(m_infoQueue_up->RegisterMessageCallback(
-               graphics_device::on_d3d_message,
-               D3D12_MESSAGE_CALLBACK_FLAGS::D3D12_MESSAGE_CALLBACK_FLAG_NONE,
-               con.get(),
-               &cookie));
-            if (cookie == 0)
-            {
-               throw std::system_error{
-                  std::make_error_code(std::errc::no_message),
-                  "The callback cookie is 0."
-               };
-            }
-            m_cons_p.emplace_back(cookie, std::move(con));
+         //   for (auto& con : cons)
+         //   {
+         //      DWORD cookie = 0;
+         //      //https://microsoft.github.io/DirectX-Specs/d3d/MessageCallback.html
+         //      winrt::check_hresult(m_infoQueue_up->RegisterMessageCallback(
+         //         graphics_device::on_d3d_message,
+         //         D3D12_MESSAGE_CALLBACK_FLAGS::D3D12_MESSAGE_CALLBACK_FLAG_NONE,
+         //         con.get(),
+         //         &cookie));
+         //      if (cookie == 0)
+         //      {
+         //         throw std::system_error{
+         //            std::make_error_code(std::errc::no_message),
+         //            "The callback cookie is 0."
+         //         };
+         //      }
+         //      m_cons_p.emplace_back(cookie, con);
+         //   }
          }
       }
 
@@ -262,9 +272,12 @@ namespace qgl::graphics
        */
       void make_context_sensitive_members()
       {
-         m_output_p = helpers::find_output(m_adapter_p.get(), *m_wnd_p);
+         if (m_config.full_screen())
+         {
+            m_wnd_p->enter_full_screen();
+         }
 
-         auto fmt = helpers::color_format(m_config.hdr_mode());
+         m_output_p = helpers::find_output(m_adapter_p.get(), *m_wnd_p);
 
          //Create the swap chain. Use the 0th command queue.
          m_swapChain_p = helpers::make_swap_chain(m_config, *m_wnd_p,
@@ -281,9 +294,7 @@ namespace qgl::graphics
       {
          UINT d3d11DeviceFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 #ifdef _DEBUG
-         {
-            d3d11DeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
-         }
+         d3d11DeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
          D3D_FEATURE_LEVEL usingFeatureLevel;
@@ -306,7 +317,7 @@ namespace qgl::graphics
             m_d3d11DeviceContext_p.put(),
             &usingFeatureLevel));
 
-         m_d3d11On12Device_p = std::move(d3d11Dev);
+         d3d11Dev.as(m_d3d11On12Device_p);
       }
 
       static void on_d3d_message(D3D12_MESSAGE_CATEGORY cat,
@@ -316,7 +327,12 @@ namespace qgl::graphics
                                  void* context_p)
       {
          auto con_p = reinterpret_cast<console_t*>(context_p);
-         con_p->cout(desc);
+
+         std::stringstream msg;
+         msg << "Cat: " << cat << " Sev: " << sev << " ID: " << idm << ": " <<
+            desc;
+
+         con_p->cout(msg.str());
       }
 
       gpu_config m_config;
@@ -335,8 +351,6 @@ namespace qgl::graphics
 
       winrt::com_ptr<i2d_device> m_2dDevice_p;
 
-      winrt::com_ptr<i2d_context> m_2dContext_p;
-
       /*
        Used to provide a D2D device for 2D rendering.
        */
@@ -350,7 +364,7 @@ namespace qgl::graphics
       winrt::com_ptr<i2d_context> m_d2dDeviceContext_p;
       /////////////////////////////////////////////////////////////////////////
 
-      std::vector< winrt::com_ptr<icmd_queue>> m_cmdQueues_p;
+      std::vector<winrt::com_ptr<icmd_queue>> m_cmdQueues_p;
 
       winrt::com_ptr<iswap_chain> m_swapChain_p;
 
@@ -361,8 +375,7 @@ namespace qgl::graphics
       sync_interval_t m_syncInterval;
       swap_flag_t m_swapFlags;
 
-      winrt::com_ptr<ID3D12InfoQueue1> m_infoQueue_up;
-
+      winrt::com_ptr<ID3D12InfoQueue> m_infoQueue_up;
 
       std::vector<std::pair<DWORD, console_ptr>> m_cons_p;
 
