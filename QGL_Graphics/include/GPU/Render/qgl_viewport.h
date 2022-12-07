@@ -2,7 +2,6 @@
 #include "include/qgl_graphics_include.h"
 #include "include/qgl_graphics_device.h"
 #include "include/qgl_window.h"
-#include "include/Content/qgl_device_configuration.h"
 
 namespace qgl::graphics::gpu
 {

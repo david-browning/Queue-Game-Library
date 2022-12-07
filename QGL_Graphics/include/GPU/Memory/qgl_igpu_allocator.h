@@ -92,6 +92,4 @@ namespace qgl::graphics::gpu
          return r->GetGPUVirtualAddress();
       }
    };
-
-   using gpu_allocator_ptr = typename std::shared_ptr<igpu_allocator>;
 }

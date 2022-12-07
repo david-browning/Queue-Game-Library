@@ -10,7 +10,8 @@ namespace qgl::graphics::gpu
     "upload_buffer" to upload the data this manages.
     */
    template<typename VertexT, D3D_PRIMITIVE_TOPOLOGY TopologyT>
-   class vertex_buffer : public igpu_buffer<D3D12_SUBRESOURCE_DATA,
+   class vertex_buffer final : public igpu_buffer<
+      D3D12_SUBRESOURCE_DATA,
       D3D12_VERTEX_BUFFER_VIEW,
       igpu_resource>
    {
@@ -19,18 +20,28 @@ namespace qgl::graphics::gpu
       using ViewDescT = D3D12_VERTEX_BUFFER_VIEW;
       using vertex_data = typename std::vector<VertexT>;
 
-      vertex_buffer(gpu_allocator_ptr&& allocator_sp,
-                    vertex_data&& vertices) :
-         m_verts(std::forward<vertex_data>(vertices)),
-         m_allocator_sp(std::forward<gpu_allocator_ptr>(allocator_sp))
+      /*
+       This does not own the allocator pointer. Do not free the allocator or let
+       it go out of scope before destroying this.
+       */
+      vertex_buffer(igpu_allocator* allocator_p,
+                    const vertex_data& vertices) :
+         m_verts(vertices),
+         m_allocator_p(allocator_p),
+         igpu_buffer()
       {
          construct();
       }
 
-      vertex_buffer(gpu_allocator_ptr&& allocator,
+      /*
+       This does not own the allocator pointer. Do not free the allocator or let
+       it go out of scope before destroying this.
+       */
+      vertex_buffer(igpu_allocator* allocator_p,
                     const VertexT* const vertices,
                     size_t numVertices) :
-         m_allocator_sp(std::forward<gpu_allocator_ptr>(allocator))
+         m_allocator_p(allocator_p),
+         igpu_buffer()
       {
          m_verts.resize(numVertices);
          memcpy(m_verts.data(), vertices, sizeof(VertexT) * numVertices);
@@ -39,11 +50,23 @@ namespace qgl::graphics::gpu
 
       vertex_buffer(const vertex_buffer&) = delete;
 
-      vertex_buffer(vertex_buffer&&) = default;
+      vertex_buffer(vertex_buffer&& x) noexcept :
+         m_allocator_p(std::move(x.m_allocator_p)),
+         m_verts(std::move(x.m_verts)),
+         m_alloc_h(std::move(x.m_alloc_h)),
+         m_viewDescription(std::move(x.m_viewDescription)),
+         m_resDescription(std::move(x.m_resDescription))
+      {
+         x.m_allocator_p = nullptr;
+      }
 
       virtual ~vertex_buffer()
       {
-         m_allocator_sp->free(m_alloc_h);
+         if (m_allocator_p)
+         {
+            m_allocator_p->free(m_alloc_h);
+            m_allocator_p = nullptr;
+         }
       }
 
       constexpr size_t stride() const noexcept
@@ -73,12 +96,12 @@ namespace qgl::graphics::gpu
 
       virtual const igpu_resource* get() const
       {
-         return m_allocator_sp->resource(m_alloc_h);
+         return m_allocator_p->resource(m_alloc_h);
       }
 
       virtual igpu_resource* get()
       {
-         return m_allocator_sp->resource(m_alloc_h);
+         return m_allocator_p->resource(m_alloc_h);
       }
 
       virtual size_t size() const noexcept
@@ -104,9 +127,7 @@ namespace qgl::graphics::gpu
          //   nullptr,
          //   IID_PPV_ARGS(put())));
 
-         m_alloc_h = m_allocator_sp->alloc(
-            size(),
-            0,
+         m_alloc_h = m_allocator_p->alloc(
             CD3DX12_RESOURCE_DESC::Buffer(size()),
             D3D12_RESOURCE_STATE_COPY_DEST);
 
@@ -117,9 +138,9 @@ namespace qgl::graphics::gpu
       }
 
       vertex_data m_verts;
-      gpu_allocator_ptr m_allocator_sp;
-      gpu_alloc_handle m_alloc_h;
       ViewDescT m_viewDescription;
       ResDescT m_resDescription;
+      igpu_allocator* m_allocator_p = nullptr;
+      gpu_alloc_handle m_alloc_h = static_cast<gpu_alloc_handle>(-1);
    };
 }

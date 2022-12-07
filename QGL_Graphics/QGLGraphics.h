@@ -14,10 +14,6 @@
 #include "include/GPU/qgl_graphics_pso.h"
 #include "include/GPU/qgl_frame.h"
 
-// Content
-#include "include/Content/qgl_text_format.h"
-#include "include/Content/qgl_wtext.h"
-#include "include/Content/qgl_atlas.h"
-#include "include/Content/qgl_image.h"
-#include "include/Content/qgl_texture.h"
-
+#include "include/Descriptors/qgL_text_format_descriptor.h"
+#include "include/Components/Content/qgl_text_format.h"
+#include "include/Components/Content/qgl_wtext.h"

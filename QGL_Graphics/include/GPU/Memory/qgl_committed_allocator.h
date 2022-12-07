@@ -160,7 +160,7 @@ namespace qgl::graphics::gpu
        */
       graphics_device* m_dev_p = nullptr;
       
-      size_t m_totalSize_b = -1;
+      size_t m_totalSize_b = static_cast<size_t>(-1);
       D3D12_HEAP_FLAGS m_heapFlags;
       D3D12_HEAP_PROPERTIES m_heapProps;
    };

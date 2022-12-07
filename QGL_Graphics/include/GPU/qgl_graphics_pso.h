@@ -1,8 +1,8 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include "include/Content/qgl_shader.h"
-#include "include/Content/qgl_multisampler.h"
-#include "include/Content/qgl_vertex_layout.h"
+#include "include/Components/Content/qgl_shader.h"
+#include "include/Components/Content/qgl_vertex_layout.h"
+#include "include/GPU/Render/qgl_multisampler.h"
 #include "include/GPU/qgl_frame.h"
 
 namespace qgl::graphics::gpu
@@ -11,8 +11,6 @@ namespace qgl::graphics::gpu
     Represents a collection of shaders and other parameters describing how to
     draw geometry. This includes the rasterizer, blend, and depth stencil
     states.
-    Creating the pipeline state object is deferred until calling get(). The
-    pipeline state parameters must be set first.
     */
    class graphics_pso : public ipso
    {
@@ -21,8 +19,8 @@ namespace qgl::graphics::gpu
                    const frame_stager& frms,
                    const shader_stager& shdrs,
                    const multisampler& smplr,
-                   const vertex_layout& vLayout,
-                   i3d_device* device_p,
+                   const components::vertex_layout& vLayout,
+                   graphics_device* device_p,
                    size_t nodeMask) :
          m_dev_p(device_p)
       {
@@ -64,14 +62,14 @@ namespace qgl::graphics::gpu
          frames(frms);
          shaders(shdrs);
 
-         winrt::check_hresult(m_dev_p->CreateGraphicsPipelineState(
+         winrt::check_hresult(m_dev_p->dev_3d()->CreateGraphicsPipelineState(
             &m_psoDesc,
             IID_PPV_ARGS(m_pipelineState.put())));
       }
 
       graphics_pso(const graphics_pso&) = delete;
 
-      graphics_pso(graphics_pso&& x) :
+      graphics_pso(graphics_pso&& x) noexcept :
          ipso(std::move(x)),
          m_pipelineState(std::move(x.m_pipelineState)),
          m_psoDesc(std::move(x.m_psoDesc)),
@@ -80,7 +78,6 @@ namespace qgl::graphics::gpu
          x.m_pipelineState = nullptr;
          x.m_dev_p = nullptr;
       }
-
 
       virtual ~graphics_pso() noexcept
       {
@@ -146,7 +143,7 @@ namespace qgl::graphics::gpu
       void shaders(const shader_stager& shdrs)
       {
          // Keep track that no shader is set twice.
-         std::unordered_set<shader_types> seenShaders;
+         std::unordered_set<descriptors::shader_types> seenShaders;
 
          for (auto& shdr : shdrs)
          {
@@ -168,27 +165,27 @@ namespace qgl::graphics::gpu
             //for the pipeline state.
             switch (type)
             {
-               case shader_types::ds:
+               case descriptors::shader_types::ds:
                {
                   m_psoDesc.DS = shdr->byte_code();
                   break;
                }
-               case shader_types::gs:
+               case descriptors::shader_types::gs:
                {
                   m_psoDesc.GS = shdr->byte_code();
                   break;
                }
-               case shader_types::hs:
+               case descriptors::shader_types::hs:
                {
                   m_psoDesc.HS = shdr->byte_code();
                   break;
                }
-               case shader_types::vs:
+               case descriptors::shader_types::vs:
                {
                   m_psoDesc.VS = shdr->byte_code();
                   break;
                }
-               case shader_types::ps:
+               case descriptors::shader_types::ps:
                {
                   m_psoDesc.PS = shdr->byte_code();
                   break;
@@ -204,8 +201,8 @@ namespace qgl::graphics::gpu
          }
          
          //Make sure we have a PS and VS as they are required.
-         if (seenShaders.count(shader_types::vs) == 0 ||
-             seenShaders.count(shader_types::ps) == 0)
+         if (seenShaders.count(descriptors::shader_types::vs) == 0 ||
+             seenShaders.count(descriptors::shader_types::ps) == 0)
          {
 #ifdef DEBUG
             OutputDebugString(L"No vertex or pixel shader was found.");
@@ -224,7 +221,7 @@ namespace qgl::graphics::gpu
        */
       D3D12_GRAPHICS_PIPELINE_STATE_DESC m_psoDesc;
 
-      i3d_device* m_dev_p;
+      graphics_device* m_dev_p;
 
 #ifdef DEBUG
       static constexpr D3D12_PIPELINE_STATE_FLAGS PSO_DEFAULT_FLAG =

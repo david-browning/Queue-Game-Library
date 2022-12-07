@@ -1,7 +1,7 @@
 #pragma once
 #include "include/qgl_model_include.h"
 #include "include/Impl/qgl_mem_helpers_impl.h"
-#include <bitset>
+#include "include/Memory/qgl_mem_traits.h"
 
 namespace qgl::mem
 {
@@ -48,7 +48,7 @@ namespace qgl::mem
    {
       return n != 0 && ((n & (n - 1)) == 0);
    }
-  
+
    /*
     Sets each element in the array to val.
     */
@@ -176,7 +176,7 @@ namespace qgl::mem
    template<typename T>
    constexpr size_t msb(T val) noexcept
    {
-      size_t ret = (sizeof(T) * CHAR_BIT)  - 1;
+      size_t ret = (sizeof(T) * CHAR_BIT) - 1;
       auto mask = static_cast<T>(1) << ret;
       while (ret > 0 && (val & mask) == 0)
       {
@@ -203,7 +203,8 @@ namespace qgl::mem
 
       constexpr bit_convert(From f) :
          f_value(f)
-      {}
+      {
+      }
 
       constexpr To to() const noexcept
       {
@@ -217,87 +218,66 @@ namespace qgl::mem
          To t_value;
       };
    };
-}
 
-namespace qgl::mem::traits
-{
    /*
-   Returns val rounded to the nearest.
-   Returns val if it is already rounded to the nearest.
-   Zero cannot be rounded up.
-   */
-   template<typename T>
-   constexpr T rup(T val, T nearest) noexcept
+    Converts a single hex character to an integer. Assume the character is
+    [0-9] | [a-f] | [A-F]
+    */
+   constexpr uint8_t from_hex(char c)
    {
-      T remainder = val % nearest;
-      return remainder == 0 ? val : val + nearest - remainder;
+      return impl::from_hex(c);
    }
 
    /*
-   Calculates the smallest datatype needed to store Val.
-   */
-   template<size_t Val>
-   struct bit_round
-   {
-      static constexpr auto value = rup(msb(Val) + 1, static_cast<size_t>(8));
-   };
-
-   static_assert(bit_round<100>::value == 8,
-              "Bit rounding is not correct (100).");
-   static_assert(bit_round<65535>::value == 16,
-                 "Bit rounding is not correct. (65535)");
-
-   /*
-    Rounds Bits up to the nearest 8th.
+    Assume the string is null terminated.
+    Assume the characters are [0-9] | [a-f] | [A-F]
     */
-   template<size_t Bits>
-   struct bit_size
+   template<size_t n>
+   constexpr typename qgl::mem::traits::make_type<(n - 1) * 4>::type from_hex(
+      const char s[n])
    {
-      static constexpr auto value = rup(Bits, static_cast<size_t>(8));
-   };
+      return impl::from_hex<n>(s, 0, 0);
+   }
 
-   template<size_t Bits>
-   struct make_type
-   {
-      typedef int64_t type;
-   };
+   static_assert(from_hex('C') == 12,
+              "from_hex is not correct (c)");
 
-   template<>
-   struct make_type<8>
-   {
-      typedef int8_t type;
-   };
+   static_assert(from_hex('F') == 15,
+                 "from_hex is not correct (F)");
 
-   template<>
-   struct make_type<16>
-   {
-      typedef int16_t type;
-   };
+   static_assert(from_hex('1') == 1,
+                 "from_hex is not correct (1)");
 
-   template<>
-   struct make_type<24>
-   {
-      typedef int32_t type;
-   };
+   static_assert(from_hex('0') == 0,
+                 "from_hex is not correct (0)");
 
-   template<>
-   struct make_type<32>
-   {
-      typedef int32_t type;
-   };
+   static_assert(from_hex<3>("00") == 0,
+              "from_hex is not correct (00)");
 
-   static_assert(sizeof(make_type<bit_size<1>::value>::type) == 1,
-              "make_type did not allocate the right size (1)");
+   static_assert(from_hex<3>("01") == 1,
+                 "from_hex is not correct (01)");
 
-   static_assert(sizeof(make_type<bit_size<8>::value>::type) == 1,
-                 "make_type did not allocate the right size (8)");
+   static_assert(from_hex<3>("0f") == 15,
+              "from_hex is not correct (0f)");
 
-   static_assert(sizeof(make_type<bit_size<15>::value>::type) == 2,
-                 "make_type did not allocate the right size (15)");
+   static_assert(from_hex<3>("10") == 16,
+                 "from_hex is not correct (10)");
 
-   static_assert(sizeof(make_type<bit_size<17>::value>::type) == 4,
-                 "make_type did not allocate the right size (17)");
+   static_assert(from_hex<3>("1f") == 31,
+                 "from_hex is not correct (1F)");
 
-   static_assert(sizeof(make_type<bit_size<33>::value>::type) == 8,
-                 "make_type did not allocate the right size (33)");
+   static_assert(from_hex<5>("1f1f") == 0x1f1f,
+              "from_hex is not correct (1F1F)");
+
+   static_assert(from_hex<7>("1f1f1f") == 0x1f1f1f,
+           "from_hex is not correct (1F1F1F)");
+
+   static_assert(from_hex<9>("1f1f1f1f") == 0x1f1f1f1f,
+           "from_hex is not correct (1F1F1F1F)");
+
+   static_assert(from_hex<11>("1f1f1f1f1f") == 0x1f1f1f1f1f,
+           "from_hex is not correct (1F1F1F1F)");
+
+   static_assert(from_hex<17>("123456789abc0000") == 0x123456789abc0000,
+              "from_hex is not correct (123456789abc0000)");
 }

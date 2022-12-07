@@ -11,9 +11,6 @@
     <Filter Include="Tests">
       <UniqueIdentifier>{457cecb2-8f7b-4bfc-aa02-09706f56d4c2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tests\Content">
-      <UniqueIdentifier>{4cfbd031-6d54-4fc9-9118-dd53b7093d11}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Tests\GPU">
       <UniqueIdentifier>{36a78c39-e7cd-42e8-8889-fa0525ab47b9}</UniqueIdentifier>
     </Filter>
@@ -28,12 +25,6 @@
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Tests\Helpers\device_helper_tests.cpp">
       <Filter>Tests\Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="Tests\Content\text_format_tests.cpp">
-      <Filter>Tests\Content</Filter>
-    </ClCompile>
-    <ClCompile Include="Tests\Content\texture_tests.cpp">
-      <Filter>Tests\Content</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

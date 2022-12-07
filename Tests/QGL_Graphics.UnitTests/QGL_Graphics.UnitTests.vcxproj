@@ -266,8 +266,6 @@
     <Image Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Tests\Content\texture_tests.cpp" />
-    <ClCompile Include="Tests\Content\text_format_tests.cpp" />
     <ClCompile Include="Tests\Helpers\device_helper_tests.cpp" />
     <ClCompile Include="UnitTestApp.xaml.cpp">
       <DependentUpon>UnitTestApp.xaml</DependentUpon>

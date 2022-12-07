@@ -1,21 +1,19 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
 #include "include/qgl_window.h"
-#include "include/Content/qgl_device_configuration.h"
+#include "include/qgl_device_configuration.h"
 #include "include/Helpers/qgl_graphics_device_helpers.h"
 #include "include/Helpers/qgl_color_helpers.h"
 #include "include/Helpers/qgl_supported_helpers.h"
+#include "include/GPU/qgl_gpu_msg_callback.h"
 
 namespace qgl::graphics
 {
    class graphics_device
    {
       public:
-      using console_t = typename console<char>;
-      using console_ptr = typename std::shared_ptr<console_t>;
-
-      graphics_device(gpu_config& cfg,
-                      std::shared_ptr<window>& wnd) :
+      graphics_device(const gpu_config& cfg,
+                      const std::shared_ptr<window>& wnd) :
          m_config(cfg),
          m_wnd_p(wnd)
       {
@@ -24,14 +22,14 @@ namespace qgl::graphics
          make_context_sensitive_members();
       }
 
-      graphics_device(gpu_config& cfg,
-                      std::shared_ptr<window>& wnd,
+      graphics_device(const gpu_config& cfg,
+                      const std::shared_ptr<window>& wnd,
                       std::initializer_list<console_ptr> cons) :
          m_config(cfg),
          m_wnd_p(wnd)
       {
          make_factories();
-         make_devices(cons);
+         make_devices(std::forward<decltype(cons)>(cons));
          make_context_sensitive_members();
       }
 
@@ -48,17 +46,6 @@ namespace qgl::graphics
 
          //Order in which com_ptrs are destroyed is imported.
          //Destroy pointers in reverse order they were created.
-
-         if (m_config.console())
-         {
-            //for (auto& con_p : m_cons_p)
-            //{
-            //   m_infoQueue_up->UnregisterMessageCallback(con_p.first);
-            //}
-         }
-
-         m_cons_p.clear();
-
          m_swapChain_p = nullptr;
 
          m_infoQueue_up = nullptr;
@@ -72,6 +59,9 @@ namespace qgl::graphics
          m_textFactory_p = nullptr;
          m_2dFactory_p = nullptr;
          m_gpuFactory_p = nullptr;
+
+         // GPU callback object's destructor takes care of closing the threads
+         // and consoles.
       }
 
       /*
@@ -130,6 +120,11 @@ namespace qgl::graphics
       i3d_bridge_device* dev_back_compat() noexcept
       {
          return m_d3d11On12Device_p.get();
+      }
+
+      itext_factory* text_factory() noexcept
+      {
+         return m_textFactory_p.get();
       }
 
       window* wnd() noexcept
@@ -213,8 +208,8 @@ namespace qgl::graphics
 
          D2D1_DEVICE_CONTEXT_OPTIONS opts =
             D2D1_DEVICE_CONTEXT_OPTIONS_ENABLE_MULTITHREADED_OPTIMIZATIONS;
-         m_d2dDeviceContext_p = helpers::make_2d_context(opts,
-                                                          m_2dDevice_p.get());
+         m_d2dDeviceContext_p = helpers::make_2d_context(
+            opts, m_2dDevice_p.get());
       }
 
       void make_devices(std::initializer_list<console_ptr> cons)
@@ -222,24 +217,8 @@ namespace qgl::graphics
          make_devices();
          if (m_config.console())
          {
-         //   for (auto& con : cons)
-         //   {
-         //      DWORD cookie = 0;
-         //      //https://microsoft.github.io/DirectX-Specs/d3d/MessageCallback.html
-         //      winrt::check_hresult(m_infoQueue_up->RegisterMessageCallback(
-         //         graphics_device::on_d3d_message,
-         //         D3D12_MESSAGE_CALLBACK_FLAGS::D3D12_MESSAGE_CALLBACK_FLAG_NONE,
-         //         con.get(),
-         //         &cookie));
-         //      if (cookie == 0)
-         //      {
-         //         throw std::system_error{
-         //            std::make_error_code(std::errc::no_message),
-         //            "The callback cookie is 0."
-         //         };
-         //      }
-         //      m_cons_p.emplace_back(cookie, con);
-         //   }
+            m_gpuCallbacks.run(
+               m_infoQueue_up.get(), std::forward<decltype(cons)>(cons));
          }
       }
 
@@ -320,21 +299,6 @@ namespace qgl::graphics
          d3d11Dev.as(m_d3d11On12Device_p);
       }
 
-      static void on_d3d_message(D3D12_MESSAGE_CATEGORY cat,
-                                 D3D12_MESSAGE_SEVERITY sev,
-                                 D3D12_MESSAGE_ID idm,
-                                 LPCSTR desc,
-                                 void* context_p)
-      {
-         auto con_p = reinterpret_cast<console_t*>(context_p);
-
-         std::stringstream msg;
-         msg << "Cat: " << cat << " Sev: " << sev << " ID: " << idm << ": " <<
-            desc;
-
-         con_p->cout(msg.str());
-      }
-
       gpu_config m_config;
 
       ////////////////////////////////Factories////////////////////////////////
@@ -377,10 +341,8 @@ namespace qgl::graphics
 
       winrt::com_ptr<ID3D12InfoQueue> m_infoQueue_up;
 
-      std::vector<std::pair<DWORD, console_ptr>> m_cons_p;
+      qgl::graphics::gpu_msg_callback_handler m_gpuCallbacks;
 
       static constexpr D3D_FEATURE_LEVEL FEATURE_LEVEL = D3D_FEATURE_LEVEL_12_0;
    };
-
-   using graphics_device_ptr = typename std::shared_ptr<graphics_device>;
 }

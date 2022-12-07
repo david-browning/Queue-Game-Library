@@ -18,11 +18,13 @@ namespace qgl::graphics::gpu
       /*
        The "placeSize" is aligned so this may allocate a larger heap than
        "placeSize * initialNumPlaces".
+       This does not own the graphics device pointer. Do not allow it to be 
+       freed or go out of scope before destroying this.
        */
       slot_allocator(size_t placeSize, 
                      size_t initialNumPlaces,
-                     graphics_device_ptr&& dev_sp) :
-         m_dev_p(std::forward<graphics_device_ptr>(dev_sp)),
+                     graphics_device* dev_p) :
+         m_dev_p(dev_p),
          m_numPlaces(initialNumPlaces)
       {
          // Align the placement size.
@@ -38,27 +40,37 @@ namespace qgl::graphics::gpu
          CD3DX12_HEAP_DESC heapDesc(size(), D3D12_HEAP_TYPE_DEFAULT, 0,
             HeapFlags);
          winrt::check_hresult(m_dev_p->dev_3d()->CreateHeap(
-            &heapDesc, IID_PPV_ARGS(m_heap_up.put())));
+            &heapDesc, IID_PPV_ARGS(m_heap_p.put())));
       }
 
-      /*
-       Copies all the memory managed by "r" to a new GPU address space.
-       TODO: Implement this if I can find a way to copy d3d_resources without
-       needing a command list.
-       */
       slot_allocator(const slot_allocator& r) = delete;
 
       /*
        This simply moves the allocation class to a new object.
        The memory this manages is not moved to a new address space.
        */
-      slot_allocator(slot_allocator&&) = default;
+      slot_allocator(slot_allocator&& x) noexcept :
+         m_heap_p(std::move(x.m_heap_p)),
+         m_resources(std::move(x.m_resources)),
+         m_dev_p(std::move(x.m_dev_p)),
+         m_freeList(std::move(x.m_freeList)),
+         m_placeSize(std::move(x.m_placeSize)),
+         m_numPlaces(std::move(x.m_numPlaces)),
+         igpu_allocator(std::move(x))
+      {
+         x.m_heap_p = nullptr;
+         x.m_dev_p = nullptr;
+      }
 
       /*
        Once the destructor is called, all memory this manages is released.
        Be sure the GPU is in a state where the memory can be freed.
        */
-      virtual ~slot_allocator() = default;
+      virtual ~slot_allocator() noexcept
+      {
+         m_heap_p = nullptr;
+         m_dev_p = nullptr;
+      }
 
       gpu_alloc_handle alloc(const D3D12_RESOURCE_DESC& description,
                              D3D12_RESOURCE_STATES initialState) override
@@ -77,7 +89,7 @@ namespace qgl::graphics::gpu
          // Create a resource for the memory allocation.
          winrt::com_ptr<igpu_resource> resource;
          winrt::check_hresult(m_dev_p->dev_3d()->CreatePlacedResource(
-            m_heap_up.get(),
+            m_heap_p.get(),
             static_cast<UINT64>(offset),
             &description,
             initialState,
@@ -117,12 +129,12 @@ namespace qgl::graphics::gpu
 
       virtual igpu_heap* backing()
       {
-         return m_heap_up.get();
+         return m_heap_p.get();
       }
 
       virtual const igpu_heap* backing() const
       {
-         return m_heap_up.get();
+         return m_heap_p.get();
       }
 
       virtual igpu_resource* resource(gpu_alloc_handle hndl)
@@ -146,12 +158,13 @@ namespace qgl::graphics::gpu
       }
 
       private:
-      using resource_pair = typename std::pair<D3D12_RESOURCE_STATES, winrt::com_ptr<igpu_resource>>;
+      using resource_pair = typename std::pair<
+         D3D12_RESOURCE_STATES, winrt::com_ptr<igpu_resource>>;
 
       /*
        The heap that backs the placed resources.
        */
-      winrt::com_ptr<igpu_heap> m_heap_up;
+      winrt::com_ptr<igpu_heap> m_heap_p;
 
       /*
        The resources managed by this allocator. Map the offset to the resource
@@ -162,7 +175,7 @@ namespace qgl::graphics::gpu
       /*
        Pointer to the graphics device. Use this to create resources.
        */
-      graphics_device_ptr m_dev_p;
+      graphics_device* m_dev_p;
 
       /*
        Used to block multiple threads from allocating simultaneously.

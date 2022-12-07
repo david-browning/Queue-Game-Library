@@ -6,7 +6,6 @@
 #include "include/GPU/Buffers/qgl_const_buffer.h"
 #include "include/GPU/Buffers/qgl_index_buffer.h"
 #include "include/GPU/Buffers/qgl_vertex_buffer.h"
-#include "include/GPU/Buffers/qgl_texture_buffer.h"
 
 namespace qgl::graphics::gpu
 {

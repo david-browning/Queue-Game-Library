@@ -4,7 +4,7 @@
 
 namespace qgl::graphics::gpu
 {
-   class scissor
+   class scissor final
    {
       public:
       scissor(const viewport& vp)

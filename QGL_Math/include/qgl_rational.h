@@ -43,12 +43,12 @@ namespace qgl::math
       /*
        Copy constructor
        */
-      rational(const rational&) = default;
+      constexpr rational(const rational&) = default;
 
       /*
        Move constructor.
        */
-      rational(rational&&) = default;
+      constexpr rational(rational&&) noexcept = default;
 
       /*
        Destructor

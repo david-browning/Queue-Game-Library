@@ -20,7 +20,7 @@ namespace qgl
     Console operations are thread safe.
     */
    template<typename CharT>
-   class console
+   class basic_console
    {
       public:
       using str_type = std::basic_string<CharT>;
@@ -33,18 +33,18 @@ namespace qgl
 
       using cmd_callback = std::function<void(const str_type&)>;
 
-      console()
+      basic_console()
       {
 #ifdef DEBUG
          insert_cout(default_con_out<CharT>);
 #endif
       }
 
-      console(const console&) = default;
+      basic_console(const basic_console&) = default;
 
-      console(console&&) = default;
+      basic_console(basic_console&&) = default;
 
-      ~console() noexcept = default;
+      ~basic_console() noexcept = default;
 
       /*
        Registers a callback to be raised whenever the console has new output.
@@ -134,4 +134,11 @@ namespace qgl
       std::unordered_map<str_type, std::reference_wrapper<iconsole_cmd>> m_cinCmds;
       std::mutex m_threadLock;
    };
+
+   using console = typename basic_console<char>;
+   using console_ptr = typename std::shared_ptr<basic_console<char>>;
+
+   using wconsole = typename basic_console<wchar_t>;
+   using wconsole_ptr = typename std::shared_ptr<basic_console<wchar_t>>;
+
 }

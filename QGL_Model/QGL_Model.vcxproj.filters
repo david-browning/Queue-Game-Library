@@ -181,6 +181,9 @@
     <ClInclude Include="include\qgl_eptr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Memory\qgl_mem_traits.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="QGL_Model.def">

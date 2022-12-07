@@ -1,8 +1,9 @@
 #pragma once
 #include "qgl_model_include.h"
 #include "qgl_guid.h"
+#include "Timing/qgl_timer.h"
 
-namespace qgl
+namespace qgl::components
 {
    /*
     A component is a tool used to decouple behavior from data. Instead of a
@@ -26,10 +27,10 @@ namespace qgl
    class component
    {
       public:
-      constexpr component(qgl::guid&& g,
-                          UpdateFunctor&& f = UpdateFunctor()) :
-         m_guid(std::forward<qgl::guid>(g)),
-         m_functor(std::forward<UpdateFunctor>(f))
+      constexpr component(const qgl::guid& g,
+                          const UpdateFunctor& f = UpdateFunctor()) :
+         m_guid(g),
+         m_functor(f)
       {
 
       }
@@ -69,4 +70,47 @@ namespace qgl
       qgl::guid m_guid;
       UpdateFunctor m_functor;
    };
+
+   /*
+    Context using by content objects.
+    */
+   class game_context
+   {
+      public:
+      using TickT = typename uint64_t;
+      const qgl::time_state<TickT>& timer_state() const noexcept
+      {
+         return m_timerState;
+      }
+
+      private:
+      qgl::time_state<TickT> m_timerState;
+   };
+
+   /*
+    The update functor using by content objects.
+    */
+   template<class GameObject>
+   using game_update_functor =
+      typename std::function<qgl::result_t(GameObject&, game_context&)>;
+
+   /*
+    Specialization of the component class used by content objects.
+    */
+   template<class GameObject>
+   using game_component = typename qgl::components::component<
+      GameObject,
+      game_context,
+      qgl::result_t,
+      game_update_functor<GameObject>>;
+
+   template<class GameObject>
+   qgl::result_t success_component_functor(GameObject&, game_context&)
+   {
+#ifdef WIN32
+      return S_OK;
+#else
+      return 0;
+#endif
+   }
 }

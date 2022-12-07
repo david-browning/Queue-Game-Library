@@ -1,6 +1,6 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include "include/Content/qgl_device_configuration.h"
+#include "include/qgl_device_configuration.h"
 #include "include/Helpers/qgl_color_helpers.h"
 #include "include/qgl_window.h"
 
