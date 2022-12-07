@@ -16,12 +16,13 @@ namespace qgl::graphics::gpu
    class fence
    {
       public:
-      fence(device_3d* dev_p, winrt::com_ptr<cmd_queue>&& cmdQueue_p) :
+      fence(graphics_device& dev, 
+            winrt::com_ptr<icmd_queue>& cmdQueue_p) :
          m_nextSyncValue(1),
-         m_cmdQueue(std::forward<winrt::com_ptr<cmd_queue>>(cmdQueue_p))
+         m_cmdQueue(cmdQueue_p)
       {
          //Create a fence using the d3d device.
-         winrt::check_hresult(dev_p->CreateFence(
+         winrt::check_hresult(dev.dev_3d()->CreateFence(
             m_nextSyncValue, 
             D3D12_FENCE_FLAG_NONE,
             IID_PPV_ARGS(m_fence.put())));
@@ -138,22 +139,22 @@ namespace qgl::graphics::gpu
          winrt::check_hresult(m_cmdQueue->Signal(get(), toSignal.value()));
       }
 
-      inline gpu_fence* get()
+      igpu_fence* get()
       {
          return m_fence.get();
       }
 
-      inline const gpu_fence* get() const
+      const igpu_fence* get() const
       {
          return m_fence.get();
       }
 
-      const cmd_queue* queue() const
+      const icmd_queue* queue() const
       {
          return m_cmdQueue.get();
       }
 
-      cmd_queue* queue()
+      icmd_queue* queue()
       {
          return m_cmdQueue.get();
       }
@@ -161,8 +162,8 @@ namespace qgl::graphics::gpu
       private:
       std::mutex m_mutex;
       ValueT m_nextSyncValue;
-      winrt::com_ptr<gpu_fence> m_fence;
-      winrt::com_ptr<cmd_queue> m_cmdQueue;
+      winrt::com_ptr<igpu_fence> m_fence;
+      winrt::com_ptr<icmd_queue> m_cmdQueue;
       winrt::handle m_waitEvent;
    };
 }

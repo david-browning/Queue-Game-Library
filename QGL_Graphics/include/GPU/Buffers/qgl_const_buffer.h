@@ -26,15 +26,18 @@ namespace qgl::graphics::gpu
       using ResDescT = nullptr_t;
       using ResourceT = typename igpu_resource;
 
-      const_buffer(gpu_allocator_ptr&& allocator_sp) :
-         m_allocator_sp(std::forward<gpu_allocator_ptr>(allocator_sp)),
-         m_buffer_p(nullptr)
+      /*
+       This does not own the allocator pointer. Do not free the allocator or let
+       it go out of scope before destroying this.
+       */
+      const_buffer(igpu_allocator* allocator_sp) :
+         m_allocator_p(allocator_sp),
+         igpu_buffer()
       {
          const auto sz = sizeof(T);
          auto heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
          auto rscDesc = CD3DX12_RESOURCE_DESC::Buffer(sz);
-         // Use default alignment.
-         m_alloc_h = m_allocator_sp->alloc(sz, rscDesc.Alignment,
+         m_alloc_h = m_allocator_p->alloc(
             rscDesc, D3D12_RESOURCE_STATE_GENERIC_READ);
 
          auto res_p = allocator_sp->resource(m_alloc_h);
@@ -44,12 +47,25 @@ namespace qgl::graphics::gpu
 
       const_buffer(const const_buffer&) = delete;
 
-      const_buffer(const_buffer&&) = default;
+      const_buffer(const_buffer&& x) noexcept :
+         m_allocator_p(x.m_allocator_p),
+         m_alloc_h(x.m_alloc_h),
+         m_viewDescription(x.m_viewDescription),
+         m_buffer_p(m_buffer_p),
+         igpu_buffer()
+      {
+         x.unmap();
+         x.m_allocator_p = nullptr;
+      }
 
       virtual ~const_buffer()
       {
-         unmap();
-         m_allocator_sp->free(m_alloc_h);
+         if (m_allocator_p)
+         {
+            unmap();
+            m_allocator_p->free(m_alloc_h);
+            m_allocator_p = nullptr;
+         }
       }
 
       virtual const ResDescT* description() const
@@ -70,7 +86,7 @@ namespace qgl::graphics::gpu
 
       virtual const ResourceT* get() const
       {
-         return m_allocator_sp->resource(m_alloc_h);
+         return m_allocator_p->resource(m_alloc_h);
       }
 
       virtual size_t size() const noexcept
@@ -80,7 +96,7 @@ namespace qgl::graphics::gpu
 
       virtual ResourceT* get()
       {
-         return m_allocator_sp->resource(m_alloc_h);
+         return m_allocator_p->resource(m_alloc_h);
       }
 
       virtual void map()
@@ -91,7 +107,7 @@ namespace qgl::graphics::gpu
          //range where End is less than or equal to Begin.
          if (!mapped())
          {
-            auto resource = m_allocator_sp->resource(m_alloc_h);
+            auto resource = m_allocator_p->resource(m_alloc_h);
             winrt::check_hresult(resource->Map(0, nullptr,
                reinterpret_cast <void**>(&m_buffer_p)));
          }
@@ -103,7 +119,7 @@ namespace qgl::graphics::gpu
          //been modified by the CPU.
          if (mapped())
          {
-            auto resource = m_allocator_sp->resource(m_alloc_h);
+            auto resource = m_allocator_p->resource(m_alloc_h);
             resource->Unmap(0, nullptr);
             m_buffer_p = nullptr;
          }
@@ -126,15 +142,15 @@ namespace qgl::graphics::gpu
 
       private:
 
-      gpu_allocator_ptr m_allocator_sp;
+      igpu_allocator* m_allocator_p = nullptr;
 
-      gpu_alloc_handle m_alloc_h;
+      gpu_alloc_handle m_alloc_h = static_cast<gpu_alloc_handle>(-1);
 
       /*
        Description of the view that gets bound to the shader pipeline.
        */
       ViewDescT m_viewDescription;
 
-      T* m_buffer_p;
+      T* m_buffer_p = nullptr;
    };
 }

@@ -110,18 +110,18 @@ namespace qgl::graphics::gpu
       return ret;
    }
 
-   class root_signature
+   class root_signature final
    {
       public:
       /*
        nodeMask: Which GPU to upload the root signature to.
        */
       root_signature(const ibindable_stager& bindables,
-                     i3d_device* dev_p,
+                     graphics_device& dev,
                      size_t nodeMask = 0)
       {
          collect(bindables);
-         construct(dev_p, nodeMask);
+         construct(dev, nodeMask);
       }
 
       /*
@@ -132,12 +132,20 @@ namespace qgl::graphics::gpu
       /*
        Move constructor.
        */
-      root_signature(root_signature&& r) = default;
+      root_signature(root_signature&& r) noexcept :
+         m_rootSig_p(std::move(r.m_rootSig_p)),
+         m_params(std::move(r.m_params))
+      {
+         r.m_rootSig_p = nullptr;
+      }
 
       /*
        Destructor.
        */
-      ~root_signature() noexcept = default;
+      ~root_signature() noexcept
+      {
+         m_rootSig_p = nullptr;
+      }
 
       /*
        Returns a const pointer to the D3D root signature.
@@ -193,7 +201,7 @@ namespace qgl::graphics::gpu
          }
       }
 
-      void construct(i3d_device* dev_p, size_t nodeMask)
+      void construct(graphics_device& dev, size_t nodeMask)
       {
          D3D12_FEATURE_DATA_ROOT_SIGNATURE featureData = {};
 
@@ -201,8 +209,8 @@ namespace qgl::graphics::gpu
          //If CheckFeatureSupport succeeds, the HighestVersion returned will 
          //not be greater than this.
          featureData.HighestVersion = D3D_ROOT_SIGNATURE_VERSION_1_1;
-
-         HRESULT hr = dev_p->CheckFeatureSupport(
+         
+         HRESULT hr = dev.dev_3d()->CheckFeatureSupport(
             D3D12_FEATURE_ROOT_SIGNATURE,
             &featureData,
             sizeof(featureData));
@@ -231,7 +239,7 @@ namespace qgl::graphics::gpu
                                                                     error.put()));
 
          //Create the signature.
-         winrt::check_hresult(dev_p->CreateRootSignature(
+         winrt::check_hresult(dev.dev_3d()->CreateRootSignature(
             static_cast<UINT>(nodeMask),
             signature->GetBufferPointer(),
             signature->GetBufferSize(),

@@ -65,7 +65,7 @@ namespace qgl::graphics::gpu
          x.m_renderTarget_up = nullptr;
          x.m_wrappedRenderTarget_up = nullptr;
          m_d2dTarget_up = nullptr;
-         x.m_frmIdx = -1;
+         x.m_frmIdx = static_cast<size_t>(-1);
       }
 
       /*

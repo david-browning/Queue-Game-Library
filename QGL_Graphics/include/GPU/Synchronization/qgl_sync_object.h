@@ -15,12 +15,9 @@ namespace qgl::graphics::gpu
 
       sync_object(const sync_object&) = default;
 
-      sync_object(sync_object&&) = default;
+      sync_object(sync_object&&) noexcept = default;
 
-      ~sync_object()
-      {
-
-      }
+      virtual ~sync_object() noexcept = default;
 
       ValueT value() const
       {

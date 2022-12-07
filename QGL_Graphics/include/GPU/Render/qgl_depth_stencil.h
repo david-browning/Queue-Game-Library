@@ -3,8 +3,7 @@
 #include "include/GPU/Render/qgl_irender_target.h"
 #include "include/GPU/Buffers/qgl_igpu_buffer.h"
 #include "include/GPU/Memory/qgl_committed_allocator.h"
-
-#include "include/Content/Content-Descriptors/qgl_depth_stencil_descriptor.h"
+#include "include/Descriptors/qgl_depth_stencil_descriptor.h"
 #include "include/GPU/Descriptors/qgl_dsv_descriptor_heap.h"
 
 
@@ -17,9 +16,9 @@ namespace qgl::graphics::gpu
     Stencil data is used to mask which pixels can be updated.
     */
    class depth_stencil : public irender_target,
-                         public igpu_buffer<CD3DX12_RESOURCE_DESC,
-                           D3D12_DEPTH_STENCIL_VIEW_DESC,
-                           igpu_resource>
+      public igpu_buffer<CD3DX12_RESOURCE_DESC,
+      D3D12_DEPTH_STENCIL_VIEW_DESC,
+      igpu_resource>
    {
       public:
       using ResourceDescriptionT = CD3DX12_RESOURCE_DESC;
@@ -28,13 +27,16 @@ namespace qgl::graphics::gpu
       /*
        Constructs a depth stencil texture. Once constructed, this inserts
        itself into the DSV heap.
+       This does not own the graphics device or allocator pointers.
+       Do not free those items, or let them go out of scope, before destroying
+       this.
        */
       depth_stencil(const descriptors::depth_stencil_descriptor& buffer,
-                    committed_allocator* allocator,
+                    committed_allocator* allocator_p,
                     graphics_device* dev_p,
                     dsv_descriptor_heap& dsvHeap,
                     size_t frameIndex) :
-         m_allocator_sp(allocator),
+         m_allocator_p(allocator_p),
          m_buffer(buffer),
          m_dev_p(dev_p),
          m_frameIndex(frameIndex)
@@ -56,7 +58,7 @@ namespace qgl::graphics::gpu
       depth_stencil(depth_stencil&& x) noexcept :
          irender_target(std::move(x)),
          igpu_buffer(std::move(x)),
-         m_allocator_sp(x.m_allocator_sp),
+         m_allocator_p(x.m_allocator_p),
          m_alloc_h(x.m_alloc_h),
          m_dev_p(std::move(x.m_dev_p)),
          m_depthDesc(std::move(x.m_depthDesc)),
@@ -69,7 +71,7 @@ namespace qgl::graphics::gpu
          m_cpuHandle(std::move(x.m_cpuHandle)),
          m_buffer(std::move(x.m_buffer))
       {
-         x.m_allocator_sp = nullptr;
+         x.m_allocator_p = nullptr;
          x.m_dev_p = nullptr;
          x.m_frameIndex = static_cast<size_t>(-1);
          x.m_size = static_cast<size_t>(-1);
@@ -81,7 +83,7 @@ namespace qgl::graphics::gpu
       virtual ~depth_stencil() noexcept
       {
          release();
-         m_allocator_sp = nullptr;
+         m_allocator_p = nullptr;
          m_dev_p = nullptr;
       }
 
@@ -119,12 +121,12 @@ namespace qgl::graphics::gpu
 
       virtual const igpu_resource* get() const
       {
-         return m_allocator_sp->resource(m_alloc_h);
+         return m_allocator_p->resource(m_alloc_h);
       }
 
       virtual igpu_resource* get()
       {
-         return m_allocator_sp->resource(m_alloc_h);
+         return m_allocator_p->resource(m_alloc_h);
       }
 
       /*
@@ -158,9 +160,9 @@ namespace qgl::graphics::gpu
 
       void release()
       {
-         if (m_allocator_sp)
+         if (m_allocator_p)
          {
-            m_allocator_sp->free(m_alloc_h);
+            m_allocator_p->free(m_alloc_h);
          }
       }
 
@@ -172,9 +174,9 @@ namespace qgl::graphics::gpu
 
          m_desc = CD3DX12_RESOURCE_DESC(D3D12_RESOURCE_DIMENSION_TEXTURE2D,
             0,
-            helpers::dip_to_pixels(m_dev_p->wnd()->width(), 
+            helpers::dip_to_pixels(m_dev_p->wnd()->width(),
                                    m_dev_p->wnd()->dpi_x()),
-            helpers::dip_to_pixels(m_dev_p->wnd()->height(), 
+            helpers::dip_to_pixels(m_dev_p->wnd()->height(),
                                    m_dev_p->wnd()->dpi_y()),
             1,
             1,
@@ -193,31 +195,31 @@ namespace qgl::graphics::gpu
          m_depthDesc.StencilWriteMask = m_buffer.stencil_write_mask;
          m_depthDesc.StencilReadMask = m_buffer.stencil_read_mask;
          m_depthDesc.StencilEnable = m_buffer.stencil_enabled();
-         m_depthDesc.DepthWriteMask =  
+         m_depthDesc.DepthWriteMask =
             static_cast<D3D12_DEPTH_WRITE_MASK>(m_buffer.write_mask);
-         m_depthDesc.DepthFunc = 
+         m_depthDesc.DepthFunc =
             static_cast<D3D12_COMPARISON_FUNC>(m_buffer.depth_func);
          m_depthDesc.DepthEnable = m_buffer.depth_enabled();
 
-         m_depthDesc.BackFace.StencilFunc = 
+         m_depthDesc.BackFace.StencilFunc =
             static_cast<D3D12_COMPARISON_FUNC>(m_buffer.back_face_op.func);
-         m_depthDesc.BackFace.StencilDepthFailOp = 
+         m_depthDesc.BackFace.StencilDepthFailOp =
             static_cast<D3D12_STENCIL_OP>(m_buffer.back_face_op.depth_fail_op);
-         m_depthDesc.BackFace.StencilFailOp = 
+         m_depthDesc.BackFace.StencilFailOp =
             static_cast<D3D12_STENCIL_OP>(m_buffer.back_face_op.fail_op);
-         m_depthDesc.BackFace.StencilPassOp = 
+         m_depthDesc.BackFace.StencilPassOp =
             static_cast<D3D12_STENCIL_OP>(m_buffer.back_face_op.pass_op);
 
-         m_depthDesc.FrontFace.StencilFunc = 
+         m_depthDesc.FrontFace.StencilFunc =
             static_cast<D3D12_COMPARISON_FUNC>(m_buffer.front_face_op.func);
-         m_depthDesc.FrontFace.StencilDepthFailOp = 
+         m_depthDesc.FrontFace.StencilDepthFailOp =
             static_cast<D3D12_STENCIL_OP>(m_buffer.front_face_op.depth_fail_op);
-         m_depthDesc.FrontFace.StencilFailOp = 
+         m_depthDesc.FrontFace.StencilFailOp =
             static_cast<D3D12_STENCIL_OP>(m_buffer.front_face_op.fail_op);
-         m_depthDesc.FrontFace.StencilPassOp = 
+         m_depthDesc.FrontFace.StencilPassOp =
             static_cast<D3D12_STENCIL_OP>(m_buffer.front_face_op.pass_op);
 
-         m_alloc_h = m_allocator_sp->alloc(
+         m_alloc_h = m_allocator_p->alloc(
             m_desc, D3D12_RESOURCE_STATE_DEPTH_WRITE);
 
          // texture width * texture height * 4 bytes per pixel.
@@ -245,14 +247,14 @@ namespace qgl::graphics::gpu
       }
 
       private:
-      committed_allocator* m_allocator_sp = nullptr;
-      gpu_alloc_handle m_alloc_h = -1;
+      committed_allocator* m_allocator_p = nullptr;
+      gpu_alloc_handle m_alloc_h = static_cast<gpu_alloc_handle>(-1);
       graphics_device* m_dev_p = nullptr;
       D3D12_DEPTH_STENCIL_DESC m_depthDesc;
 
       std::vector<D3D12_RECT> m_rects;
-      size_t m_frameIndex = -1;
-      size_t m_size = -1;
+      size_t m_frameIndex = static_cast<size_t>(-1);
+      size_t m_size = static_cast<size_t>(-1);
       ResourceDescriptionT m_desc;
       ViewDescriptionT m_viewDesc;
       D3D12_CLEAR_VALUE m_clearValue;

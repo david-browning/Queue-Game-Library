@@ -233,6 +233,18 @@ namespace QGL_Model_Unit_Tests
          Assert::IsTrue(g1 != g2, L"Random GUIDs should not be equal.");
       }
 
+      TEST_METHOD(FromString)
+      {
+         std::string in{ "39065D6AE325418BB9281900F84B26D5" };
+
+         guid g{ in.c_str()};
+         auto s = g.str<char>();
+
+         std::string expected{ "39065D6A-E325-418B-B928-1900F84B26D5" };
+         Assert::AreEqual(expected, s,
+                          L"GUID strings are not the same.");
+      }
+
       private:
       static constexpr std::array<uint8_t, guid::UUID_BYTES> input =
       {

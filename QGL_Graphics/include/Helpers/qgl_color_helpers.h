@@ -1,6 +1,6 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include "include/Content/qgl_device_configuration.h"
+#include "include/qgl_device_configuration.h"
 
 namespace qgl::graphics::helpers
 {
@@ -8,13 +8,13 @@ namespace qgl::graphics::helpers
     Looks up the color format from an hdr_modes.
     */
    extern "C" QGL_GRAPHICS_API DXGI_FORMAT color_format(
-      hdr_modes mode) noexcept;
+      descriptors::hdr_modes mode) noexcept;
 
    /*
     Looks up the color space from an hdr_modes.
     */
    extern "C" QGL_GRAPHICS_API DXGI_COLOR_SPACE_TYPE color_space(
-      hdr_modes mode) noexcept;
+      descriptors::hdr_modes mode) noexcept;
 
    /*
     Sets the HDR mode for the given swap chain.
@@ -23,14 +23,14 @@ namespace qgl::graphics::helpers
    {
       switch (config.hdr_mode())
       {
-         case hdr_modes::hdr10:
+         case descriptors::hdr_modes::hdr10:
          {
             auto data = config.hdr10();
             sc_p->SetHDRMetaData(DXGI_HDR_METADATA_TYPE_HDR10,
                sizeof(DXGI_HDR_METADATA_HDR10), &data);
             break;
          }
-         case hdr_modes::hdr10_plus:
+         case descriptors::hdr_modes::hdr10_plus:
          {
             auto data = config.hdr10_plus();
             sc_p->SetHDRMetaData(DXGI_HDR_METADATA_TYPE_HDR10PLUS,

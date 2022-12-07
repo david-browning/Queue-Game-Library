@@ -63,24 +63,27 @@
 #include <winrt/Windows.Foundation.h>
 #include <winrt/Windows.System.Threading.h>
 
-#pragma region Define Handle Types
-typedef HANDLE handle_t;
+namespace qgl
+{
+   typedef HANDLE handle_t;
 
-template<typename Handle = handle_t>
-constexpr Handle INVALID_HANDLE = INVALID_HANDLE_VALUE;
+   template<typename Handle = handle_t>
+   constexpr Handle INVALID_HANDLE = INVALID_HANDLE_VALUE;
 
-typedef HANDLE thread_handle_t;
+   typedef HANDLE thread_handle_t;
 
-typedef HANDLE file_handle_t;
-static const file_handle_t NO_FILE = INVALID_HANDLE_VALUE;
-#pragma endregion
+   typedef HANDLE file_handle_t;
+   static const file_handle_t NO_FILE = INVALID_HANDLE_VALUE;
+
+   typedef HRESULT result_t;
 
 #ifdef UNICODE
-typedef wchar_t sys_char;
+   typedef wchar_t sys_char;
 
 #else
-typedef char sys_char;
+   typedef char sys_char;
 #endif
+}
 
 
 #else
@@ -88,19 +91,21 @@ typedef char sys_char;
 #include <unistd.h>
 #include <uuid/uuid.h>
 
-#pragma region Define Handle Types
-using handle_t = typename void*
+namespace qgl
+{
+   using handle_t = typename void*
 
-template<typename Handle = handle_t>
-constexpr Handle INVALID_HANDLE = static_cast<Handle>(-1);
+   template<typename Handle = handle_t>
+   constexpr Handle INVALID_HANDLE = static_cast<Handle>(-1);
 
-typedef void* thread_handle_t;
+   typedef void* thread_handle_t;
 
-typedef int file_handle_t;
-static constexpr file_handle_t NO_FILE = -1;
-#pragma endregion
+   typedef int file_handle_t;
+   static constexpr file_handle_t NO_FILE = -1;
 
-typedef char sys_char;
+   typedef int result_t;
 
+   typedef char sys_char;
+}
 #endif
 

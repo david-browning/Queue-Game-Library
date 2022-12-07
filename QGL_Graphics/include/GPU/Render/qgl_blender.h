@@ -1,13 +1,13 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include "include/Content/Content-Descriptors/qgl_blender_descriptor.h"
+#include "include/Descriptors/qgl_blender_descriptor.h"
 
 namespace qgl::graphics::gpu
 {
    /*
     The blender provides the parameters describing how to blend pixels.
     */
-   class blender
+   class blender final
    {
       public:
       /*

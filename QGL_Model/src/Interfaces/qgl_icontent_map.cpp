@@ -137,7 +137,7 @@ namespace qgl
       ctrl_map m_map;
    };
 
-   qgl_code QGL_CC make_content_map(qgl_version_t v, icontent_map** m) noexcept
+   qgl_code QGL_CC make_content_map(qgl_version_t, icontent_map** m) noexcept
    {
       if (!m)
       {

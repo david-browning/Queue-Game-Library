@@ -120,6 +120,10 @@
       <EnforceTypeConversionRules Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</EnforceTypeConversionRules>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">stdcpp17</LanguageStandard>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpp17</LanguageStandard>
+      <EnableEnhancedInstructionSet Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <OpenMPSupport Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">true</OpenMPSupport>
+      <EnableEnhancedInstructionSet Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <OpenMPSupport Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</OpenMPSupport>
     </ClCompile>
     <Link>
       <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">QGL_Model.lib;d3d12.lib;d2d1.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -138,6 +142,10 @@
       <EnforceTypeConversionRules Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</EnforceTypeConversionRules>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">stdcpp17</LanguageStandard>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp17</LanguageStandard>
+      <EnableEnhancedInstructionSet Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <OpenMPSupport Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">true</OpenMPSupport>
+      <EnableEnhancedInstructionSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <OpenMPSupport Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</OpenMPSupport>
     </ClCompile>
     <Link>
       <AdditionalDependencies Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">QGL_Model.lib;d3d12.lib;d2d1.lib;%(AdditionalDependencies)</AdditionalDependencies>

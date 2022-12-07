@@ -62,11 +62,11 @@ namespace qgl
          }
       }
 
-      fixed_buffer(fixed_buffer&& r)
+      fixed_buffer(fixed_buffer&& r) noexcept
       {
          for (size_t i = 0; i < n; i++)
          {
-            m_data[i] = std::move(r[i]);
+            m_data[i] = r[i];
          }
       }
 

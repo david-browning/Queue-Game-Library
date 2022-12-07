@@ -5,7 +5,7 @@
 #include "include/GPU/Render/qgl_blender.h"
 #include "include/GPU/Render/qgl_depth_stencil.h"
 #include "include/GPU/Render/qgl_render_target.h"
-#include "include/Content/Content-Descriptors/qgl_vector_descriptor.h"
+#include "include/Descriptors/qgl_vector_descriptor.h"
 
 namespace qgl::graphics::gpu
 {

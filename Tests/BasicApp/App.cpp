@@ -11,10 +11,15 @@ using namespace winrt::Windows::UI::ViewManagement;
 
 using namespace qgl;
 
+void consoleCallback(const std::string& s)
+{
+   return;
+}
+
 struct App : implements<App, IFrameworkViewSource, IFrameworkView>
 {
    bool m_wndClosed = false;
-   qgl::console<char> m_console;
+   qgl::basic_console<char> m_console;
 
    IFrameworkView CreateView()
    {
@@ -35,6 +40,10 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
 
    void Run()
    {
+      auto outCon_p = std::make_shared<qgl::console>();
+      outCon_p->insert_cout(consoleCallback);
+
+
       CoreWindow window = CoreWindow::GetForCurrentThread();
       window.Activate();
 
@@ -44,11 +53,12 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
       auto v_p = std::make_shared<ApplicationView>(view);
       auto qwp = std::make_shared<graphics::window>(w_p, v_p);
 
-      graphics::descriptors::engine_descriptor eDesc;
+      descriptors::engine_descriptor eDesc;
       eDesc.console = true;
-      graphics::descriptors::hdr_descriptor hdrDesc;
+      descriptors::hdr_descriptor hdrDesc;
       graphics::gpu_config defaultConfig{ eDesc, hdrDesc };
-      auto qdev_p = std::make_shared<graphics::graphics_device>(defaultConfig, qwp);
+      auto qdev_p = std::make_shared<graphics::graphics_device>(
+         defaultConfig, qwp, std::initializer_list<decltype(outCon_p)>{outCon_p});
 
       // Create descriptor heaps
       graphics::gpu::rtv_descriptor_heap rtvHeap{ qdev_p->dev_3d(), eDesc.buffers };
@@ -66,7 +76,7 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
       for (size_t i = 0; i < eDesc.buffers; i++)
       {
          graphics::gpu::depth_stencil dpsnc_p{
-            graphics::descriptors::depth_stencil_descriptor{},
+            descriptors::depth_stencil_descriptor{},
             dsvAlloc_p.get(),
             qdev_p.get(),
             dsvHeap,
@@ -79,8 +89,8 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
 
          graphics::gpu::viewport viewp{ *qdev_p };
          graphics::gpu::scissor scisr{ viewp };
-         graphics::gpu::blender blndr { graphics::descriptors::blender_descriptor{} };
-         graphics::gpu::rasterizer rster{ graphics::descriptors::rasterizer_descriptor{} };
+         graphics::gpu::blender blndr { descriptors::blender_descriptor{} };
+         graphics::gpu::rasterizer rster{ descriptors::rasterizer_descriptor{} };
          
          auto f_p = std::make_unique<graphics::gpu::frame>(
             std::move(rt),
@@ -123,46 +133,49 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
                                               psBlob.put(), nullptr));
 
       // Create PSO
-      graphics::descriptors::shader_descriptor vsDesc{
-         graphics::shader_types::vs,
-         graphics::shader_vendors::directx,
+      descriptors::shader_descriptor vsDesc{
+         descriptors::shader_types::vs,
+         descriptors::shader_vendors::directx,
          5,
          0
       };
-      graphics::descriptors::shader_descriptor psDesc{
-         graphics::shader_types::ps,
-         graphics::shader_vendors::directx,
+      descriptors::shader_descriptor psDesc{
+         descriptors::shader_types::ps,
+         descriptors::shader_vendors::directx,
          5,
          0
       };
 
-      auto vShader = std::make_shared<graphics::shader>(
+      auto vShader = std::make_shared<components::shader>(
          vsDesc,
          vsBlob->GetBufferPointer(),
-         vsBlob->GetBufferSize());
-      auto pShader = std::make_shared<graphics::shader>(
+         vsBlob->GetBufferSize(),
+         components::success_component_functor<components::shader>);
+      auto pShader = std::make_shared<components::shader>(
          psDesc,
          psBlob->GetBufferPointer(),
-         psBlob->GetBufferSize());
+         psBlob->GetBufferSize(),
+         components::success_component_functor<components::shader>);
 
       auto shaderStager = qgl::graphics::make_shader_stager({
          vShader,
          pShader
       });
 
-      std::vector<graphics::descriptors::vertex_element_descriptor> vertDescs;
+      std::vector<descriptors::vertex_element_descriptor> vertDescs;
 
       vertDescs.emplace_back("POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0);
       vertDescs.emplace_back("COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 1);
 
-      graphics::descriptors::vertex_layout_descriptor vLayoutDesc{
+      descriptors::vertex_layout_descriptor vLayoutDesc{
          D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE,
          D3D12_INDEX_BUFFER_STRIP_CUT_VALUE_DISABLED
       };
-      graphics::vertex_layout vLayout{
+      components::vertex_layout vLayout{
          vertDescs.begin(),
          vertDescs.end(),
-         vLayoutDesc
+         vLayoutDesc,
+         qgl::components::success_component_functor<components::vertex_layout>
       };
 
       // Create root signature
@@ -173,20 +186,20 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
 
       graphics::gpu::root_signature rootSign{
          rootSignBindings,
-         qdev_p->dev_3d()
+         *qdev_p
       };
 
 
       graphics::multisampler msmplr{ 
-         graphics::descriptors::multisampler_descriptor{} };
+         descriptors::multisampler_descriptor{} };
 
       graphics::gpu::graphics_pso pso{ rootSign, frameStager, shaderStager,
-         msmplr, vLayout, qdev_p->dev_3d(), 0 };
+         msmplr, vLayout, qdev_p.get(), 0};
 
-      graphics::descriptors::text_format_descriptor txtDesc;
-      graphics::descriptors::screen_space_descriptor txtLayout;
-      txtLayout.space(graphics::screen_spaces::relative);
-      txtLayout.rect = graphics::descriptors::vector_descriptor{
+      descriptors::text_format_descriptor txtDesc;
+      descriptors::screen_space_descriptor txtLayout;
+      txtLayout.space(descriptors::screen_spaces::relative);
+      txtLayout.rect = descriptors::vector_descriptor{
          {1, 2},
          {1, 2},
          {1, 2},
@@ -196,7 +209,10 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
       graphics::gpu::graphics_command_list cmdList{ *qdev_p, pso };
 
 
-      graphics::wtext txt{ L"Test", txtLayout };
+      components::wtext txt{ 
+         L"Test", 
+         txtLayout,
+         qgl::components::success_component_functor<components::wtext>};
 
 
       size_t frmIdx = 0;

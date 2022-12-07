@@ -37,6 +37,13 @@ namespace qgl
 
       }
 
+      constexpr guid(const char s[33]) noexcept :
+         m_low(mem::from_hex<17>(s)),
+         m_high(mem::from_hex<17>(s + 16))
+      {
+
+      }
+
       guid(const guid&) noexcept = default;
 
       guid(guid&&) noexcept = default;
@@ -158,8 +165,8 @@ namespace qgl
          return qgl::mem::bswap(*ptr);
       }
 
-      uint64_t m_low;
-      uint64_t m_high;
+      uint64_t m_low = 0;
+      uint64_t m_high = 0;
    };
 #pragma pack(pop)
 

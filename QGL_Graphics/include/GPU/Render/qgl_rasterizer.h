@@ -1,6 +1,6 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include "include/Content/Content-Descriptors/qgl_rasterizer_descriptor.h"
+#include "include/Descriptors/qgl_rasterizer_descriptor.h"
 
 namespace qgl::graphics::gpu
 {
