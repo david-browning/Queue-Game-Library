@@ -301,8 +301,7 @@ namespace qgl::graphics
 
       void dpi_changed(
          winrt::Windows::Graphics::Display::DisplayInformation const& args,
-         winrt::Windows::Foundation::IInspectable const&
-         )
+         winrt::Windows::Foundation::IInspectable const&)
       {
          m_logicalDPIX = args.RawDpiX();
          m_logicalDPIY = args.RawDpiY();

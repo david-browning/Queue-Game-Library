@@ -27,7 +27,6 @@ namespace qgl::graphics::gpu
          //Set the flags.
          m_psoDesc.Flags = PSO_DEFAULT_FLAG;
 
-
          auto& firstFrame = frms.front();
 
          //Set the blender
@@ -199,7 +198,7 @@ namespace qgl::graphics::gpu
                }
             }
          }
-         
+
          //Make sure we have a PS and VS as they are required.
          if (seenShaders.count(descriptors::shader_types::vs) == 0 ||
              seenShaders.count(descriptors::shader_types::ps) == 0)

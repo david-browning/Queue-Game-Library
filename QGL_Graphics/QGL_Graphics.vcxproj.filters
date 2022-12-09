@@ -357,6 +357,12 @@
     <ClInclude Include="include\Components\Render\qgl_wtext_render.h">
       <Filter>Header Files\Components\Render</Filter>
     </ClInclude>
+    <ClInclude Include="include\Helpers\qgl_vert_types.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Helpers\qgl_vert_stager.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="QGL_Graphics.def">

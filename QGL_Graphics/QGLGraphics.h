@@ -3,6 +3,8 @@
 // Helpers
 #include "include/Helpers/qgl_color_helpers.h"
 #include "include/Helpers/qgl_window_helpers.h"
+#include "include/Helpers/qgl_vert_types.h"
+#include "include/Helpers/qgl_vert_stager.h"
 
 // Core Objects
 #include "include/qgl_window.h"

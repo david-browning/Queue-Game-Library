@@ -1,11 +1,14 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
+#include "include/Descriptors/qgl_vertex_element_descriptor.h"
 
 namespace qgl::descriptors
 {
 #pragma pack(push, 1)
    struct vertex_layout_descriptor final
    {
+      static constexpr size_t MAX_ELEMENTS = 32;
+
       constexpr vertex_layout_descriptor()
       {
       }
@@ -33,6 +36,10 @@ namespace qgl::descriptors
          using std::swap;
          swap(l.topology, r.topology);
          swap(l.strip_cut, r.strip_cut);
+         swap(l.flags, r.flags);
+         swap(l.elements, r.elements);
+         swap(l.element_count, r.element_count);
+
       }
 
       vertex_layout_descriptor& operator=(vertex_layout_descriptor r) noexcept
@@ -41,8 +48,11 @@ namespace qgl::descriptors
          return *this;
       }
 
+      qgl::mem::flags<8> flags = 0;
       uint8_t topology = D3D12_PRIMITIVE_TOPOLOGY_TYPE_UNDEFINED;
       uint8_t strip_cut = D3D12_INDEX_BUFFER_STRIP_CUT_VALUE_DISABLED;
+      uint8_t element_count = 0;
+      fixed_buffer<vertex_element_descriptor, MAX_ELEMENTS> elements;
    };
 #pragma pack(pop)
 }
