@@ -8,13 +8,13 @@ namespace qgl::graphics::gpu
    using ibindable_stager = typename std::list<ibindable*>;
 
    /*
-    Creates a collection of ibindable pointers that will be passed to another 
-    object. The ibindable stager returned by this contains only references to 
-    the ibindables. Freeing the ibindables that were passed to this will cause 
+    Creates a collection of ibindable pointers that will be passed to another
+    object. The ibindable stager returned by this contains only references to
+    the ibindables. Freeing the ibindables that were passed to this will cause
     this to point to invalid memory.
     */
    template<class ForwardIt>
-   inline ibindable_stager make_ibindable_stager(ForwardIt first, 
+   inline ibindable_stager make_ibindable_stager(ForwardIt first,
                                                  ForwardIt last)
    {
       using itType = std::remove_reference<decltype(*first)>::type;
@@ -30,15 +30,15 @@ namespace qgl::graphics::gpu
             ret.push_back(*first);
          }
       }
-      else if constexpr(std::is_reference<itType>::value ||
+      else if constexpr (std::is_reference<itType>::value ||
                         std::is_same<itType, std::reference_wrapper<ibindable>>::value)
       {
          // The iterator points to a reference.
          static_assert(std::is_same<
-                          std::add_lvalue_reference<ibindable>::type, 
+                          std::add_lvalue_reference<ibindable>::type,
                           itType>::value ||
                        std::is_same<
-                          std::reference_wrapper<ibindable>, 
+                          std::reference_wrapper<ibindable>,
                           itType>::value,
                        "Dereferencing first does not yield a pointer to 'ibindable'.");
 
@@ -209,7 +209,7 @@ namespace qgl::graphics::gpu
          //If CheckFeatureSupport succeeds, the HighestVersion returned will 
          //not be greater than this.
          featureData.HighestVersion = D3D_ROOT_SIGNATURE_VERSION_1_1;
-         
+
          HRESULT hr = dev.dev_3d()->CheckFeatureSupport(
             D3D12_FEATURE_ROOT_SIGNATURE,
             &featureData,
@@ -233,10 +233,11 @@ namespace qgl::graphics::gpu
          //Serialize the signature.
          winrt::com_ptr<ID3DBlob> signature;
          winrt::com_ptr<ID3DBlob> error;
-         winrt::check_hresult(D3DX12SerializeVersionedRootSignature(&desc,
-                                                                    featureData.HighestVersion,
-                                                                    signature.put(),
-                                                                    error.put()));
+         winrt::check_hresult(D3DX12SerializeVersionedRootSignature(
+            &desc,
+            featureData.HighestVersion,
+            signature.put(),
+            error.put()));
 
          //Create the signature.
          winrt::check_hresult(dev.dev_3d()->CreateRootSignature(

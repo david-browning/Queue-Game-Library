@@ -162,18 +162,16 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
          pShader
       });
 
-      std::vector<descriptors::vertex_element_descriptor> vertDescs;
-
-      vertDescs.emplace_back("POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0);
-      vertDescs.emplace_back("COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 1);
-
       descriptors::vertex_layout_descriptor vLayoutDesc{
          D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE,
-         D3D12_INDEX_BUFFER_STRIP_CUT_VALUE_DISABLED
+         D3D12_INDEX_BUFFER_STRIP_CUT_VALUE_DISABLED,
       };
+
+      vLayoutDesc.elements[0] = { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0 };
+      vLayoutDesc.elements[1] = { "COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0 };
+      vLayoutDesc.element_count = 2;
+
       components::vertex_layout vLayout{
-         vertDescs.begin(),
-         vertDescs.end(),
          vLayoutDesc,
          qgl::components::success_component_functor<components::vertex_layout>
       };

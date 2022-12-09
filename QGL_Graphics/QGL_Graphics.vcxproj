@@ -253,6 +253,8 @@
     <ClInclude Include="include\Helpers\qgl_dx_constructors.h" />
     <ClInclude Include="include\Helpers\qgl_graphics_device_helpers.h" />
     <ClInclude Include="include\Helpers\qgl_supported_helpers.h" />
+    <ClInclude Include="include\Helpers\qgl_vert_stager.h" />
+    <ClInclude Include="include\Helpers\qgl_vert_types.h" />
     <ClInclude Include="include\Helpers\qgl_window_helpers.h" />
     <ClInclude Include="include\qgl_atlas.h" />
     <ClInclude Include="include\qgl_device_configuration.h" />

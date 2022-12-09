@@ -329,4 +329,99 @@ namespace qgl::graphics::helpers
          swapChainDesc.Format,
          swapChainDesc.Flags));
    }
+
+   /*
+    Calculates how many bytes are needed to store an element of DXGI_FORMAT "f".
+    Most component formats are supported. This will throw std::invalid_argument
+    if the format is not supported.
+    */
+   constexpr size_t fmt_size(DXGI_FORMAT f)
+   {
+      switch (f)
+      {
+         case DXGI_FORMAT_R32G32B32A32_FLOAT:
+         case DXGI_FORMAT_R32G32B32A32_SINT:
+         case DXGI_FORMAT_R32G32B32A32_TYPELESS:
+         case DXGI_FORMAT_R32G32B32A32_UINT:
+         {
+            return sizeof(float) * 4;
+         }
+         case DXGI_FORMAT_R32G32B32_FLOAT:
+         case DXGI_FORMAT_R32G32B32_SINT:
+         case DXGI_FORMAT_R32G32B32_TYPELESS:
+         case DXGI_FORMAT_R32G32B32_UINT:
+         {
+            return sizeof(float) * 3;
+         }
+         case DXGI_FORMAT_R32G32_FLOAT:
+         case DXGI_FORMAT_R32G32_SINT:
+         case DXGI_FORMAT_R32G32_TYPELESS:
+         case DXGI_FORMAT_R32G32_UINT:
+         case DXGI_FORMAT_R16G16B16A16_TYPELESS:
+         case DXGI_FORMAT_R16G16B16A16_FLOAT:
+         case DXGI_FORMAT_R16G16B16A16_UNORM:
+         case DXGI_FORMAT_R16G16B16A16_UINT:
+         case DXGI_FORMAT_R16G16B16A16_SNORM:
+         case DXGI_FORMAT_R16G16B16A16_SINT:
+         {
+            return sizeof(float) * 2;
+         }
+         case DXGI_FORMAT_R10G10B10A2_TYPELESS:
+         case DXGI_FORMAT_R10G10B10A2_UNORM:
+         case DXGI_FORMAT_R10G10B10A2_UINT:
+         case DXGI_FORMAT_R11G11B10_FLOAT:
+         case DXGI_FORMAT_R8G8B8A8_TYPELESS:
+         case DXGI_FORMAT_R8G8B8A8_UNORM:
+         case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
+         case DXGI_FORMAT_R8G8B8A8_UINT:
+         case DXGI_FORMAT_R8G8B8A8_SNORM:
+         case DXGI_FORMAT_R8G8B8A8_SINT:
+         case DXGI_FORMAT_R16G16_TYPELESS:
+         case DXGI_FORMAT_R16G16_FLOAT:
+         case DXGI_FORMAT_R16G16_UNORM:
+         case DXGI_FORMAT_R16G16_UINT:
+         case DXGI_FORMAT_R16G16_SNORM:
+         case DXGI_FORMAT_R16G16_SINT:
+         case DXGI_FORMAT_R32_TYPELESS:
+         case DXGI_FORMAT_D32_FLOAT:
+         case DXGI_FORMAT_R32_FLOAT:
+         case DXGI_FORMAT_R32_UINT:
+         case DXGI_FORMAT_R32_SINT:
+         case DXGI_FORMAT_R24G8_TYPELESS:
+         case DXGI_FORMAT_D24_UNORM_S8_UINT:
+         case DXGI_FORMAT_R24_UNORM_X8_TYPELESS:
+         case DXGI_FORMAT_X24_TYPELESS_G8_UINT:
+         {
+            return sizeof(float);
+         }
+         case DXGI_FORMAT_R8G8_TYPELESS:
+         case DXGI_FORMAT_R8G8_UNORM:
+         case DXGI_FORMAT_R8G8_UINT:
+         case DXGI_FORMAT_R8G8_SNORM:
+         case DXGI_FORMAT_R8G8_SINT:
+         case DXGI_FORMAT_R16_TYPELESS:
+         case DXGI_FORMAT_R16_FLOAT:
+         case DXGI_FORMAT_D16_UNORM:
+         case DXGI_FORMAT_R16_UNORM:
+         case DXGI_FORMAT_R16_UINT:
+         case DXGI_FORMAT_R16_SNORM:
+         case DXGI_FORMAT_R16_SINT:
+         {
+            return 2;
+         }
+         case DXGI_FORMAT_R8_TYPELESS:
+         case DXGI_FORMAT_R8_UNORM:
+         case DXGI_FORMAT_R8_UINT:
+         case DXGI_FORMAT_R8_SNORM:
+         case DXGI_FORMAT_R8_SINT:
+         case DXGI_FORMAT_A8_UNORM:
+         {
+            return 1;
+         }
+         default:
+         {
+            throw std::invalid_argument("Unknown DXGI_FORMAT size.");
+         }
+      }
+   }
 }

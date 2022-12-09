@@ -38,7 +38,6 @@
 
 #ifdef DEBUG
 #include <D3d12SDKLayers.h>
-#define D3DCOMPILE_DEBUG 1
 #endif
 
 #ifdef QGL_GRAPHICS_EXPORTS

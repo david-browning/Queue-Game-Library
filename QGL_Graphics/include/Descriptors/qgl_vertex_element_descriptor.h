@@ -30,14 +30,12 @@ namespace qgl::descriptors
       vertex_element_descriptor(const std::string& semantic,
                                 uint8_t semanticIdx,
                                 DXGI_FORMAT fmt,
-                                uint8_t inputSlot,
-                                uint8_t elementIdx) :
+                                uint8_t inputSlot) :
          semantic_name(semantic.c_str(), semantic.size()),
          semantic_index(semanticIdx),
          format(static_cast<uint16_t>(fmt)),
          slot(inputSlot),
-         data_class(D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA),
-         index(elementIdx)
+         data_class(D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA)
       {
 
       }
@@ -59,7 +57,6 @@ namespace qgl::descriptors
          swap(l.format, r.format);
          swap(l.slot, r.slot);
          swap(l.data_class, r.data_class);
-         swap(l.index, r.index);
       }
 
       vertex_element_descriptor& operator=(vertex_element_descriptor r) noexcept
@@ -101,11 +98,6 @@ namespace qgl::descriptors
        By default, this is D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA.
        */
       uint8_t data_class = D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
-
-      /*
-       index of this element in a complete vertex description.
-       */
-      uint8_t index = 0;
    };
 #pragma pack(pop)
 }
