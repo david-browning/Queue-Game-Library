@@ -47,5 +47,8 @@
     <Text Include="Assets\shaders.hlsl">
       <Filter>Assets</Filter>
     </Text>
+    <Text Include="Assets\Common.hlsli">
+      <Filter>Assets</Filter>
+    </Text>
   </ItemGroup>
 </Project>

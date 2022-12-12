@@ -9,12 +9,12 @@ namespace qgl::mem
     A constexpr bitset. This allocates exactly Bit, rounded up to the nearest
     8th, number of bits.
     */
-   template<size_t Bits>
+   template<size_t Bits, bool unsgnd = false>
    class flags final
    {
       public:
       using type = typename traits::make_type<
-         traits::bit_size<Bits>::value>::type;
+         traits::bit_size<Bits>::value, unsgnd>::type;
 
       /*
        Construct with all bits cleared.
@@ -62,9 +62,28 @@ namespace qgl::mem
          return sizeof(type) * CHAR_BIT;
       }
 
-      constexpr type range(size_t start, size_t end) const
+      template<size_t start, size_t end>
+      constexpr type range() const
       {
+         static_assert(end > start,
+                       "End parameter must be larger than start.");
+         static_assert(end < Bits,
+                       "End parameter must be less than Bits.");
+
          return data & mem::mask<type>(start, end);
+      }
+
+      template<size_t start, size_t end>
+      constexpr typename mem::traits::make_type<mem::traits::bit_size<end - start>::value, unsgnd>::type range_shift() const
+      {
+         using retT = typename mem::traits::make_type<
+            mem::traits::bit_size<end - start>::value, unsgnd>::type;
+         static_assert(end > start,
+                       "End parameter must be larger than start.");
+         static_assert(end < Bits,
+                       "End parameter must be less than Bits.");
+
+         return static_cast<retT>(range<start, end>() >> start);
       }
 
       /*

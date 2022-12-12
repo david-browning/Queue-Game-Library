@@ -20,7 +20,9 @@ namespace qgl::impl
    {
       return start > end ? 
          cur :
-         mask(start + 1, end, cur | (T(1) << T(start)));
+         mask(start + 1, 
+              end, 
+              cur | (static_cast<T>(1) << static_cast<T>(start)));
    }
 
    /*
@@ -73,5 +75,28 @@ namespace qgl::impl
                       ((T)from_hex(s[charIdx]) << (tSize - (4 * (charIdx + 1)))) |
                       ((T)from_hex(s[charIdx + 1]) << (tSize - (4 * (charIdx + 2))))
                      );
+   }
+
+   /*
+    Checks if the idx'th bit is set and moves it to the 0'th bit position.
+    This means if the bit is set, this returns 1. Otherwise, 0.
+    */
+   template<typename T>
+   constexpr size_t set_and_move(T val, size_t idx)
+   {
+      return (val >> idx) & 1;
+   }
+
+   /*
+    Calculates the number of bits set in "val". 
+    bits: Number of bits in type T.
+    curIdx: The current index while iterating through "val".
+    */
+   template<typename T>
+   constexpr size_t bits_set(T val, size_t bits, size_t curIdx)
+   {
+      return curIdx >= bits ?
+         0 :
+         set_and_move(val, curIdx) + bits_set(val, bits, curIdx + 1);
    }
 } 

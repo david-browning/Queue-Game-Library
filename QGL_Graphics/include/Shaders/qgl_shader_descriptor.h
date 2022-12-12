@@ -1,23 +1,31 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
+#include "include/Shaders/qgl_shader_compile_params.h"
 
-namespace qgl::descriptors
+namespace qgl::graphics::shaders
 {
-   enum class shader_types : uint8_t
-   {
-      vs = 0,
-      ds = 1,
-      hs = 2,
-      gs = 3,
-      ps = 4,
-   };
-
    enum class shader_vendors : uint8_t
    {
       unknown = 0,
       directx = 1,
    };
 
+   enum class shader_payloads : uint8_t
+   {
+      unknown = 0,
+      compiled = 1,
+      source = 2,
+   };
+   
+   /*
+    Converts a DirectX shader type to a QGL shader type.
+    */
+   extern "C" QGL_GRAPHICS_API shader_types QGL_CC to_shader_type(
+      D3D12_SHADER_VERSION_TYPE t) noexcept;
+
+   /*
+    Describes how to load shader data.
+    */
 #pragma pack(push, 1)
    struct shader_descriptor final
    {
@@ -32,23 +40,14 @@ namespace qgl::descriptors
 
       ~shader_descriptor() noexcept = default;
 
-      constexpr shader_descriptor(
-         shader_types t,
-         shader_vendors v,
-         uint8_t major,
-         uint8_t minor) :
-         type(t), vendor(v), version_major(major), version_minor(minor)
-      {
-
-      }
-
       friend void swap(shader_descriptor& l, shader_descriptor& r) noexcept
       {
          using std::swap;
          swap(l.type, r.type);
          swap(l.vendor, r.vendor);
-         swap(l.version_major, r.version_major);
-         swap(l.version_minor, r.version_minor);
+         swap(l.payload, r.payload);
+         swap(l.reserved1, r.reserved1);
+         swap(l.compile_params, r.compile_params);
       }
 
       shader_descriptor& operator=(shader_descriptor r) noexcept
@@ -57,19 +56,24 @@ namespace qgl::descriptors
          return *this;
       }
 
-      shader_types type = shader_types::vs;
+      /*
+       Type of shader.
+       */
+      shader_types type = shader_types::unknown;
 
       shader_vendors vendor = shader_vendors::unknown;
 
       /*
-       For HLSL, this corresponds to the shader model.
+       How to read the shader data.
        */
-      uint8_t version_major = 0;
+      shader_payloads payload = shader_payloads::unknown;
+
+      uint8_t reserved1 = 0;
 
       /*
-       For HLSL, this corresponds to the shader model.
+       Only valid if the payload is "source".
        */
-      uint8_t version_minor = 0;
+      shader_compile_params compile_params;
    };
 #pragma pack(pop)
 }

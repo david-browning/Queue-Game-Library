@@ -175,14 +175,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Shaders\qgl_shader_descriptors.cpp" />
+    <ClCompile Include="src\Shaders\qgl_shader_helpers.cpp" />
     <ClInclude Include="include\Components\Content\qgl_camera.h" />
     <ClInclude Include="include\Components\Content\qgl_image.h" />
     <ClInclude Include="include\Components\Content\qgl_light.h" />
-    <ClInclude Include="include\Components\Content\qgl_sampler.h" />
-    <ClInclude Include="include\Components\Content\qgl_shader.h" />
     <ClInclude Include="include\Components\Content\qgl_texture.h" />
     <ClInclude Include="include\Components\Content\qgl_text_format.h" />
-    <ClInclude Include="include\Components\Content\qgl_vertex_layout.h" />
     <ClInclude Include="include\Components\Content\qgl_wtext.h" />
     <ClInclude Include="include\Components\qgl_render_context.h" />
     <ClInclude Include="include\Components\Render\qgl_brush.h" />
@@ -201,14 +200,10 @@
     <ClInclude Include="include\Descriptors\qgl_light_descriptor.h" />
     <ClInclude Include="include\Descriptors\qgl_multisampler_descriptor.h" />
     <ClInclude Include="include\Descriptors\qgl_rasterizer_descriptor.h" />
-    <ClInclude Include="include\Descriptors\qgl_sampler_descriptor.h" />
     <ClInclude Include="include\Descriptors\qgl_screen_space_descriptor.h" />
-    <ClInclude Include="include\Descriptors\qgl_shader_descriptor.h" />
     <ClInclude Include="include\Descriptors\qgl_texture_descriptor.h" />
     <ClInclude Include="include\Descriptors\qgL_text_format_descriptor.h" />
     <ClInclude Include="include\Descriptors\qgl_vector_descriptor.h" />
-    <ClInclude Include="include\Descriptors\qgl_vertex_element_descriptor.h" />
-    <ClInclude Include="include\Descriptors\qgl_vertex_layout_descriptor.h" />
     <ClInclude Include="include\GPU\Buffers\qgl_igpu_buffer.h" />
     <ClInclude Include="include\GPU\Buffers\qgl_const_buffer.h" />
     <ClInclude Include="include\GPU\Buffers\qgl_imappable.h" />
@@ -253,14 +248,30 @@
     <ClInclude Include="include\Helpers\qgl_dx_constructors.h" />
     <ClInclude Include="include\Helpers\qgl_graphics_device_helpers.h" />
     <ClInclude Include="include\Helpers\qgl_supported_helpers.h" />
-    <ClInclude Include="include\Helpers\qgl_vert_stager.h" />
-    <ClInclude Include="include\Helpers\qgl_vert_types.h" />
     <ClInclude Include="include\Helpers\qgl_window_helpers.h" />
     <ClInclude Include="include\qgl_atlas.h" />
     <ClInclude Include="include\qgl_device_configuration.h" />
     <ClInclude Include="include\qgl_graphics_device.h" />
     <ClInclude Include="include\qgl_graphics_include.h" />
     <ClInclude Include="include\qgl_window.h" />
+    <ClInclude Include="include\Shaders\qgl_sampler.h" />
+    <ClInclude Include="include\Shaders\qgl_sampler_descriptor.h" />
+    <ClInclude Include="include\Shaders\qgl_shader.h" />
+    <ClInclude Include="include\Shaders\qgl_shader_compile_params.h" />
+    <ClInclude Include="include\Shaders\qgl_shader_descriptor.h" />
+    <ClInclude Include="include\Shaders\qgl_shader_helpers.h" />
+    <ClInclude Include="include\Shaders\qgl_shader_lib.h" />
+    <ClInclude Include="include\Shaders\qgl_shader_lib_descriptor.h" />
+    <ClInclude Include="include\Shaders\qgl_shader_metadata.h" />
+    <ClInclude Include="include\Shaders\qgl_shader_meta_types.h" />
+    <ClInclude Include="include\Shaders\qgl_vertex_element_descriptor.h" />
+    <ClInclude Include="include\Shaders\qgl_vertex_layout.h" />
+    <ClInclude Include="include\Shaders\qgl_vertex_layout_descriptor.h" />
+    <ClInclude Include="include\Shaders\qgl_vert_types.h" />
+    <ClInclude Include="include\Stagers\qgl_frame_stager.h" />
+    <ClInclude Include="include\Stagers\qgl_ibindable_stager.h" />
+    <ClInclude Include="include\Stagers\qgl_shader_stager.h" />
+    <ClInclude Include="include\Stagers\qgl_vert_stager.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="QGLGraphics.h" />
     <ClInclude Include="QGL_GraphicsRT.h" />

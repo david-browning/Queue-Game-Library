@@ -71,6 +71,18 @@
     <Filter Include="Source Files\GPU">
       <UniqueIdentifier>{ac8a5ba8-10eb-4042-a1ae-cade220b5a09}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Descriptors">
+      <UniqueIdentifier>{81c46b88-eace-4a3d-9d0d-c20a62498c49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shaders">
+      <UniqueIdentifier>{b97e79b6-a676-4bf8-9e7a-784b4e4df6ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders">
+      <UniqueIdentifier>{1f5f4d74-aec8-4516-8196-366e6d244f4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Stagers">
+      <UniqueIdentifier>{2f3ca146-c8e1-468d-9c96-45619879d1e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
@@ -93,6 +105,12 @@
     </ClCompile>
     <ClCompile Include="src\GPU\qgl_gpu_msg_callback.cpp">
       <Filter>Source Files\GPU</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shaders\qgl_shader_descriptors.cpp">
+      <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shaders\qgl_shader_helpers.cpp">
+      <Filter>Source Files\Shaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -255,19 +273,10 @@
     <ClInclude Include="include\Components\Content\qgl_light.h">
       <Filter>Header Files\Components\Content</Filter>
     </ClInclude>
-    <ClInclude Include="include\Components\Content\qgl_sampler.h">
-      <Filter>Header Files\Components\Content</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Components\Content\qgl_shader.h">
-      <Filter>Header Files\Components\Content</Filter>
-    </ClInclude>
     <ClInclude Include="include\Components\Content\qgl_text_format.h">
       <Filter>Header Files\Components\Content</Filter>
     </ClInclude>
     <ClInclude Include="include\Components\Content\qgl_texture.h">
-      <Filter>Header Files\Components\Content</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Components\Content\qgl_vertex_layout.h">
       <Filter>Header Files\Components\Content</Filter>
     </ClInclude>
     <ClInclude Include="include\Components\Content\qgl_wtext.h">
@@ -306,13 +315,7 @@
     <ClInclude Include="include\Descriptors\qgl_rasterizer_descriptor.h">
       <Filter>Header Files\Descriptors</Filter>
     </ClInclude>
-    <ClInclude Include="include\Descriptors\qgl_sampler_descriptor.h">
-      <Filter>Header Files\Descriptors</Filter>
-    </ClInclude>
     <ClInclude Include="include\Descriptors\qgl_screen_space_descriptor.h">
-      <Filter>Header Files\Descriptors</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Descriptors\qgl_shader_descriptor.h">
       <Filter>Header Files\Descriptors</Filter>
     </ClInclude>
     <ClInclude Include="include\Descriptors\qgL_text_format_descriptor.h">
@@ -322,12 +325,6 @@
       <Filter>Header Files\Descriptors</Filter>
     </ClInclude>
     <ClInclude Include="include\Descriptors\qgl_vector_descriptor.h">
-      <Filter>Header Files\Descriptors</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Descriptors\qgl_vertex_element_descriptor.h">
-      <Filter>Header Files\Descriptors</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Descriptors\qgl_vertex_layout_descriptor.h">
       <Filter>Header Files\Descriptors</Filter>
     </ClInclude>
     <ClInclude Include="include\qgl_atlas.h">
@@ -357,11 +354,59 @@
     <ClInclude Include="include\Components\Render\qgl_wtext_render.h">
       <Filter>Header Files\Components\Render</Filter>
     </ClInclude>
-    <ClInclude Include="include\Helpers\qgl_vert_types.h">
-      <Filter>Header Files\Helpers</Filter>
+    <ClInclude Include="include\Shaders\qgl_shader_helpers.h">
+      <Filter>Header Files\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="include\Helpers\qgl_vert_stager.h">
-      <Filter>Header Files\Helpers</Filter>
+    <ClInclude Include="include\Shaders\qgl_shader_lib.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shaders\qgl_shader_meta_types.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shaders\qgl_shader_metadata.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shaders\qgl_sampler.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shaders\qgl_shader.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shaders\qgl_vertex_layout.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shaders\qgl_vert_types.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shaders\qgl_shader_compile_params.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shaders\qgl_shader_descriptor.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shaders\qgl_vertex_element_descriptor.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shaders\qgl_vertex_layout_descriptor.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Stagers\qgl_frame_stager.h">
+      <Filter>Header Files\Stagers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Stagers\qgl_ibindable_stager.h">
+      <Filter>Header Files\Stagers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Stagers\qgl_vert_stager.h">
+      <Filter>Header Files\Stagers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Stagers\qgl_shader_stager.h">
+      <Filter>Header Files\Stagers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shaders\qgl_shader_lib_descriptor.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shaders\qgl_sampler_descriptor.h">
+      <Filter>Header Files\Shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

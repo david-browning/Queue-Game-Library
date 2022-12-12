@@ -30,6 +30,20 @@ namespace qgl
       }
 
       /*
+       Copies the buffer.
+       */
+      constexpr fixed_buffer(const T* buf, size_t len)
+      {
+         if (len > n)
+         {
+            throw std::out_of_range{
+               "Too many elements specified in fixed_buffer constructor" };
+         }
+
+         mem::copy_elements(m_data, buf, len);
+      }
+
+      /*
        Copies 'count' elements from data to this.
        */
       void copy(const T* const data, size_t count)
@@ -41,20 +55,6 @@ namespace qgl
          }
 
          mem::copy_elements(m_data, data, count);
-      }
-
-      /*
-       Copies the buffer.
-       */
-      constexpr fixed_buffer(const T* buf, size_t len)
-      {
-         if (len > n)
-         {
-            throw std::out_of_range{
-               "Too many elements specified in fixed_buffer::copy()" };
-         }
-
-         mem::copy_elements(m_data, buf, len);
       }
 
       constexpr fixed_buffer(const fixed_buffer& r)
@@ -130,21 +130,37 @@ namespace qgl
          return *this;
       }
 
+      /*
+       Returns an iterator that points to the first element in this buffer.
+       Note that the iterator will continue until n even if less than n 
+       elements in the buffer are set.
+       */
       iterator begin() noexcept
       {
          return iterator{ (T*)m_data };
       }
 
+      /*
+       Returns the end iterator.
+       */
       iterator end() noexcept
       {
          return iterator{};
       }
 
+      /*
+       Returns an iterator that points to the first element in this buffer.
+       Note that the iterator will continue until n even if less than n
+       elements in the buffer are set.
+       */
       const_iterator cbegin() const noexcept
       {
          return const_iterator{ (T*)m_data };
       }
 
+      /*
+       Returns the end iterator.
+       */
       const_iterator cend() const noexcept
       {
          return const_iterator{};

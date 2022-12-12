@@ -56,34 +56,70 @@ namespace qgl::mem::traits
       static constexpr auto value = rup(Bits, static_cast<size_t>(8));
    };
 
-   template<size_t Bits>
+   /*
+    Default make_type for signed type.
+    */
+   template<size_t Bits, bool Usgnd = false>
    struct make_type
    {
       typedef int64_t type;
    };
 
    template<>
-   struct make_type<8>
+   struct make_type<8, false>
    {
       typedef int8_t type;
    };
 
    template<>
-   struct make_type<16>
+   struct make_type<16, false>
    {
       typedef int16_t type;
    };
 
    template<>
-   struct make_type<24>
+   struct make_type<24, false>
    {
       typedef int32_t type;
    };
 
    template<>
-   struct make_type<32>
+   struct make_type<32, false>
    {
       typedef int32_t type;
+   };
+
+   /*
+    Default make_type for unsigned type.
+    */
+   template<size_t Bits>
+   struct make_type<Bits, true>
+   {
+      typedef uint64_t type;
+   };
+
+   template<>
+   struct make_type<8, true>
+   {
+      typedef uint8_t type;
+   };
+
+   template<>
+   struct make_type<16, true>
+   {
+      typedef uint16_t type;
+   };
+
+   template<>
+   struct make_type<24, true>
+   {
+      typedef uint32_t type;
+   };
+
+   template<>
+   struct make_type<32, true>
+   {
+      typedef uint32_t type;
    };
 
    static_assert(sizeof(make_type<bit_size<1>::value>::type) == 1,

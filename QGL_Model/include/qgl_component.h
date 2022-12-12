@@ -38,7 +38,7 @@ namespace qgl::components
       /*
        Default copy constructor.
        */
-      component(const component&) noexcept = default;
+      component(const component&) = default;
 
       /*
        Default move constructor.

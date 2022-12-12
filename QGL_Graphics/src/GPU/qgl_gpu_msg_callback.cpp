@@ -37,7 +37,8 @@ namespace qgl::graphics::impl
                std::stringstream msgStream;
                msgStream << "Cat: " << msg_p->Category <<
                   " Sev: " << msg_p->Severity <<
-                  " ID: " << msg_p->ID << ": " << msg_p->pDescription;
+                  " ID: " << msg_p->ID << ": " << msg_p->pDescription << 
+                  std::endl;
                auto msgStr = msgStream.str();
 
                for (auto& con : p->consoles)

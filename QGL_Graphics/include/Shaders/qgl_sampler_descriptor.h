@@ -2,7 +2,7 @@
 #include "include/qgl_graphics_include.h"
 #include "include/Descriptors/qgl_vector_descriptor.h"
 
-namespace qgl::descriptors
+namespace qgl::graphics::shaders
 {
 #pragma pack(push, 1)
    struct sampler_descriptor final
@@ -48,7 +48,7 @@ namespace qgl::descriptors
        for AddressU, AddressV, or AddressW. Range must be between 0.0 and 1.0
        inclusive.
        */
-      vector_descriptor border;
+      descriptors::vector_descriptor border;
 
       /*
        Offset from the calculated mipmap level. For example, if the runtime
@@ -115,6 +115,9 @@ namespace qgl::descriptors
       uint8_t reserved2 = 0;
       uint8_t reserved3 = 0;
 
+      /*
+       Returns a D3D12_SAMPLER_DESC from this.
+       */
       explicit operator D3D12_SAMPLER_DESC() const noexcept
       {
          D3D12_SAMPLER_DESC desc = {};

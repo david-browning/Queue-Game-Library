@@ -2,121 +2,17 @@
 #include "include/qgl_graphics_include.h"
 #include "include/qgl_graphics_device.h"
 #include "include/GPU/Root-Signature/qgl_ibindable.h"
+#include "include/Stagers/qgl_ibindable_stager.h"
 
 namespace qgl::graphics::gpu
 {
-   using ibindable_stager = typename std::list<ibindable*>;
-
-   /*
-    Creates a collection of ibindable pointers that will be passed to another
-    object. The ibindable stager returned by this contains only references to
-    the ibindables. Freeing the ibindables that were passed to this will cause
-    this to point to invalid memory.
-    */
-   template<class ForwardIt>
-   inline ibindable_stager make_ibindable_stager(ForwardIt first,
-                                                 ForwardIt last)
-   {
-      using itType = std::remove_reference<decltype(*first)>::type;
-      ibindable_stager ret;
-      if constexpr (std::is_pointer<itType>::value)
-      {
-         // If the iterators point to a pointer
-         static_assert(std::is_same<ibindable*, itType>::value,
-                    "Dereferencing first does not yield a pointer to 'ibindable'.");
-
-         for (; first != last; first++)
-         {
-            ret.push_back(*first);
-         }
-      }
-      else if constexpr (std::is_reference<itType>::value ||
-                        std::is_same<itType, std::reference_wrapper<ibindable>>::value)
-      {
-         // The iterator points to a reference.
-         static_assert(std::is_same<
-                          std::add_lvalue_reference<ibindable>::type,
-                          itType>::value ||
-                       std::is_same<
-                          std::reference_wrapper<ibindable>,
-                          itType>::value,
-                       "Dereferencing first does not yield a pointer to 'ibindable'.");
-
-         for (; first != last; first++)
-         {
-            ret.push_back(std::addressof(first->get()));
-         }
-      }
-      else
-      {
-         static_assert(false,
-                       "Dereferencing first must yield a pointer or reference.");
-      }
-
-      return ret;
-   }
-
-   /*
-    Creates a collection of ibindable pointers that will be passed to another
-    object. The ibindable stager returned by this contains only references to
-    the ibindables. Freeing the ibindables that were passed to this will cause
-    this to point to invalid memory.
-    */
-   inline ibindable_stager make_ibindable_stager(
-      std::initializer_list<std::reference_wrapper<ibindable>> bindings)
-   {
-      ibindable_stager ret;
-      for (auto& b : bindings)
-      {
-         ret.push_back(std::addressof(b.get()));
-      }
-
-      return ret;
-   }
-
-   /*
-    Creates a collection of ibindable pointers that will be passed to another
-    object. The ibindable stager returned by this contains only references to
-    the ibindables. Freeing the ibindables that were passed to this will cause
-    this to point to invalid memory.
-    */
-   inline ibindable_stager make_ibindable_stager(
-      std::initializer_list<std::shared_ptr<ibindable>> bindings)
-   {
-      ibindable_stager ret;
-      for (auto& b : bindings)
-      {
-         ret.push_back(b.get());
-      }
-
-      return ret;
-   }
-
-   /*
-    Creates a collection of ibindable pointers that will be passed to another
-    object. The ibindable stager returned by this contains only references to
-    the ibindables. Freeing the ibindables that were passed to this will cause
-    this to point to invalid memory.
-    */
-   inline ibindable_stager make_ibindable_stager(
-      std::initializer_list<std::unique_ptr<ibindable>> bindings)
-   {
-      ibindable_stager ret;
-      for (auto& b : bindings)
-      {
-         ret.push_back(b.get());
-      }
-
-      return ret;
-   }
-
    class root_signature final
    {
       public:
       /*
        nodeMask: Which GPU to upload the root signature to.
        */
-      root_signature(const ibindable_stager& bindables,
+      root_signature(const stagers::ibindable_stager& bindables,
                      graphics_device& dev,
                      size_t nodeMask = 0)
       {
@@ -180,7 +76,7 @@ namespace qgl::graphics::gpu
       }
 
       private:
-      void collect(const ibindable_stager& bindables)
+      void collect(const stagers::ibindable_stager& bindables)
       {
          std::unordered_set<ibindable::index_t> seenSlots;
          for (auto it = bindables.begin(); it != bindables.end(); it++)
