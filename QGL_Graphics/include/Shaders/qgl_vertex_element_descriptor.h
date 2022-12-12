@@ -1,7 +1,7 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
 
-namespace qgl::descriptors
+namespace qgl::graphics::shaders
 {
 #pragma pack(push, 1)
    struct vertex_element_descriptor final
@@ -18,23 +18,19 @@ namespace qgl::descriptors
       /*
        Constructor.
        semantic: Shader semantic associated with this element in a shader input
-        signature. Must be null-terminated
+        signature.
        semanticIdx: The semantic index for the element. A semantic index
         modifies a semantic, with an integer index number.
        fmt: Describes the size of the element. This is usually a vector or
         matrix.
-       inputSlot: Which vertex buffer this binds to during input assembly.
-       elementIdx: index of this element in a vertex description.
        Throws std::invalid_argument if the semantic name is too long.
        */
       vertex_element_descriptor(const std::string& semantic,
                                 uint8_t semanticIdx,
-                                DXGI_FORMAT fmt,
-                                uint8_t inputSlot) :
+                                DXGI_FORMAT fmt) :
          semantic_name(semantic.c_str(), semantic.size()),
          semantic_index(semanticIdx),
          format(static_cast<uint16_t>(fmt)),
-         slot(inputSlot),
          data_class(D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA)
       {
 
@@ -55,7 +51,6 @@ namespace qgl::descriptors
          swap(l.semantic_name, r.semantic_name);
          swap(l.semantic_index, r.semantic_index);
          swap(l.format, r.format);
-         swap(l.slot, r.slot);
          swap(l.data_class, r.data_class);
       }
 
@@ -91,13 +86,10 @@ namespace qgl::descriptors
        */
       uint16_t format = DXGI_FORMAT_UNKNOWN;
 
-      uint8_t slot = 0;
-
       /*
        A value that identifies the input data class for a single input slot.
-       By default, this is D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA.
        */
-      uint8_t data_class = D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
+      input_data_class_t data_class = D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
    };
 #pragma pack(pop)
 }

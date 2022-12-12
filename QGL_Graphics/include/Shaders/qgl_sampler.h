@@ -1,33 +1,26 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
 #include "include/GPU/Buffers/qgl_igpu_buffer.h"
-#include "include/Descriptors/qgl_sampler_descriptor.h"
+#include "include/Shaders/qgl_sampler_descriptor.h"
 
-namespace qgl::components
+namespace qgl::graphics::shaders
 {
-   using namespace qgl::graphics;
-
-   static constexpr guid SAMPLER_GUID{ "D70D8402B2154D839BA4D52BC71F190A" };
-
    /*
     Represents a sampler. Samplers do not have a resource. Instead, they only
     have a description and can be added to a descriptor heap.
     */
    class sampler : public gpu::igpu_buffer<D3D12_SAMPLER_DESC, 
                                            nullptr_t, 
-                                           igpu_resource>,
-                   public game_component<sampler>
+                                           igpu_resource>
    {
       public:
       using ResourceDescriptionT = D3D12_SAMPLER_DESC;
       using ViewDescriptionT = nullptr_t;
 
       /*
-       Constructor
+       Constructs a sampler from a sampler_descriptor.
        */
-      sampler(const descriptors::sampler_descriptor& buffer,
-              const game_update_functor<sampler>& updateFunctor) :
-         component(SAMPLER_GUID, updateFunctor)
+      sampler(const sampler_descriptor& buffer)
       {
          m_samplerDesc.AddressU =
             static_cast<D3D12_TEXTURE_ADDRESS_MODE>(buffer.addressu);

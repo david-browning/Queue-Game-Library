@@ -160,6 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\Errors\qgl_error_reporter.h" />
     <ClInclude Include="include\Errors\qgl_e_checkers.h" />
     <ClInclude Include="include\Errors\qgl_e_codes.h" />
     <ClInclude Include="include\Impl\fast_hash_impl.h" />
@@ -183,6 +184,7 @@
     <ClInclude Include="include\qgl_endian.h" />
     <ClInclude Include="include\qgl_eptr.h" />
     <ClInclude Include="include\qgl_guid.h" />
+    <ClInclude Include="include\qgl_map_key_iterator.h" />
     <ClInclude Include="include\qgl_misc_helpers.h" />
     <ClInclude Include="include\qgl_model_include.h" />
     <ClInclude Include="include\qgl_platform_abstraction.h" />

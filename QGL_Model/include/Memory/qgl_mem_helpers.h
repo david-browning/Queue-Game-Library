@@ -6,6 +6,27 @@
 namespace qgl::mem
 {
    /*
+    Counts the number of bits set in "val".
+    */
+   template<typename T>
+   constexpr size_t bits_set(T val)
+   {
+      return impl::bits_set(val, sizeof(T) * CHAR_BIT, 0);
+   }
+
+   static_assert(bits_set<int8_t>(1) == 1,
+                 "1 should have 1 bit set");
+
+   static_assert(bits_set<int>(1) == 1,
+                 "1 should have 1 bit set");
+
+   static_assert(bits_set<int>(0xF00F00FF) == 16,
+                 "0xF00F00FF should have 16 bits set");
+
+   static_assert(bits_set<int64_t>(0xFFFF'FFFF'FFFF'FFFF) == 64,
+                 "0xFFFF'FFFF'FFFF'FFFF should have 64 bits set");
+
+   /*
     Swaps the endianess of a value.
     */
    template<typename T>

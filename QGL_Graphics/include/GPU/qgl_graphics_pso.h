@@ -1,9 +1,11 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include "include/Components/Content/qgl_shader.h"
-#include "include/Components/Content/qgl_vertex_layout.h"
+#include "include/Shaders/qgl_shader.h"
+#include "include/Shaders/qgl_vertex_layout.h"
 #include "include/GPU/Render/qgl_multisampler.h"
 #include "include/GPU/qgl_frame.h"
+#include "include/Stagers/qgl_shader_stager.h"
+#include "include/Stagers/qgl_frame_stager.h"
 
 namespace qgl::graphics::gpu
 {
@@ -16,10 +18,10 @@ namespace qgl::graphics::gpu
    {
       public:
       graphics_pso(root_signature& rootSig,
-                   const frame_stager& frms,
-                   const shader_stager& shdrs,
+                   const stagers::frame_stager& frms,
+                   const stagers::shader_stager& shdrs,
                    const multisampler& smplr,
-                   const components::vertex_layout& vLayout,
+                   const shaders::vertex_layout& vLayout,
                    graphics_device* device_p,
                    size_t nodeMask) :
          m_dev_p(device_p)
@@ -30,7 +32,6 @@ namespace qgl::graphics::gpu
          auto& firstFrame = frms.front();
 
          //Set the blender
-         auto blndr = firstFrame->frame_blender();
          m_psoDesc.BlendState = firstFrame->frame_blender().description();
          m_psoDesc.SampleMask = firstFrame->frame_blender().mask();
 
@@ -92,7 +93,7 @@ namespace qgl::graphics::gpu
        unlikely after the PSO is built.
        Throws E_INVALIDARG if there are too many frames.
        */
-      void frames(const frame_stager& frms)
+      void frames(const stagers::frame_stager& frms)
       {
          static constexpr auto maxRTVs =
             sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC::RTVFormats) /
@@ -139,12 +140,12 @@ namespace qgl::graphics::gpu
 
       private:
 
-      void shaders(const shader_stager& shdrs)
+      void shaders(const stagers::shader_stager& shdrs)
       {
          // Keep track that no shader is set twice.
-         std::unordered_set<descriptors::shader_types> seenShaders;
+         std::unordered_set<shaders::shader_types> seenShaders;
 
-         for (auto& shdr : shdrs)
+         for (auto shdr : shdrs)
          {
             auto type = shdr->type();
 
@@ -164,44 +165,42 @@ namespace qgl::graphics::gpu
             //for the pipeline state.
             switch (type)
             {
-               case descriptors::shader_types::ds:
+               case shaders::shader_types::ds:
                {
                   m_psoDesc.DS = shdr->byte_code();
                   break;
                }
-               case descriptors::shader_types::gs:
+               case shaders::shader_types::gs:
                {
                   m_psoDesc.GS = shdr->byte_code();
                   break;
                }
-               case descriptors::shader_types::hs:
+               case shaders::shader_types::hs:
                {
                   m_psoDesc.HS = shdr->byte_code();
                   break;
                }
-               case descriptors::shader_types::vs:
+               case shaders::shader_types::vs:
                {
                   m_psoDesc.VS = shdr->byte_code();
                   break;
                }
-               case descriptors::shader_types::ps:
+               case shaders::shader_types::ps:
                {
                   m_psoDesc.PS = shdr->byte_code();
                   break;
                }
                default:
                {
-#ifdef DEBUG
-                  OutputDebugString(L"A shader has an unknown type.");
-#endif
-                  winrt::throw_hresult(E_UNEXPECTED);
+                  throw std::invalid_argument(
+                     "Shader has an unknown type.");
                }
             }
          }
 
          //Make sure we have a PS and VS as they are required.
-         if (seenShaders.count(descriptors::shader_types::vs) == 0 ||
-             seenShaders.count(descriptors::shader_types::ps) == 0)
+         if (seenShaders.count(shaders::shader_types::vs) == 0 ||
+             seenShaders.count(shaders::shader_types::ps) == 0)
          {
 #ifdef DEBUG
             OutputDebugString(L"No vertex or pixel shader was found.");

@@ -13,7 +13,7 @@ namespace qgl::graphics::gpu
      member description, 5 maps to ": register(t3,space5);" in HLSL.
     flags : https://tinyurl.com/d3d12-descriptorrangeflgs
    */
-   class descriptor_range
+   class descriptor_range final
    {
       public:
       /*

@@ -11,6 +11,10 @@ namespace qgl
       public:
       using TimeT = LARGE_INTEGER;
 
+      static_assert(std::is_signed<TickT>::value &&
+                    std::is_integral<TickT>::value,
+                    "TickT must be a signed integral.");
+
       /*
        Standard target framerates for the timer.
        Count the number of ticks in a given fraction of a second.
@@ -168,8 +172,7 @@ namespace qgl
          //time.
          //If the elapsed ticks is withing the tolerance of the target, 
          //then the elapsed ticks are clamped.
-         if (std::abs(static_cast<long long>(deltaTime - m_targetTicks)) <
-             m_targetTolerance)
+         if (std::abs(deltaTime - m_targetTicks) < m_targetTolerance)
          {
             deltaTime = m_targetTicks;
          }

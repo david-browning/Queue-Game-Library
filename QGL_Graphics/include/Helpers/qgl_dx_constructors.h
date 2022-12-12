@@ -1,6 +1,6 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include "include/Content/Content-Descriptors/qgl_vector_descriptor.h"
+#include "include/Descriptors/qgl_vector_descriptor.h"
 
 namespace qgl::graphics
 {

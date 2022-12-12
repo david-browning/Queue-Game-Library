@@ -34,6 +34,8 @@
 #include <d2d1_1helper.h>
 #include <d2d1_3helper.h>
 #include "include/Helpers/d3dx12.h"
+#include <d3d12shader.h>
+#include <d3dcompiler.h>
 #pragma warning(pop)
 
 #ifdef DEBUG
@@ -124,4 +126,59 @@ namespace qgl::graphics
     Dots per inch.
     */
    using dpi_t = typename dip_t;
+
+   /*
+    D3D12_INDEX_BUFFER_STRIP_CUT_VALUE
+    When using triangle strip primitive topology, vertex positions are 
+    interpreted as vertices of a continuous triangle “strip”. There is a 
+    special index value that represents the desire to have a discontinuity in 
+    the strip, the cut index value.
+    */
+   using strip_cut_t = typename uint8_t;
+
+   constexpr D3D12_INDEX_BUFFER_STRIP_CUT_VALUE to_d3d_strip_cut(strip_cut_t s)
+   {
+      return static_cast<D3D12_INDEX_BUFFER_STRIP_CUT_VALUE>(s);
+   }
+
+   /*
+    D3D12_PRIMITIVE_TOPOLOGY_TYPE
+    Specifies how the pipeline interprets geometry or hull shader input 
+    primitives.
+    */
+   using topology_t = typename uint8_t;
+
+   constexpr D3D12_PRIMITIVE_TOPOLOGY_TYPE to_d3d_topo(topology_t t)
+   {
+      return static_cast<D3D12_PRIMITIVE_TOPOLOGY_TYPE>(t);
+   }
+
+   /*
+    UINT
+    Data enters the IA stage through inputs called input slots.
+    The IA stage has n input slots, which are designed to accommodate up to
+    n vertex buffers that provide input data. Each vertex buffer must be
+    assigned to a different slot; this information is stored in the
+    input-layout declaration when the input-layout object is created.
+    You may also specify an offset from the start of each buffer to the
+    first element in the buffer to be read.
+    */
+   using input_slot_t = typename uint8_t;
+
+   constexpr UINT to_d3d_input_slot(input_slot_t i)
+   {
+      return static_cast<UINT>(i);
+   }
+
+   /*
+    D3D12_INPUT_CLASSIFICATION
+    A value that identifies the input data class for a single input slot.
+    */
+   using input_data_class_t = typename uint8_t;
+
+   constexpr D3D12_INPUT_CLASSIFICATION to_d3d_input_class(
+      input_data_class_t c)
+   {
+      return static_cast<D3D12_INPUT_CLASSIFICATION>(c);
+   }
 }

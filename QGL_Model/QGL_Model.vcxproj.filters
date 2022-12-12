@@ -184,6 +184,12 @@
     <ClInclude Include="include\Memory\qgl_mem_traits.h">
       <Filter>Header Files\Memory</Filter>
     </ClInclude>
+    <ClInclude Include="include\qgl_map_key_iterator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Errors\qgl_error_reporter.h">
+      <Filter>Header Files\Errors</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="QGL_Model.def">

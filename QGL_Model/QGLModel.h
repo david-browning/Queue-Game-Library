@@ -4,6 +4,8 @@
 #include "include/Interfaces/qgl_icontent_map.h"
 #include "include/Interfaces/qgl_icommand.h"
 
+#include "include/Errors/qgl_error_reporter.h"
+
 #include "include/String/qgl_strings.h"
 
 #include "include/Memory/qgl_mem.h"
@@ -28,3 +30,4 @@
 
 #include "include/qgl_console.h"
 #include "include/qgl_misc_helpers.h"
+#include "include/qgl_map_key_iterator.h"

@@ -1,9 +1,9 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
 #include "include/Helpers/qgl_graphics_device_helpers.h"
-#include "include/Descriptors/qgl_vertex_element_descriptor.h"
+#include "include/Shaders/qgl_vertex_element_descriptor.h"
 
-namespace qgl::graphics::vert
+namespace qgl::graphics::shaders
 {
    /*
     Abstract representation of a semantic that is passed to the graphics
@@ -20,8 +20,8 @@ namespace qgl::graphics::vert
        semantic name matrix, however each of the four component would have
        different semantic indices (0, 1, 2, and 3).
        */
-      ivert_element(const std::string& name, size_t idx, size_t inSlot) :
-         m_name(name), m_idx(idx), m_slot(inSlot)
+      ivert_element(const std::string& name, size_t idx) :
+         m_name(name), m_idx(idx)
       {
 
       }
@@ -45,14 +45,6 @@ namespace qgl::graphics::vert
       virtual size_t size() const noexcept = 0;
 
       /*
-       A value that identifies the input data class for a single input slot.
-       */
-      virtual D3D12_INPUT_CLASSIFICATION classification() const noexcept
-      {
-         return D3D12_INPUT_CLASSIFICATION::D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
-      }
-
-      /*
        The HLSL semantic associated with this element in a shader
        input-signature.
        */
@@ -74,35 +66,19 @@ namespace qgl::graphics::vert
          return m_idx;
       }
 
-      /*
-       The IA stage has n input slots, which are designed to accommodate up to
-       n vertex buffers that provide input data. Each vertex buffer must be
-       assigned to a different slot; this information is stored in the
-       input-layout declaration when the input-layout object is created.
-       You may also specify an offset from the start of each buffer to the
-       first element in the buffer to be read.
-       https://learn.microsoft.com/en-us/windows/win32/direct3d11/d3d10-graphics-programming-guide-input-assembler-stage-getting-started
-       */
-      size_t slot() const noexcept
-      {
-         return m_slot;
-      }
-
       private:
       std::string m_name;
       size_t m_idx;
-      size_t m_slot;
    };
 
    class vert_element : ivert_element
    {
       public:
-      vert_element(const descriptors::vertex_element_descriptor& desc) :
+      vert_element(const vertex_element_descriptor& desc) :
          m_fmt(static_cast<DXGI_FORMAT>(desc.format)),
          m_class(static_cast<D3D12_INPUT_CLASSIFICATION>(desc.data_class)),
          ivert_element({ desc.semantic_name.data(), desc.MAX_SEMANTIC_NAME_LEN },
-                       desc.semantic_index, 
-                       desc.slot)
+                       desc.semantic_index)
       {
 
       }
@@ -139,8 +115,8 @@ namespace qgl::graphics::vert
    class pos_velement : public ivert_element
    {
       public:
-      pos_velement(size_t idx = 0, size_t inSlot = 0) :
-         ivert_element("POSITION", idx, inSlot)
+      pos_velement(size_t idx = 0) :
+         ivert_element("POSITION", idx)
       {
 
       }
@@ -168,8 +144,8 @@ namespace qgl::graphics::vert
    class norm_velement : public ivert_element
    {
       public:
-      norm_velement(size_t idx = 0, size_t inSlot = 0) :
-         ivert_element("NORMAL", idx, inSlot)
+      norm_velement(size_t idx = 0) :
+         ivert_element("NORMAL", idx)
       {
 
       }
@@ -197,8 +173,8 @@ namespace qgl::graphics::vert
    class col_velement : public ivert_element
    {
       public:
-      col_velement(size_t idx = 0, size_t inSlot = 0) :
-         ivert_element("COLOR", idx, inSlot)
+      col_velement(size_t idx = 0) :
+         ivert_element("COLOR", idx)
       {
 
       }
@@ -226,8 +202,8 @@ namespace qgl::graphics::vert
    class tex_velement : public ivert_element
    {
       public:
-      tex_velement(size_t idx = 0, size_t inSlot = 0) :
-         ivert_element("TEXCOORD", idx, inSlot)
+      tex_velement(size_t idx = 0) :
+         ivert_element("TEXCOORD", idx)
       {
 
       }
@@ -255,8 +231,8 @@ namespace qgl::graphics::vert
    class binorm_velement : public ivert_element
    {
       public:
-      binorm_velement(size_t idx = 0, size_t inSlot = 0) :
-         ivert_element("BINORMAL", idx, inSlot)
+      binorm_velement(size_t idx = 0) :
+         ivert_element("BINORMAL", idx)
       {
 
       }
@@ -284,8 +260,8 @@ namespace qgl::graphics::vert
    class tan_velement : public ivert_element
    {
       public:
-      tan_velement(size_t idx = 0, size_t inSlot = 0) :
-         ivert_element("TANGENT", idx, inSlot)
+      tan_velement(size_t idx = 0) :
+         ivert_element("TANGENT", idx)
       {
 
       }

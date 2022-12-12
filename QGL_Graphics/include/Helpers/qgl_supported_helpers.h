@@ -16,7 +16,7 @@ namespace qgl::graphics::helpers
 
    extern "C" QGL_GRAPHICS_API bool QGL_CC color_supported(
       DXGI_COLOR_SPACE_TYPE spc, 
-      iswap_chain * sc_p) noexcept;
+      iswap_chain* sc_p) noexcept;
 
    extern "C" QGL_GRAPHICS_API bool QGL_CC support_tiling(
       i3d_device* dev_p) noexcept;

@@ -135,6 +135,9 @@ namespace qgl
       std::mutex m_threadLock;
    };
 
+   template<typename CharT>
+   using basic_console_ptr = typename std::shared_ptr<basic_console<CharT>>;
+
    using console = typename basic_console<char>;
    using console_ptr = typename std::shared_ptr<basic_console<char>>;
 
