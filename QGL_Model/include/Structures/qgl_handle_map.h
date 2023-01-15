@@ -1,14 +1,17 @@
 #pragma once
 #include "include/qgl_model_include.h"
+#include "include/Structures/qgl_ts_umap.h"
+#include "include/qgl_map_key_iterator.h"
 
 namespace qgl
 {
-   template<typename T>
-   class handle_map
+   using hndlmap_t = typename uintptr_t;
+
+   template<typename T, typename HandleT = hndlmap_t>
+   class handle_map final
    {
       public:
-      using handle_t = typename uintptr_t;
-      static constexpr handle_t INVALID_HANDLE = static_cast<handle_t>(-1);
+      static constexpr HandleT INVALID_HANDLE = static_cast<HandleT>(-1);
 
       handle_map()
       {
@@ -17,26 +20,44 @@ namespace qgl
 
       handle_map(const handle_map&) = delete;
 
-      handle_map(handle_map&& x) noexcept :
-         m_handles(std::move(x.m_handles)),
-         m_nextHandle(m_nextHandle.load())
+      handle_map(handle_map&& r) noexcept
       {
-
+         // Block r from making changes.
+         std::lock_guard l{ r.m_allocationMutex };
+         m_handles = std::move(r.m_handles);
+         m_nextHandle.store(r.m_nextHandle.load());
       }
 
-      ~handle_map() noexcept = default;
+      ~handle_map() noexcept
+      {
+         clear();
+      }
+
+      handle_map& operator=(handle_map&& r) noexcept
+      {
+         std::scoped_lock l{ r.m_allocationMutex };
+         m_nextHandle.store(r.m_nextHandle.load());
+         m_handles = std::move(r.m_handles);
+      }
+
+      void clear()
+      {
+         std::lock_guard allocationLock{ m_allocationMutex };
+         m_handles.clear();
+         m_nextHandle.store(0);
+      }
 
       /*
        Moves the object to internal storage and allocates a handle for it.
        */
-      handle_t alloc(T&& obj)
+      HandleT alloc(T&& obj)
       {
          // Do not allow multiple threads to allocate or free at the same time.
          std::lock_guard allocationLock{ m_allocationMutex };
          auto p = m_handles.emplace(m_nextHandle, std::forward<T>(obj));
          if (!p.second)
          {
-            throw std::bad_alloc();
+            throw std::bad_alloc{};
          }
 
          auto ret = m_nextHandle.load();
@@ -45,12 +66,11 @@ namespace qgl
       }
 
       /*
-       Remove the allocated resource from the handle map.
+       Remove the allocated resource from the handle map. Returns the invalid
+       handle value.
        */
-      handle_t free(handle_t h)
+      HandleT free(const HandleT& h)
       {
-         // Do not allow multiple threads to allocate or free at the same time.
-         std::lock_guard allocationLock{ m_allocationMutex };
          m_handles.erase(h);
          return INVALID_HANDLE;
       }
@@ -66,7 +86,7 @@ namespace qgl
       /*
        True if the given handle is valid.
        */
-      bool allocated(handle_t h) const noexcept
+      bool allocated(const HandleT& h) const noexcept
       {
          return m_handles.count(h) > 0;
       }
@@ -74,7 +94,7 @@ namespace qgl
       /*
        Throws std::out_of_range if the handle was not allocated.
        */
-      T& get(handle_t h)
+      T& get(const HandleT& h)
       {
          return m_handles.at(h);
       }
@@ -82,9 +102,24 @@ namespace qgl
       /*
        Throws std::out_of_range if the handle was not allocated.
        */
-      const T& get(handle_t h) const
+      const T& get(const HandleT& h) const
       {
          return m_handles.at(h);
+      }
+
+      auto cbegin() noexcept
+      {
+         return map_key_const_iterator<HandleT, decltype(m_handles)>{
+            m_handles
+         };
+      }
+
+      auto cend() noexcept
+      {
+         return map_key_const_iterator<HandleT, decltype(m_handles)>{
+            m_handles,
+            nullptr
+         };
       }
 
       private:
@@ -93,11 +128,11 @@ namespace qgl
        */
       std::mutex m_allocationMutex;
 
-      std::atomic<handle_t> m_nextHandle = 0;
+      std::atomic<HandleT> m_nextHandle = 0;
 
       /*
        Maps handles to the actual resource.
        */
-      std::unordered_map<handle_t, T> m_handles;
+      ts_umap<HandleT, T> m_handles;
    };
 }

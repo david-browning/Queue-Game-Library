@@ -181,4 +181,6 @@ namespace qgl::graphics
    {
       return static_cast<D3D12_INPUT_CLASSIFICATION>(c);
    }
+
+   using gpu_idx_t = typename UINT;
 }

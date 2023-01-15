@@ -31,11 +31,10 @@ namespace qgl::graphics::gpu
                     rtv_descriptor_heap& rtvHeap,
                     size_t frameIndex) :
          m_dev_p(dev_p),
-         m_renderTargetsAquired(false),
          m_frmIdx(frameIndex)
       {
          m_cpuHandle = rtvHeap.at_cpu(frameIndex);
-         acquire();
+         create();
          rtvHeap.insert(m_dev_p, frameIndex, *this);
       }
 
@@ -48,24 +47,18 @@ namespace qgl::graphics::gpu
        Move constructor.
        */
       render_target(render_target&& x) noexcept :
-         irender_target(x),
-         igpu_buffer(x),
          m_cpuHandle(std::move(x.m_cpuHandle)),
-         m_renderTargetsAquired(x.m_renderTargetsAquired),
          m_swapChainDesc(std::move(x.m_swapChainDesc)),
          m_viewDesc(std::move(x.m_viewDesc)),
-         m_dev_p(std::move(x.m_dev_p)),
-         m_renderTarget_up(std::move(x.m_renderTarget_up)),
-         m_wrappedRenderTarget_up(std::move(x.m_wrappedRenderTarget_up)),
-         m_d2dTarget_up(std::move(x.m_d2dTarget_up)),
+         m_dev_p(x.m_dev_p),
+         m_renderTarget_p(std::move(x.m_renderTarget_p)),
          m_rects(std::move(x.m_rects)),
-         m_frmIdx(x.m_frmIdx)
+         m_frmIdx(x.m_frmIdx),
+         irender_target(x),
+         igpu_buffer(x)
       {
          x.m_dev_p = nullptr;
-         x.m_renderTarget_up = nullptr;
-         x.m_wrappedRenderTarget_up = nullptr;
-         m_d2dTarget_up = nullptr;
-         x.m_frmIdx = static_cast<size_t>(-1);
+         x.m_renderTarget_p = nullptr;
       }
 
       /*
@@ -73,11 +66,8 @@ namespace qgl::graphics::gpu
        */
       virtual ~render_target()
       {
-         release();
          m_dev_p = nullptr;
-         m_renderTarget_up = nullptr;
-         m_wrappedRenderTarget_up = nullptr;
-         m_d2dTarget_up = nullptr;
+         m_renderTarget_p = nullptr;
       }
 
       size_t index() const noexcept
@@ -118,12 +108,12 @@ namespace qgl::graphics::gpu
 
       virtual const i3d_render_target* get() const
       {
-         return m_renderTarget_up.get();
+         return m_renderTarget_p.get();
       }
 
       virtual i3d_render_target* get()
       {
-         return m_renderTarget_up.get();
+         return m_renderTarget_p.get();
       }
 
       /*
@@ -139,80 +129,13 @@ namespace qgl::graphics::gpu
          return m_cpuHandle;
       }
 
-      void release()
-      {
-         // Guard against move also
-         if (m_renderTargetsAquired && m_dev_p && m_wrappedRenderTarget_up)
-         {
-            m_renderTarget_up = nullptr;
-            i3d_bridge_render_target* targets2D[] =
-            {
-               m_wrappedRenderTarget_up.get()
-            };
-
-            m_dev_p->dev_back_compat()->ReleaseWrappedResources(targets2D, 1);
-            m_renderTargetsAquired = false;
-         }
-      }
-
-      void acquire()
-      {
-         winrt::check_hresult(m_dev_p->swp_chn()->GetDesc1(&m_swapChainDesc));
-         m_viewDesc.Format = m_swapChainDesc.Format;
-         m_viewDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
-         m_viewDesc.Texture2D.MipSlice = 0;
-         m_viewDesc.Texture2D.PlaneSlice = 0;
-
-
-         // Create the render target.
-         winrt::check_hresult(m_dev_p->swp_chn()->GetBuffer(
-            static_cast<UINT>(m_frmIdx), 
-            IID_PPV_ARGS(m_renderTarget_up.put())));
-
-         // Create a wrapped 11On12 resource of this back buffer. Since we are 
-         // rendering all D3D12 content first and then all D2D content, we specify 
-         // the In resource state as RENDER_TARGET - because D3D12 will have last 
-         // used it in this state - and the Out resource state as PRESENT. When 
-         // ReleaseWrappedResources() is called on the 11On12 device, the resource 
-         // will be transitioned to the PRESENT state.
-         auto bitmapProperties = D2D1::BitmapProperties1(
-            D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CANNOT_DRAW,
-            D2D1::PixelFormat(DXGI_FORMAT_UNKNOWN, D2D1_ALPHA_MODE_PREMULTIPLIED),
-            m_dev_p->wnd()->dpi_x(),
-            m_dev_p->wnd()->dpi_y());
-
-         D3D11_RESOURCE_FLAGS d3d11Flags = { D3D11_BIND_RENDER_TARGET };
-         winrt::check_hresult(
-            m_dev_p->dev_back_compat()->CreateWrappedResource(
-               get(),
-               &d3d11Flags,
-               D3D12_RESOURCE_STATE_RENDER_TARGET,
-               D3D12_RESOURCE_STATE_PRESENT,
-               IID_PPV_ARGS(m_wrappedRenderTarget_up.put())));
-
-         // Create a render target for 2D calls
-         auto surface = m_wrappedRenderTarget_up.as<IDXGISurface>();
-         winrt::check_hresult(m_dev_p->ctx_2d()->CreateBitmapFromDxgiSurface(
-            surface.get(), &bitmapProperties, m_d2dTarget_up.put()));
-      }
-
-      /*
-       Acquires resources so this render target can be used.
-       */
-      void acquire_resources()
-      {
-         i3d_bridge_render_target* targets2D[] =
-         {
-            m_wrappedRenderTarget_up.get()
-         };
-
-         m_dev_p->dev_back_compat()->AcquireWrappedResources(targets2D, 1);
-         m_renderTargetsAquired = true;
-      }
-
       const D3D12_RECT* rectangles() const noexcept
       {
-         return m_rects.data();
+         if (rectangle_count())
+         {
+            return m_rects.data();
+         }
+         return nullptr;
       }
 
       template<class RectIt>
@@ -231,15 +154,32 @@ namespace qgl::graphics::gpu
       }
 
       private:
+      void create()
+      {
+         check_result(m_dev_p->swp_chn()->GetDesc1(&m_swapChainDesc));
+         m_viewDesc.Format = m_swapChainDesc.Format;
+         m_viewDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
+         m_viewDesc.Texture2D.MipSlice = 0;
+         m_viewDesc.Texture2D.PlaneSlice = 0;
+
+         // Create the render target.
+         check_result(m_dev_p->swp_chn()->GetBuffer(
+            static_cast<UINT>(m_frmIdx),
+            IID_PPV_ARGS(m_renderTarget_p.put())));
+
+#ifdef DEBUG
+         std::wstringstream stream;
+         stream << L"Render Target " << m_frmIdx;
+         name_d3d(m_renderTarget_p.get(), stream.str().c_str());
+#endif
+      }
+      
       D3D12_CPU_DESCRIPTOR_HANDLE m_cpuHandle;
-      bool m_renderTargetsAquired;
       ResourceDescriptionT m_swapChainDesc;
       ViewDescriptionT m_viewDesc;
 
       graphics_device* m_dev_p = nullptr;
-      winrt::com_ptr<i3d_render_target> m_renderTarget_up = nullptr;
-      winrt::com_ptr<i3d_bridge_render_target> m_wrappedRenderTarget_up = nullptr;
-      winrt::com_ptr<i2d_render_target> m_d2dTarget_up = nullptr;
+      pptr<i3d_render_target> m_renderTarget_p = nullptr;
 
       std::vector<D3D12_RECT> m_rects;
       size_t m_frmIdx;

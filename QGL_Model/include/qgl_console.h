@@ -1,5 +1,7 @@
 #pragma once
 #include "include/qgl_model_include.h"
+#include "include/Structures/qgl_ts_vector.h"
+#include "include/Structures/qgl_ts_umap.h"
 #include "include/Interfaces/qgl_icommand.h"
 
 namespace qgl
@@ -16,11 +18,45 @@ namespace qgl
       OutputDebugStringW(s.c_str());
    }
 
+   template<typename CharT>
+   inline std::basic_string<CharT> default_con_err(
+      const std::basic_string<CharT>& s)
+   {
+      auto spc = s.find_first_of(' ');
+      auto cmd = s.substr(0, spc);
+
+      std::basic_stringstream<CharT> ss;
+      ss << cmd << " is not a registered console command.";
+
+      return ss.str();
+   }
+
+   template<>
+   inline std::wstring default_con_err(const std::wstring& s)
+   {
+      auto spc = s.find_first_of(' ');
+      auto cmd = s.substr(0, spc);
+
+      std::wstringstream ws;
+      ws << cmd << L" is not a registered console command.";
+
+      return ws.str();
+   }
+
    /*
-    Console operations are thread safe.
+    Represents a virtual console with an input stream and multiple output 
+    streams. 
+    Console operations are thread safe. Output operations will be written 
+    cleanly, in order they arrive. Input commands will be executed in order 
+    they arrive.
+    The input stream is not buffered. Text written to the input stream will
+    execute immediately regardless if the text ends with a newline or not.
+
+    The template parameters specifies if the console uses single or multi-byte
+    characters.
     */
    template<typename CharT>
-   class basic_console
+   class basic_console final
    {
       public:
       using str_type = std::basic_string<CharT>;
@@ -33,7 +69,14 @@ namespace qgl
 
       using cmd_callback = std::function<void(const str_type&)>;
 
-      basic_console()
+      /*
+       The arguments is the line of text that triggered the error.
+       Anything returned by the callback will be written to the console.
+       */
+      using err_callback = std::function<str_type(const str_type&)>;
+
+      basic_console(err_callback err = default_con_err<CharT>) :
+         m_errCallback(err)
       {
 #ifdef DEBUG
          insert_cout(default_con_out<CharT>);
@@ -46,12 +89,26 @@ namespace qgl
 
       ~basic_console() noexcept = default;
 
+      friend void swap(basic_console& l, basic_console& r) noexcept
+      {
+         using std::swap;
+         swap(l.m_errCallback, r.m_errCallback);
+         swap(l.m_lines, r.m_lines);
+         swap(l.m_cinCmds, r.m_cinCmds);
+         swap(l.m_coutCallbacks, r.m_coutCallbacks);
+      }
+
+      basic_console& operator=(basic_console r)
+      {
+         swap(*this, r);
+         return *this;
+      }
+
       /*
        Registers a callback to be raised whenever the console has new output.
        */
       void insert_cout(cout_callback callback)
       {
-         std::lock_guard threadLock{ m_threadLock };
          m_coutCallbacks.push_back(callback);
       }
 
@@ -60,7 +117,6 @@ namespace qgl
        */
       void erase_cout(cout_callback callback)
       {
-         std::lock_guard threadLock{ m_threadLock };
          auto found = std::find(m_coutCallbacks.begin(),
                                 m_coutCallbacks.end(),
                                 callback);
@@ -71,37 +127,57 @@ namespace qgl
          }
       }
 
+      /*
+       Registers a command that will raise the given callback.
+       */
       void insert_cin(const str_type& cmd, iconsole_cmd& callback)
       {
-         std::lock_guard threadLock{ m_threadLock };
-         m_cinCmds.insert_or_assign(cmd, callback);
+         m_cinCmds[cmd] = callback;
       }
 
+      /*
+       Removes a command from the console. If the command is written to the 
+       input stream, nothing will happen.
+       */
       void erase_cin(const str_type& cmd)
       {
-         std::lock_guard threadLock{ m_threadLock };
          m_cinCmds.erase(cmd);
       }
 
+      /*
+       Writes "s" to the console's output.
+       */
       void cout(const str_type& s) noexcept
       {
-         std::lock_guard threadLock{ m_threadLock };
          m_lines.push_back(s);
+         m_coutCallbacks.lock();
          for (const auto& f : m_coutCallbacks)
          {
             f(s);
          }
+         m_coutCallbacks.unlock();
       }
 
+      /*
+       Writes "s" to the console's input buffer.
+       The input stream is not buffered. Text written to the input stream will
+       execute immediately regardless if the text ends with a newline or not.
+       */
       void cin(const str_type& s) noexcept
       {
-         std::lock_guard threadLock{ m_threadLock };
          auto spc = s.find_first_of(' ');
          auto cmd = s.substr(0, spc);
+
+         m_cinCmds.lock();
          if (m_cinCmds.count(cmd) > 0)
          {
             m_cinCmds.at(cmd).get().execute(s.substr(spc));
          }
+         else
+         {
+            cout(m_errCallback(s));
+         }
+         m_cinCmds.unlock();
       }
 
       /*
@@ -109,39 +185,31 @@ namespace qgl
        */
       void clear()
       {
-         std::lock_guard threadLock{ m_threadLock };
          m_lines.clear();
       }
 
       /*
-       Returns a dump of the console buffer.
+       Returns a dump of the console buffer. 
        */
-      str_type dump() const
+      str_type dump()
       {
-         std::lock_guard threadLock{ m_threadLock };
          std::basic_stringstream<CharT> stm;
+         m_lines.lock();
          for (const auto& s : m_lines)
          {
             stm << s << std::endl;
          }
-
+         m_lines.unlock();
          return stm.str();
       }
 
       private:
-      std::vector<str_type> m_lines;
-      std::vector<cout_callback> m_coutCallbacks;
-      std::unordered_map<str_type, std::reference_wrapper<iconsole_cmd>> m_cinCmds;
-      std::mutex m_threadLock;
+      std::reference_wrapper<err_callback> m_errCallback;
+      ts_vector<str_type> m_lines;
+      ts_vector<cout_callback> m_coutCallbacks;
+      ts_umap<str_type, std::reference_wrapper<iconsole_cmd>> m_cinCmds;
    };
 
-   template<typename CharT>
-   using basic_console_ptr = typename std::shared_ptr<basic_console<CharT>>;
-
    using console = typename basic_console<char>;
-   using console_ptr = typename std::shared_ptr<basic_console<char>>;
-
    using wconsole = typename basic_console<wchar_t>;
-   using wconsole_ptr = typename std::shared_ptr<basic_console<wchar_t>>;
-
 }

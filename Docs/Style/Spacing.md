@@ -15,7 +15,7 @@ Each level is indented with 3 spaces. Tabs are not allowed.
   more than 80 characters, each parameter in a functions call should be on a 
   separate line.
   Ex: 
-  winrt::check_hresult(  
+  check_result(  
     qgl_create_graphics_device(  
     parameter1, 
     parameter2,  

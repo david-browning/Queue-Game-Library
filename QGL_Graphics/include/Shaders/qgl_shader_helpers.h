@@ -104,15 +104,15 @@ namespace qgl::graphics::shaders
       const shader_compile_params& params,
       error_reporter<CharT>* e = nullptr)
    {
-      winrt::com_ptr<ishader_blob> blob = nullptr;
-      winrt::com_ptr<ishader_blob> error = nullptr;
+      pptr<ishader_blob> blob = nullptr;
+      pptr<ishader_blob> error = nullptr;
       auto result = compile_shader((void*)source.data(), 
                                    source.size(),
                                    &params, 
                                    blob.put(),
                                    error.put());
       check_and_print<CharT>(error.get(), e);
-      winrt::check_hresult(result);
+      check_result(result);
       shader_data ret;
       ret.resize(blob->GetBufferSize());
       memcpy(ret.data(), blob->GetBufferPointer(), ret.size());
@@ -129,14 +129,14 @@ namespace qgl::graphics::shaders
       const shader_compile_params& params,
       error_reporter<CharT>* e = nullptr)
    {
-      winrt::com_ptr<ishader_blob> blob = nullptr;
-      winrt::com_ptr<ishader_blob> error = nullptr;
+      pptr<ishader_blob> blob = nullptr;
+      pptr<ishader_blob> error = nullptr;
       auto result = compile_shader_file(file.c_str(),
                                         &params,
                                         blob.put(),
                                         error.put());
       check_and_print<CharT>(error.get(), e);
-      winrt::check_hresult(result);
+      check_result(result);
       shader_data ret;
       ret.resize(blob->GetBufferSize());
       memcpy(ret.data(), blob->GetBufferPointer(), ret.size());
@@ -153,15 +153,15 @@ namespace qgl::graphics::shaders
       const shader_compile_params& params,
       error_reporter<CharT>* e = nullptr)
    {
-      winrt::com_ptr<ishader_blob> blob = nullptr;
-      winrt::com_ptr<ishader_blob> error = nullptr;
+      pptr<ishader_blob> blob = nullptr;
+      pptr<ishader_blob> error = nullptr;
       auto result = compile_shader_library((void*)source.data(),
                                            source.size(),
                                            &params,
                                            blob.put(),
                                            error.put());
       check_and_print<CharT>(error.get(), e);
-      winrt::check_hresult(result);
+      check_result(result);
       shader_data ret;
       ret.resize(blob->GetBufferSize());
       memcpy(ret.data(), blob->GetBufferPointer(), ret.size());
@@ -177,14 +177,14 @@ namespace qgl::graphics::shaders
       const shader_compile_params& params,
       error_reporter<CharT>* e = nullptr)
    {
-      winrt::com_ptr<ishader_blob> blob = nullptr;
-      winrt::com_ptr<ishader_blob> error = nullptr;
+      pptr<ishader_blob> blob = nullptr;
+      pptr<ishader_blob> error = nullptr;
       auto result = compile_shader_library_file(file.c_str(),
                                                 &params,
                                                 blob.put(),
                                                 error.put());
       check_and_print<CharT>(error.get(), e);
-      winrt::check_hresult(result);
+      check_result(result);
       shader_data ret;
       ret.resize(blob->GetBufferSize());
       memcpy(ret.data(), blob->GetBufferPointer(), ret.size());

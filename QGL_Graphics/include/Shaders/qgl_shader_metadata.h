@@ -144,7 +144,7 @@ namespace qgl::graphics::shaders
       private:
       void construct_shader(const shader& s)
       {
-         winrt::check_hresult(D3DReflect(
+         check_result(D3DReflect(
             s.byte_code().pShaderBytecode,
             s.byte_code().BytecodeLength,
             IID_PPV_ARGS(m_reflect_p.put())));
@@ -159,7 +159,7 @@ namespace qgl::graphics::shaders
 
       void construct_lib(const shader_lib& s)
       {
-         winrt::check_hresult(D3DReflectLibrary(
+         check_result(D3DReflectLibrary(
             s.byte_code().pShaderBytecode,
             s.byte_code().BytecodeLength,
             IID_PPV_ARGS(m_lib_p.put())));
@@ -171,7 +171,7 @@ namespace qgl::graphics::shaders
 
       void get_shader_info()
       {
-         winrt::check_hresult(m_reflect_p->GetDesc(&m_desc));
+         check_result(m_reflect_p->GetDesc(&m_desc));
       }
 
       // Gets information about the parameters passed to the shader's entry 
@@ -181,7 +181,7 @@ namespace qgl::graphics::shaders
          for (UINT i = 0; i < m_desc.InputParameters; i++)
          {
             D3D12_SIGNATURE_PARAMETER_DESC desc;
-            winrt::check_hresult(m_reflect_p->GetInputParameterDesc(
+            check_result(m_reflect_p->GetInputParameterDesc(
                i, &desc));
             m_inputParams.emplace_back(std::move(desc));
          }
@@ -193,7 +193,7 @@ namespace qgl::graphics::shaders
          for (UINT i = 0; i < m_desc.OutputParameters; i++)
          {
             D3D12_SIGNATURE_PARAMETER_DESC desc;
-            winrt::check_hresult(m_reflect_p->GetOutputParameterDesc(
+            check_result(m_reflect_p->GetOutputParameterDesc(
                i, &desc));
             m_outputParams.emplace_back(std::move(desc));
          }
@@ -205,24 +205,24 @@ namespace qgl::graphics::shaders
          for (UINT i = 0; i < m_desc.ConstantBuffers; i++)
          {
             auto b_p = m_reflect_p->GetConstantBufferByIndex(i);
-            winrt::check_pointer(b_p);
+            check_pointer(b_p);
 
             D3D12_SHADER_BUFFER_DESC bDesc;
-            winrt::check_hresult(b_p->GetDesc(&bDesc));
+            check_result(b_p->GetDesc(&bDesc));
 
             shader_var_stager vars;
             for (UINT vIdx = 0; vIdx < bDesc.Variables; vIdx++)
             {
                auto v_p = b_p->GetVariableByIndex(vIdx);
-               winrt::check_pointer(v_p);
+               check_pointer(v_p);
 
                auto t_p = v_p->GetType();
-               winrt::check_pointer(t_p);
+               check_pointer(t_p);
                D3D12_SHADER_TYPE_DESC tDesc;
-               winrt::check_hresult(t_p->GetDesc(&tDesc));
+               check_result(t_p->GetDesc(&tDesc));
 
                D3D12_SHADER_VARIABLE_DESC vDesc;
-               winrt::check_hresult(v_p->GetDesc(&vDesc));
+               check_result(v_p->GetDesc(&vDesc));
                vars.emplace_back(std::move(vDesc), std::move(tDesc));
             }
 
@@ -237,22 +237,22 @@ namespace qgl::graphics::shaders
          while (false)
          {
             auto vInfo = m_reflect_p->GetVariableByName("");
-            winrt::check_pointer(vInfo);
+            check_pointer(vInfo);
 
             auto t_p = vInfo->GetType();
-            winrt::check_pointer(t_p);
+            check_pointer(t_p);
             D3D12_SHADER_TYPE_DESC tDesc;
-            winrt::check_hresult(t_p->GetDesc(&tDesc));
+            check_result(t_p->GetDesc(&tDesc));
 
             D3D12_SHADER_VARIABLE_DESC vDesc;
-            winrt::check_hresult(vInfo->GetDesc(&vDesc));
+            check_result(vInfo->GetDesc(&vDesc));
             vars.emplace_back(std::move(vDesc), std::move(tDesc));
          }
       }
 
       void get_lib_info()
       {
-         winrt::check_hresult(m_lib_p->GetDesc(&m_libDesc));
+         check_result(m_lib_p->GetDesc(&m_libDesc));
       }
 
       /*
@@ -263,10 +263,10 @@ namespace qgl::graphics::shaders
          for (UINT i = 0; i < m_libDesc.FunctionCount; i++)
          {
             auto f_p = m_lib_p->GetFunctionByIndex(i);
-            winrt::check_pointer(f_p);
+            check_pointer(f_p);
 
             D3D12_FUNCTION_DESC fDesc;
-            winrt::check_hresult(f_p->GetDesc(&fDesc));
+            check_result(f_p->GetDesc(&fDesc));
 
             shader_param_stager fParams;
             for (INT paramIdx = 0;
@@ -274,9 +274,9 @@ namespace qgl::graphics::shaders
                  paramIdx++)
             {
                auto p_p = f_p->GetFunctionParameter(paramIdx);
-               winrt::check_pointer(p_p);
+               check_pointer(p_p);
                D3D12_PARAMETER_DESC pDesc;
-               winrt::check_hresult(p_p->GetDesc(&pDesc));
+               check_result(p_p->GetDesc(&pDesc));
                fParams.emplace_back(std::move(pDesc));
             }
 
@@ -288,9 +288,9 @@ namespace qgl::graphics::shaders
       void get_source(const D3D12_SHADER_BYTECODE& source)
       {
          static constexpr auto COMMENT = "Disassembled by QGL.\n";
-         winrt::com_ptr<ID3DBlob> diss_p;
+         pptr<ID3DBlob> diss_p;
 
-         winrt::check_hresult(D3DDisassemble(
+         check_result(D3DDisassemble(
             source.pShaderBytecode,
             source.BytecodeLength,
             0,
@@ -304,8 +304,8 @@ namespace qgl::graphics::shaders
       }
 
       shader_types m_type;
-      winrt::com_ptr<ID3D12ShaderReflection> m_reflect_p;
-      winrt::com_ptr<ID3D12LibraryReflection> m_lib_p;
+      pptr<ID3D12ShaderReflection> m_reflect_p;
+      pptr<ID3D12LibraryReflection> m_lib_p;
 
       D3D12_SHADER_DESC m_desc;
       D3D12_LIBRARY_DESC m_libDesc;

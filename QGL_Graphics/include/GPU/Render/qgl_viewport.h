@@ -43,6 +43,8 @@ namespace qgl::graphics::gpu
          m_viewport.TopLeftY = wndHeight * (1.0f - y) / 2.0f;
          m_viewport.Width = x * wndWidth;
          m_viewport.Height = y * wndHeight;
+         m_viewport.MaxDepth = 1.0f;
+         m_viewport.MinDepth = 0;
       }
 
       /*

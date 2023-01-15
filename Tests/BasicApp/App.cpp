@@ -8,47 +8,65 @@ using namespace winrt::Windows::UI;
 using namespace winrt::Windows::UI::Core;
 using namespace winrt::Windows::UI::Composition;
 using namespace winrt::Windows::UI::ViewManagement;
+using namespace winrt::Windows::ApplicationModel;
 
 using namespace qgl;
+using namespace qgl::graphics;
 
-void consoleCallback(const std::string& s)
+void consoleCallback(const std::string&)
 {
-   std::cout << s << std::endl;
-   return;
+   
+}
+
+void dsvAllocCallback(qgl::graphics::gpu::igpu_allocator* alloc_p)
+{
+   auto& info = alloc_p->stats();
 }
 
 struct App : implements<App, IFrameworkViewSource, IFrameworkView>
 {
    bool m_wndClosed = false;
+   bool m_wndVisible = true;
    qgl::basic_console<char> m_console;
+   std::unique_ptr<graphics_device> qdev_p;
 
    IFrameworkView CreateView()
    {
       return *this;
    }
 
-   void Initialize(CoreApplicationView const&)
+   void Initialize(CoreApplicationView const& appView)
    {
+      appView.Activated({ this, &App::Activated });
+      CoreApplication::Suspending({ this, &App::Suspending });
+      CoreApplication::Resuming({ this, &App::Resuming });
+   }
+
+   void SetWindow(CoreWindow const& window)
+   {
+      window.PointerPressed({ this, &App::OnPointerPressed });
+      window.PointerMoved({ this, &App::OnPointerMoved });
+      window.Closed({ this, &App::OnWindowClosed });
    }
 
    void Load(hstring const&)
    {
+      // Set up device resources.
    }
 
    void Uninitialize()
    {
+      // Called when the app is closed.
+      return;
    }
 
    void Run()
    {
-      auto outCon_p = std::make_shared<qgl::console>();
-      outCon_p->insert_cout(consoleCallback);
-      error_reporter eReporter{ outCon_p };
-
+      qgl::console outCon;
+      outCon.insert_cout(consoleCallback);
+      error_reporter eReporter{ {&outCon} };
 
       CoreWindow window = CoreWindow::GetForCurrentThread();
-      window.Activate();
-
       ApplicationView view{ ApplicationView::GetForCurrentView() };
 
       auto w_p = std::make_shared<CoreWindow>(window);
@@ -58,42 +76,40 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
       descriptors::engine_descriptor eDesc;
       eDesc.console = true;
       descriptors::hdr_descriptor hdrDesc;
-      graphics::gpu_config defaultConfig{ eDesc, hdrDesc };
-      auto qdev_p = std::make_shared<graphics::graphics_device>(
-         defaultConfig, qwp, std::initializer_list<decltype(outCon_p)>{outCon_p});
+      gpu_config defaultConfig{ eDesc, hdrDesc };
+      qdev_p = std::make_unique<graphics_device>(defaultConfig, qwp);
+      qdev_p->message_dispatcher().register_callback(&consoleCallback);
 
       // Create descriptor heaps
-      graphics::gpu::rtv_descriptor_heap rtvHeap{ qdev_p->dev_3d(), eDesc.buffers };
-      graphics::gpu::dsv_descriptor_heap dsvHeap{ qdev_p->dev_3d(), eDesc.buffers };
+      gpu::rtv_descriptor_heap rtvHeap{ qdev_p->dev_3d(), eDesc.buffers };
+      gpu::dsv_descriptor_heap dsvHeap{ qdev_p->dev_3d(), eDesc.buffers };
 
-      // Create PSO objects
-      // Set clear color!
-      auto dsvAlloc_p = std::make_shared<graphics::gpu::committed_allocator>(
-         qdev_p.get(),
-         CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
-         D3D12_HEAP_FLAG_NONE);
+      descriptors::depth_stencil_descriptor dsvDesc;
+      D3D12_CLEAR_VALUE dsvClear;
+      dsvClear.Format = DXGI_FORMAT_D32_FLOAT;
+      dsvClear.DepthStencil.Depth = dsvDesc.depth.operator float();
+      dsvClear.DepthStencil.Stencil = dsvDesc.stencil;
+      auto dsvAlloc_p = std::make_shared<graphics::gpu::tex2d_allocator>(
+         qdev_p.get(), 24 * 1024 * 1024, 0, dsvClear);
+      dsvAlloc_p->register_callback(&dsvAllocCallback);
 
       // Create RTVs
-      std::vector<std::unique_ptr<graphics::gpu::frame>> frame_ps;
+      std::vector<std::unique_ptr<gpu::frame>> frame_ps;
       for (size_t i = 0; i < eDesc.buffers; i++)
       {
-         graphics::gpu::depth_stencil dpsnc_p{
-            descriptors::depth_stencil_descriptor{},
+         gpu::depth_stencil dpsnc_p{
+            dsvDesc,
             dsvAlloc_p.get(),
             qdev_p.get(),
             dsvHeap,
             i };
 
-         graphics::gpu::render_target rt{
-            qdev_p.get(),
-            rtvHeap,
-            i };
+         gpu::render_target rt{ qdev_p.get(), rtvHeap, i };
+         gpu::viewport viewp{ *qdev_p };
+         gpu::scissor scisr{ viewp };
+         gpu::blender blndr{ descriptors::blender_descriptor{} };
+         gpu::rasterizer rster{ descriptors::rasterizer_descriptor{} };
 
-         graphics::gpu::viewport viewp{ *qdev_p };
-         graphics::gpu::scissor scisr{ viewp };
-         graphics::gpu::blender blndr { descriptors::blender_descriptor{} };
-         graphics::gpu::rasterizer rster{ descriptors::rasterizer_descriptor{} };
-         
          auto f_p = std::make_unique<graphics::gpu::frame>(
             std::move(rt),
             std::move(scisr),
@@ -123,7 +139,7 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
          *(lastSlash + 1) = L'\0';
       }
 
-      std::wstring shaderFile = std::wstring(path) + 
+      std::wstring shaderFile = std::wstring(path) +
          std::wstring(L"Assets\\shaders.hlsl");
       UINT compileFlags = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
 
@@ -148,13 +164,13 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
       psDesc.compile_params.flags = compileFlags;
 
       graphics::shaders::shader vShader{
-         vsDesc, 
+         vsDesc,
          shaderFile
       };
 
       graphics::shaders::shader pShader{
-         psDesc, 
-         shaderFile 
+         psDesc,
+         shaderFile
       };
 
       graphics::shaders::shader_metadata vsMeta{ vShader };
@@ -184,104 +200,133 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
          *qdev_p
       };
 
-      graphics::multisampler msmplr{ 
-         descriptors::multisampler_descriptor{} };
-
+      graphics::multisampler msmplr{ descriptors::multisampler_descriptor{} };
       graphics::gpu::graphics_pso pso{ rootSign, frameStager, shaderStager,
-         msmplr, vLayout, qdev_p.get(), 0};
-
-      descriptors::text_format_descriptor txtDesc;
-      descriptors::screen_space_descriptor txtLayout;
-      txtLayout.space(descriptors::screen_spaces::relative);
-      txtLayout.rect = descriptors::vector_descriptor{
-         {1, 2},
-         {1, 2},
-         {1, 2},
-         {1, 2}
-      };
-
-      graphics::gpu::graphics_command_list cmdList{ *qdev_p, pso };
-
-      components::wtext txt{ 
-         L"Test", 
-         txtLayout,
-         qgl::components::success_component_functor<components::wtext>};
+         msmplr, vLayout, qdev_p.get(), 0 };
 
       graphics::shaders::shader_lib_descriptor slibDesc;
       slibDesc.payload = graphics::shaders::shader_payloads::source;
       slibDesc.vendor = graphics::shaders::shader_vendors::directx;
       slibDesc.compile_params.type = graphics::shaders::shader_types::lib;
       slibDesc.compile_params.name.copy("ShaderLibrary", 14);
-      std::wstring shaderLibFile = std::wstring(path) + 
+      std::wstring shaderLibFile = std::wstring(path) +
          std::wstring(L"Assets\\Common.hlsli");
-      graphics::shaders::shader_lib shaderLib{ 
+      graphics::shaders::shader_lib shaderLib{
          slibDesc, shaderLibFile, &eReporter };
 
 
-      size_t frmIdx = 0;
-      CoreDispatcher dispatcher = window.Dispatcher();
-      qgl::timer<int64_t> t;
-      auto fps = t.fps();
-      while (!m_wndClosed)
+      fixed_buffer<float, 4> clearColor;
+      clearColor[0] = 0.0f;
+      clearColor[1] = 0.2f;
+      clearColor[2] = 0.6f;
+      clearColor[3] = 1.0f;
+
+
+      size_t frmIdx = qdev_p->buffer_idx();
+      gpu::cmd_executor executor{ qdev_p->default_queue() };
+      std::vector<std::unique_ptr<gpu::graphics_command_list>> cmdLists;
+      gpu::fence<uint64_t> syncFence{ *qdev_p, qdev_p->default_queue() };
+      std::vector<gpu::sync_object<uint64_t>> frameFences;
+
+      for (size_t i = 0; i < eDesc.buffers; i++)
       {
-         dispatcher.ProcessEvents(
-            CoreProcessEventsOption::ProcessAllIfPresent);
-         t.tick();
-         auto tState = t.state();
-         fps = t.fps();
-
-         // Reset cmd allocator
-
-         // Reset cmd list
-
-         // Set root signature
-
-         // Set viewport
-
-         // Set scissors
-
-         // Indicate that the back buffer will be used as a render target.
-
-         // Record rendering commands
-
-
-
-
-
-
-
-         // Close the command list
-
-         // Acquire wrapped resources
-
-         // Render D2D content
-
-         // Release wrapped resources
-
-         // Flush D3D11 context
-
-         // Present the swapchain.
-
-         // Move to next frame.
+         frameFences.push_back(syncFence.current());
+         cmdLists.push_back(std::make_unique<gpu::graphics_command_list>(
+            *qdev_p, pso, 0, nullptr));
       }
 
-      return;
+      std::vector<D3D12_RECT> frameScissor{
+         D3D12_RECT{
+            0, 0,
+            static_cast<long>(qwp->width() / 2),
+            static_cast<long>(qwp->height() / 2)
+         }
+      };
+      frame_ps[0]->frame_stencil().rectangles(
+         frameScissor.begin(), frameScissor.end());
+
+      qgl::timer<int64_t> t{ TICKS_PER_SECOND / 30 };
+      while (!m_wndClosed)
+      {
+         if (m_wndVisible)
+         {
+            CoreWindow::GetForCurrentThread().Dispatcher().ProcessEvents(
+               CoreProcessEventsOption::ProcessAllIfPresent);
+
+            t.tick();
+            auto tState = t.state();
+            qwp->title(std::to_wstring(tState.fps()));
+
+            auto cmdList = cmdLists[frmIdx].get();
+            executor.clear();
+            cmdList->begin();
+
+            cmdList->root_sig(rootSign);
+            cmdList->frame_buffer(*frame_ps[frmIdx]);
+            cmdList->clear_color(clearColor);
+            cmdList->clear_frame();
+            cmdList->clear_depth();
+            cmdList->topology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+            cmdList->end();
+
+            executor.queue(cmdList);
+            executor.execute();
+
+            qdev_p->present();
+
+            // Done recording commands for the current frame.
+            // Tell anyone waiting for this frame that its done.
+            syncFence.signal(syncFence.current());
+
+            // Advance the frame index.
+            frmIdx = qdev_p->buffer_idx();
+
+            // Wait until the next frame is done processing.
+            syncFence.wait(frameFences[frmIdx]);
+
+            // Increment the current frame's sync value. We will wait on this
+            // next time we render this frame.
+            frameFences[frmIdx] = syncFence.next();
+         }
+         else
+         {
+            CoreWindow::GetForCurrentThread().Dispatcher().ProcessEvents(
+               CoreProcessEventsOption::ProcessOneAndAllPending);
+         }
+      }
    }
 
-   void SetWindow(CoreWindow const& window)
-   {
-      window.PointerPressed({ this, &App::OnPointerPressed });
-      window.PointerMoved({ this, &App::OnPointerMoved });
-      window.Closed({ this, &App::OnWindowClosed });
 
-      window.PointerReleased([&](auto && ...)
-      {
-      });
+   void Activated(IInspectable const&,
+                  Activation::IActivatedEventArgs const&)
+   {
+      CoreWindow window = CoreWindow::GetForCurrentThread();
+      window.Activate();
+   }
+
+   winrt::fire_and_forget Suspending(IInspectable const&,
+                                     SuspendingEventArgs const& args)
+   {
+      auto lifetime = get_strong();
+
+      // https://learn.microsoft.com/en-us/windows/uwp/gaming/how-to-suspend-an-app-directx-and-cpp
+      auto def = args.SuspendingOperation().GetDeferral();
+
+      co_await winrt::resume_background();
+      //qdev_p->suspend();
+      def.Complete();
+   }
+
+   void Resuming(IInspectable const&, IInspectable const&)
+   {
+      // https://learn.microsoft.com/en-us/windows/uwp/gaming/how-to-resume-an-app-directx-and-cpp
+      return;
    }
 
    void OnPointerPressed(IInspectable const&, PointerEventArgs const& args)
    {
       float2 const point = args.CurrentPoint().Position();
+      return;
    }
 
    void OnPointerMoved(IInspectable const&, PointerEventArgs const&)
@@ -291,7 +336,6 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
 
    void OnWindowClosed(CoreWindow const&, CoreWindowEventArgs const&)
    {
-      m_wndClosed = true;
    }
 };
 

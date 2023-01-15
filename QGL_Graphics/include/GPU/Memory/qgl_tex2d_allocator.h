@@ -6,13 +6,16 @@
 
 namespace qgl::graphics::gpu
 {
-   class committed_allocator : public igpu_allocator
+   class tex2d_allocator : public igpu_allocator
    {
       public:
-      committed_allocator(graphics_device* dev_p,
-                          size_t budget,
-                          size_t alignment) :
-         m_gDev_p(dev_p)
+      tex2d_allocator(graphics_device* dev_p,
+                      size_t budget,
+                      size_t alignment,
+                      const D3D12_CLEAR_VALUE& clearValue) :
+         m_gDev_p(dev_p),
+         m_clearValue(clearValue),
+         m_memStats()
       {
          gpu_mem_info info;
          check_result(helpers::app_mem(
@@ -26,9 +29,9 @@ namespace qgl::graphics::gpu
          m_memStats.total = info.available;
       }
 
-      committed_allocator(const committed_allocator&) = delete;
+      tex2d_allocator(const tex2d_allocator&) = delete;
 
-      committed_allocator(committed_allocator&& r) noexcept
+      tex2d_allocator(tex2d_allocator&& r) noexcept
       {
          std::scoped_lock l{ r.m_mutex };
          m_callbacks = std::move(r.m_callbacks);
@@ -38,16 +41,10 @@ namespace qgl::graphics::gpu
          r.m_gDev_p = nullptr;
       }
 
-      virtual ~committed_allocator() noexcept = default;
+      virtual ~tex2d_allocator() noexcept = default;
 
       virtual gpu_alloc_handle alloc(const D3D12_RESOURCE_DESC& desc)
       {
-         if (desc.Alignment != m_memStats.alignment)
-         {
-            throw std::invalid_argument{
-               "The description's alignment does not match the allocator's alignment."
-            };
-         }
 
          static const D3D12_HEAP_PROPERTIES heapProps =
             CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
@@ -56,15 +53,19 @@ namespace qgl::graphics::gpu
          gpu_alloc_handle ret = 0;
          {
             std::scoped_lock l{ m_mutex };
+            if (desc.Alignment != m_memStats.alignment)
+            {
+               throw std::invalid_argument{
+                  "The description's alignment does not match the allocator's alignment."
+               };
+            }
 
             // Get the allocation info
             auto allocInfo = m_gDev_p->dev_3d()->GetResourceAllocationInfo(
                m_gDev_p->dev_node(), 1, &desc);
 
-            if (m_memStats.committed + allocInfo.SizeInBytes >
-               m_memStats.budgeted)
+            if (m_memStats.committed + allocInfo.SizeInBytes > m_memStats.budgeted)
             {
-               // Out of budget
                throw std::bad_alloc{};
             }
 
@@ -73,8 +74,8 @@ namespace qgl::graphics::gpu
             check_result(m_gDev_p->dev_3d()->CreateCommittedResource(
                &heapProps, heapFlags,
                &desc,
-               D3D12_RESOURCE_STATE_GENERIC_READ,
-               nullptr,
+               D3D12_RESOURCE_STATE_DEPTH_WRITE,
+               &m_clearValue,
                IID_PPV_ARGS(newResource_p.put())));
 
             allocation_entry allocation{
@@ -105,6 +106,7 @@ namespace qgl::graphics::gpu
             m_allocations.free(h);
          }
 
+         // Notify any callbacks.
          m_callbacks.lock();
          for (auto it = m_callbacks.cbegin(); it != m_callbacks.cend(); it++)
          {
@@ -154,6 +156,7 @@ namespace qgl::graphics::gpu
       }
 
       std::mutex m_mutex;
+      D3D12_CLEAR_VALUE m_clearValue;
       ts_uset<mem_budget_changed_callback> m_callbacks;
       handle_map<allocation_entry, gpu_alloc_handle> m_allocations;
       allocator_stats m_memStats;

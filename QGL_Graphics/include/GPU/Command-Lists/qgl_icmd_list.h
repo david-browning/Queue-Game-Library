@@ -15,14 +15,19 @@ namespace qgl::graphics::gpu
    class icommand_list
    {
       public:
+      /*
+       Constructs a command list with the initial pipeline state.
+       The command list is independent of any other command list.
+       */
       icommand_list(graphics_device& dev,
                     gpu::ipso& pso,
                     D3D12_COMMAND_LIST_TYPE listT,
-                    size_t nodeMask = 0) :
+                    gpu_idx_t nodeMask = 0,
+                    const sys_char* debugName = nullptr) :
          m_pso(pso)
       {
-         make_allocator(dev.dev_3d(), listT);
-         make_cmd_list(dev.dev_3d(), listT, nodeMask);
+         make_allocator(dev.dev_3d(), listT, debugName);
+         make_cmd_list(dev.dev_3d(), listT, nodeMask, debugName);
       }
 
       /*
@@ -39,17 +44,58 @@ namespace qgl::graphics::gpu
       virtual ~icommand_list() noexcept = default;
 
       /*
+       Returns a pointer to the D3D command list.
+       */
+      icmd_list* get() noexcept
+      {
+         return m_cmdList.get();
+      }
+
+      /*
+       Returns a const pointer to the D3D command list.
+       */
+      const icmd_list* get() const noexcept
+      {
+         return m_cmdList.get();
+      }
+
+      /*
        Puts the command list in the recording state.
        Classes that implement this function should start by calling "reset()".
        */
       virtual void begin() = 0;
 
       /*
-       Closes the bundle so it can be executed.
+       Ends the command list so that it is ready for execution.
        */
-      void close()
+      virtual void end() = 0;
+
+      /*
+       Clears the command list. It must be rebuilt using this class's member
+       functions. This leaves the command list in the recording state.
+       A typical pattern is to submit a command list and then immediately reset
+       it to reuse the allocated memory for another command list.
+       Do not reset until the GPU is done using the command list and allocator.
+       Use fences to wait until the GPU is done with this.
+       */
+      void reset()
       {
-         m_cmdList->Close();
+         // Command list allocators can only be reset when the associated
+         // command lists have finished execution on the GPU; apps should use
+         // fences to determine GPU execution progress.
+         check_result(m_allocator->Reset());
+
+         /*
+          Before calling Reset(), the app must make sure that the GPU is no
+          longer executing any command lists which are associated with the
+          allocator; otherwise, the call will fail.
+          Also, note that this API is not free-threaded and therefore can't be
+          called on the same allocator at the same time from multiple threads.
+          */
+         check_result(m_cmdList->Reset(m_allocator.get(),
+                                       m_pso.get().get()));
+         m_vertBuffView.resize(0);
+         m_heapsToSet.resize(0);
       }
 
       /*
@@ -100,8 +146,8 @@ namespace qgl::graphics::gpu
       template<
          D3D12_DESCRIPTOR_HEAP_TYPE DescriptorHeapT,
          D3D12_DESCRIPTOR_HEAP_FLAGS Flag>
-      void descriptors(
-            std::initializer_list<descriptor_heap<DescriptorHeapT, Flag>> heaps)
+         void descriptors(
+               std::initializer_list<descriptor_heap<DescriptorHeapT, Flag>> heaps)
       {
          m_heapsToSet.clear();
          m_heapsToSet.insert(m_heapsToSet.begin(), heaps.begin(), heaps.end());
@@ -179,6 +225,10 @@ namespace qgl::graphics::gpu
          index(buff.view());
       }
 
+
+      /*
+       Sets the index buffer.
+       */
       void index(const D3D12_INDEX_BUFFER_VIEW& buff_p)
       {
          m_idxBuffView = buff_p;
@@ -202,9 +252,9 @@ namespace qgl::graphics::gpu
          typename ResourceDescriptionT,
          typename ViewDescriptionT,
          typename ResourceT>
-      void transition(
-            igpu_buffer<ResourceDescriptionT, ViewDescriptionT, ResourceT>* resource,
-            D3D12_RESOURCE_STATES newState)
+         void transition(
+               igpu_buffer<ResourceDescriptionT, ViewDescriptionT, ResourceT>* resource,
+               D3D12_RESOURCE_STATES newState)
       {
          if (resource->state != newState)
          {
@@ -235,9 +285,9 @@ namespace qgl::graphics::gpu
          typename ResourceDescriptionT,
          typename ViewDescriptionT,
          typename ResourceT>
-      void transition_queue(
-            igpu_buffer<ResourceDescriptionT, ViewDescriptionT, ResourceT>* resource,
-            D3D12_RESOURCE_STATES newState)
+         void transition_queue(
+               igpu_buffer<ResourceDescriptionT, ViewDescriptionT, ResourceT>* resource,
+               D3D12_RESOURCE_STATES newState)
       {
          if (resource->state != newState)
          {
@@ -257,50 +307,6 @@ namespace qgl::graphics::gpu
                newState));
       }
 
-      /*
-       Clears the command list. It must be rebuilt using this class's member
-       functions. This leaves the command list in the recording state.
-       A typical pattern is to submit a command list and then immediately reset
-       it to reuse the allocated memory for another command list.
-       Do not reset until the GPU is done using the command list and allocator.
-       Use fences to wait until the GPU is done with this.
-       */
-      void reset()
-      {
-         // Command list allocators can only be reset when the associated
-         // command lists have finished execution on the GPU; apps should use
-         // fences to determine GPU execution progress.
-         winrt::check_hresult(m_allocator->Reset());
-
-         /*
-          Before calling Reset(), the app must make sure that the GPU is no
-          longer executing any command lists which are associated with the
-          allocator; otherwise, the call will fail.
-          Also, note that this API is not free-threaded and therefore can't be
-          called on the same allocator at the same time from multiple threads.
-          */
-         winrt::check_hresult(m_cmdList->Reset(m_allocator.get(),
-            m_pso.get().get()));
-         m_vertBuffView.resize(0);
-         m_heapsToSet.resize(0);
-      }
-
-      /*
-       Returns a pointer to the D3D command list.
-       */
-      icmd_list* get() noexcept
-      {
-         return m_cmdList.get();
-      }
-
-      /*
-       Returns a const pointer to the D3D command list.
-       */
-      const icmd_list* get() const noexcept
-      {
-         return m_cmdList.get();
-      }
-
       private:
       /*
        When creating a command list, the command list type of the allocator,
@@ -308,11 +314,25 @@ namespace qgl::graphics::gpu
        list being created.
        */
       void make_allocator(i3d_device* dev_p,
-                          D3D12_COMMAND_LIST_TYPE listT)
+                          D3D12_COMMAND_LIST_TYPE listT,
+                          const sys_char* debugName)
       {
-         winrt::check_hresult(dev_p->CreateCommandAllocator(
+         check_result(dev_p->CreateCommandAllocator(
             listT,
             IID_PPV_ARGS(m_allocator.put())));
+
+#ifdef DEBUG
+         if (!debugName)
+         {
+            name_d3d(m_allocator.get(), L"Command Allocator");
+         }
+         else
+         {
+            std::wstringstream stream;
+            stream << L"Command Allocator " << debugName;
+            name_d3d(m_allocator.get(), stream.str().c_str());
+         }
+#endif
       }
 
       /*
@@ -321,22 +341,36 @@ namespace qgl::graphics::gpu
        */
       void make_cmd_list(i3d_device* dev_p,
                          D3D12_COMMAND_LIST_TYPE listT,
-                         size_t nodeMask)
+                         gpu_idx_t nodeMask,
+                         const sys_char* debugName)
       {
-         winrt::check_hresult(dev_p->CreateCommandList(
-            static_cast<UINT>(nodeMask),
+         check_result(dev_p->CreateCommandList(
+            nodeMask,
             listT,
             m_allocator.get(),
             m_pso.get().get(),
             IID_PPV_ARGS(m_cmdList.put())));
 
+#ifdef DEBUG
+         if (!debugName)
+         {
+            name_d3d(m_cmdList.get(), L"Command List");
+         }
+         else
+         {
+            std::wstringstream stream;
+            stream << L"Command List " << debugName;
+            name_d3d(m_cmdList.get(), stream.str().c_str());
+         }
+#endif
+
          //Close command list.
-         winrt::check_hresult(m_cmdList->Close());
+         check_result(m_cmdList->Close());
       }
 
       std::reference_wrapper<gpu::ipso> m_pso;
-      winrt::com_ptr<icmd_allocator> m_allocator;
-      winrt::com_ptr<icmd_list> m_cmdList;
+      pptr<icmd_allocator> m_allocator;
+      pptr<icmd_list> m_cmdList;
 
       /*
        Keep a list of the descriptor heaps to set. This is here so that the

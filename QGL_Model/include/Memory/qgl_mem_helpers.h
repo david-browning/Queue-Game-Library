@@ -49,7 +49,7 @@ namespace qgl::mem
       return impl::mask<T>(start, end, static_cast<T>(0));
    }
 
-   static_assert(mask<int16_t>(3, 8) == 0b00000001'11111000,
+   static_assert(mask<int16_t>(size_t(3), size_t(8)) == int16_t(0b00000001'11111000),
                  "mask is not correct (3, 8)");
 
    /*

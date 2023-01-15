@@ -39,7 +39,7 @@ namespace qgl::graphics
          {
             case brush_styles::solid:
             {
-               winrt::check_hresult(devContext_p->CreateSolidColorBrush(
+               check_result(devContext_p->CreateSolidColorBrush(
                   to_d2d_color(m_desc.stops.at(0).color),
                   reinterpret_cast<ID2D1SolidColorBrush**>(m_brush_up.put())));
                break;
@@ -48,8 +48,8 @@ namespace qgl::graphics
             {
                auto stops = to_d2d_stop(m_desc.stops);
 
-               winrt::com_ptr<ID2D1GradientStopCollection> stopCollection;
-               winrt::check_hresult(devContext_p->CreateGradientStopCollection(
+               pptr<ID2D1GradientStopCollection> stopCollection;
+               check_result(devContext_p->CreateGradientStopCollection(
                   stops.data(),
                   static_cast<UINT32>(m_desc.stop_count),
                   stopCollection.put()));
@@ -58,7 +58,7 @@ namespace qgl::graphics
                   reinterpret_cast<D2D1_LINEAR_GRADIENT_BRUSH_PROPERTIES*>(
                      m_desc.properties.data());
 
-               winrt::check_hresult(devContext_p->CreateLinearGradientBrush(
+               check_result(devContext_p->CreateLinearGradientBrush(
                   *linearProps,
                   stopCollection.get(),
                   reinterpret_cast<ID2D1LinearGradientBrush**>(m_brush_up.put())));
@@ -68,8 +68,8 @@ namespace qgl::graphics
             {
                auto stops = to_d2d_stop(m_desc.stops);
 
-               winrt::com_ptr<ID2D1GradientStopCollection> stopCollection;
-               winrt::check_hresult(
+               pptr<ID2D1GradientStopCollection> stopCollection;
+               check_result(
                   devContext_p->CreateGradientStopCollection(
                      stops.data(),
                      static_cast<UINT>(m_desc.stop_count),
@@ -79,7 +79,7 @@ namespace qgl::graphics
                   reinterpret_cast<D2D1_RADIAL_GRADIENT_BRUSH_PROPERTIES*>(
                      m_desc.properties.data());
 
-               winrt::check_hresult(
+               check_result(
                   devContext_p->CreateRadialGradientBrush(
                      *radialProps,
                      stopCollection.get(),
@@ -93,7 +93,7 @@ namespace qgl::graphics
          }
       }
 
-      winrt::com_ptr<ID2D1Brush> m_brush_up;
+      pptr<ID2D1Brush> m_brush_up;
       descriptors::brush_descriptor m_desc;
    };
 }

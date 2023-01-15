@@ -48,7 +48,7 @@ namespace qgl::graphics
             throw error.str();
          }
 
-         winrt::check_hresult(m_atlasEffect->SetValue(
+         check_result(m_atlasEffect->SetValue(
             D2D1_ATLAS_PROP_INPUT_RECT, m_entries[name]));
       }
 
@@ -85,7 +85,7 @@ namespace qgl::graphics
 
 
          // Create the D2D effect
-         winrt::check_hresult(context_p->CreateEffect(
+         check_result(context_p->CreateEffect(
             CLSID_D2D1Atlas, m_atlasEffect.put()));
          m_atlasEffect->SetInput(0, m_image.get());
 
@@ -111,7 +111,7 @@ namespace qgl::graphics
 
       descriptors::atlas_descriptor m_desc;
       std::unordered_map<std::string, D2D1_VECTOR_4F> m_entries;
-      winrt::com_ptr<ID2D1Effect> m_atlasEffect;
+      pptr<ID2D1Effect> m_atlasEffect;
       image m_image;
    };
 }

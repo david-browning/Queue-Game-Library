@@ -56,6 +56,9 @@
     <Filter Include="Source Files\Interfaces">
       <UniqueIdentifier>{9e84af05-1e60-4d1f-ade6-1b50400f454d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Threads">
+      <UniqueIdentifier>{3f3ba96b-6a80-4039-a652-4672bbaeee26}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QGLModel.h">
@@ -127,20 +130,8 @@
     <ClInclude Include="include\Errors\qgl_e_checkers.h">
       <Filter>Header Files\Errors</Filter>
     </ClInclude>
-    <ClInclude Include="include\Errors\qgl_e_codes.h">
-      <Filter>Header Files\Errors</Filter>
-    </ClInclude>
     <ClInclude Include="include\Memory\qgl_mem_helpers.h">
       <Filter>Header Files\Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="include\String\qgl_string.h">
-      <Filter>Header Files\String</Filter>
-    </ClInclude>
-    <ClInclude Include="include\String\qgl_string_fmt.h">
-      <Filter>Header Files\String</Filter>
-    </ClInclude>
-    <ClInclude Include="include\String\qgl_strings.h">
-      <Filter>Header Files\String</Filter>
     </ClInclude>
     <ClInclude Include="include\qgl_guid.h">
       <Filter>Header Files</Filter>
@@ -178,9 +169,6 @@
     <ClInclude Include="include\Structures\qgl_handle_map.h">
       <Filter>Header Files\Structures</Filter>
     </ClInclude>
-    <ClInclude Include="include\qgl_eptr.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Memory\qgl_mem_traits.h">
       <Filter>Header Files\Memory</Filter>
     </ClInclude>
@@ -189,6 +177,27 @@
     </ClInclude>
     <ClInclude Include="include\Errors\qgl_error_reporter.h">
       <Filter>Header Files\Errors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Structures\qgl_ts_list.h">
+      <Filter>Header Files\Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Threads\qgl_callback_dispatcher.h">
+      <Filter>Header Files\Threads</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Threads\qgl_callback_dispatcher_args.h">
+      <Filter>Header Files\Threads</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Threads\qgl_basic_callback_dispatcher_traits.h">
+      <Filter>Header Files\Threads</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Structures\qgl_ts_vector.h">
+      <Filter>Header Files\Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Structures\qgl_ts_umap.h">
+      <Filter>Header Files\Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Structures\qgl_ts_uset.h">
+      <Filter>Header Files\Structures</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

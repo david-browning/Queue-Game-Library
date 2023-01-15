@@ -12,7 +12,7 @@ namespace qgl::graphics::gpu
       public:
       srv_descriptor_heap(i3d_device* dev_p,
                           size_t numEntries,
-                          UINT nodeMask = 0) :
+                          gpu_idx_t nodeMask = 0) :
          descriptor_heap(dev_p, numEntries, nodeMask)
       {
       }

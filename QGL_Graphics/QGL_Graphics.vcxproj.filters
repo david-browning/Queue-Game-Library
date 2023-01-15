@@ -103,9 +103,6 @@
     <ClCompile Include="src\Helpers\qgl_supported_helpers.cpp">
       <Filter>Source Files\Helpers</Filter>
     </ClCompile>
-    <ClCompile Include="src\GPU\qgl_gpu_msg_callback.cpp">
-      <Filter>Source Files\GPU</Filter>
-    </ClCompile>
     <ClCompile Include="src\Shaders\qgl_shader_descriptors.cpp">
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
@@ -273,9 +270,6 @@
     <ClInclude Include="include\Components\Content\qgl_light.h">
       <Filter>Header Files\Components\Content</Filter>
     </ClInclude>
-    <ClInclude Include="include\Components\Content\qgl_text_format.h">
-      <Filter>Header Files\Components\Content</Filter>
-    </ClInclude>
     <ClInclude Include="include\Components\Content\qgl_texture.h">
       <Filter>Header Files\Components\Content</Filter>
     </ClInclude>
@@ -335,9 +329,6 @@
     </ClInclude>
     <ClInclude Include="include\Components\qgl_render_context.h">
       <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="include\GPU\qgl_gpu_msg_callback.h">
-      <Filter>Header Files\GPU</Filter>
     </ClInclude>
     <ClInclude Include="include\Components\Render\qgl_brush.h">
       <Filter>Header Files\Components\Render</Filter>
@@ -407,6 +398,18 @@
     </ClInclude>
     <ClInclude Include="include\Shaders\qgl_sampler_descriptor.h">
       <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Command-Lists\qgl_cmd_executor.h">
+      <Filter>Header Files\GPU\Command-Lists</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Memory\qgl_allocator_stats.h">
+      <Filter>Header Files\GPU\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Memory\qgl_tex2d_allocator.h">
+      <Filter>Header Files\GPU\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\qgl_gpu_msg_dispatchers.h">
+      <Filter>Header Files\GPU</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

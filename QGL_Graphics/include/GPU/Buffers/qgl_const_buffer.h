@@ -108,7 +108,7 @@ namespace qgl::graphics::gpu
          if (!mapped())
          {
             auto resource = m_allocator_p->resource(m_alloc_h);
-            winrt::check_hresult(resource->Map(0, nullptr,
+            check_result(resource->Map(0, nullptr,
                reinterpret_cast <void**>(&m_buffer_p)));
          }
       }

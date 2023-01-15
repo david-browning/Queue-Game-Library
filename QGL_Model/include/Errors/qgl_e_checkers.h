@@ -1,15 +1,14 @@
 #pragma once
 #include "include/qgl_model_include.h"
-#include "include/Errors/qgl_e_codes.h"
 
 namespace qgl
 {
    #ifdef WIN32
    
-   inline std::string HrToString(HRESULT hr)
+   inline std::string resultToString(result_t r)
    {
       char s_str[64] = {};
-      sprintf_s(s_str, "HRESULT of 0x%08X", static_cast<unsigned long>(hr));
+      sprintf_s(s_str, "result_t of 0x%08X", static_cast<unsigned long>(r));
       return std::string(s_str);
    }
 
@@ -35,4 +34,9 @@ namespace qgl
          throw_last_error();
       }
    }
+
+   /*
+    Throws an exception is the result is a failure.
+    */
+   inline const auto& check_result = winrt::check_hresult;
 }

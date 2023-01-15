@@ -117,12 +117,10 @@ namespace qgl::graphics::gpu
       void release()
       {
          m_dstencil.release();
-         m_rt.release();
       }
 
       void acquire()
       {
-         m_rt.acquire();
          m_dstencil.acquire();
       }
 

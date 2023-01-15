@@ -32,7 +32,7 @@ namespace qgl::graphics::gpu
        this.
        */
       depth_stencil(const descriptors::depth_stencil_descriptor& buffer,
-                    committed_allocator* allocator_p,
+                    tex2d_allocator* allocator_p,
                     graphics_device* dev_p,
                     dsv_descriptor_heap& dsvHeap,
                     size_t frameIndex) :
@@ -121,12 +121,12 @@ namespace qgl::graphics::gpu
 
       virtual const igpu_resource* get() const
       {
-         return m_allocator_p->resource(m_alloc_h);
+         return m_allocator_p->get(m_alloc_h);
       }
 
       virtual igpu_resource* get()
       {
-         return m_allocator_p->resource(m_alloc_h);
+         return m_allocator_p->get(m_alloc_h);
       }
 
       /*
@@ -219,8 +219,7 @@ namespace qgl::graphics::gpu
          m_depthDesc.FrontFace.StencilPassOp =
             static_cast<D3D12_STENCIL_OP>(m_buffer.front_face_op.pass_op);
 
-         m_alloc_h = m_allocator_p->alloc(
-            m_desc, D3D12_RESOURCE_STATE_DEPTH_WRITE);
+         m_alloc_h = m_allocator_p->alloc(m_desc);
 
          // texture width * texture height * 4 bytes per pixel.
          m_size = m_desc.Width * m_desc.Height * 4;
@@ -247,7 +246,7 @@ namespace qgl::graphics::gpu
       }
 
       private:
-      committed_allocator* m_allocator_p = nullptr;
+      tex2d_allocator* m_allocator_p = nullptr;
       gpu_alloc_handle m_alloc_h = static_cast<gpu_alloc_handle>(-1);
       graphics_device* m_dev_p = nullptr;
       D3D12_DEPTH_STENCIL_DESC m_depthDesc;

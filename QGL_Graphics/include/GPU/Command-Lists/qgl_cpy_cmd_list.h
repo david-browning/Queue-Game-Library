@@ -9,7 +9,7 @@ namespace qgl::graphics::gpu
       public:
       copy_command_list(graphics_device& dev,
                         gpu::ipso& pso,
-                        size_t nodeMask = 0) :
+                        gpu_idx_t nodeMask = 0) :
          icommand_list(dev, pso, D3D12_COMMAND_LIST_TYPE_COPY, nodeMask)
       {
       }

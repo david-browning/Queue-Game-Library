@@ -1,7 +1,6 @@
 #pragma once
 #include "include/qgl_model_include.h"
 #include "include/qgl_version.h"
-#include "include/Errors/qgl_e_codes.h"
 #include "include/Interfaces/qgl_icontent_type.h"
 
 namespace qgl
@@ -43,6 +42,6 @@ namespace qgl
       virtual content_control_types control_type(content_param_types) const = 0;
    };
 
-   extern "C" QGL_MODEL_API qgl_code QGL_CC make_content_map(
+   extern "C" QGL_MODEL_API result_t QGL_CC make_content_map(
       qgl_version_t, icontent_map**) noexcept;
 }

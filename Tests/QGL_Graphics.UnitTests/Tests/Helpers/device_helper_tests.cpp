@@ -31,30 +31,6 @@ namespace QGL_Graphics_UnitTests
          }
       }
 
-      TEST_METHOD(Make2DFactory)
-      {
-         try
-         {
-            auto factory = helpers::make_2d_factory(true);
-         }
-         catch (...)
-         {
-            Assert::Fail(L"Exception thrown.");
-         }
-      }
-
-      TEST_METHOD(MakeTextFactory)
-      {
-         try
-         {
-            auto factory = helpers::make_text_factory();
-         }
-         catch (...)
-         {
-            Assert::Fail(L"Exception thrown.");
-         }
-      }
-
       TEST_METHOD(EnumHardwareAdapters)
       {
          try

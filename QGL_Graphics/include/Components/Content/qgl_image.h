@@ -43,6 +43,6 @@ namespace qgl::components
       }
 
       private:
-      winrt::com_ptr<ID2D1Image> m_img_p;
+      pptr<ID2D1Image> m_img_p;
    };
 }

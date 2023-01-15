@@ -30,6 +30,18 @@ namespace qgl::graphics::gpu
 
       }
 
+      friend void swap(sync_object& l, sync_object& r) noexcept
+      {
+         using std::swap;
+         swap(l.m_value, r.m_value);
+      }
+
+      sync_object& operator=(sync_object r) noexcept
+      {
+         swap(*this, r);
+         return *this;
+      }
+
       private:
       ValueT m_value;
    };
