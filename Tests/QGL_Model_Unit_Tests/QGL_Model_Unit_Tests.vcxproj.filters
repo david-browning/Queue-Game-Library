@@ -60,15 +60,6 @@
     <ClCompile Include="Tests\version_tests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
-    <ClCompile Include="Tests\Structures\tree_helper_tests.cpp">
-      <Filter>Tests\Structures</Filter>
-    </ClCompile>
-    <ClCompile Include="Tests\Structures\basic_graph_tests.cpp">
-      <Filter>Tests\Structures</Filter>
-    </ClCompile>
-    <ClCompile Include="Tests\Structures\basic_tree_map_tests.cpp">
-      <Filter>Tests\Structures</Filter>
-    </ClCompile>
     <ClCompile Include="guid_tests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
@@ -76,6 +67,15 @@
       <Filter>Tests</Filter>
     </ClCompile>
     <ClCompile Include="Tests\Structures\fixed_buffer_tests.cpp">
+      <Filter>Tests\Structures</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Structures\ts_uset_tests.cpp">
+      <Filter>Tests\Structures</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Structures\ts_list_tests.cpp">
+      <Filter>Tests\Structures</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Structures\ts_vector_tests.cpp">
       <Filter>Tests\Structures</Filter>
     </ClCompile>
   </ItemGroup>

@@ -25,7 +25,7 @@ namespace qgl::graphics::gpu
    class descriptor_heap
    {
       public:
-      using dev_ptr = typename winrt::com_ptr<i3d_device>;
+      using dev_ptr = typename pptr<i3d_device>;
       using depth_stencil_type = typename igpu_buffer<
          CD3DX12_RESOURCE_DESC,
          D3D12_DEPTH_STENCIL_VIEW_DESC,
@@ -48,7 +48,7 @@ namespace qgl::graphics::gpu
        */
       descriptor_heap(i3d_device* dev_p,
                       size_t numEntries,
-                      UINT nodeMask = 0) :
+                      gpu_idx_t nodeMask = 0) :
          m_heapSize(numEntries)
       {
          p_allocate(dev_p, nodeMask);
@@ -178,7 +178,7 @@ namespace qgl::graphics::gpu
       }
 
       private:
-      void p_allocate(i3d_device* dev_p, UINT nodeMask)
+      void p_allocate(i3d_device* dev_p, gpu_idx_t nodeMask)
       {
          //Create the description
          D3D12_DESCRIPTOR_HEAP_DESC heapDesc;
@@ -191,7 +191,7 @@ namespace qgl::graphics::gpu
             dev_p->GetDescriptorHandleIncrementSize(DescriptorHeapT);
 
          //Create a heap.
-         winrt::check_hresult(dev_p->CreateDescriptorHeap(
+         check_result(dev_p->CreateDescriptorHeap(
             &heapDesc,
             IID_PPV_ARGS(m_heap_p.put())));
          name_d3d(m_heap_p.get(), L"Descriptor Heap");
@@ -218,7 +218,7 @@ namespace qgl::graphics::gpu
        */
       size_t m_descriptorSize;
 
-      winrt::com_ptr<ID3D12DescriptorHeap> m_heap_p;
+      pptr<ID3D12DescriptorHeap> m_heap_p;
 
       size_t m_heapSize;
    };

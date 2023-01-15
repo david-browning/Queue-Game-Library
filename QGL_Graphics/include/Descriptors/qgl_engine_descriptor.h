@@ -3,6 +3,13 @@
 
 namespace qgl::descriptors
 {
+   enum class resolution_modes : uint8_t
+   {
+      window_resolution,
+      static_resolution,
+      dynamic_resolution,
+   };
+
 #pragma pack(push, 1)
    struct engine_descriptor final
    {
@@ -25,12 +32,12 @@ namespace qgl::descriptors
          swap(l.buffers, r.buffers);
          swap(l.fullscreen, r.fullscreen);
          swap(l.tearing, r.tearing);
-         swap(l.high_resolution, r.high_resolution);
          swap(l.interlacing, r.interlacing);
          swap(l.pref_adapter_id, r.pref_adapter_id);
          swap(l.text_mode, r.text_mode);
          swap(l.reserved1, r.reserved1);
          swap(l.console, r.console);
+         swap(l.resolution_mode, r.resolution_mode);
       }
 
       engine_descriptor& operator=(engine_descriptor r) noexcept
@@ -71,12 +78,9 @@ namespace qgl::descriptors
        */
       uint8_t tearing = 1;
 
-      /*
-       True if the engine uses high resolution rendering.
-       */
-      uint8_t high_resolution = 1;
-
       uint8_t interlacing = 0;
+
+      resolution_modes resolution_mode = resolution_modes::window_resolution;
 
       /*
        Represents a method of rendering glyphs.

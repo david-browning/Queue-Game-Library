@@ -23,7 +23,7 @@ namespace qgl::graphics::gpu
                    const multisampler& smplr,
                    const shaders::vertex_layout& vLayout,
                    graphics_device* device_p,
-                   size_t nodeMask) :
+                   gpu_idx_t nodeMask) :
          m_dev_p(device_p)
       {
          //Set the flags.
@@ -54,7 +54,7 @@ namespace qgl::graphics::gpu
          m_psoDesc.pRootSignature = rootSig.get();
 
          //Set the node mask
-         m_psoDesc.NodeMask = static_cast<UINT>(nodeMask);
+         m_psoDesc.NodeMask = nodeMask;
 
          //TODO: Add support for stream output?
          //m_psoDesc.StreamOutput;
@@ -62,7 +62,7 @@ namespace qgl::graphics::gpu
          frames(frms);
          shaders(shdrs);
 
-         winrt::check_hresult(m_dev_p->dev_3d()->CreateGraphicsPipelineState(
+         check_result(m_dev_p->dev_3d()->CreateGraphicsPipelineState(
             &m_psoDesc,
             IID_PPV_ARGS(m_pipelineState.put())));
       }
@@ -109,7 +109,7 @@ namespace qgl::graphics::gpu
          m_psoDesc.NumRenderTargets = static_cast<UINT>(numFrames);
 
          auto frmIt = frms.begin();
-         for (size_t i = 0; i < numFrames; i++, frmIt++)
+         for (size_t i = 0; i < m_psoDesc.NumRenderTargets; i++, frmIt++)
          {
             m_psoDesc.RTVFormats[i] = (*frmIt)->frame_buffer().format();
             m_psoDesc.DSVFormat = (*frmIt)->frame_stencil().format();
@@ -212,7 +212,7 @@ namespace qgl::graphics::gpu
       /*
        The D3D12 pipeline state.
        */
-      winrt::com_ptr<ID3D12PipelineState> m_pipelineState;
+      pptr<ID3D12PipelineState> m_pipelineState;
 
       /*
        The description used to create the pipeline state.

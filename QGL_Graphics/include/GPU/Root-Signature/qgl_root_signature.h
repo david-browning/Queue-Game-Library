@@ -14,7 +14,7 @@ namespace qgl::graphics::gpu
        */
       root_signature(const stagers::ibindable_stager& bindables,
                      graphics_device& dev,
-                     size_t nodeMask = 0)
+                     gpu_idx_t nodeMask = 0)
       {
          collect(bindables);
          construct(dev, nodeMask);
@@ -97,7 +97,7 @@ namespace qgl::graphics::gpu
          }
       }
 
-      void construct(graphics_device& dev, size_t nodeMask)
+      void construct(graphics_device& dev, gpu_idx_t nodeMask)
       {
          D3D12_FEATURE_DATA_ROOT_SIGNATURE featureData = {};
 
@@ -127,17 +127,17 @@ namespace qgl::graphics::gpu
             D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
          //Serialize the signature.
-         winrt::com_ptr<ID3DBlob> signature;
-         winrt::com_ptr<ID3DBlob> error;
-         winrt::check_hresult(D3DX12SerializeVersionedRootSignature(
+         pptr<ID3DBlob> signature;
+         pptr<ID3DBlob> error;
+         check_result(D3DX12SerializeVersionedRootSignature(
             &desc,
             featureData.HighestVersion,
             signature.put(),
             error.put()));
 
          //Create the signature.
-         winrt::check_hresult(dev.dev_3d()->CreateRootSignature(
-            static_cast<UINT>(nodeMask),
+         check_result(dev.dev_3d()->CreateRootSignature(
+            nodeMask,
             signature->GetBufferPointer(),
             signature->GetBufferSize(),
             IID_PPV_ARGS(m_rootSig_p.put())));
@@ -145,7 +145,7 @@ namespace qgl::graphics::gpu
          name_d3d(m_rootSig_p.get(), L"Root Signature");
       }
 
-      winrt::com_ptr<ID3D12RootSignature> m_rootSig_p;
+      pptr<ID3D12RootSignature> m_rootSig_p;
       std::vector<D3D12_ROOT_PARAMETER1> m_params;
    };
 }

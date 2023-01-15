@@ -38,7 +38,7 @@ namespace qgl::components
          {
             case descriptors::texture_types::dds:
             {
-               winrt::check_hresult(DirectX::LoadFromDDSMemory(
+               check_result(DirectX::LoadFromDDSMemory(
                   data, dataSize,
                   desc.image_flags.as<DirectX::DDS_FLAGS>(),
                   nullptr, m_img));
@@ -50,7 +50,7 @@ namespace qgl::components
             }
             case descriptors::texture_types::hdr:
             {
-               winrt::check_hresult(DirectX::LoadFromHDRMemory(
+               check_result(DirectX::LoadFromHDRMemory(
                   data, dataSize,
                   nullptr, m_img));
                break;
@@ -59,7 +59,7 @@ namespace qgl::components
             {
                // Optional WIC callback:
                //https://github.com/microsoft/DirectXTex/wiki/WIC-I-O-Functions
-               winrt::check_hresult(DirectX::LoadFromWICMemory(
+               check_result(DirectX::LoadFromWICMemory(
                   data, dataSize,
                   desc.image_flags.as<DirectX::WIC_FLAGS>(),
                   nullptr, m_img));
@@ -67,7 +67,7 @@ namespace qgl::components
             }
             case descriptors::texture_types::tga:
             {
-               winrt::check_hresult(DirectX::LoadFromTGAMemory(
+               check_result(DirectX::LoadFromTGAMemory(
                   data, dataSize,
                   nullptr, m_img));
                break;
@@ -109,7 +109,7 @@ namespace qgl::components
          {
             case descriptors::texture_types::dds:
             {
-               winrt::check_hresult(DirectX::LoadFromDDSFile(
+               check_result(DirectX::LoadFromDDSFile(
                   filePath,
                   desc.image_flags.as<DirectX::DDS_FLAGS>(),
                   nullptr, m_img));
@@ -121,7 +121,7 @@ namespace qgl::components
             }
             case descriptors::texture_types::hdr:
             {
-               winrt::check_hresult(DirectX::LoadFromHDRFile(
+               check_result(DirectX::LoadFromHDRFile(
                   filePath,
                   nullptr, m_img));
                break;
@@ -130,7 +130,7 @@ namespace qgl::components
             {
                // Optional WIC callback:
                //https://github.com/microsoft/DirectXTex/wiki/WIC-I-O-Functions
-               winrt::check_hresult(DirectX::LoadFromWICFile(
+               check_result(DirectX::LoadFromWICFile(
                   filePath,
                   desc.image_flags.as<DirectX::WIC_FLAGS>(),
                   nullptr, m_img));
@@ -138,7 +138,7 @@ namespace qgl::components
             }
             case descriptors::texture_types::tga:
             {
-               winrt::check_hresult(DirectX::LoadFromTGAFile(
+               check_result(DirectX::LoadFromTGAFile(
                   filePath,
                   nullptr, m_img));
                break;

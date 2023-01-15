@@ -46,7 +46,7 @@ namespace qgl::graphics
       private:
       void make(i2d_context* devContext_p, i2d_factory* fac_p)
       {
-         winrt::check_hresult(devContext_p->CreateSolidColorBrush(
+         check_result(devContext_p->CreateSolidColorBrush(
             to_d2d_color(m_desc.outline),
             reinterpret_cast<ID2D1SolidColorBrush**>(m_brush.put())));
 
@@ -61,7 +61,7 @@ namespace qgl::graphics
          props.dashOffset = static_cast<float>(m_desc.dash_offset);
          props.miterLimit = 1.0f;
 
-         winrt::check_hresult(fac_p->CreateStrokeStyle(
+         check_result(fac_p->CreateStrokeStyle(
             props,
             nullptr,
             0,
@@ -69,7 +69,7 @@ namespace qgl::graphics
       }
 
       descriptors::brush_outline_descriptor m_desc;
-      winrt::com_ptr<ID2D1Brush> m_brush;
-      winrt::com_ptr<ID2D1StrokeStyle> m_style;
+      pptr<ID2D1Brush> m_brush;
+      pptr<ID2D1StrokeStyle> m_style;
    };
 }

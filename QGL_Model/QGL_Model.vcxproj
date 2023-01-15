@@ -162,7 +162,6 @@
   <ItemGroup>
     <ClInclude Include="include\Errors\qgl_error_reporter.h" />
     <ClInclude Include="include\Errors\qgl_e_checkers.h" />
-    <ClInclude Include="include\Errors\qgl_e_codes.h" />
     <ClInclude Include="include\Impl\fast_hash_impl.h" />
     <ClInclude Include="include\Impl\qgl_mem_helpers_impl.h" />
     <ClInclude Include="include\Impl\qgl_misc_helpers_impl.h" />
@@ -182,22 +181,25 @@
     <ClInclude Include="include\qgl_component.h" />
     <ClInclude Include="include\qgl_console.h" />
     <ClInclude Include="include\qgl_endian.h" />
-    <ClInclude Include="include\qgl_eptr.h" />
     <ClInclude Include="include\qgl_guid.h" />
     <ClInclude Include="include\qgl_map_key_iterator.h" />
     <ClInclude Include="include\qgl_misc_helpers.h" />
     <ClInclude Include="include\qgl_model_include.h" />
     <ClInclude Include="include\qgl_platform_abstraction.h" />
     <ClInclude Include="include\qgl_version.h" />
-    <ClInclude Include="include\String\qgl_string.h" />
-    <ClInclude Include="include\String\qgl_strings.h" />
-    <ClInclude Include="include\String\qgl_string_fmt.h" />
     <ClInclude Include="include\Structures\qgl_handle_map.h" />
     <ClInclude Include="include\Structures\qgl_basic_graph.h" />
     <ClInclude Include="include\Structures\qgl_basic_tree_map.h" />
     <ClInclude Include="include\Structures\qgl_fixed_buffer.h" />
     <ClInclude Include="include\Structures\qgl_tree_helpers.h" />
+    <ClInclude Include="include\Structures\qgl_ts_list.h" />
+    <ClInclude Include="include\Structures\qgl_ts_umap.h" />
+    <ClInclude Include="include\Structures\qgl_ts_uset.h" />
+    <ClInclude Include="include\Structures\qgl_ts_vector.h" />
     <ClInclude Include="include\Structures\qgl_xform_tree.h" />
+    <ClInclude Include="include\Threads\qgl_basic_callback_dispatcher_traits.h" />
+    <ClInclude Include="include\Threads\qgl_callback_dispatcher.h" />
+    <ClInclude Include="include\Threads\qgl_callback_dispatcher_args.h" />
     <ClInclude Include="include\Timing\qgl_timer.h" />
     <ClInclude Include="include\Timing\qgl_time_helpers.h" />
     <ClInclude Include="include\Timing\qgl_time_state.h" />

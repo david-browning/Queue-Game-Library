@@ -77,12 +77,39 @@ namespace qgl
 
    typedef HRESULT result_t;
 
+   /*
+    A "platform pointer" is a smart pointer that encapsulates a 
+    platform-specific interface.
+    */
+   template<typename T>
+   using pptr = typename winrt::com_ptr<T>;
+
+   using phandle = typename winrt::handle;
+
 #ifdef UNICODE
    typedef wchar_t sys_char;
 
 #else
    typedef char sys_char;
 #endif
+
+   using sys_str = typename std::basic_string<sys_char>;
+
+
+   /*
+    Creates an object that can be waited upon.
+    */
+   inline phandle make_waitable(
+      bool manualReset = true, bool initialState = false)
+   {
+      handle_t h = CreateEvent(nullptr, manualReset, initialState, nullptr);
+      if (!h)
+      {
+         winrt::throw_last_error();
+      }
+
+      return phandle{ h };
+   }
 }
 
 
@@ -106,6 +133,13 @@ namespace qgl
    typedef int result_t;
 
    typedef char sys_char;
+   using sys_str = typename std::basic_string<sys_char>;
+
+   inline int make_waitable(
+      bool manualReset = true, bool initialState = false)
+   {
+      return 0;
+   }
 }
 #endif
 

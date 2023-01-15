@@ -6,7 +6,7 @@ namespace qgl::mem
 {
    template<DWORD Flags,
       class Traits = qgl::mem::basic_heap_traits<Flags>>
-   class basic_heap
+   class basic_heap final
    {
       public:
       using heap_handle = typename Traits::heap_handle;

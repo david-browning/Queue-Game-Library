@@ -6,8 +6,57 @@
 
 namespace qgl::graphics
 {
-   using sync_interval_t = typename uint8_t;
-   using swap_flag_t = typename size_t;
+   using sync_interval_t = typename UINT;
+   using swap_flag_t = typename UINT;
+
+   struct gpu_mem_info final
+   {
+      /*
+       Specifies the OS-provided video memory budget, in bytes, that the
+       application should target. If CurrentUsage is greater than Budget, the
+       application may incur stuttering or performance penalties due to
+       background activity by the OS to provide other applications with a fair
+       usage of video memory.
+       */
+      size_t budget = 0;
+
+      /*
+       Application’s current video memory usage, in bytes.
+       */
+      size_t used = 0;
+
+      /*
+       The amount of video memory, in bytes, that the application has available
+       for reservation.
+       */
+      size_t available = 0;
+
+      /*
+       The amount of video memory, in bytes, that is reserved by the
+       application.
+       */
+      size_t reserved = 0;
+   };
+
+   struct gpu_desc
+   {
+      qgl::sys_str name = { 0 };
+
+      /*
+       The number of bytes of dedicated video memory that are not shared with
+       the CPU.
+       */
+      size_t vmem = 0;
+
+      /*
+       The number of bytes of dedicated system memory that are not shared with
+       the CPU. This memory is allocated from available system memory at boot
+       time.
+       */
+      size_t smem = 0;
+
+      uint32_t dev_id = 0;
+   };
 }
 
 namespace qgl::graphics::helpers
@@ -18,6 +67,20 @@ namespace qgl::graphics::helpers
    extern "C" QGL_GRAPHICS_API size_t QGL_CC format_size(
       DXGI_FORMAT f) noexcept;
 
+   /*
+    Gets the application's GPU memory budget.
+    */
+   extern "C" QGL_GRAPHICS_API result_t QGL_CC app_mem(
+      igpu_adapter* dev_p,
+      gpu_idx_t node,
+      gpu_mem_info* out) noexcept;
+
+   /*
+    Gets information about the given adapter.
+    */
+   extern "C" QGL_GRAPHICS_API result_t QGL_CC get_gpu_desc(
+      igpu_adapter* adapter_p, gpu_desc* desc_p) noexcept;
+
    inline auto make_gpu_factory(bool enableDebug)
    {
       UINT flags = 0;
@@ -25,43 +88,16 @@ namespace qgl::graphics::helpers
       if (enableDebug)
       {
          //If in debug mode and cannot create a debug layer, then crash.
-         winrt::com_ptr<ID3D12Debug> dbgCtrl;
-         winrt::check_hresult(D3D12GetDebugInterface(
+         pptr<ID3D12Debug> dbgCtrl;
+         check_result(D3D12GetDebugInterface(
             IID_PPV_ARGS(dbgCtrl.put())));
 
          dbgCtrl->EnableDebugLayer();
          flags |= DXGI_CREATE_FACTORY_DEBUG;
       }
 
-      winrt::com_ptr<igpu_factory> ret = nullptr;
-      winrt::check_hresult(CreateDXGIFactory2(flags, IID_PPV_ARGS(ret.put())));
-      return ret;
-   }
-
-   inline auto make_2d_factory(bool enableDebug)
-   {
-      D2D1_FACTORY_OPTIONS d2dFactoryOptions = {};
-      if (enableDebug)
-      {
-         d2dFactoryOptions.debugLevel = D2D1_DEBUG_LEVEL_INFORMATION;
-      }
-
-      winrt::com_ptr<i2d_factory> ret = nullptr;
-      winrt::check_hresult(D2D1CreateFactory(
-         D2D1_FACTORY_TYPE::D2D1_FACTORY_TYPE_SINGLE_THREADED,
-         IID_PPV_ARGS(ret.put())));
-
-      return ret;
-   }
-
-   inline auto make_text_factory()
-   {
-      winrt::com_ptr<itext_factory> ret;
-      winrt::check_hresult(DWriteCreateFactory(
-         DWRITE_FACTORY_TYPE::DWRITE_FACTORY_TYPE_SHARED,
-         __uuidof(itext_factory),
-         reinterpret_cast<IUnknown**>(ret.put())));
-
+      pptr<igpu_factory> ret = nullptr;
+      check_result(CreateDXGIFactory2(flags, IID_PPV_ARGS(ret.put())));
       return ret;
    }
 
@@ -69,10 +105,10 @@ namespace qgl::graphics::helpers
       igpu_factory* factory_p,
       D3D_FEATURE_LEVEL minFeatureLevel)
    {
-      std::vector<winrt::com_ptr<igpu_adapter>> adapters;
+      std::vector<pptr<igpu_adapter>> adapters;
 
       //Temp adapter
-      winrt::com_ptr<igpu_adapter> adapter = nullptr;
+      pptr<igpu_adapter> adapter = nullptr;
 
       //Enumerate adapters until the HRESULT fails.
       for (UINT i = 0;
@@ -83,7 +119,7 @@ namespace qgl::graphics::helpers
          i++)
       {
          DXGI_ADAPTER_DESC1 desc;
-         winrt::check_hresult(adapter->GetDesc1(&desc));
+         check_result(adapter->GetDesc1(&desc));
 
          //Only use the device if it is not the basic render driver.
          if ((desc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE) !=
@@ -98,7 +134,7 @@ namespace qgl::graphics::helpers
                adapters.push_back(adapter);
             }
          }
-
+         
          adapter = nullptr;
       }
 
@@ -110,9 +146,9 @@ namespace qgl::graphics::helpers
     */
    inline auto enum_adapter_outputs(igpu_adapter* adptr_p)
    {
-      std::vector<winrt::com_ptr<igpu_output>> ret;
+      std::vector<pptr<igpu_output>> ret;
       UINT i = 0;
-      winrt::com_ptr<IDXGIOutput> curOutput = nullptr;
+      pptr<IDXGIOutput> curOutput = nullptr;
       while (adptr_p->EnumOutputs(i, curOutput.put()) != DXGI_ERROR_NOT_FOUND)
       {
          ret.push_back(curOutput.as<igpu_output>());
@@ -143,13 +179,13 @@ namespace qgl::graphics::helpers
       // greatest).
 
       auto bestIntersectArea = static_cast<dip_t>(-1);
-      winrt::com_ptr<igpu_output> ret = nullptr;
+      pptr<igpu_output> ret = nullptr;
       auto outputs = enum_adapter_outputs(adapter_p);
       for (auto& curOutput : outputs)
       {
          // description's desktop coordinates are dip
          DXGI_OUTPUT_DESC desc;
-         winrt::check_hresult(curOutput->GetDesc(&desc));
+         check_result(curOutput->GetDesc(&desc));
          decltype(wndBounds) outBounds{ desc.DesktopCoordinates };
 
          if (wndBounds.intersects(outBounds))
@@ -215,23 +251,49 @@ namespace qgl::graphics::helpers
 
       //Get the number of modes.
       UINT numModes = 0;
-      winrt::check_hresult(monitor_p->GetDisplayModeList1(
+      check_result(monitor_p->GetDisplayModeList1(
          monitorFmt, flgs, &numModes, nullptr));
 
       //Fill the list of modes.
       std::vector<DXGI_MODE_DESC1> ret(static_cast<size_t>(numModes));
-      winrt::check_hresult(monitor_p->GetDisplayModeList1(
+      check_result(monitor_p->GetDisplayModeList1(
          monitorFmt, flgs, &numModes, ret.data()));
 
       return ret;
    }
 
-   inline winrt::com_ptr<icmd_queue> make_cmd_queue(
+   /*
+    Gets the resolution for the swap chain from the given parameters.
+    The width is stored in "first" and the height is stored in "second".
+    */
+   inline std::pair<UINT, UINT> get_resolution(const gpu_config& config,
+                                               window& wnd)
+   {
+      switch (config.resolution_mode())
+      {
+         case descriptors::resolution_modes::window_resolution:
+         {
+            return std::make_pair(
+               static_cast<UINT>(dip_to_pixels(wnd.width(), wnd.dpi_x())), 
+               static_cast<UINT>(dip_to_pixels(wnd.height(), wnd.dpi_y())));
+         }
+         case descriptors::resolution_modes::static_resolution:
+         {
+            return std::make_pair<UINT, UINT>(config.width(), config.height());
+         }
+         default:
+         {
+            throw std::runtime_error{ "Not Implemented" };
+         }
+      }
+   }
+
+   inline pptr<icmd_queue> make_cmd_queue(
       const D3D12_COMMAND_QUEUE_DESC& desc,
       i3d_device* dev_p)
    {
-      winrt::com_ptr<icmd_queue> ret;
-      winrt::check_hresult(dev_p->CreateCommandQueue(
+      pptr<icmd_queue> ret;
+      check_result(dev_p->CreateCommandQueue(
          &desc, IID_PPV_ARGS(ret.put())));
       return ret;
    }
@@ -239,32 +301,10 @@ namespace qgl::graphics::helpers
    inline auto make_3d_device(igpu_adapter* adapter_p,
                               D3D_FEATURE_LEVEL ftrLvl)
    {
-      winrt::com_ptr<i3d_device> ret;
-      winrt::check_hresult(D3D12CreateDevice(
+      pptr<i3d_device> ret;
+      check_result(D3D12CreateDevice(
          adapter_p, ftrLvl, IID_PPV_ARGS(ret.put())));
       name_d3d(ret.get(), L"D3D 12 Device");
-      return ret;
-   }
-
-   inline auto make_2d_device(
-      IDXGIDevice* d3d11on12Dev_p,
-      //i3d_bridge_device* d3d11on12Dev_p,
-                              i2d_factory* d2dFactory_p)
-   {
-      winrt::com_ptr<i2d_device> d2dDev_p;
-      winrt::check_hresult(d2dFactory_p->CreateDevice(
-         //dynamic_cast<IDXGIDevice*>(d3d11on12Dev_p),
-         d3d11on12Dev_p,
-         d2dDev_p.put()));
-
-      return d2dDev_p;
-   }
-
-   inline auto make_2d_context(const D2D1_DEVICE_CONTEXT_OPTIONS& opts,
-                               i2d_device* d2dDev_p)
-   {
-      winrt::com_ptr<i2d_context> ret;
-      winrt::check_hresult(d2dDev_p->CreateDeviceContext(opts, ret.put()));
       return ret;
    }
 
@@ -273,17 +313,14 @@ namespace qgl::graphics::helpers
                                igpu_factory* dxgiFactory_p,
                                icmd_queue* cmdQueue_p)
    {
-      // Need a down-casted pointer for now.
-      winrt::com_ptr<IDXGISwapChain1> swapChain;
-      DXGI_SCALING scaling = config.high_resolution() ?
-         DXGI_SCALING_NONE : DXGI_SCALING_ASPECT_RATIO_STRETCH;
+      auto res = get_resolution(config, wnd);
 
+      // Need a down-casted pointer for now.
+      pptr<IDXGISwapChain1> swapChain;
       DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
       swapChainDesc.BufferCount = static_cast<UINT>(config.buffers());
-      swapChainDesc.Width = static_cast<UINT>(
-         dip_to_pixels(wnd.width(), wnd.dpi_x()));
-      swapChainDesc.Height = static_cast<UINT>(
-         dip_to_pixels(wnd.height(), wnd.dpi_y()));
+      swapChainDesc.Width = res.first;
+      swapChainDesc.Height = res.second;
       swapChainDesc.Format = color_format(config.hdr_mode());
       swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
       //DXGI_SWAP_EFFECT Enumeration: https://tinyurl.com/yypnyzu7
@@ -291,7 +328,7 @@ namespace qgl::graphics::helpers
 
       swapChainDesc.SampleDesc.Count = 1;
       swapChainDesc.SampleDesc.Quality = 0;
-      swapChainDesc.Scaling = scaling;
+      swapChainDesc.Scaling = DXGI_SCALING_ASPECT_RATIO_STRETCH;
 
       //DXGI_SWAP_CHAIN_FLAG Enumeration: https://tinyurl.com/yxq7s75x
       UINT swapChainFlags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
@@ -302,7 +339,7 @@ namespace qgl::graphics::helpers
 
       swapChainDesc.Flags = swapChainFlags;
 
-      winrt::check_hresult(dxgiFactory_p->CreateSwapChainForCoreWindow(
+      check_result(dxgiFactory_p->CreateSwapChainForCoreWindow(
          cmdQueue_p,
          wnd.unknown(),
          &swapChainDesc,
@@ -320,9 +357,9 @@ namespace qgl::graphics::helpers
    {
       //Use the old swap chain description to resize swpChain.
       DXGI_SWAP_CHAIN_DESC1 swapChainDesc;
-      winrt::check_hresult(swpChain_p->GetDesc1(&swapChainDesc));
+      check_result(swpChain_p->GetDesc1(&swapChainDesc));
 
-      winrt::check_hresult(swpChain_p->ResizeBuffers(
+      check_result(swpChain_p->ResizeBuffers(
          static_cast<UINT>(config.buffers()),
          static_cast<UINT>(dip_to_pixels(wnd.width(), wnd.dpi_x())),
          static_cast<UINT>(dip_to_pixels(wnd.height(), wnd.dpi_y())),

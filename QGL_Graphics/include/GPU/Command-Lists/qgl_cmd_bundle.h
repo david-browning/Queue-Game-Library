@@ -9,7 +9,7 @@ namespace qgl::graphics::gpu
       public:
       cmd_bundle(graphics_device& dev,
                  gpu::ipso& pso,
-                 size_t nodeMask = 0) :
+                 gpu_idx_t nodeMask = 0) :
          icommand_list(dev,
                        pso,
                        D3D12_COMMAND_LIST_TYPE_BUNDLE,
@@ -29,30 +29,28 @@ namespace qgl::graphics::gpu
          reset();
       }
 
-      virtual void root_sig(root_signature& sig)
+      virtual typename std::enable_if<ComputeBundle>::type root_sig(
+         root_signature& sig)
       {
-         if constexpr (ComputeBundle)
-         {
-            get()->SetComputeRootSignature(sig.get());
-         }
-         else
-         {
-            get()->SetGraphicsRootSignature(sig.get());
-         }
+         get()->SetComputeRootSignature(sig.get());
       }
 
-      virtual void table(descriptor_table& tbl)
+      virtual typename std::enable_if<!ComputeBundle>::type root_sig(
+         root_signature& sig)
       {
-         if constexpr (ComputeBundle)
-         {
-            get()->SetGraphicsRootDescriptorTable(tbl.root_index(),
-                                                  tbl.where());
-         }
-         else
-         {
-            get()->SetComputeRootDescriptorTable(tbl.root_index(),
-                                                 tbl.where());
-         }
+         get()->SetGraphicsRootSignature(sig.get());
+      }
+
+      virtual typename std::enable_if<ComputeBundle>::type table(
+         descriptor_table& tbl)
+      {
+         get()->SetGraphicsRootDescriptorTable(tbl.root_index(), tbl.where());
+      }
+
+      virtual typename std::enable_if<!ComputeBundle>::type table(
+         descriptor_table& tbl)
+      {
+         get()->SetComputeRootDescriptorTable(tbl.root_index(), tbl.where());
       }
    };
 }

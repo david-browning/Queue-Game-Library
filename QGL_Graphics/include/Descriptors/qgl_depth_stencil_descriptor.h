@@ -161,9 +161,9 @@ namespace qgl::descriptors
       /*
        This is the value to clear the depth buffer with. It must be between 0
        and 1.
-       Default value is 0.
+       Default value is 1.
        */
-      math::rational<int32_t> depth{ 0, 1 };
+      math::rational<int32_t> depth{ 1, 1 };
 
       /*
        A D3D12_DEPTH_STENCILOP_DESC structure that describes how to use the

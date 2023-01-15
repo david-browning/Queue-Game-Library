@@ -38,7 +38,7 @@ an HRESULT should be marked "noexcept".
   using FAILED(). If the HRESULT failed, the function should return it or
   throw an exception if permitted.
 * If a function is allowed to throw an exception, it can check if an HRESULT 
-  failed by using winrt::check_hresult().
+  failed by using check_result().
 
 ## Cleanup After Error:
 Whether throwing an exception or returning an HRESULT, functions must not leak
@@ -46,7 +46,7 @@ resources. These guidelines help avoid memory leaks because their destructors
 delete the resources the wrap.
 * Prefer STL containers over dynamically allocated arrays.
 * If dynamic allocation is required, use a smart pointer.
-* Wrap COM interfaces with a winrt::com_ptr.
+* Wrap COM interfaces with a pptr.
 * Wrap file handles, such as a HANDLE, with a file_handle. The file is  
   automatically closed when the file_handle is destructed.
 * Wrap iqgl interfaces in a unique pointer using qgl::make_unique(). STL smart

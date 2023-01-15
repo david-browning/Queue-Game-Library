@@ -2,6 +2,7 @@
 #include "include/qgl_model_include.h"
 #include "include/Memory/qgl_mem_helpers.h"
 #include "include/qgl_misc_helpers.h"
+#include "include/Errors/qgl_e_checkers.h"
 
 namespace qgl
 {
@@ -173,7 +174,7 @@ namespace qgl
    inline guid random_guid()
    {
       GUID g;
-      winrt::check_hresult(CoCreateGuid(&g));
+      check_result(CoCreateGuid(&g));
       return guid{ reinterpret_cast<const uint8_t*>(&g) };
    }
 }

@@ -13,17 +13,17 @@ namespace qgl::graphics::gpu
     are called will be correct.
     */
    template<typename ValueT>
-   class fence
+   class fence final
    {
       public:
-      fence(graphics_device& dev, 
-            winrt::com_ptr<icmd_queue>& cmdQueue_p) :
-         m_nextSyncValue(1),
-         m_cmdQueue(cmdQueue_p)
+      fence(graphics_device& dev,
+            icmd_queue* cmdQueue_p) :
+         m_cmdQueue(cmdQueue_p),
+         m_curSync(1)
       {
          //Create a fence using the d3d device.
-         winrt::check_hresult(dev.dev_3d()->CreateFence(
-            m_nextSyncValue, 
+         check_result(dev.dev_3d()->CreateFence(
+            m_curSync,
             D3D12_FENCE_FLAG_NONE,
             IID_PPV_ARGS(m_fence.put())));
 
@@ -47,7 +47,7 @@ namespace qgl::graphics::gpu
       /*
        Move Constructor
        */
-      fence(fence&& r) = default;
+      fence(fence&& r) noexcept = default;
 
       /*
         Destructor signals one more time and waits until the event has
@@ -55,33 +55,11 @@ namespace qgl::graphics::gpu
        */
       ~fence()
       {
-         std::lock_guard m{ m_mutex };
+         wait(m_curSync.load());
 
-         //Get the next sync value which will be the last.
-         auto finalSyncValue = m_nextSyncValue;
-
-         //Signal the last sync
-         winrt::check_hresult(m_cmdQueue->Signal(get(), finalSyncValue));
-
-         //Wait for the last sync.
-         //Get the last completed fence value.
-         auto lastCompletedValue = m_fence->GetCompletedValue();
-
-         //If the last completed fence is less than what we are waiting for, 
-         //then the GPU has not  completed that fence yet.
-         if (lastCompletedValue < finalSyncValue)
-         {
-            //Wait for the GPU
-            winrt::check_hresult(m_fence->SetEventOnCompletion(
-               finalSyncValue,
-               m_waitEvent.get()));
-            WaitForSingleObject(m_waitEvent.get(), INFINITE);
-         }
-
-         //Final Cleanup
-         m_nextSyncValue = static_cast<ValueT>(-1);
-
-         //Smart pointers cleaned up now.
+#ifdef DEBUG
+         m_curSync.store(static_cast<ValueT>(-1));
+#endif
       }
 
       /*
@@ -89,21 +67,15 @@ namespace qgl::graphics::gpu
        */
       sync_object<ValueT> next()
       {
-         //Lock the mutex so multiple threads cannot simultaneously 
-         //get sync_objects with the same value.
-         std::lock_guard m{ m_mutex };
-         auto ret = m_nextSyncValue;
-         m_nextSyncValue++;
-         return sync_object<ValueT>{ret};
+         return sync_object<ValueT>{ ++m_curSync };
       }
 
       /*
-       Returns the last completed synchronization object.
+       Returns the current synchronization object.
        */
-      sync_object<ValueT> current() const
+      sync_object<ValueT> current()
       {
-         std::lock_guard m{ m_mutex };
-         return sync_object<ValueT>{m_fence->GetCompletedValue()};
+         return sync_object<ValueT>{ m_curSync.load() };
       }
 
       /*
@@ -111,17 +83,12 @@ namespace qgl::graphics::gpu
        */
       void wait(const sync_object<ValueT>& waitFor)
       {
-         std::lock_guard m{ m_mutex };
-
-         //Get the last completed fence value.
-         auto lastCompletedValue = m_fence->GetCompletedValue();
-
          //If the last completed fence is less than what we are waiting for, 
          //then the GPU has not completed that fence yet.
-         if (lastCompletedValue < waitFor.value())
+         if (m_fence->GetCompletedValue() < waitFor.value())
          {
             //Wait for the GPU
-            winrt::check_hresult(m_fence->SetEventOnCompletion(
+            check_result(m_fence->SetEventOnCompletion(
                waitFor.value(),
                m_waitEvent.get()));
             WaitForSingleObject(m_waitEvent.get(), INFINITE);
@@ -133,37 +100,60 @@ namespace qgl::graphics::gpu
        */
       void signal(const sync_object<ValueT>& toSignal)
       {
-         std::lock_guard m{ m_mutex };
-
-         //Update the fence 
-         winrt::check_hresult(m_cmdQueue->Signal(get(), toSignal.value()));
+         check_result(m_cmdQueue->Signal(get(), toSignal.value()));
       }
 
+      /*
+       Gets the platform specific fence.
+       */
       igpu_fence* get()
       {
          return m_fence.get();
       }
 
+      /*
+       Gets the platform specific fence.
+       */
       const igpu_fence* get() const
       {
          return m_fence.get();
       }
 
+      /*
+       Gets a pointer to the command queue.
+       */
       const icmd_queue* queue() const
       {
-         return m_cmdQueue.get();
+         return m_cmdQueue;
       }
 
+      /*
+       Gets a pointer to the command queue.
+       */
       icmd_queue* queue()
       {
-         return m_cmdQueue.get();
+         return m_cmdQueue;
       }
 
       private:
-      std::mutex m_mutex;
-      ValueT m_nextSyncValue;
-      winrt::com_ptr<igpu_fence> m_fence;
-      winrt::com_ptr<icmd_queue> m_cmdQueue;
+      /*
+       Value of the current synchronization value.
+       */
+      std::atomic<ValueT> m_curSync;
+      
+      /*
+       Fence object.
+       */
+      pptr<igpu_fence> m_fence;
+
+      /*
+       The fence uses this queue.
+       */
+      icmd_queue* m_cmdQueue;
+
+      /*
+       Handle used to wait for the GPU to catch up with the sync object.
+       */
       winrt::handle m_waitEvent;
    };
 }
