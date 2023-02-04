@@ -1,6 +1,5 @@
 #pragma once
-#include "include/qgl_graphics_include.h"
-#include "include/Descriptors/qgl_vector_descriptor.h"
+#include "include/qgl_game_include.h"
 
 namespace qgl::descriptors
 {
@@ -85,7 +84,7 @@ namespace qgl::descriptors
       mem::flags<32> flags = DEFAULT_FLAGS;
 
       uint32_t reserved = 0;
-      
+
       /*
        The top left vertex is encoded in the x,y fields. The bottom right
        vertex is encoded in the z, w.

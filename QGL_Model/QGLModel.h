@@ -12,6 +12,7 @@
 #include "include/Interfaces/qgl_icommand.h"
 #include "include/qgl_version.h"
 #include "include/qgl_component.h"
+#include "include/Structures/qgl_flyweight.h"
 
 // Consoles, Callbacks, Errors
 #include "include/Threads/qgl_callback_dispatcher.h"

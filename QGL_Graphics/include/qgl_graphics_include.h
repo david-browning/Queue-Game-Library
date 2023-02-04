@@ -56,7 +56,7 @@ namespace qgl::graphics
 #ifdef DEBUG
    inline void name_d3d(ID3D12Object* pObject, LPCWSTR name)
    {
-      pObject->SetName(name);
+      check_result(pObject->SetName(name));
    }
 
    inline void name_d3d_indexed(ID3D12Object* pObject, LPCWSTR name, UINT index)

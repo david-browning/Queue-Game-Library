@@ -1,8 +1,6 @@
 #pragma once
-#include "include/qgl_graphics_include.h"
-#include "include/Components/Content/qgl_texture.h"
-#include "include/GPU/Render/qgl_render_target.h"
-#include "include/GPU/Memory/qgl_igpu_allocator.h"
+#include "include/qgl_game_include.h"
+#include "include/Components/qgl_texture.h"
 
 namespace qgl::components
 {
@@ -12,11 +10,7 @@ namespace qgl::components
    {
       public:
       image(const texture&,
-            const game_update_functor<image>& updateFunctor) :
-         component(IMAGE_GUID, updateFunctor)
-      {
-
-      }
+            const game_update_functor<image>& updateFunctor);
 
       image(const image&) = delete;
 

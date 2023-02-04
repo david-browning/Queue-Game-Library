@@ -1,5 +1,5 @@
 #pragma once
-#include "include/qgl_graphics_include.h"
+#include "include/qgl_game_include.h"
 #include "include/Descriptors/qgl_screen_space_descriptor.h"
 
 namespace qgl::components
@@ -9,9 +9,9 @@ namespace qgl::components
    class wtext : public game_component<wtext>
    {
       public:
-      wtext(std::wstring& text, 
-            descriptors::screen_space_descriptor& rect,
-            const game_update_functor<wtext>& updateFunctor) :
+      wtext(const std::wstring& text,
+            const descriptors::screen_space_descriptor& rect,
+            game_update_functor<wtext>& updateFunctor) :
          m_text(text),
          m_layout(rect),
          component(WTEXT_GUID, updateFunctor)
@@ -20,8 +20,8 @@ namespace qgl::components
       }
 
       wtext(const wchar_t* text,
-            descriptors::screen_space_descriptor& rect,
-            const game_update_functor<wtext>& updateFunctor) :
+            const descriptors::screen_space_descriptor& rect,
+            game_update_functor<wtext>& updateFunctor) :
          m_text(text),
          m_layout(rect),
          component(WTEXT_GUID, updateFunctor)

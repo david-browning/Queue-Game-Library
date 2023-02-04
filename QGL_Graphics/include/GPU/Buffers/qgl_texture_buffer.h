@@ -1,21 +1,16 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
+#include "include/qgl_graphics_device.h"
 #include "include/Descriptors/qgl_texture_descriptor.h"
 #include "include/GPU/Buffers/qgl_igpu_buffer.h"
 #include "include/GPU/Memory/qgl_igpu_allocator.h"
 
-namespace qgl::components
+namespace qgl::graphics::gpu
 {
-   using namespace qgl::graphics;
+   class texture_buffer : public gpu::igpu_buffer<D3D12_RESOURCE_DESC,
+                                                  D3D12_SHADER_RESOURCE_VIEW_DESC,
+                                                  igpu_resource>
 
-   static constexpr guid TEXTURE_GUID{ "DAC1DC35ADBF4CAB89DBD584D14126FA" };
-
-   class texture : public gpu::igpu_buffer<D3D12_RESOURCE_DESC,
-                                           D3D12_SHADER_RESOURCE_VIEW_DESC,
-                                           igpu_resource>,
-
-                   public game_component<texture>
-      
    {
       public:
       static constexpr auto INVALID_TEXTURE_TYPE_MSG = "Unknown texture type.";
@@ -23,14 +18,12 @@ namespace qgl::components
       /*
        Load a texture from the raw buffer.
        */
-      texture(const descriptors::texture_descriptor& desc,
-              const void* data,
-              size_t dataSize,
-              gpu::igpu_allocator& allocator,
-              graphics_device& dev,
-              const game_update_functor<texture>& updateFunctor) :
-         m_allocator(allocator),
-         component(TEXTURE_GUID, updateFunctor)
+      texture_buffer(const descriptors::texture_descriptor& desc,
+                     const void* data,
+                     size_t dataSize,
+                     gpu::igpu_allocator& allocator,
+                     graphics_device& dev) :
+         m_allocator(allocator)
       {
          field_constructor(desc, dev);
 
@@ -84,11 +77,11 @@ namespace qgl::components
       /*
        Load a texture from a file.
        */
-      texture(const descriptors::texture_descriptor& desc,
-              const qgl::sys_str& filePath,
-              gpu::igpu_allocator& allocator,
-              graphics_device& dev) :
-         texture(desc, filePath.c_str(), allocator, dev)
+      texture_buffer(const descriptors::texture_descriptor& desc,
+                     const qgl::sys_str& filePath,
+                     gpu::igpu_allocator& allocator,
+                     graphics_device& dev) :
+         texture_buffer(desc, filePath.c_str(), allocator, dev)
       {
          // Call the character pointer constructor.
       }
@@ -96,12 +89,11 @@ namespace qgl::components
       /*
        Load a texture from a file.
        */
-      texture(const descriptors::texture_descriptor& desc,
-              const sys_char* const filePath,
-              gpu::igpu_allocator& allocator,
-              graphics_device& dev) :
-         m_allocator(allocator),
-         component(TEXTURE_GUID)
+      texture_buffer(const descriptors::texture_descriptor& desc,
+                     const sys_char* const filePath,
+                     gpu::igpu_allocator& allocator,
+                     graphics_device& dev) :
+         m_allocator(allocator)
       {
          field_constructor(desc, dev);
 
@@ -152,11 +144,11 @@ namespace qgl::components
          remake();
       }
 
-      texture(const texture&) = delete;
+      texture_buffer(const texture_buffer&) = delete;
 
-      texture(texture&&) noexcept = default;
+      texture_buffer(texture_buffer&&) noexcept = default;
 
-      virtual ~texture() noexcept
+      virtual ~texture_buffer() noexcept
       {
          free_resource();
       }
@@ -180,7 +172,7 @@ namespace qgl::components
          return m_img.GetPixelsSize();
       }
 
-      virtual gpu::gpu_alloc_handle alloc_handle() const noexcept
+      virtual gpu::gpu_alloc_handle alloc_handle() const
       {
          return m_allocHandle;
       }
@@ -190,7 +182,7 @@ namespace qgl::components
        */
       virtual const igpu_resource* get() const
       {
-         return m_allocator.get().resource(m_allocHandle);
+         return m_allocator.get().get(m_allocHandle);
       }
 
       /*
@@ -198,7 +190,7 @@ namespace qgl::components
        */
       virtual igpu_resource* get()
       {
-         return m_allocator.get().resource(m_allocHandle);
+         return m_allocator.get().get(m_allocHandle);
       }
 
       /*
@@ -409,7 +401,7 @@ namespace qgl::components
          rescDesc.Height = static_cast<UINT>(height());
          rescDesc.MipLevels = static_cast<UINT16>(mips());
          rescDesc.DepthOrArraySize =
-            dimension() == DirectX::TEX_DIMENSION_TEXTURE3D ?
+            dimension() & DirectX::TEX_DIMENSION_TEXTURE3D ?
             static_cast<UINT16>(depth()) :
             static_cast<UINT16>(array_size());
          rescDesc.Format = format();
@@ -419,9 +411,7 @@ namespace qgl::components
          rescDesc.Dimension = static_cast<D3D12_RESOURCE_DIMENSION>(dimension());
          rescDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
 
-         m_allocHandle = m_allocator.get().alloc(
-            rescDesc,
-            D3D12_RESOURCE_STATE_COMMON);
+         m_allocHandle = m_allocator.get().alloc(rescDesc);
 
          make_resc_desc();
 
@@ -509,7 +499,7 @@ namespace qgl::components
             case DirectX::TEX_DIMENSION::TEX_DIMENSION_TEXTURE1D:
             {
                m_view.Texture1D.MipLevels = static_cast<UINT>(mips());
-               m_view.Texture1D.MostDetailedMip = 
+               m_view.Texture1D.MostDetailedMip =
                   static_cast<UINT>(m_highestMip);
                m_view.Texture1D.ResourceMinLODClamp = m_clamp;
                break;
@@ -517,7 +507,7 @@ namespace qgl::components
             case DirectX::TEX_DIMENSION::TEX_DIMENSION_TEXTURE2D:
             {
                m_view.Texture2D.MipLevels = static_cast<UINT>(mips());
-               m_view.Texture2D.MostDetailedMip = 
+               m_view.Texture2D.MostDetailedMip =
                   static_cast<UINT>(m_highestMip);
                m_view.Texture2D.ResourceMinLODClamp = m_clamp;
                break;
@@ -525,7 +515,7 @@ namespace qgl::components
             case DirectX::TEX_DIMENSION::TEX_DIMENSION_TEXTURE3D:
             {
                m_view.Texture3D.MipLevels = static_cast<UINT>(mips());
-               m_view.Texture3D.MostDetailedMip = 
+               m_view.Texture3D.MostDetailedMip =
                   static_cast<UINT>(m_highestMip);
 
                // TODO: What is this? Make it configurable?
@@ -546,24 +536,24 @@ namespace qgl::components
          {
             case DirectX::TEX_DIMENSION::TEX_DIMENSION_TEXTURE1D:
             {
-               m_view.Texture1DArray.ArraySize = 
+               m_view.Texture1DArray.ArraySize =
                   static_cast<UINT>(array_size());
                m_view.Texture1DArray.MipLevels = static_cast<UINT>(mips());
-               m_view.Texture1DArray.FirstArraySlice = 
+               m_view.Texture1DArray.FirstArraySlice =
                   static_cast<UINT>(m_index);
-               m_view.Texture1DArray.MostDetailedMip = 
+               m_view.Texture1DArray.MostDetailedMip =
                   static_cast<UINT>(m_highestMip);
                m_view.Texture1DArray.ResourceMinLODClamp = m_clamp;
                break;
             }
             case DirectX::TEX_DIMENSION::TEX_DIMENSION_TEXTURE2D:
             {
-               m_view.Texture2DArray.ArraySize = 
+               m_view.Texture2DArray.ArraySize =
                   static_cast<UINT>(array_size());
-               m_view.Texture2DArray.FirstArraySlice = 
+               m_view.Texture2DArray.FirstArraySlice =
                   static_cast<UINT>(m_index);
                m_view.Texture2DArray.MipLevels = static_cast<UINT>(mips());
-               m_view.Texture2DArray.MostDetailedMip = 
+               m_view.Texture2DArray.MostDetailedMip =
                   static_cast<UINT>(m_highestMip);
 
                // TODO: What is this? Make it configurable?
@@ -583,12 +573,12 @@ namespace qgl::components
          // If its an array of cube maps:
          if (array_size() > 6)
          {
-            m_view.TextureCubeArray.First2DArrayFace = 
+            m_view.TextureCubeArray.First2DArrayFace =
                static_cast<UINT>(m_index);
             m_view.TextureCubeArray.MipLevels = static_cast<UINT>(mips());
-            m_view.TextureCubeArray.MostDetailedMip = 
+            m_view.TextureCubeArray.MostDetailedMip =
                static_cast<UINT>(m_highestMip);
-            m_view.TextureCubeArray.NumCubes = 
+            m_view.TextureCubeArray.NumCubes =
                static_cast<UINT>(array_size()) / 6;
             m_view.TextureCubeArray.ResourceMinLODClamp = m_clamp;
          }
@@ -596,7 +586,7 @@ namespace qgl::components
          {
             // Just a single cube map.
             m_view.TextureCube.MipLevels = static_cast<UINT>(mips());
-            m_view.TextureCube.MostDetailedMip = 
+            m_view.TextureCube.MostDetailedMip =
                static_cast<UINT>(m_highestMip);
             m_view.TextureCube.ResourceMinLODClamp = m_clamp;
          }
@@ -613,8 +603,8 @@ namespace qgl::components
                   width(),
                   static_cast<UINT16>(array_size()),
                   static_cast<UINT16>(mips()),
-                  D3D12_RESOURCE_FLAG_NONE, 
-                  D3D12_TEXTURE_LAYOUT_UNKNOWN, 
+                  D3D12_RESOURCE_FLAG_NONE,
+                  D3D12_TEXTURE_LAYOUT_UNKNOWN,
                   0);
                break;
             }
@@ -627,21 +617,21 @@ namespace qgl::components
                   static_cast<UINT16>(array_size()),
                   static_cast<UINT16>(mips()),
                   1, 0,
-                  D3D12_RESOURCE_FLAG_NONE, 
-                  D3D12_TEXTURE_LAYOUT_UNKNOWN, 
+                  D3D12_RESOURCE_FLAG_NONE,
+                  D3D12_TEXTURE_LAYOUT_UNKNOWN,
                   0);
                break;
             }
             case DirectX::TEX_DIMENSION::TEX_DIMENSION_TEXTURE3D:
             {
                m_desc = CD3DX12_RESOURCE_DESC::Tex3D(
-                  format(), 
-                  width(), 
+                  format(),
+                  width(),
                   static_cast<UINT>(height()),
                   static_cast<UINT16>(depth()),
                   static_cast<UINT16>(mips()),
-                  D3D12_RESOURCE_FLAG_NONE, 
-                  D3D12_TEXTURE_LAYOUT_UNKNOWN, 
+                  D3D12_RESOURCE_FLAG_NONE,
+                  D3D12_TEXTURE_LAYOUT_UNKNOWN,
                   0);
                break;
             }

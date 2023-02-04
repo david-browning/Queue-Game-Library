@@ -166,7 +166,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>QGL_Math.lib;QGL_Model.lib;QGL_Graphics.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>QGL_Math.lib;QGL_Model.lib;QGL_Graphics.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
@@ -176,7 +176,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>QGL_Math.lib;QGL_Model.lib;QGL_Graphics.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>QGL_Math.lib;QGL_Model.lib;QGL_Graphics.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
@@ -186,7 +186,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>QGL_Math.lib;QGL_Model.lib;QGL_Graphics.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>QGL_Math.lib;QGL_Model.lib;QGL_Graphics.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
@@ -196,7 +196,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>QGL_Math.lib;QGL_Model.lib;QGL_Graphics.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>QGL_Math.lib;QGL_Model.lib;QGL_Graphics.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -206,7 +206,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>QGL_Math.lib;QGL_Model.lib;QGL_Graphics.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>QGL_Math.lib;QGL_Model.lib;QGL_Graphics.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -216,7 +216,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>QGL_Math.lib;QGL_Model.lib;QGL_Graphics.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>QGL_Math.lib;QGL_Model.lib;QGL_Graphics.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -226,7 +226,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>QGL_Math.lib;QGL_Model.lib;QGL_Graphics.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>QGL_Math.lib;QGL_Model.lib;QGL_Graphics.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -236,7 +236,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>QGL_Math.lib;QGL_Model.lib;QGL_Graphics.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>QGL_Math.lib;QGL_Model.lib;QGL_Graphics.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

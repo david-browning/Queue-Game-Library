@@ -1,5 +1,6 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
+#include "include/qgl_graphics_device.h"
 #include "include/GPU/Command-Lists/qgl_icmd_list.h"
 
 namespace qgl::graphics::gpu
@@ -8,6 +9,7 @@ namespace qgl::graphics::gpu
     Used to queue up and execute command lists.
     Queuing and clearing queued command lists are thread-safe.
     */
+   template<D3D12_COMMAND_LIST_TYPE ListT>
    class cmd_executor final
    {
       public:
@@ -15,10 +17,23 @@ namespace qgl::graphics::gpu
        Constructor. Holds a weak reference to the given command queue. Do not
        free the command queue without destroying this first.
        */
-      cmd_executor(icmd_queue* cmdQueue_p) :
-         m_queue(cmdQueue_p)
+      cmd_executor(icmd_queue* q_p)
       {
+         m_rawQueue_p = q_p;
+      }
 
+      cmd_executor(graphics_device& dev_p,
+                   const D3D12_COMMAND_QUEUE_DESC& desc)
+      {
+         m_queue_p = helpers::make_cmd_queue(desc, dev_p.dev_3d());
+      }
+
+      cmd_executor(graphics_device& dev_p,
+                   D3D12_COMMAND_LIST_TYPE type)
+      {
+         D3D12_COMMAND_QUEUE_DESC desc = {};
+         desc.Type = type;
+         m_queue_p = helpers::make_cmd_queue(desc, dev_p.dev_3d());
       }
 
       cmd_executor(const cmd_executor&) = delete;
@@ -45,7 +60,7 @@ namespace qgl::graphics::gpu
       /*
        Adds the command list to the execution queue.
        */
-      void queue(icommand_list* cmdList_p) noexcept
+      void queue(icommand_list<ListT>* cmdList_p) noexcept
       {
          m_lists_p.push_back(cmdList_p->get());
       }
@@ -53,7 +68,7 @@ namespace qgl::graphics::gpu
       /*
        Adds the command list to the execution queue.
        */
-      void queue(icommand_list& cmdList) noexcept
+      void queue(icommand_list<ListT>& cmdList) noexcept
       {
          m_lists_p.push_back(cmdList.get());
       }
@@ -74,7 +89,7 @@ namespace qgl::graphics::gpu
       /*
        Adds numLists command lists to the queue.
        */
-      void queue(icommand_list** lists, size_t numLists) noexcept
+      void queue(icommand_list<ListT>** lists, size_t numLists) noexcept
       {
          for (size_t i = 0; i < numLists; i++)
          {
@@ -90,36 +105,60 @@ namespace qgl::graphics::gpu
          // ExecuteCommandLists doesn't accept classes that derive from 
          // ID3D12CommandList. The cast tells the ExecuteCommandLists call that
          // the list of icmd_list pointers is a list of ID3D12CommandList*
-         m_queue->ExecuteCommandLists(
+         get()->ExecuteCommandLists(
             static_cast<UINT>(m_lists_p.size()), 
             (ID3D12CommandList**)m_lists_p.data());
       }
 
+      const icmd_queue* get() const noexcept
+      {
+         if (m_queue_p.has_value())
+         {
+            return m_queue_p.value().get();
+         }
+         else
+         {
+            return m_rawQueue_p.value();
+         }
+      }
+
+      icmd_queue* get() noexcept
+      {
+         if (m_queue_p.has_value())
+         {
+            return m_queue_p.value().get();
+         }
+         else
+         {
+            return m_rawQueue_p.value();
+         }
+      }
+
       private:
-      icmd_list* get_cmdp(icommand_list* p) noexcept
+      icmd_list* get_cmdp(icommand_list<ListT>* p) noexcept
       {
          return p->get();
       }
 
-      icmd_list* get_cmdp(icommand_list& p) noexcept
+      icmd_list* get_cmdp(icommand_list<ListT>& p) noexcept
       {
          return p.get();
       }
 
       icmd_list* get_cmdp(
-         const std::reference_wrapper<icommand_list>& p) noexcept
+         const std::reference_wrapper<icommand_list<ListT>>& p) noexcept
       {
          return p.get().get();
       }
 
       icmd_list* get_cmdp(
-         const std::unique_ptr<icommand_list>& p) noexcept
+         const std::unique_ptr<icommand_list<ListT>>& p) noexcept
       {
          return p->get();
       }
 
       icmd_list* get_cmdp(
-         const std::shared_ptr<icommand_list>& p) noexcept
+         const std::shared_ptr<icommand_list<ListT>>& p) noexcept
       {
          return p->get();
       }
@@ -144,9 +183,7 @@ namespace qgl::graphics::gpu
        */
       ts_vector<icmd_list*> m_lists_p;
 
-      /* 
-       The command queue used to execute the lists.
-       */
-      icmd_queue* m_queue;
+      std::optional<pptr<icmd_queue>> m_queue_p;
+      std::optional<icmd_queue*> m_rawQueue_p;
    };
 }

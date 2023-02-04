@@ -50,9 +50,9 @@ namespace qgl::graphics
          //Order in which com_ptrs are destroyed is imported.
          //Destroy pointers in reverse order they were created.
          m_swapChain_p = nullptr;
-
+         m_queue_p = nullptr;
          m_infoQueue_up = nullptr;
-         m_cmdQueueMap.clear();
+         //m_cmdQueueMap.clear();
          m_3dDevice_p = nullptr;
 
          m_gpuFactory_p = nullptr;
@@ -113,7 +113,7 @@ namespace qgl::graphics
        value.
        https://learn.microsoft.com/en-us/windows/win32/api/dxgi1_4/nf-dxgi1_4-idxgiadapter3-setvideomemoryreservation
        */
-      result_t RequestMemoryReservation(size_t bytes) noexcept
+      result_t reserve(size_t bytes) noexcept
       {
          return adapter()->SetVideoMemoryReservation(
             dev_node(),
@@ -208,7 +208,7 @@ namespace qgl::graphics
        */
       icmd_queue* default_queue() noexcept
       {
-         return m_cmdQueueMap.get(m_defaultCmdQH).get();
+         return m_queue_p.get();
       }
 
       /*
@@ -216,44 +216,7 @@ namespace qgl::graphics
        */
       const icmd_queue* default_queue() const noexcept
       {
-         return m_cmdQueueMap.get(m_defaultCmdQH).get();
-      }
-
-      /*
-       Gets the command queue interface from a handle. The handle
-       must have been allocated using "make_cmd_queue".
-       */
-      icmd_queue* cmd_queue(hndlmap_t h) noexcept
-      {
-         return m_cmdQueueMap.get(h).get();
-      }
-
-      /*
-       Gets the command queue interface from a handle. The handle
-       must have been allocated using "make_cmd_queue".
-       */
-      const icmd_queue* cmd_queue(hndlmap_t h) const noexcept
-      {
-         return m_cmdQueueMap.get(h).get();
-      }
-
-      /*
-       Creates a command queue and returns a handle to the queue. Use 
-       "cmd_queue" to get the actual command queue from the handle.
-       Free the command queue by passing the handle to "free_cmd_queue".
-       */
-      hndlmap_t make_cmd_queue(const D3D12_COMMAND_QUEUE_DESC& desc)
-      {
-         auto q = helpers::make_cmd_queue(desc, m_3dDevice_p.get());
-         return m_cmdQueueMap.alloc(std::move(q));
-      }
-
-      /*
-       Frees the command queue that the handle references.
-       */
-      void free_cmd_queue(hndlmap_t h)
-      {
-         m_cmdQueueMap.free(h);
+         return m_queue_p.get();
       }
 
       /*
@@ -328,13 +291,10 @@ namespace qgl::graphics
          }
 
          //Create the command queue for the device.
-         m_cmdQueueMap.clear();
          D3D12_COMMAND_QUEUE_DESC desc = {};
          desc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
          desc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
-         auto q1 = helpers::make_cmd_queue(desc, m_3dDevice_p.get());
-         name_d3d(q1.get(), L"Default cmd queue");
-         m_defaultCmdQH = m_cmdQueueMap.alloc(std::move(q1));
+         m_queue_p = helpers::make_cmd_queue(desc, dev_3d());
 
          gpu_budget_changed_callback_args budgetArgs { 
             m_adapter_p.get(), adapterIdx 
@@ -382,7 +342,7 @@ namespace qgl::graphics
 
          //Create the swap chain. Use the 0th command queue.
          m_swapChain_p = helpers::make_swap_chain(m_config, *m_wnd_p,
-            m_gpuFactory_p.get(), default_queue());
+            m_gpuFactory_p.get(), m_queue_p.get());
 
          //Set the swap chain color space.
          set_color_space();
@@ -400,19 +360,20 @@ namespace qgl::graphics
       pptr<igpu_factory> m_gpuFactory_p;
       pptr<igpu_adapter> m_adapter_p;
       pptr<i3d_device> m_3dDevice_p;
+      pptr<icmd_queue> m_queue_p;
 
       budget_dispatcher m_budgetDispatcher;
       msg_dispatcher m_msgDispatcher;
 
-      /*
-       Maps handles to command queues.
-       */
-      handle_map<pptr<icmd_queue>> m_cmdQueueMap;
+      ///*
+      // Maps handles to command queues.
+      // */
+      //handle_map<pptr<icmd_queue>> m_cmdQueueMap;
 
-      /*
-       Handle to the default command queue.
-       */
-      hndlmap_t m_defaultCmdQH;
+      ///*
+      // Handle to the default command queue.
+      // */
+      //hndlmap_t m_defaultCmdQH;
 
       sync_interval_t m_syncInterval;
       swap_flag_t m_swapFlags;

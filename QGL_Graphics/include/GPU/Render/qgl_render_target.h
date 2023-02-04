@@ -31,7 +31,8 @@ namespace qgl::graphics::gpu
                     rtv_descriptor_heap& rtvHeap,
                     size_t frameIndex) :
          m_dev_p(dev_p),
-         m_frmIdx(frameIndex)
+         m_frmIdx(frameIndex),
+         m_state(D3D12_RESOURCE_STATE_PRESENT)
       {
          m_cpuHandle = rtvHeap.at_cpu(frameIndex);
          create();
@@ -153,6 +154,17 @@ namespace qgl::graphics::gpu
          return m_rects.size();
       }
 
+
+      virtual D3D12_RESOURCE_STATES state() const noexcept
+      {
+         return m_state;
+      }
+
+      virtual void state(D3D12_RESOURCE_STATES s) noexcept
+      {
+         m_state = s;
+      }
+
       private:
       void create()
       {
@@ -174,6 +186,7 @@ namespace qgl::graphics::gpu
 #endif
       }
       
+      D3D12_RESOURCE_STATES m_state;
       D3D12_CPU_DESCRIPTOR_HANDLE m_cpuHandle;
       ResourceDescriptionT m_swapChainDesc;
       ViewDescriptionT m_viewDesc;

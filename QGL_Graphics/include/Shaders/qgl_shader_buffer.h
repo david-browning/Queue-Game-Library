@@ -8,7 +8,7 @@ namespace qgl::graphics::shaders
    /*
     Represents a shader that can be bound to a graphics pipeline state.
     */
-   class shader final
+   class shader_buffer final
    {
       public:
       /*
@@ -16,7 +16,7 @@ namespace qgl::graphics::shaders
        Errors are reported to the optional error reporter.
        */
       template<typename CharT = char>
-      shader(shader_descriptor& desc,
+      shader_buffer(shader_descriptor& desc,
              const shader_data& shaderData,
              error_reporter<CharT>* e = nullptr) :
          m_dsc(desc)
@@ -54,7 +54,7 @@ namespace qgl::graphics::shaders
        Errors are reported to the optional error reporter.
        */
       template<typename CharT = char>
-      shader(shader_descriptor& desc,
+      shader_buffer(shader_descriptor& desc,
              const qgl::sys_str& file,
              error_reporter<CharT>* e = nullptr) :
          m_dsc(desc)
@@ -67,7 +67,7 @@ namespace qgl::graphics::shaders
       /*
        Copy constructor.
        */
-      shader(const shader& r) :
+      shader_buffer(const shader_buffer& r) :
          m_dsc(r.m_dsc),
          m_shaderData(r.m_shaderData)
       {
@@ -78,7 +78,7 @@ namespace qgl::graphics::shaders
       /*
        Move constructor.
        */
-      shader(shader&& r) noexcept:
+      shader_buffer(shader_buffer&& r) noexcept:
          m_dsc(std::move(r.m_dsc)),
          m_shaderData(std::move(r.m_shaderData))
       {
@@ -89,7 +89,7 @@ namespace qgl::graphics::shaders
       /*
        Destructor.
        */
-      ~shader() noexcept = default;
+      ~shader_buffer() noexcept = default;
 
       /*
        Returns the type of shader.

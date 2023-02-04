@@ -1,11 +1,10 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include "include/qgl_graphics_device.h"
 #include "include/GPU/Memory/qgl_igpu_allocator.h"
-#include "include/Helpers/qgl_graphics_device_helpers.h"
 
 namespace qgl::graphics::gpu
 {
+   template<D3D12_RESOURCE_STATES State, D3D12_HEAP_TYPE HeapType>
    class committed_allocator : public igpu_allocator
    {
       public:
@@ -28,7 +27,7 @@ namespace qgl::graphics::gpu
 
       committed_allocator(const committed_allocator&) = delete;
 
-      committed_allocator(committed_allocator&& r) noexcept
+      committed_allocator(committed_allocator&& r)
       {
          std::scoped_lock l{ r.m_mutex };
          m_callbacks = std::move(r.m_callbacks);
@@ -42,24 +41,21 @@ namespace qgl::graphics::gpu
 
       virtual gpu_alloc_handle alloc(const D3D12_RESOURCE_DESC& desc)
       {
-         if (desc.Alignment != m_memStats.alignment)
+         if (desc.Alignment > 0 && desc.Alignment != m_memStats.alignment)
          {
             throw std::invalid_argument{
                "The description's alignment does not match the allocator's alignment."
             };
          }
 
-         static const D3D12_HEAP_PROPERTIES heapProps =
-            CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
-         static const D3D12_HEAP_FLAGS heapFlags = D3D12_HEAP_FLAG_NONE;
-
          gpu_alloc_handle ret = 0;
+         
+         // Do the allocation
          {
             std::scoped_lock l{ m_mutex };
 
-            // Get the allocation info
             auto allocInfo = m_gDev_p->dev_3d()->GetResourceAllocationInfo(
-               m_gDev_p->dev_node(), 1, &desc);
+              m_gDev_p->dev_node(), 1, &desc);
 
             if (m_memStats.committed + allocInfo.SizeInBytes >
                m_memStats.budgeted)
@@ -70,16 +66,19 @@ namespace qgl::graphics::gpu
 
             // Allocate a buffer the resource
             pptr<igpu_resource> newResource_p;
+            static const auto heapProps = CD3DX12_HEAP_PROPERTIES(HeapType);
+            static const auto heapFlags = D3D12_HEAP_FLAG_NONE;
             check_result(m_gDev_p->dev_3d()->CreateCommittedResource(
-               &heapProps, heapFlags,
+               &heapProps, 
+               heapFlags,
                &desc,
-               D3D12_RESOURCE_STATE_GENERIC_READ,
+               State,
                nullptr,
                IID_PPV_ARGS(newResource_p.put())));
 
             allocation_entry allocation{
-               std::move(newResource_p),
-               std::move(allocInfo),
+              std::move(newResource_p),
+              std::move(allocInfo),
             };
 
             add_mem(allocation);
@@ -159,4 +158,15 @@ namespace qgl::graphics::gpu
       allocator_stats m_memStats;
       graphics_device* m_gDev_p;
    };
+
+   using copy_src_allocator = typename committed_allocator<
+      D3D12_RESOURCE_STATE_COMMON, D3D12_HEAP_TYPE_DEFAULT>;
+   
+   using copy_dst_allocator = typename committed_allocator<
+      D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_HEAP_TYPE_UPLOAD>;
+   
+   using vert_allocator = typename committed_allocator<
+      D3D12_RESOURCE_STATE_COPY_DEST, D3D12_HEAP_TYPE_DEFAULT>;
+
+   using idx_allocator = typename vert_allocator;
 }

@@ -41,7 +41,7 @@ namespace qgl::graphics::gpu
        */
       virtual size_t size() const noexcept = 0;
 
-      virtual gpu_alloc_handle alloc_handle() const noexcept = 0;
+      virtual gpu_alloc_handle alloc_handle() const = 0;
 
       /*
        Returns a pointer to the GPU resource.
@@ -52,5 +52,9 @@ namespace qgl::graphics::gpu
        Returns a pointer to the GPU resource.
        */
       virtual ResourceT* get() = 0;
+
+      virtual D3D12_RESOURCE_STATES state() const noexcept = 0;
+
+      virtual void state(D3D12_RESOURCE_STATES s) noexcept = 0;
    };
 }

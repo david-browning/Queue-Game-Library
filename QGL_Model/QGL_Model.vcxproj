@@ -187,6 +187,7 @@
     <ClInclude Include="include\qgl_model_include.h" />
     <ClInclude Include="include\qgl_platform_abstraction.h" />
     <ClInclude Include="include\qgl_version.h" />
+    <ClInclude Include="include\Structures\qgl_flyweight.h" />
     <ClInclude Include="include\Structures\qgl_handle_map.h" />
     <ClInclude Include="include\Structures\qgl_basic_graph.h" />
     <ClInclude Include="include\Structures\qgl_basic_tree_map.h" />

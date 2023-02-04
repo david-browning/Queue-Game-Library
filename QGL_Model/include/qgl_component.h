@@ -48,7 +48,7 @@ namespace qgl::components
       /*
        Default destructor.
        */
-      ~component() noexcept = default;
+      virtual ~component() noexcept = default;
 
       /*
        Applies the update function to object using the given context.
