@@ -71,9 +71,9 @@ namespace qgl::graphics::helpers
     Gets the application's GPU memory budget.
     */
    extern "C" QGL_GRAPHICS_API result_t QGL_CC app_mem(
-      igpu_adapter * dev_p,
+      igpu_adapter* dev_p,
       gpu_idx_t node,
-      gpu_mem_info * out) noexcept;
+      gpu_mem_info* out) noexcept;
 
    /*
     Gets information about the given adapter.
