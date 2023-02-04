@@ -1,6 +1,6 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include "include/Shaders/qgl_shader.h"
+#include "include/Shaders/qgl_shader_buffer.h"
 #include "include/Shaders/qgl_vertex_layout.h"
 #include "include/GPU/Render/qgl_multisampler.h"
 #include "include/GPU/qgl_frame.h"

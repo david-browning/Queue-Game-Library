@@ -1,9 +1,7 @@
 #pragma once
-#include "include/qgl_graphics_include.h"
-#include "include/Helpers/qgl_dx_constructors.h"
-#include "include/GPU/Memory/qgl_igpu_allocator.h"
-#include "include/GPU/Buffers/qgl_const_buffer.h"
+#include "include/qgl_game_include.h"
 #include "include/Descriptors/qgl_camera_descriptor.h"
+
 
 namespace qgl::components
 {
@@ -24,17 +22,17 @@ namespace qgl::components
     Camera uses left-hand coordinates.
     */
    class alignas(alignof(DirectX::XMMATRIX)) camera final :
-      public gpu::const_buffer<CONST_CAMERA_BUFFER>,
+   public gpu::const_buffer<CONST_CAMERA_BUFFER>,
       game_component<camera>
    {
       /*
        This does not own the allocator pointer. Do not free the allocator or let
        it go out of scope before destroying this.
        */
-      camera(const descriptors::camera_descriptor& desc,
+      camera(const descriptors::camera_descriptor & desc,
              float aspectRatio,
              gpu::igpu_allocator* allocator_p,
-             const game_update_functor<camera>& updateFunctor) :
+             game_update_functor<camera> updateFunctor) :
          const_buffer(allocator_p),
          component(CAMERA_GUID, updateFunctor)
       {

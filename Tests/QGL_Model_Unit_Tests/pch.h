@@ -7,7 +7,7 @@
 #include <QGLModel.h>
 
 template<typename T>
-static std::wstring TemplateToString(const T& x)
+inline std::wstring TemplateToString(const T& x)
 {
    std::wstringstream ret;
    ret << x;
@@ -17,19 +17,13 @@ static std::wstring TemplateToString(const T& x)
 namespace Microsoft::VisualStudio::CppUnitTestFramework
 {
    template<>
-   static std::wstring ToString<qgl::guid>(const qgl::guid& g)
+   inline std::wstring ToString<qgl::guid>(const qgl::guid& g)
    {
       return g.str<wchar_t>();
    }
 
    template<>
-   static std::wstring ToString<uint16_t>(const uint16_t& i)
-   {
-      return TemplateToString(i);
-   }
-
-   template<>
-   static std::wstring ToString<qgl::hw_types>(const qgl::hw_types& i)
+   inline std::wstring ToString<qgl::hw_types>(const qgl::hw_types& i)
    {
       std::wstringstream ret;
       ret << std::hex << (uint32_t)i;

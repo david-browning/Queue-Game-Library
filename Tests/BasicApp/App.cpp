@@ -15,7 +15,7 @@ using namespace qgl::graphics;
 
 void consoleCallback(const std::string&)
 {
-   
+
 }
 
 void dsvAllocCallback(qgl::graphics::gpu::igpu_allocator* alloc_p)
@@ -75,6 +75,9 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
 
       descriptors::engine_descriptor eDesc;
       eDesc.console = true;
+      eDesc.tearing = 1;
+      eDesc.refresh = 120;
+      //eDesc.fullscreen = 1;
       descriptors::hdr_descriptor hdrDesc;
       gpu_config defaultConfig{ eDesc, hdrDesc };
       qdev_p = std::make_unique<graphics_device>(defaultConfig, qwp);
@@ -163,12 +166,12 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
       psDesc.compile_params.entry.copy("PSMain", 7);
       psDesc.compile_params.flags = compileFlags;
 
-      graphics::shaders::shader vShader{
+      graphics::shaders::shader_buffer vShader{
          vsDesc,
          shaderFile
       };
 
-      graphics::shaders::shader pShader{
+      graphics::shaders::shader_buffer pShader{
          psDesc,
          shaderFile
       };
@@ -221,9 +224,8 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
       clearColor[2] = 0.6f;
       clearColor[3] = 1.0f;
 
-
       size_t frmIdx = qdev_p->buffer_idx();
-      gpu::cmd_executor executor{ qdev_p->default_queue() };
+      gpu::cmd_executor<D3D12_COMMAND_LIST_TYPE_DIRECT> executor{ qdev_p->default_queue() };
       std::vector<std::unique_ptr<gpu::graphics_command_list>> cmdLists;
       gpu::fence<uint64_t> syncFence{ *qdev_p, qdev_p->default_queue() };
       std::vector<gpu::sync_object<uint64_t>> frameFences;
@@ -245,7 +247,68 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
       frame_ps[0]->frame_stencil().rectangles(
          frameScissor.begin(), frameScissor.end());
 
-      qgl::timer<int64_t> t{ TICKS_PER_SECOND / 30 };
+      qgl::graphics::gpu::geom2d_vert triangle[] =
+      {
+         { DirectX::XMFLOAT4{0.0f, 1.0f, 0.0f, 1.0f},     
+           DirectX::XMFLOAT4{1.0f, 0.0f, 0.0f, 0.5f} 
+         },
+         
+         { DirectX::XMFLOAT4{1.0f, -1.0f, 0.0f, 1.0f},   
+           DirectX::XMFLOAT4{1.0f, 0.0f, 0.0f, 0.5f} 
+         },
+         
+         { DirectX::XMFLOAT4{-1.0f, -1.0f, 0.0f, 1.0f},    
+           DirectX::XMFLOAT4{1.0f, 0.0f, 0.0f, 0.5f} 
+         }
+      };
+
+      auto vBufferAllocInfo = graphics::helpers::buffer_alloc_info(
+         sizeof(triangle[0]) * 3,
+         qdev_p->dev_3d(),
+         0);
+
+      qgl::graphics::gpu::vert_allocator vbufferAllocator{
+         qdev_p.get(),
+         vBufferAllocInfo.bytes,
+         vBufferAllocInfo.alignment
+      };
+
+      qgl::graphics::gpu::vertex_buffer<qgl::graphics::gpu::geom2d_vert, D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST> vBuffer{
+         &vbufferAllocator, triangle, 3
+      };
+
+      // Upload the vertex buffer.
+      {
+         qgl::graphics::gpu::copy_dst_allocator uploadAllocator{
+            qdev_p.get(),
+            vBufferAllocInfo.bytes,
+            vBufferAllocInfo.alignment
+         };
+
+         qgl::graphics::gpu::upload_buffer uvBuffer{ &uploadAllocator, vBuffer };
+
+         gpu::cmd_executor<D3D12_COMMAND_LIST_TYPE_DIRECT> cpyExecutor{ *qdev_p, D3D12_COMMAND_LIST_TYPE_DIRECT };
+         graphics::gpu::upload_command_list cpyList{ *qdev_p, pso, 0, L"Copy List" };
+         gpu::fence<uint64_t> cpyFence{ *qdev_p, cpyExecutor.get() };
+
+         cpyExecutor.clear();
+         cpyList.begin();
+         cpyList.upload(vBuffer, uvBuffer);
+         cpyList.transition(vBuffer, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
+         cpyList.end();
+         cpyExecutor.queue(&cpyList);
+         cpyExecutor.execute();
+
+         auto waitFor = cpyFence.next();
+         cpyFence.signal(waitFor);
+
+         // Do not advance the fence value or the copy fence's destructor will
+         // wait for a value that will never be signaled.
+         //cpyFence.next();
+         cpyFence.wait(waitFor);
+      }
+
+      qgl::timer<int64_t> t{ TICKS_PER_SECOND / eDesc.refresh };
       while (!m_wndClosed)
       {
          if (m_wndVisible)
@@ -256,6 +319,7 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
             t.tick();
             auto tState = t.state();
             qwp->title(std::to_wstring(tState.fps()));
+            clearColor[1] = (((int)(clearColor[1] * 255) + 1) % 255) / 255.0;
 
             auto cmdList = cmdLists[frmIdx].get();
             executor.clear();
@@ -266,7 +330,8 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
             cmdList->clear_color(clearColor);
             cmdList->clear_frame();
             cmdList->clear_depth();
-            cmdList->topology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+            cmdList->vertices(vBuffer);
+            cmdList->draw(1000);
             cmdList->end();
 
             executor.queue(cmdList);
@@ -295,7 +360,6 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
          }
       }
    }
-
 
    void Activated(IInspectable const&,
                   Activation::IActivatedEventArgs const&)

@@ -199,6 +199,9 @@
     <ClInclude Include="include\Structures\qgl_ts_uset.h">
       <Filter>Header Files\Structures</Filter>
     </ClInclude>
+    <ClInclude Include="include\Structures\qgl_flyweight.h">
+      <Filter>Header Files\Structures</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="QGL_Model.def">

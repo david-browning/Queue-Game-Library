@@ -33,9 +33,12 @@ namespace qgl::math
       /*
        Creates a boundary that is the intersection of the two.
        */
-      boundary(const RECT& r1, const RECT& r2)
+      template<boundary_y_axis ydown = YDown>
+      //boundary(const RECT& r1, const RECT& r2)
+      boundary(typename std::enable_if<ydown == boundary_y_axis::y_down_positive, const RECT&>::type r1,
+               typename std::enable_if<ydown == boundary_y_axis::y_down_positive, const RECT&>::type r2)
       {
-         static_assert(YDown == boundary_y_axis::y_down_positive,
+         static_assert(ydown == boundary_y_axis::y_down_positive,
                        "Y axis must increment downward for RECT constructor.");
          intersection(r1.left, r1.top, r1.right, r1.bottom,
                       r2.left, r2.top, r2.right, r2.bottom);
@@ -87,19 +90,21 @@ namespace qgl::math
          return right - left;
       }
 
-      constexpr T height() const noexcept
+      template<boundary_y_axis ydown = YDown>
+      constexpr typename std::enable_if<ydown == boundary_y_axis::y_down_positive, T>::type height() const noexcept
       {
-         if constexpr (YDown == boundary_y_axis::y_down_positive)
-         {
-            return bottom - top;
-         }
+         return bottom - top;
+      }
 
+      template<boundary_y_axis ydown = YDown>
+      constexpr typename std::enable_if<ydown == boundary_y_axis::y_down_negative, T>::type height() const noexcept
+      {
          return top - bottom;
       }
 
       constexpr T area() const noexcept
       {
-         return width() * height();
+         return width() * height<YDown>();
       }
 
       constexpr bool intersects(const boundary& b) const noexcept
@@ -125,8 +130,6 @@ namespace qgl::math
       }
 
       private:
-
-
       struct min
       {
          constexpr auto operator()(const T& l, const T& r) const noexcept

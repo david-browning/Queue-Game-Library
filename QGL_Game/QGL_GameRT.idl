@@ -1,0 +1,8 @@
+namespace QGL_Game
+{
+    [default_interface]
+    runtimeclass QGL_GameRT
+    {
+        QGL_GameRT();
+    }
+}

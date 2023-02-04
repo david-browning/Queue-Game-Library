@@ -6,12 +6,14 @@
 #include "include/GPU/Descriptors/qgl_descriptor_heap.h"
 #include "include/GPU/Buffers/qgl_index_buffer.h"
 #include "include/GPU/Buffers/qgl_vertex_buffer.h"
+#include "include/GPU/Buffers/qgl_upload_buffer.h"
 
 namespace qgl::graphics::gpu
 {
    /*
-    Override begin(), root_sig(), and table().
+    Override begin(), end(), root_sig(), and table().
     */
+   template<D3D12_COMMAND_LIST_TYPE ListT>
    class icommand_list
    {
       public:
@@ -21,13 +23,14 @@ namespace qgl::graphics::gpu
        */
       icommand_list(graphics_device& dev,
                     gpu::ipso& pso,
-                    D3D12_COMMAND_LIST_TYPE listT,
                     gpu_idx_t nodeMask = 0,
                     const sys_char* debugName = nullptr) :
-         m_pso(pso)
+         m_pso(pso),
+         m_numIndcs(0),
+         m_numVerts(0)
       {
-         make_allocator(dev.dev_3d(), listT, debugName);
-         make_cmd_list(dev.dev_3d(), listT, nodeMask, debugName);
+         make_allocator(dev.dev_3d(), debugName);
+         make_cmd_list(dev.dev_3d(), nodeMask, debugName);
       }
 
       /*
@@ -39,7 +42,7 @@ namespace qgl::graphics::gpu
       /*
        Move constructor.
        */
-      icommand_list(icommand_list&&) = default;
+      icommand_list(icommand_list&&) noexcept = default;
 
       virtual ~icommand_list() noexcept = default;
 
@@ -92,10 +95,10 @@ namespace qgl::graphics::gpu
           Also, note that this API is not free-threaded and therefore can't be
           called on the same allocator at the same time from multiple threads.
           */
-         check_result(m_cmdList->Reset(m_allocator.get(),
-                                       m_pso.get().get()));
-         m_vertBuffView.resize(0);
+         check_result(m_cmdList->Reset(m_allocator.get(), m_pso.get().get()));
          m_heapsToSet.resize(0);
+         m_numIndcs = 0;
+         m_numVerts = 0;
       }
 
       /*
@@ -146,8 +149,8 @@ namespace qgl::graphics::gpu
       template<
          D3D12_DESCRIPTOR_HEAP_TYPE DescriptorHeapT,
          D3D12_DESCRIPTOR_HEAP_FLAGS Flag>
-         void descriptors(
-               std::initializer_list<descriptor_heap<DescriptorHeapT, Flag>> heaps)
+      void descriptors(
+         std::initializer_list<descriptor_heap<DescriptorHeapT, Flag>> heaps)
       {
          m_heapsToSet.clear();
          m_heapsToSet.insert(m_heapsToSet.begin(), heaps.begin(), heaps.end());
@@ -179,68 +182,28 @@ namespace qgl::graphics::gpu
        scope.
       */
       template<typename VertexT, D3D_PRIMITIVE_TOPOLOGY TopologyT>
-      void vertex_buffers(
-         std::initializer_list<vertex_buffer<VertexT, TopologyT>> buffers)
+      void vertices(vertex_buffer<VertexT, TopologyT>& buffer)
       {
-         m_vertBuffView.clear();
-         m_vertBuffView.insert(m_vertBuffView.begin(),
-            buffers.begin(), buffers.end());
-         m_cmdList->IASetVertexBuffers(
-            0,
-            static_cast<UINT>(m_vertBuffView.size()),
-            m_vertBuffView.data());
-      }
-
-      template<class VertexIt>
-      void vertex_buffers(VertexIt first, VertexIt last)
-      {
-         m_vertBuffView.clear();
-         m_vertBuffView.insert(m_vertBuffView.begin(), first, last);
-         m_cmdList->IASetVertexBuffers(
-            0,
-            static_cast<UINT>(m_vertBuffView.size()),
-            m_vertBuffView.data());
-      }
-
-      void vertex_buffers(const D3D12_VERTEX_BUFFER_VIEW* views,
-                          size_t numViews)
-      {
-         m_vertBuffView.resize(numViews);
-         memcpy(m_vertBuffView.data(),
-                views,
-                sizeof(D3D12_VERTEX_BUFFER_VIEW) * numViews);
-
-         m_cmdList->IASetVertexBuffers(
-            0,
-            static_cast<UINT>(m_vertBuffView.size()),
-            m_vertBuffView.data());
+         m_vertBuffView = *buffer.view();
+         m_numVerts = buffer.count();
+         m_cmdList->IASetVertexBuffers(0, 1, &m_vertBuffView);
+         m_cmdList->IASetPrimitiveTopology(TopologyT);
       }
 
       /*
        Sets the index buffer.
        */
       template<typename IndexT>
-      void index(const index_buffer<IndexT>& buff)
+      void indices(const index_buffer<IndexT>& buff)
       {
-         index(buff.view());
-      }
-
-
-      /*
-       Sets the index buffer.
-       */
-      void index(const D3D12_INDEX_BUFFER_VIEW& buff_p)
-      {
-         m_idxBuffView = buff_p;
+         m_idxBuffView = *buff.view();
+         m_numIndcs = buff.count();
          m_cmdList->IASetIndexBuffer(&m_idxBuffView);
       }
 
-      /*
-       Sets the topology of the vertex buffers.
-       */
-      void topology(D3D_PRIMITIVE_TOPOLOGY topo) noexcept
+      void draw(size_t instances)
       {
-         m_cmdList->IASetPrimitiveTopology(topo);
+         get()->DrawInstanced(m_numVerts, instances, 0, 0);
       }
 
       /*
@@ -252,18 +215,19 @@ namespace qgl::graphics::gpu
          typename ResourceDescriptionT,
          typename ViewDescriptionT,
          typename ResourceT>
-         void transition(
-               igpu_buffer<ResourceDescriptionT, ViewDescriptionT, ResourceT>* resource,
-               D3D12_RESOURCE_STATES newState)
+      void transition(
+         igpu_buffer<ResourceDescriptionT, ViewDescriptionT, ResourceT>& resource,
+         D3D12_RESOURCE_STATES newState)
       {
-         if (resource->state != newState)
+         if (resource.state() != newState)
          {
-            transition(resource->get(), resource->state(), newState);
-            resource->state(newState);
+            transition(resource.get(), resource.state(), newState);
+            resource.state(newState);
          }
       }
 
-      void transition(igpu_resource* resource,
+      void transition(
+         igpu_resource* resource,
          D3D12_RESOURCE_STATES oldState,
          D3D12_RESOURCE_STATES newState)
       {
@@ -285,9 +249,9 @@ namespace qgl::graphics::gpu
          typename ResourceDescriptionT,
          typename ViewDescriptionT,
          typename ResourceT>
-         void transition_queue(
-               igpu_buffer<ResourceDescriptionT, ViewDescriptionT, ResourceT>* resource,
-               D3D12_RESOURCE_STATES newState)
+      void transition_queue(
+         igpu_buffer<ResourceDescriptionT, ViewDescriptionT, ResourceT>* resource,
+         D3D12_RESOURCE_STATES newState)
       {
          if (resource->state != newState)
          {
@@ -307,6 +271,19 @@ namespace qgl::graphics::gpu
                newState));
       }
 
+      template<class ResDescT, class ViewDescT, class ResourceT>
+      void upload(
+         const gpu::igpu_buffer<ResDescT, ViewDescT, ResourceT>& buffer,
+         const gpu::upload_buffer& uBuffer)
+      {
+         UpdateSubresources<1>(
+            (ID3D12GraphicsCommandList*)get(),
+            (ID3D12Resource*)buffer.get(),
+            (ID3D12Resource*)uBuffer.get(),
+            0, 0, 1,
+            uBuffer.description());
+      }
+
       private:
       /*
        When creating a command list, the command list type of the allocator,
@@ -314,11 +291,10 @@ namespace qgl::graphics::gpu
        list being created.
        */
       void make_allocator(i3d_device* dev_p,
-                          D3D12_COMMAND_LIST_TYPE listT,
                           const sys_char* debugName)
       {
          check_result(dev_p->CreateCommandAllocator(
-            listT,
+            ListT,
             IID_PPV_ARGS(m_allocator.put())));
 
 #ifdef DEBUG
@@ -340,13 +316,12 @@ namespace qgl::graphics::gpu
        state. So, close it.
        */
       void make_cmd_list(i3d_device* dev_p,
-                         D3D12_COMMAND_LIST_TYPE listT,
                          gpu_idx_t nodeMask,
                          const sys_char* debugName)
       {
          check_result(dev_p->CreateCommandList(
             nodeMask,
-            listT,
+            ListT,
             m_allocator.get(),
             m_pso.get().get(),
             IID_PPV_ARGS(m_cmdList.put())));
@@ -379,12 +354,10 @@ namespace qgl::graphics::gpu
        */
       std::vector<ID3D12DescriptorHeap*> m_heapsToSet;
 
-      /*
-       Keep a list of the vertex buffer views.
-       */
-      std::vector<D3D12_VERTEX_BUFFER_VIEW> m_vertBuffView;
-
+      D3D12_VERTEX_BUFFER_VIEW m_vertBuffView;
       D3D12_INDEX_BUFFER_VIEW m_idxBuffView;
+      size_t m_numVerts;
+      size_t m_numIndcs;
 
       protected:
       /*

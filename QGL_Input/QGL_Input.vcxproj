@@ -179,7 +179,6 @@
     <ClInclude Include="include\Providers\qgl_uwp_key_input_provider.h" />
     <ClInclude Include="include\Providers\qgl_uwp_pointer_input_provider.h" />
     <ClInclude Include="include\Providers\qgl_xinput_input_provider.h" />
-    <ClInclude Include="include\QGLInput.h" />
     <ClInclude Include="include\qgl_input_dispatcher.h" />
     <ClInclude Include="include\qgl_input_include.h" />
     <ClInclude Include="include\qgl_input_instance.h" />
@@ -187,6 +186,7 @@
     <ClInclude Include="include\qgl_input_state.h" />
     <ClInclude Include="include\qgl_input_trigger.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="QGLInput.h" />
     <ClInclude Include="QGL_InputRT.h" />
   </ItemGroup>
   <ItemGroup>

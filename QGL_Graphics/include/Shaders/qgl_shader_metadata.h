@@ -1,6 +1,6 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include "include/Shaders/qgl_shader.h"
+#include "include/Shaders/qgl_shader_buffer.h"
 #include "include/Shaders/qgl_shader_lib.h"
 #include "include/Shaders/qgl_shader_meta_types.h"
 
@@ -19,7 +19,7 @@ namespace qgl::graphics::shaders
       /*
        Decompiles the shader and pulls metadata from it.
        */
-      shader_metadata(const shader& s)
+      shader_metadata(const shader_buffer& s)
       {
          m_type = s.type();
          construct_shader(s);
@@ -142,7 +142,7 @@ namespace qgl::graphics::shaders
       }
 
       private:
-      void construct_shader(const shader& s)
+      void construct_shader(const shader_buffer& s)
       {
          check_result(D3DReflect(
             s.byte_code().pShaderBytecode,

@@ -30,8 +30,7 @@ struct PSInput
 
 PSInput VSMain(
    float4 position : POSITION, 
-   float4 color : COLOR,
-   half2 textCoord : TEXCOORD0)
+   float4 color : COLOR)
 {
    PSInput result;
 

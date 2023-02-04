@@ -1,6 +1,6 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include "include/Descriptors/qgl_sampler_descriptor.h"
+#include "include/Shaders/qgl_sampler_descriptor.h"
 
 namespace qgl::descriptors
 {
@@ -34,12 +34,6 @@ namespace qgl::descriptors
       constexpr texture_descriptor(const texture_descriptor&) = default;
 
       constexpr texture_descriptor(texture_descriptor&&) noexcept = default;
-
-      ~texture_descriptor() noexcept = default;
-
-      texture_descriptor(const texture_descriptor&) = default;
-
-      texture_descriptor(texture_descriptor&&) = default;
 
       ~texture_descriptor() noexcept = default;
 
@@ -110,7 +104,7 @@ namespace qgl::descriptors
       /*
        How to sample this texture.
        */
-      sampler_descriptor sampler;
+      qgl::graphics::shaders::sampler_descriptor sampler;
    };
 #pragma pack(pop)
 }

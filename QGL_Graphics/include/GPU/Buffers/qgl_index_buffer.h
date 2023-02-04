@@ -94,7 +94,7 @@ namespace qgl::graphics::gpu
          return &m_viewDescription;
       }
 
-      virtual gpu_alloc_handle alloc_handle() const noexcept
+      virtual gpu_alloc_handle alloc_handle() const
       {
          return m_alloc_h;
       }
@@ -115,6 +115,11 @@ namespace qgl::graphics::gpu
       virtual size_t size() const noexcept
       {
          return sizeof(IndexT) * m_indices.size();
+      }
+
+      size_t count() const noexcept
+      {
+         return m_indices.size();
       }
 
       /*
@@ -139,6 +144,16 @@ namespace qgl::graphics::gpu
          }
       }
 
+      virtual D3D12_RESOURCE_STATES state() const noexcept
+      {
+         return m_state;
+      }
+
+      virtual void state(D3D12_RESOURCE_STATES s) noexcept
+      {
+         m_state = s;
+      }
+
       private:
       void construct()
       {
@@ -146,19 +161,7 @@ namespace qgl::graphics::gpu
          m_resDescription.RowPitch = size();
          m_resDescription.SlicePitch = m_resDescription.RowPitch;
 
-         // TODO: if allocating index buffers fails, may need to restrict this 
-         // to use a committed resource allocator.
-         //check_result(gdev->d3d12_device()->CreateCommittedResource(
-         //   &CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
-         //   D3D12_HEAP_FLAGS::D3D12_HEAP_FLAG_NONE,
-         //   &CD3DX12_RESOURCE_DESC::Buffer(m_indexDataSize),
-         //   D3D12_RESOURCE_STATE_COPY_DEST,
-         //   nullptr,
-         //   IID_PPV_ARGS(put())));
-
-         m_alloc_h = m_allocator_p->alloc(
-            CD3DX12_RESOURCE_DESC::Buffer(size()), 
-            D3D12_RESOURCE_STATE_COPY_DEST);
+         m_alloc_h = m_allocator_p->alloc(CD3DX12_RESOURCE_DESC::Buffer(size()));
 
          m_viewDescription.BufferLocation = get()->GetGPUVirtualAddress();
          m_viewDescription.Format = index_format();
@@ -170,5 +173,6 @@ namespace qgl::graphics::gpu
       ResDescT m_resDescription;
       igpu_allocator* m_allocator_p = nullptr;
       gpu_alloc_handle m_alloc_h = static_cast<gpu_alloc_handle>(-1);
+      D3D12_RESOURCE_STATES m_state = D3D12_RESOURCE_STATE_COPY_DEST;
    };
 }

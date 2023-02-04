@@ -1,5 +1,6 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
+#include "include/GPU/qgl_frame.h"
 #include "include/GPU/Command-Lists/qgl_icmd_list.h"
 #include "include/GPU/Command-Lists/qgl_cmd_bundle.h"
 #include "include/GPU/Render/qgl_blender.h"
@@ -9,18 +10,15 @@
 
 namespace qgl::graphics::gpu
 {
-   class graphics_command_list : public icommand_list
+   class graphics_command_list : 
+      public icommand_list<D3D12_COMMAND_LIST_TYPE_DIRECT>
    {
       public:
       graphics_command_list(graphics_device& dev,
                             gpu::ipso& pso,
                             gpu_idx_t nodeMask = 0,
                             const sys_char* debugName = nullptr) :
-         icommand_list(dev,
-                       pso,
-                       D3D12_COMMAND_LIST_TYPE_DIRECT,
-                       nodeMask,
-                       debugName)
+         icommand_list(dev, pso, nodeMask, debugName)
       {
       }
 
@@ -56,7 +54,7 @@ namespace qgl::graphics::gpu
          }
 
          get()->ResourceBarrier(
-            static_cast<UINT>(m_frames.size()), 
+            static_cast<UINT>(m_frames.size()),
             m_rtPresentTransitions.data());
          check_result(get()->Close());
       }

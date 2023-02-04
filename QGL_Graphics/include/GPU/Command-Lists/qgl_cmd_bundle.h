@@ -4,7 +4,7 @@
 namespace qgl::graphics::gpu
 {
    template<bool ComputeBundle = false>
-   class cmd_bundle : public icommand_list
+   class cmd_bundle : public icommand_list<D3D12_COMMAND_LIST_TYPE_BUNDLE>
    {
       public:
       cmd_bundle(graphics_device& dev,
@@ -12,7 +12,6 @@ namespace qgl::graphics::gpu
                  gpu_idx_t nodeMask = 0) :
          icommand_list(dev,
                        pso,
-                       D3D12_COMMAND_LIST_TYPE_BUNDLE,
                        nodeMask)
       {
 
@@ -29,26 +28,39 @@ namespace qgl::graphics::gpu
          reset();
       }
 
-      virtual typename std::enable_if<ComputeBundle>::type root_sig(
+      virtual void root_sig(root_signature& sig) override
+      {
+         root_sig_sfinae<ComputeBundle>(sig);
+      }
+
+      virtual void table(descriptor_table& tbl) override
+      {
+         table_sfinae<ComputeBundle>(tbl);
+      }
+
+      private:
+      template<bool compute = ComputeBundle>
+      typename std::enable_if<compute>::type root_sig_sfinae(
          root_signature& sig)
       {
          get()->SetComputeRootSignature(sig.get());
       }
 
-      virtual typename std::enable_if<!ComputeBundle>::type root_sig(
+      template<bool compute = ComputeBundle>
+      typename std::enable_if<!compute>::type root_sig_sfinae(
          root_signature& sig)
       {
          get()->SetGraphicsRootSignature(sig.get());
       }
 
-      virtual typename std::enable_if<ComputeBundle>::type table(
-         descriptor_table& tbl)
+      template<bool compute = ComputeBundle>
+      typename std::enable_if<compute>::type table_sfinae(descriptor_table& tbl)
       {
          get()->SetGraphicsRootDescriptorTable(tbl.root_index(), tbl.where());
       }
 
-      virtual typename std::enable_if<!ComputeBundle>::type table(
-         descriptor_table& tbl)
+      template<bool compute = ComputeBundle>
+      typename std::enable_if<!compute>::type table_sfinae(descriptor_table& tbl)
       {
          get()->SetComputeRootDescriptorTable(tbl.root_index(), tbl.where());
       }

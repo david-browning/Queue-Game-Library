@@ -39,7 +39,8 @@ namespace qgl::graphics::gpu
          m_allocator_p(allocator_p),
          m_buffer(buffer),
          m_dev_p(dev_p),
-         m_frameIndex(frameIndex)
+         m_frameIndex(frameIndex),
+         m_state(D3D12_RESOURCE_STATE_DEPTH_WRITE)
       {
          m_cpuHandle = dsvHeap.at_cpu(frameIndex);
          acquire();
@@ -245,11 +246,22 @@ namespace qgl::graphics::gpu
          return m_rects.size();
       }
 
+      virtual D3D12_RESOURCE_STATES state() const noexcept
+      {
+         return m_state;
+      }
+
+      virtual void state(D3D12_RESOURCE_STATES s) noexcept
+      {
+         m_state = s;
+      }
+
       private:
       tex2d_allocator* m_allocator_p = nullptr;
       gpu_alloc_handle m_alloc_h = static_cast<gpu_alloc_handle>(-1);
       graphics_device* m_dev_p = nullptr;
       D3D12_DEPTH_STENCIL_DESC m_depthDesc;
+      D3D12_RESOURCE_STATES m_state;
 
       std::vector<D3D12_RECT> m_rects;
       size_t m_frameIndex = static_cast<size_t>(-1);

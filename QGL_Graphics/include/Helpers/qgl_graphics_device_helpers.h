@@ -89,10 +89,12 @@ namespace qgl::graphics::helpers
       {
          //If in debug mode and cannot create a debug layer, then crash.
          pptr<ID3D12Debug> dbgCtrl;
-         check_result(D3D12GetDebugInterface(
-            IID_PPV_ARGS(dbgCtrl.put())));
+         check_result(D3D12GetDebugInterface(IID_PPV_ARGS(dbgCtrl.put())));
+         auto dbgSub = dbgCtrl.as<ID3D12Debug3>();
 
-         dbgCtrl->EnableDebugLayer();
+         dbgSub->EnableDebugLayer();
+         dbgSub->SetEnableGPUBasedValidation(true);
+
          flags |= DXGI_CREATE_FACTORY_DEBUG;
       }
 
@@ -134,7 +136,7 @@ namespace qgl::graphics::helpers
                adapters.push_back(adapter);
             }
          }
-         
+
          adapter = nullptr;
       }
 
@@ -274,7 +276,7 @@ namespace qgl::graphics::helpers
          case descriptors::resolution_modes::window_resolution:
          {
             return std::make_pair(
-               static_cast<UINT>(dip_to_pixels(wnd.width(), wnd.dpi_x())), 
+               static_cast<UINT>(dip_to_pixels(wnd.width(), wnd.dpi_x())),
                static_cast<UINT>(dip_to_pixels(wnd.height(), wnd.dpi_y())));
          }
          case descriptors::resolution_modes::static_resolution:
@@ -288,13 +290,11 @@ namespace qgl::graphics::helpers
       }
    }
 
-   inline pptr<icmd_queue> make_cmd_queue(
-      const D3D12_COMMAND_QUEUE_DESC& desc,
-      i3d_device* dev_p)
+   inline pptr<icmd_queue> make_cmd_queue(const D3D12_COMMAND_QUEUE_DESC& desc,
+                                          i3d_device* dev_p)
    {
       pptr<icmd_queue> ret;
-      check_result(dev_p->CreateCommandQueue(
-         &desc, IID_PPV_ARGS(ret.put())));
+      check_result(dev_p->CreateCommandQueue(&desc, IID_PPV_ARGS(ret.put())));
       return ret;
    }
 
@@ -460,5 +460,59 @@ namespace qgl::graphics::helpers
             throw std::invalid_argument("Unknown DXGI_FORMAT size.");
          }
       }
+   }
+
+   /*
+    Information about a GPU memory allocation.
+    */
+   struct gpu_alloc_info final
+   {
+      public:
+      gpu_alloc_info(size_t a, size_t b) :
+         alignment(a),
+         bytes(b)
+      {
+
+      }
+
+      gpu_alloc_info(const gpu_alloc_info&) = default;
+
+      gpu_alloc_info(gpu_alloc_info&&) noexcept = default;
+
+      ~gpu_alloc_info() noexcept = default;
+
+      friend void swap(gpu_alloc_info& l, gpu_alloc_info& r) noexcept
+      {
+         using std::swap;
+         swap(l.alignment, r.alignment);
+         swap(l.bytes, r.bytes);
+      }
+
+      gpu_alloc_info& operator=(gpu_alloc_info r)
+      {
+         swap(*this, r);
+         return *this;
+      }
+
+      size_t alignment;
+      size_t bytes;
+   };
+
+   /*
+    Gets the alignment and actual size of a GPU allocation of size "bytes".
+    */
+   inline gpu_alloc_info buffer_alloc_info(size_t bytes,
+                                           i3d_device* const dev_p,
+                                           gpu_idx_t node)
+   {
+      auto desc = CD3DX12_RESOURCE_DESC::Buffer(bytes);
+      auto info = dev_p->GetResourceAllocationInfo(node, 1, &desc);
+
+      if (info.SizeInBytes == UINT64_MAX)
+      {
+         throw std::runtime_error{ "Could not get allocation info." };
+      }
+
+      return gpu_alloc_info{ info.Alignment, info.SizeInBytes };
    }
 }

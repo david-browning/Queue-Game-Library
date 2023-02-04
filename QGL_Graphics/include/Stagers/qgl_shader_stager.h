@@ -1,6 +1,6 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
-#include "include/Shaders/qgl_shader.h"
+#include "include/Shaders/qgl_shader_buffer.h"
 
 namespace qgl::stagers
 {
@@ -8,13 +8,13 @@ namespace qgl::stagers
     Used to pass shader pointers to an object.
     */
    using shader_stager = typename std::list<
-      const qgl::graphics::shaders::shader*>;
+      const qgl::graphics::shaders::shader_buffer*>;
 
    /*
     Gets the address of a shader.
     */
-   inline const qgl::graphics::shaders::shader* shader_address(
-      const qgl::graphics::shaders::shader* p) noexcept
+   inline const qgl::graphics::shaders::shader_buffer* shader_address(
+      const qgl::graphics::shaders::shader_buffer* p) noexcept
    {
       return p;
    }
@@ -22,8 +22,8 @@ namespace qgl::stagers
    /*
     Gets the address of a shader.
     */
-   inline const qgl::graphics::shaders::shader* shader_address(
-      const qgl::graphics::shaders::shader& s) noexcept
+   inline const qgl::graphics::shaders::shader_buffer* shader_address(
+      const qgl::graphics::shaders::shader_buffer& s) noexcept
    {
       return std::addressof(s);
    }
@@ -31,8 +31,8 @@ namespace qgl::stagers
    /*
     Gets the address of a shader.
     */
-   inline const qgl::graphics::shaders::shader* shader_address(
-      const std::reference_wrapper<qgl::graphics::shaders::shader>& s) noexcept
+   inline const qgl::graphics::shaders::shader_buffer* shader_address(
+      const std::reference_wrapper<qgl::graphics::shaders::shader_buffer>& s) noexcept
    {
       return std::addressof(s.get());
    }
@@ -40,8 +40,8 @@ namespace qgl::stagers
    /*
     Gets the address of a shader.
     */
-   inline const qgl::graphics::shaders::shader* shader_address(
-      const std::shared_ptr<qgl::graphics::shaders::shader>& p) noexcept
+   inline const qgl::graphics::shaders::shader_buffer* shader_address(
+      const std::shared_ptr<qgl::graphics::shaders::shader_buffer>& p) noexcept
    {
       return p.get();
    }
@@ -49,8 +49,8 @@ namespace qgl::stagers
    /*
     Gets the address of a shader.
     */
-   inline const qgl::graphics::shaders::shader* shader_address(
-      const std::unique_ptr<qgl::graphics::shaders::shader>& p) noexcept
+   inline const qgl::graphics::shaders::shader_buffer* shader_address(
+      const std::unique_ptr<qgl::graphics::shaders::shader_buffer>& p) noexcept
    {
       return p.get();
    }

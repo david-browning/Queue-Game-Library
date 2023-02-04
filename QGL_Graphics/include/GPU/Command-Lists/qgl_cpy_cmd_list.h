@@ -4,13 +4,14 @@
 
 namespace qgl::graphics::gpu
 {
-   class copy_command_list : public icommand_list
+   class copy_command_list : public icommand_list<D3D12_COMMAND_LIST_TYPE_COPY>
    {
       public:
       copy_command_list(graphics_device& dev,
                         gpu::ipso& pso,
-                        gpu_idx_t nodeMask = 0) :
-         icommand_list(dev, pso, D3D12_COMMAND_LIST_TYPE_COPY, nodeMask)
+                        gpu_idx_t nodeMask = 0,
+                        const sys_char* debugName = nullptr) :
+         icommand_list(dev, pso, nodeMask, debugName)
       {
       }
 
@@ -28,7 +29,7 @@ namespace qgl::graphics::gpu
       /*
        Throws exception.
        */
-      virtual void root_sig(root_signature& sig)
+      virtual void root_sig(root_signature&)
       {
          throw std::runtime_error(
             "Copy command lists do not support root signatures.");
@@ -37,7 +38,7 @@ namespace qgl::graphics::gpu
       /*
        Throws exception.
        */
-      virtual void table(descriptor_table& tbl)
+      virtual void table(descriptor_table&)
       {
          throw std::runtime_error(
             "Copy command lists do not support descriptor tables.");
@@ -45,7 +46,7 @@ namespace qgl::graphics::gpu
 
       void end()
       {
-
+         check_result(get()->Close());
       }
 
       private:

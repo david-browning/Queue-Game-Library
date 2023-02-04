@@ -62,9 +62,6 @@
     <Filter Include="Header Files\Components\Render">
       <UniqueIdentifier>{cd88a729-6ae7-4a26-9c70-53028125d291}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Components\Content">
-      <UniqueIdentifier>{48b0c623-f01a-4d5d-b5be-a3b92f9dec0b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Descriptors">
       <UniqueIdentifier>{d3eac885-6a6b-49b5-8ad5-1d5c331a1e87}</UniqueIdentifier>
     </Filter>
@@ -219,9 +216,6 @@
     <ClInclude Include="include\GPU\Memory\qgl_igpu_allocator.h">
       <Filter>Header Files\GPU\Memory</Filter>
     </ClInclude>
-    <ClInclude Include="include\GPU\Memory\qgl_slot_allocator.h">
-      <Filter>Header Files\GPU\Memory</Filter>
-    </ClInclude>
     <ClInclude Include="include\GPU\Buffers\qgl_const_buffer.h">
       <Filter>Header Files\GPU\Buffers</Filter>
     </ClInclude>
@@ -239,9 +233,6 @@
     </ClInclude>
     <ClInclude Include="include\qgl_graphics_device.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\GPU\Memory\qgl_committed_allocator.h">
-      <Filter>Header Files\GPU\Memory</Filter>
     </ClInclude>
     <ClInclude Include="include\GPU\Render\qgl_render_target.h">
       <Filter>Header Files\GPU\Render</Filter>
@@ -261,21 +252,6 @@
     <ClInclude Include="include\GPU\Render\qgl_multisampler.h">
       <Filter>Header Files\GPU\Render</Filter>
     </ClInclude>
-    <ClInclude Include="include\Components\Content\qgl_camera.h">
-      <Filter>Header Files\Components\Content</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Components\Content\qgl_image.h">
-      <Filter>Header Files\Components\Content</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Components\Content\qgl_light.h">
-      <Filter>Header Files\Components\Content</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Components\Content\qgl_texture.h">
-      <Filter>Header Files\Components\Content</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Components\Content\qgl_wtext.h">
-      <Filter>Header Files\Components\Content</Filter>
-    </ClInclude>
     <ClInclude Include="include\Descriptors\qgl_blend_descriptor.h">
       <Filter>Header Files\Descriptors</Filter>
     </ClInclude>
@@ -288,9 +264,6 @@
     <ClInclude Include="include\Descriptors\qgl_brush_outline_descriptor.h">
       <Filter>Header Files\Descriptors</Filter>
     </ClInclude>
-    <ClInclude Include="include\Descriptors\qgl_camera_descriptor.h">
-      <Filter>Header Files\Descriptors</Filter>
-    </ClInclude>
     <ClInclude Include="include\Descriptors\qgl_depth_stencil_descriptor.h">
       <Filter>Header Files\Descriptors</Filter>
     </ClInclude>
@@ -300,19 +273,10 @@
     <ClInclude Include="include\Descriptors\qgl_hdr_descriptor.h">
       <Filter>Header Files\Descriptors</Filter>
     </ClInclude>
-    <ClInclude Include="include\Descriptors\qgl_light_descriptor.h">
-      <Filter>Header Files\Descriptors</Filter>
-    </ClInclude>
     <ClInclude Include="include\Descriptors\qgl_multisampler_descriptor.h">
       <Filter>Header Files\Descriptors</Filter>
     </ClInclude>
     <ClInclude Include="include\Descriptors\qgl_rasterizer_descriptor.h">
-      <Filter>Header Files\Descriptors</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Descriptors\qgl_screen_space_descriptor.h">
-      <Filter>Header Files\Descriptors</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Descriptors\qgL_text_format_descriptor.h">
       <Filter>Header Files\Descriptors</Filter>
     </ClInclude>
     <ClInclude Include="include\Descriptors\qgl_texture_descriptor.h">
@@ -360,7 +324,7 @@
     <ClInclude Include="include\Shaders\qgl_sampler.h">
       <Filter>Header Files\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="include\Shaders\qgl_shader.h">
+    <ClInclude Include="include\Shaders\qgl_shader_buffer.h">
       <Filter>Header Files\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="include\Shaders\qgl_vertex_layout.h">
@@ -405,11 +369,29 @@
     <ClInclude Include="include\GPU\Memory\qgl_allocator_stats.h">
       <Filter>Header Files\GPU\Memory</Filter>
     </ClInclude>
+    <ClInclude Include="include\GPU\qgl_gpu_msg_dispatchers.h">
+      <Filter>Header Files\GPU</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\qgl_sprite_vert.h">
+      <Filter>Header Files\GPU</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\qgl_geom2d_vert.h">
+      <Filter>Header Files\GPU</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Buffers\qgl_texture_buffer.h">
+      <Filter>Header Files\GPU\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Memory\qgl_committed_allocator.h">
+      <Filter>Header Files\GPU\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\Memory\qgl_slot_allocator.h">
+      <Filter>Header Files\GPU\Memory</Filter>
+    </ClInclude>
     <ClInclude Include="include\GPU\Memory\qgl_tex2d_allocator.h">
       <Filter>Header Files\GPU\Memory</Filter>
     </ClInclude>
-    <ClInclude Include="include\GPU\qgl_gpu_msg_dispatchers.h">
-      <Filter>Header Files\GPU</Filter>
+    <ClInclude Include="include\GPU\Command-Lists\qgl_upload_cmd_list.h">
+      <Filter>Header Files\GPU\Command-Lists</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

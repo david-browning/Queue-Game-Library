@@ -144,19 +144,3 @@ namespace qgl::graphics::gpu
       };
    };
 }
-//
-//namespace std
-//{
-//   template<>
-//   struct hash<qgl::graphics::gpu::mem_budget_changed_callback>
-//   {
-//      constexpr hash()
-//      {
-//      }
-//
-//      size_t operator()(const qgl::graphics::gpu::mem_budget_changed_callback& v)
-//      {
-//         return (size_t)v.target<void(*)(qgl::graphics::gpu::igpu_allocator*)>();
-//      }
-//   };
-//}

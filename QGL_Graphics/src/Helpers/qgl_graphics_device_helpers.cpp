@@ -19,13 +19,20 @@ namespace qgl::graphics::helpers
       }
 
       DXGI_QUERY_VIDEO_MEMORY_INFO info;
-      return dev_p->QueryVideoMemoryInfo(
+      auto ret = dev_p->QueryVideoMemoryInfo(
          node, DXGI_MEMORY_SEGMENT_GROUP_LOCAL, &info);
+
+      if (FAILED(ret))
+      {
+         return ret;
+      }
 
       out->available = info.AvailableForReservation;
       out->budget = info.Budget;
       out->reserved = info.CurrentReservation;
       out->used = info.CurrentUsage;
+
+      return ret;
    }
 
    result_t QGL_CC get_gpu_desc(

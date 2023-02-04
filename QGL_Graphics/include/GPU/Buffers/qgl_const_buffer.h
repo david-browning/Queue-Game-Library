@@ -71,7 +71,7 @@ namespace qgl::graphics::gpu
       virtual const ResDescT* description() const
       {
          throw std::runtime_error(
-            "const_buffers do not have a resource description.");
+            "const buffers do not have a resource description.");
       }
 
       virtual const ViewDescT* view() const
@@ -79,7 +79,7 @@ namespace qgl::graphics::gpu
          return &m_viewDescription;
       }
 
-      virtual gpu_alloc_handle alloc_handle() const noexcept
+      virtual gpu_alloc_handle alloc_handle() const
       {
          return m_alloc_h;
       }
