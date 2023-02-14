@@ -8,7 +8,7 @@ namespace qgl
    {
       public:
       flyweight(const IntrinsicT& intrinsic, const ContextT& cnxt) :
-         m_intrinsicData(intrinsic),
+         m_intrinsicData(std::cref(intrinsic)),
          m_extrinsicData(cnxt)
       {
 
@@ -16,7 +16,7 @@ namespace qgl
 
       
       flyweight(const IntrinsicT& intrinsic, ContextT&& cnxt) :
-         m_intrinsicData(intrinsic),
+         m_intrinsicData(std::cref(intrinsic)),
          m_extrinsicData(std::forward<ContextT>(cnxt))
       {
 
@@ -43,7 +43,7 @@ namespace qgl
 
       const IntrinsicT& intrinsic() const noexcept
       {
-         return m_extrinsicData.get();
+         return m_intrinsicData.get();
       }
 
       ContextT& context() noexcept
@@ -57,7 +57,7 @@ namespace qgl
       }
 
       private:
-      std::reference_wrapper<IntrinsicT> m_intrinsicData;
+      std::reference_wrapper<const IntrinsicT> m_intrinsicData;
       ContextT m_extrinsicData;
    };
 }

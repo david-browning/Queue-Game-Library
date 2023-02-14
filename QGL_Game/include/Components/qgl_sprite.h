@@ -22,7 +22,7 @@ namespace qgl::components
    };
 
    class sprite : public game_component<sprite>,
-                  protected flyweight<sprite_instrinsics, sprite_context>
+                  public flyweight<sprite_instrinsics, sprite_context>
    {
       public:
       sprite(const sprite_instrinsics& intrinsic,

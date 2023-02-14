@@ -17,6 +17,7 @@ namespace qgl::graphics::gpu
    class icommand_list
    {
       public:
+      using descriptor_heap_list = typename std::vector<ID3D12DescriptorHeap*>;
       /*
        Constructs a command list with the initial pipeline state.
        The command list is independent of any other command list.
@@ -96,7 +97,8 @@ namespace qgl::graphics::gpu
           called on the same allocator at the same time from multiple threads.
           */
          check_result(m_cmdList->Reset(m_allocator.get(), m_pso.get().get()));
-         m_heapsToSet.resize(0);
+         m_heapsList.clear();
+         pendingResourceTransitions.clear();
          m_numIndcs = 0;
          m_numVerts = 0;
       }
@@ -150,31 +152,31 @@ namespace qgl::graphics::gpu
          D3D12_DESCRIPTOR_HEAP_TYPE DescriptorHeapT,
          D3D12_DESCRIPTOR_HEAP_FLAGS Flag>
       void descriptors(
-         std::initializer_list<descriptor_heap<DescriptorHeapT, Flag>> heaps)
+         std::initializer_list<descriptor_heap<DescriptorHeapT, Flag>*> heaps)
       {
-         m_heapsToSet.clear();
-         m_heapsToSet.insert(m_heapsToSet.begin(), heaps.begin(), heaps.end());
-         m_cmdList->SetDescriptorHeaps(static_cast<UINT>(m_heapsToSet.size()),
-            m_heapsToSet.data());
+         descriptor_heap_list toPushBack;
+         for (auto& heap : heaps)
+         {
+            toPushBack.push_back(heap->get());
+         }
+
+         m_heapsList.emplace_back(std::move(toPushBack));
+         get()->SetDescriptorHeaps(static_cast<UINT>(m_heapsList.back().size()),
+                                   m_heapsList.back().data());
       }
 
-      template<class DescriptorIt>
-      void descriptors(DescriptorIt first, DescriptorIt last)
+      void descriptors(const descriptor_heap_list& heaps)
       {
-         m_heapsToSet.clear();
-         m_heapsToSet.insert(m_heapsToSet.begin(), first, last);
-         m_cmdList->SetDescriptorHeaps(static_cast<UINT>(m_heapsToSet.size()),
-            m_heapsToSet.data());
+         m_heapsList.push_back(heaps);
+         get()->SetDescriptorHeaps(static_cast<UINT>(m_heapsList.back().size()),
+                                   m_heapsList.back().data());
       }
 
-      void descriptors(const ID3D12DescriptorHeap** heaps, size_t numHeaps)
+      void descriptors(descriptor_heap_list&& heaps)
       {
-         m_heapsToSet.resize(numHeaps);
-         memcpy(m_heapsToSet.data(),
-               heaps,
-               sizeof(ID3D12DescriptorHeap*) * numHeaps);
-         m_cmdList->SetDescriptorHeaps(static_cast<UINT>(m_heapsToSet.size()),
-            m_heapsToSet.data());
+         m_heapsList.emplace_back(std::forward<descriptor_heap_list&>(heaps));
+         get()->SetDescriptorHeaps(static_cast<UINT>(m_heapsList.back().size()),
+                                   m_heapsList.back().data());
       }
 
       /*
@@ -203,7 +205,19 @@ namespace qgl::graphics::gpu
 
       void draw(size_t instances)
       {
-         get()->DrawInstanced(m_numVerts, instances, 0, 0);
+         get()->DrawInstanced(static_cast<UINT>(m_numVerts),
+                              static_cast<UINT>(instances), 
+                              0, 0);
+      }
+
+      /*
+       Draws using the set index and vertex buffer.
+       */
+      void idraw(size_t instances)
+      {
+         get()->DrawIndexedInstanced(static_cast<UINT>(m_numIndcs),
+                                     static_cast<UINT>(instances),
+                                     0, 0, 0);
       }
 
       /*
@@ -226,10 +240,9 @@ namespace qgl::graphics::gpu
          }
       }
 
-      void transition(
-         igpu_resource* resource,
-         D3D12_RESOURCE_STATES oldState,
-         D3D12_RESOURCE_STATES newState)
+      void transition(igpu_resource* resource,
+                      D3D12_RESOURCE_STATES oldState,
+                      D3D12_RESOURCE_STATES newState)
       {
          auto transition = CD3DX12_RESOURCE_BARRIER::Transition(
             resource,
@@ -352,7 +365,7 @@ namespace qgl::graphics::gpu
        array of descriptor heap pointers does not go out of scope when
        descriptors() has finished.
        */
-      std::vector<ID3D12DescriptorHeap*> m_heapsToSet;
+      std::list<descriptor_heap_list> m_heapsList;
 
       D3D12_VERTEX_BUFFER_VIEW m_vertBuffView;
       D3D12_INDEX_BUFFER_VIEW m_idxBuffView;

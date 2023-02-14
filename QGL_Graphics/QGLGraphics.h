@@ -13,6 +13,14 @@
 #include "include/GPU/Buffers/qgl_texture_buffer.h"
 #include "include/GPU/Buffers/qgl_vertex_buffer.h"
 
+
+
+#include "include/GPU/Descriptors/qgl_cbv_descriptor_heap.h"
+#include "include/GPU/Descriptors/qgl_uav_descriptor_heap.h"
+#include "include/GPU/Descriptors/qgl_rtv_descriptor_heap.h"
+#include "include/GPU/Descriptors/qgl_sampler_descriptor_heap.h"
+
+
 // Shaders
 #include "include/Shaders/qgl_shader_buffer.h"
 #include "include/Shaders/qgl_shader_lib.h"

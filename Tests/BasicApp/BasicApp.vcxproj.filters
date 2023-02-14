@@ -43,7 +43,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="readme.txt" />
     <Text Include="Assets\shaders.hlsl">
       <Filter>Assets</Filter>
     </Text>

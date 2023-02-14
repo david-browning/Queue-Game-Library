@@ -101,12 +101,12 @@ namespace qgl::graphics::gpu
 
       virtual const igpu_resource* get() const
       {
-         return m_allocator_p->resource(m_alloc_h);
+         return m_allocator_p->get(m_alloc_h);
       }
 
       virtual igpu_resource* get()
       {
-         return m_allocator_p->resource(m_alloc_h);
+         return m_allocator_p->get(m_alloc_h);
       }
 
       /*
@@ -142,6 +142,10 @@ namespace qgl::graphics::gpu
                return DXGI_FORMAT_R32_UINT;
             }
          }
+
+         // This control path should never be taken since there is a static 
+         // assert that IndexT matches at least one of the above cases.
+         return DXGI_FORMAT_UNKNOWN;
       }
 
       virtual D3D12_RESOURCE_STATES state() const noexcept
@@ -165,7 +169,7 @@ namespace qgl::graphics::gpu
 
          m_viewDescription.BufferLocation = get()->GetGPUVirtualAddress();
          m_viewDescription.Format = index_format();
-         m_viewDescription.SizeInBytes = size();
+         m_viewDescription.SizeInBytes = static_cast<UINT>(size());
       }
 
       index_data m_indices;

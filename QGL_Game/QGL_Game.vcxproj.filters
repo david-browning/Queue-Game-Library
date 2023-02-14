@@ -25,7 +25,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Class.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
       <Filter>winrt_rt</Filter>
     </ClCompile>

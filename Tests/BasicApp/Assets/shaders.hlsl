@@ -9,12 +9,10 @@
 //
 //*********************************************************
 
-//cbuffer SceneConstantBuffer : register(b0)
-//{
-//   float4x4 model;
-//   float4x4 view;
-//   float4x4 projection;
-//};
+cbuffer SceneConstantBuffer : register(b0)
+{
+   float4x4 wvp;
+};
 
 //Texture2D diffuseMap : register(t0);
 //Texture2D normalMap : register(t1);
@@ -34,8 +32,8 @@ PSInput VSMain(
 {
    PSInput result;
 
-   //result.position = mul(position, model);
-   result.position = position;
+   result.position = mul(position, wvp);
+   //result.position = position;
    result.color = color;
 
    return result;

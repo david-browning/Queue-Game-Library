@@ -12,6 +12,7 @@ using namespace winrt::Windows::ApplicationModel;
 
 using namespace qgl;
 using namespace qgl::graphics;
+using namespace DirectX;
 
 void consoleCallback(const std::string&)
 {
@@ -21,6 +22,12 @@ void consoleCallback(const std::string&)
 void dsvAllocCallback(qgl::graphics::gpu::igpu_allocator* alloc_p)
 {
    auto& info = alloc_p->stats();
+}
+
+qgl::result_t cameraCallback(qgl::components::camera&,
+                             qgl::components::game_context&)
+{
+   return S_OK;
 }
 
 struct App : implements<App, IFrameworkViewSource, IFrameworkView>
@@ -76,12 +83,17 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
       descriptors::engine_descriptor eDesc;
       eDesc.console = true;
       eDesc.tearing = 1;
-      eDesc.refresh = 120;
+      eDesc.refresh = 244;
       //eDesc.fullscreen = 1;
       descriptors::hdr_descriptor hdrDesc;
       gpu_config defaultConfig{ eDesc, hdrDesc };
       qdev_p = std::make_unique<graphics_device>(defaultConfig, qwp);
       qdev_p->message_dispatcher().register_callback(&consoleCallback);
+
+      descriptors::camera_descriptor cameraDesc;
+      cameraDesc.look = { {0,1}, {0,1}, {1, 1}, {1,1} };
+      cameraDesc.up = { {0,1}, {1,1}, {0,1}, {1,1} };
+      cameraDesc.position = { {0,1}, {1,2}, {-3,1}, {1,1} };
 
       // Create descriptor heaps
       gpu::rtv_descriptor_heap rtvHeap{ qdev_p->dev_3d(), eDesc.buffers };
@@ -146,45 +158,45 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
          std::wstring(L"Assets\\shaders.hlsl");
       UINT compileFlags = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
 
-      graphics::shaders::shader_descriptor vsDesc;
-      vsDesc.payload = graphics::shaders::shader_payloads::compiled;
-      vsDesc.type = graphics::shaders::shader_types::vs;
-      vsDesc.vendor = graphics::shaders::shader_vendors::directx;
+      shaders::shader_descriptor vsDesc;
+      vsDesc.payload = shaders::shader_payloads::compiled;
+      vsDesc.type = shaders::shader_types::vs;
+      vsDesc.vendor = shaders::shader_vendors::directx;
       vsDesc.compile_params.type = vsDesc.type;
       vsDesc.compile_params.shader_model = 5;
       vsDesc.compile_params.effect_type = 0;
       vsDesc.compile_params.entry.copy("VSMain", 7);
       vsDesc.compile_params.flags = compileFlags;
 
-      graphics::shaders::shader_descriptor psDesc;
-      psDesc.payload = graphics::shaders::shader_payloads::compiled;
-      psDesc.type = graphics::shaders::shader_types::ps;
-      psDesc.vendor = graphics::shaders::shader_vendors::directx;
+      shaders::shader_descriptor psDesc;
+      psDesc.payload = shaders::shader_payloads::compiled;
+      psDesc.type = shaders::shader_types::ps;
+      psDesc.vendor = shaders::shader_vendors::directx;
       psDesc.compile_params.type = psDesc.type;
       psDesc.compile_params.shader_model = 5;
       psDesc.compile_params.effect_type = 0;
       psDesc.compile_params.entry.copy("PSMain", 7);
       psDesc.compile_params.flags = compileFlags;
 
-      graphics::shaders::shader_buffer vShader{
+      shaders::shader_buffer vShader{
          vsDesc,
          shaderFile
       };
 
-      graphics::shaders::shader_buffer pShader{
+      shaders::shader_buffer pShader{
          psDesc,
          shaderFile
       };
 
-      graphics::shaders::shader_metadata vsMeta{ vShader };
-      graphics::shaders::shader_metadata psMeta{ pShader };
+      shaders::shader_metadata vsMeta{ vShader };
+      shaders::shader_metadata psMeta{ pShader };
 
       auto shaderStager = stagers::make_shader_stager({
          &vShader,
          &pShader
       });
 
-      graphics::shaders::vertex_layout vLayout{
+      shaders::vertex_layout vLayout{
          vsMeta,
          D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE,
          D3D12_INDEX_BUFFER_STRIP_CUT_VALUE_DISABLED,
@@ -192,11 +204,37 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
          D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA
       };
 
-      // Create root signature
-      //auto rootSignBindings = graphics::gpu::make_ibindable_stager({
+      struct wvp
+      {
+         DirectX::XMFLOAT4X4 m;
+         char padding[256 - sizeof(DirectX::XMFLOAT4X4)];
+      };
 
-      //});
-      stagers::ibindable_stager rootSignBindings;
+      auto wvpBufferAllocInfo = helpers::buffer_alloc_info(
+         sizeof(wvp), qdev_p->dev_3d(), 0);
+      auto cameraAllocInfo = helpers::buffer_alloc_info(
+         sizeof(qgl::components::camera), qdev_p->dev_3d(), 0);
+      auto biggerAlignment = std::max<size_t>(wvpBufferAllocInfo.alignment,
+                                              cameraAllocInfo.alignment);
+      auto alignedBuffSize = wvpBufferAllocInfo.bytes + cameraAllocInfo.bytes;
+
+      gpu::copy_dst_allocator wvpAllocator{
+         qdev_p.get(), alignedBuffSize, biggerAlignment };
+      gpu::const_buffer<wvp> wvpBuffer{ &wvpAllocator };
+      components::camera sceneCamera {
+         cameraDesc,
+         static_cast<float>(qwp->width()) / static_cast<float>(qwp->height()),
+         &wvpAllocator, 
+         &cameraCallback };
+
+      gpu::cbv_descriptor_heap cbvHeap{ qdev_p->dev_3d(), 1 };
+      cbvHeap.insert(qdev_p.get(), 0, wvpBuffer);
+      auto cbvTable = cbvHeap.table(0, 1, 0, 0, D3D12_DESCRIPTOR_RANGE_FLAG_NONE);
+
+      // Create root signature
+      auto rootSignBindings = stagers::make_ibindable_stager({
+         &cbvTable
+      });
 
       graphics::gpu::root_signature rootSign{
          rootSignBindings,
@@ -207,10 +245,10 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
       graphics::gpu::graphics_pso pso{ rootSign, frameStager, shaderStager,
          msmplr, vLayout, qdev_p.get(), 0 };
 
-      graphics::shaders::shader_lib_descriptor slibDesc;
-      slibDesc.payload = graphics::shaders::shader_payloads::source;
-      slibDesc.vendor = graphics::shaders::shader_vendors::directx;
-      slibDesc.compile_params.type = graphics::shaders::shader_types::lib;
+      shaders::shader_lib_descriptor slibDesc;
+      slibDesc.payload = shaders::shader_payloads::source;
+      slibDesc.vendor = shaders::shader_vendors::directx;
+      slibDesc.compile_params.type = shaders::shader_types::lib;
       slibDesc.compile_params.name.copy("ShaderLibrary", 14);
       std::wstring shaderLibFile = std::wstring(path) +
          std::wstring(L"Assets\\Common.hlsli");
@@ -247,54 +285,87 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
       frame_ps[0]->frame_stencil().rectangles(
          frameScissor.begin(), frameScissor.end());
 
-      qgl::graphics::gpu::geom2d_vert triangle[] =
+      std::vector<gpu::geom2d_vert> cube =
       {
-         { DirectX::XMFLOAT4{0.0f, 1.0f, 0.0f, 1.0f},     
-           DirectX::XMFLOAT4{1.0f, 0.0f, 0.0f, 0.5f} 
-         },
-         
-         { DirectX::XMFLOAT4{1.0f, -1.0f, 0.0f, 1.0f},   
-           DirectX::XMFLOAT4{1.0f, 0.0f, 0.0f, 0.5f} 
-         },
-         
-         { DirectX::XMFLOAT4{-1.0f, -1.0f, 0.0f, 1.0f},    
-           DirectX::XMFLOAT4{1.0f, 0.0f, 0.0f, 0.5f} 
-         }
+         {XMFLOAT4(-0.5f, -0.5f, -0.5f, 1.0f), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)},
+         {XMFLOAT4(-0.5f, -0.5f,  0.5f, 1.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f)},
+         {XMFLOAT4(-0.5f,  0.5f, -0.5f, 1.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f)},
+         {XMFLOAT4(-0.5f,  0.5f,  0.5f, 1.0f), XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f)},
+         {XMFLOAT4(0.5f, -0.5f, -0.5f, 1.0f),  XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f)},
+         {XMFLOAT4(0.5f, -0.5f,  0.5f, 1.0f),  XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f)},
+         {XMFLOAT4(0.5f,  0.5f, -0.5f, 1.0f),  XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f)},
+         {XMFLOAT4(0.5f,  0.5f,  0.5f, 1.0f),  XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f)},
       };
 
-      auto vBufferAllocInfo = graphics::helpers::buffer_alloc_info(
-         sizeof(triangle[0]) * 3,
+      std::vector<unsigned short> cubeIndices =
+      {
+         0,2,1, // -x
+         1,2,3,
+
+         4,5,6, // +x
+         5,7,6,
+
+         0,1,5, // -y
+         0,5,4,
+
+         2,6,7, // +y
+         2,7,3,
+
+         0,4,6, // -z
+         0,6,2,
+
+         1,3,7, // +z
+         1,7,5,
+      };
+
+      auto vBufferAllocInfo = helpers::buffer_alloc_info(
+         sizeof(cube[0]) * cube.size(),
          qdev_p->dev_3d(),
          0);
 
-      qgl::graphics::gpu::vert_allocator vbufferAllocator{
+      auto iBufferAllocInfo = helpers::buffer_alloc_info(
+         sizeof(cubeIndices[0]) * cubeIndices.size(),
+         qdev_p->dev_3d(),
+         0);
+
+      gpu::vert_allocator vbufferAllocator{
          qdev_p.get(),
-         vBufferAllocInfo.bytes,
+         mem::align_address(vBufferAllocInfo.bytes + iBufferAllocInfo.bytes,
+            vBufferAllocInfo.alignment),
          vBufferAllocInfo.alignment
       };
 
-      qgl::graphics::gpu::vertex_buffer<qgl::graphics::gpu::geom2d_vert, D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST> vBuffer{
-         &vbufferAllocator, triangle, 3
+      gpu::vertex_buffer<qgl::graphics::gpu::geom2d_vert, D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST> vBuffer{
+         &vbufferAllocator, cube
       };
 
-      // Upload the vertex buffer.
+
+      gpu::index_buffer<unsigned short> iBuffer{
+         &vbufferAllocator, cubeIndices
+      };
+
+      // Upload the vertex and index buffer.
       {
-         qgl::graphics::gpu::copy_dst_allocator uploadAllocator{
+         gpu::copy_dst_allocator uploadAllocator{
             qdev_p.get(),
-            vBufferAllocInfo.bytes,
+            mem::align_address(vBufferAllocInfo.bytes + iBufferAllocInfo.bytes,
+               vBufferAllocInfo.alignment),
             vBufferAllocInfo.alignment
          };
 
-         qgl::graphics::gpu::upload_buffer uvBuffer{ &uploadAllocator, vBuffer };
+         gpu::upload_buffer uvBuffer{ &uploadAllocator, vBuffer };
+         gpu::upload_buffer uiBuffer{ &uploadAllocator, iBuffer };
 
          gpu::cmd_executor<D3D12_COMMAND_LIST_TYPE_DIRECT> cpyExecutor{ *qdev_p, D3D12_COMMAND_LIST_TYPE_DIRECT };
-         graphics::gpu::upload_command_list cpyList{ *qdev_p, pso, 0, L"Copy List" };
+         gpu::upload_command_list cpyList{ *qdev_p, pso, 0, L"Copy List" };
          gpu::fence<uint64_t> cpyFence{ *qdev_p, cpyExecutor.get() };
 
          cpyExecutor.clear();
          cpyList.begin();
          cpyList.upload(vBuffer, uvBuffer);
          cpyList.transition(vBuffer, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
+         cpyList.upload(iBuffer, uiBuffer);
+         cpyList.transition(iBuffer, D3D12_RESOURCE_STATE_INDEX_BUFFER);
          cpyList.end();
          cpyExecutor.queue(&cpyList);
          cpyExecutor.execute();
@@ -321,6 +392,16 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
             qwp->title(std::to_wstring(tState.fps()));
             clearColor[1] = (((int)(clearColor[1] * 255) + 1) % 255) / 255.0;
 
+            auto cameraMatrix = XMMatrixTranspose(
+               DirectX::XMMatrixRotationY(45) *
+               sceneCamera.mapping()->view *
+               sceneCamera.mapping()->projection);
+
+            wvpBuffer.map();
+            DirectX::XMStoreFloat4x4(&wvpBuffer.mapping()->m,
+                                     cameraMatrix);
+            wvpBuffer.unmap();
+
             auto cmdList = cmdLists[frmIdx].get();
             executor.clear();
             cmdList->begin();
@@ -330,8 +411,11 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
             cmdList->clear_color(clearColor);
             cmdList->clear_frame();
             cmdList->clear_depth();
+            cmdList->descriptors({ &cbvHeap });
+            cmdList->table(cbvTable);
             cmdList->vertices(vBuffer);
-            cmdList->draw(1000);
+            cmdList->indices(iBuffer);
+            cmdList->idraw(1000);
             cmdList->end();
 
             executor.queue(cmdList);
@@ -366,6 +450,7 @@ struct App : implements<App, IFrameworkViewSource, IFrameworkView>
    {
       CoreWindow window = CoreWindow::GetForCurrentThread();
       window.Activate();
+      m_wndVisible = true;
    }
 
    winrt::fire_and_forget Suspending(IInspectable const&,

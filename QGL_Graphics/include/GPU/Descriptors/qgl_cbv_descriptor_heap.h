@@ -5,9 +5,8 @@
 
 namespace qgl::graphics::gpu
 {
-   class cbv_descriptor_heap :
-      public descriptor_heap<D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV,
-      D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE>
+   class cbv_descriptor_heap : public descriptor_heap<D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV,
+                                                      D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE>
    {
       public:
       cbv_descriptor_heap(i3d_device* dev_p,
@@ -43,7 +42,7 @@ namespace qgl::graphics::gpu
 
        numDescriptors must be at least 1.
        */
-      virtual descriptor_table table(
+      descriptor_table table(
          size_t startIndex,
          size_t numDescriptors,
          UINT rootIndex,
