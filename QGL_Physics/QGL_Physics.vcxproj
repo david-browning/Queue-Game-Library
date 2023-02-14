@@ -203,6 +203,14 @@
   <ItemGroup>
     <Natvis Include="QGLPhysics.natvis" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\QGL_Math\QGL_Math.vcxproj">
+      <Project>{e6d80f1d-9959-4848-9d33-3b43211b0fc6}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\QGL_Model\QGL_Model.vcxproj">
+      <Project>{d5f8ec52-9052-4a1e-81ca-ea32c414ec11}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.220131.2\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.220131.2\build\native\Microsoft.Windows.CppWinRT.targets')" />

@@ -52,7 +52,7 @@ namespace qgl::descriptors
       /*
        Field of view.
        */
-      math::rational<int32_t> fov{ 1, 1 };
+      math::rational<int32_t> fov{ 8, 10 };
 
       /*
        How close things can be to be rendered. Anything less than this

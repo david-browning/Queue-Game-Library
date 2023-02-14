@@ -27,6 +27,17 @@ namespace qgl::graphics::gpu
          m_alloc_h = m_allocator_p->alloc(CD3DX12_RESOURCE_DESC::Buffer(size()));
       }
 
+      template<class IndexT>
+      upload_buffer(committed_allocator<D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_HEAP_TYPE_UPLOAD>* allocator_p,
+                    const index_buffer<IndexT>& buff) :
+         m_allocator_p(allocator_p)
+      {
+         m_desc = *buff.description();
+         m_resourceSize = buff.size();
+
+         m_alloc_h = m_allocator_p->alloc(CD3DX12_RESOURCE_DESC::Buffer(size()));
+      }
+
       upload_buffer(const upload_buffer&) = delete;
 
       upload_buffer(upload_buffer&&) = default;

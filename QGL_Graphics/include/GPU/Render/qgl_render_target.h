@@ -8,12 +8,10 @@
 
 namespace qgl::graphics::gpu
 {
-   class render_target :
-      public irender_target,
-      public igpu_buffer<
-         DXGI_SWAP_CHAIN_DESC1,
-         D3D12_RENDER_TARGET_VIEW_DESC,
-         i3d_render_target>
+   class render_target : public irender_target,
+                        public igpu_buffer<DXGI_SWAP_CHAIN_DESC1,
+                                           D3D12_RENDER_TARGET_VIEW_DESC,
+                                           i3d_render_target>
    {
       public:
       using ResourceDescriptionT = DXGI_SWAP_CHAIN_DESC1;
@@ -51,12 +49,13 @@ namespace qgl::graphics::gpu
          m_cpuHandle(std::move(x.m_cpuHandle)),
          m_swapChainDesc(std::move(x.m_swapChainDesc)),
          m_viewDesc(std::move(x.m_viewDesc)),
-         m_dev_p(x.m_dev_p),
+         m_dev_p(std::move(x.m_dev_p)),
          m_renderTarget_p(std::move(x.m_renderTarget_p)),
          m_rects(std::move(x.m_rects)),
          m_frmIdx(x.m_frmIdx),
-         irender_target(x),
-         igpu_buffer(x)
+         m_state(std::move(x.m_state)),
+         irender_target(std::move(x)),
+         igpu_buffer(std::move(x))
       {
          x.m_dev_p = nullptr;
          x.m_renderTarget_p = nullptr;

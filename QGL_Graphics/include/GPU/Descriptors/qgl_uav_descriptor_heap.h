@@ -43,7 +43,7 @@ namespace qgl::graphics::gpu
 
        numDescriptors must be at least 1.
        */
-      virtual descriptor_table table(
+      descriptor_table table(
          size_t startIndex,
          size_t numDescriptors,
          UINT rootIndex,
@@ -59,11 +59,10 @@ namespace qgl::graphics::gpu
             flags,
             regSpace);
 
-         return descriptor_table(
-            { range },
-            at_gpu(startIndex),
-            rootIndex,
-            visibility);
+         return descriptor_table({ range },
+                                 at_gpu(startIndex),
+                                 rootIndex,
+                                 visibility);
       }
    };
 }

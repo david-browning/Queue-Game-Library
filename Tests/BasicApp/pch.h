@@ -13,5 +13,6 @@
 #include <QGLModel.h>
 #include <QGLGraphics.h>
 #include <QGLMath.h>
+#include <QGLGame.h>
 #include <d3dcompiler.h>
 

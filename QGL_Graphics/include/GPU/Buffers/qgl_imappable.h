@@ -16,10 +16,9 @@ namespace qgl::graphics::gpu
 
       imappable(const imappable&) = delete;
 
-      virtual ~imappable()
-      {
-         unmap();
-      }
+      imappable(imappable&&) = default;
+
+      virtual ~imappable() = default;
 
       /*
        Maps a GPU resource to the CPU pointer. if the resource is already 

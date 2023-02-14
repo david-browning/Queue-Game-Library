@@ -57,10 +57,8 @@ namespace qgl::graphics::gpu
        Move constructor.
        */
       depth_stencil(depth_stencil&& x) noexcept :
-         irender_target(std::move(x)),
-         igpu_buffer(std::move(x)),
-         m_allocator_p(x.m_allocator_p),
-         m_alloc_h(x.m_alloc_h),
+         m_allocator_p(std::move(x.m_allocator_p)),
+         m_alloc_h(std::move(x.m_alloc_h)),
          m_dev_p(std::move(x.m_dev_p)),
          m_depthDesc(std::move(x.m_depthDesc)),
          m_rects(std::move(x.m_rects)),
@@ -70,7 +68,10 @@ namespace qgl::graphics::gpu
          m_viewDesc(std::move(x.m_viewDesc)),
          m_clearValue(std::move(x.m_clearValue)),
          m_cpuHandle(std::move(x.m_cpuHandle)),
-         m_buffer(std::move(x.m_buffer))
+         m_buffer(std::move(x.m_buffer)),
+         m_state(std::move(x.m_state)),
+         irender_target(std::move(x)),
+         igpu_buffer(std::move(x))
       {
          x.m_allocator_p = nullptr;
          x.m_dev_p = nullptr;

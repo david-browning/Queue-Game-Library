@@ -21,10 +21,11 @@ namespace qgl::components
    /*
     Camera uses left-hand coordinates.
     */
-   class alignas(alignof(DirectX::XMMATRIX)) camera final :
-   public gpu::const_buffer<CONST_CAMERA_BUFFER>,
-      game_component<camera>
+   class alignas(alignof(DirectX::XMMATRIX)) 
+   camera final : public gpu::const_buffer<CONST_CAMERA_BUFFER>,
+                  public game_component<camera>
    {
+      public:
       /*
        This does not own the allocator pointer. Do not free the allocator or let
        it go out of scope before destroying this.

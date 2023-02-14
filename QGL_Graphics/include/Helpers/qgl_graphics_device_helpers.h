@@ -103,9 +103,8 @@ namespace qgl::graphics::helpers
       return ret;
    }
 
-   inline auto enum_hardware_adapters(
-      igpu_factory* factory_p,
-      D3D_FEATURE_LEVEL minFeatureLevel)
+   inline auto enum_hardware_adapters(igpu_factory* factory_p,
+                                      D3D_FEATURE_LEVEL minFeatureLevel)
    {
       std::vector<pptr<igpu_adapter>> adapters;
 
@@ -129,9 +128,9 @@ namespace qgl::graphics::helpers
          {
             //If we can create a d3d device with the MinimumFeatureLevel, 
             //then add it to the vector.
-            if (SUCCEEDED(D3D12CreateDevice(
-               adapter.get(), minFeatureLevel,
-               __uuidof(ID3D12Device), nullptr)))
+            if (SUCCEEDED(D3D12CreateDevice(adapter.get(), 
+                                            minFeatureLevel,
+                                            __uuidof(ID3D12Device), nullptr)))
             {
                adapters.push_back(adapter);
             }

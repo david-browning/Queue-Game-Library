@@ -17,6 +17,6 @@ namespace qgl::components
       virtual ~texture() noexcept;
 
       private:
-      qgl::graphics::gpu::texture_buffer m_txt;
+      //qgl::graphics::gpu::texture_buffer m_txt;
    };
 }
