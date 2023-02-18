@@ -14,6 +14,15 @@ cbuffer SceneConstantBuffer : register(b0)
    float4x4 wvp;
 };
 
+cbuffer CameraBuffer : register(b1)
+{
+   float4x4 view;
+   float4x4 projection;
+   float4 position;
+   float4 look;
+   float4 up;
+};
+
 //Texture2D diffuseMap : register(t0);
 //Texture2D normalMap : register(t1);
 
@@ -27,13 +36,14 @@ struct PSInput
 };
 
 PSInput VSMain(
-   float4 position : POSITION, 
-   float4 color : COLOR)
+   float3 position : POSITION, 
+   float3 normal : NORMAL,
+   float4 color : COLOR,
+   float2 uv : TEXCOORD)
 {
    PSInput result;
-
-   result.position = mul(position, wvp);
-   //result.position = position;
+   float4 pos = float4(position.xyz, 1.0f);
+   result.position = mul(pos, wvp);
    result.color = color;
 
    return result;

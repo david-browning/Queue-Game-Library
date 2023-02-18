@@ -87,6 +87,9 @@
     <ClInclude Include="QGL_GameRT.h">
       <Filter>winrt_rt</Filter>
     </ClInclude>
+    <ClInclude Include="include\Components\qgl_mesh.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

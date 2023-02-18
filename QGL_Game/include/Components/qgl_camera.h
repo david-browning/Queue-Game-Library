@@ -16,6 +16,9 @@ namespace qgl::components
       DirectX::XMVECTOR position;
       DirectX::XMVECTOR look;
       DirectX::XMVECTOR up;
+      char padding[256 - 
+         (2 * sizeof(DirectX::XMMATRIX)) - 
+         (3 * sizeof(DirectX::XMVECTOR))];
    };
 
    /*
@@ -30,7 +33,7 @@ namespace qgl::components
        This does not own the allocator pointer. Do not free the allocator or let
        it go out of scope before destroying this.
        */
-      camera(const descriptors::camera_descriptor & desc,
+      camera(const descriptors::camera_descriptor& desc,
              float aspectRatio,
              gpu::igpu_allocator* allocator_p,
              game_update_functor<camera> updateFunctor) :

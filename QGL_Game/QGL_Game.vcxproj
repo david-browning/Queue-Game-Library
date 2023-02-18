@@ -213,6 +213,7 @@
     <ClInclude Include="include\Components\qgl_camera.h" />
     <ClInclude Include="include\Components\qgl_image.h" />
     <ClInclude Include="include\Components\qgl_light.h" />
+    <ClInclude Include="include\Components\qgl_mesh.h" />
     <ClInclude Include="include\Components\qgl_model.h" />
     <ClInclude Include="include\Components\qgl_polygon.h" />
     <ClInclude Include="include\Components\qgl_shader.h" />

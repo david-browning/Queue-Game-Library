@@ -32,11 +32,10 @@ namespace qgl::graphics::gpu
        This does not own the allocator pointer. Do not free the allocator or let
        it go out of scope before destroying this.
        */
-      index_buffer(igpu_allocator* allocator_p,
-                   const index_data& indicies) :
+      index_buffer(const index_data& indicies,
+                   igpu_allocator* allocator_p) :
          m_indices(indicies),
-         m_allocator_p(allocator_p),
-         igpu_buffer()
+         m_allocator_p(allocator_p)
       {
          construct();
       }
@@ -45,11 +44,10 @@ namespace qgl::graphics::gpu
        This does not own the allocator pointer. Do not free the allocator or let
        it go out of scope before destroying this.
        */
-      index_buffer(igpu_allocator* allocator_p,
-                   const IndexT* const indexData,
-                   size_t indexCount) :
-         m_allocator_p(allocator_p),
-         igpu_buffer()
+      index_buffer(const IndexT* const indexData,
+                   size_t indexCount,
+                   igpu_allocator* allocator_p) :
+         m_allocator_p(allocator_p)
       {
          m_indices.resize(indexCount);
          memcpy(m_indices.data(), indexData, sizeof(IndexT)* indexCount);
