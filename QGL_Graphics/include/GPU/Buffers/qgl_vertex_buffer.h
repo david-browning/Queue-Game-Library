@@ -2,6 +2,7 @@
 #include "include/qgl_graphics_include.h"
 #include "include/GPU/qgl_sprite_vert.h"
 #include "include/GPU/qgl_geom2d_vert.h"
+#include "include/GPU/qgl_geom3d_vert.h"
 #include "include/GPU/Buffers/qgl_igpu_buffer.h"
 #include "include/GPU/Memory/qgl_igpu_allocator.h"
 
@@ -25,11 +26,10 @@ namespace qgl::graphics::gpu
        This does not own the allocator pointer. Do not free the allocator or let
        it go out of scope before destroying this.
        */
-      vertex_buffer(igpu_allocator* allocator_p,
-                    const vertex_data& vertices) :
+      vertex_buffer(const vertex_data& vertices,
+                    igpu_allocator* allocator_p) :
          m_verts(vertices),
-         m_allocator_p(allocator_p),
-         igpu_buffer()
+         m_allocator_p(allocator_p)
       {
          construct();
       }
@@ -38,11 +38,10 @@ namespace qgl::graphics::gpu
        This does not own the allocator pointer. Do not free the allocator or let
        it go out of scope before destroying this.
        */
-      vertex_buffer(igpu_allocator* allocator_p,
-                    const VertexT* const vertices,
-                    size_t numVertices) :
-         m_allocator_p(allocator_p),
-         igpu_buffer()
+      vertex_buffer(const VertexT* const vertices,
+                    size_t numVertices,
+                    igpu_allocator* allocator_p) :
+         m_allocator_p(allocator_p)
       {
          m_verts.resize(numVertices);
          memcpy(m_verts.data(), vertices, sizeof(VertexT) * numVertices);

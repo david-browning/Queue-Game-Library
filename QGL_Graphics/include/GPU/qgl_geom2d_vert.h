@@ -4,29 +4,36 @@
 namespace qgl::graphics::gpu
 {
    /*
-    Stores a position and color. While the Z position can be anything,
-    it should be 0.
+    Stores a position, color, and UV coordinate. While the Z position can be 
+    anything, it should be 0.
     This is final so that there is no vtable pointer.
     */
    class geom2d_vert final
    {
       public:
       geom2d_vert() :
-         position(0.0f, 0.0f, 0.0f, 0.0f),
-         color(0.0f, 0.0f, 0.0f, 0.0f)
+         position(0.0f, 0.0f),
+         color(1.0f, 0.0f, 0.0f),
+         uv(0.0f, 0.0f)
       {
 
       }
 
-      geom2d_vert(DirectX::FXMVECTOR pos, DirectX::FXMVECTOR col)
+      geom2d_vert(DirectX::FXMVECTOR pos, 
+                  DirectX::FXMVECTOR col,
+                  DirectX::FXMVECTOR u)
       {
-         DirectX::XMStoreFloat4(&position, pos);
-         DirectX::XMStoreFloat4(&color, col);
+         DirectX::XMStoreFloat2(&position, pos);
+         DirectX::XMStoreFloat3(&color, col);
+         DirectX::XMStoreFloat2(&uv, u);
       }
 
-      geom2d_vert(const DirectX::XMFLOAT4& pos, const DirectX::XMFLOAT4& col) :
+      geom2d_vert(const DirectX::XMFLOAT2& pos, 
+                  const DirectX::XMFLOAT3& col,
+                  const DirectX::XMFLOAT2& u) :
          position(pos),
-         color(col)
+         color(col),
+         uv(u)
       {
 
       }
@@ -42,6 +49,7 @@ namespace qgl::graphics::gpu
          using std::swap;
          swap(l.position, r.position);
          swap(l.color, r.color);
+         swap(l.uv, r.uv);
       }
 
       geom2d_vert& operator=(geom2d_vert r)
@@ -49,15 +57,20 @@ namespace qgl::graphics::gpu
          swap(*this, r);
          return *this;
       }
-
-      /*
-       Position of the vertex. The Z position should remain 0.
-       */
-      DirectX::XMFLOAT4 position;
-
+      
       /*
        Color of the vertex.
        */
-      DirectX::XMFLOAT4 color;
+      DirectX::XMFLOAT3 color;
+
+      /*
+       Position of the vertex. 
+       */
+      DirectX::XMFLOAT2 position;
+
+      /*
+       UV coordinates for texture mapping.
+       */
+      DirectX::XMFLOAT2 uv;
    };
 }

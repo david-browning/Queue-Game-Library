@@ -16,9 +16,9 @@ namespace qgl::components
 
    class sprite_instrinsics
    {
-      polygon<qgl::graphics::gpu::sprite_vert> m_geom;
-      shader m_shader;
-      texture m_texture;
+      polygon<qgl::graphics::gpu::sprite_vert> geometry;
+      shader pshader;
+      std::vector<texture> textures;
    };
 
    class sprite : public game_component<sprite>,

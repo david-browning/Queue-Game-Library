@@ -33,6 +33,28 @@ namespace qgl::stagers
          }
       }
 
+      vert_stager(
+         graphics::input_data_class_t inClass,
+         graphics::input_slot_t slot,
+         std::initializer_list<graphics::shaders::ivert_element> elements)
+      {
+         for (auto& e : elements)
+         {
+            m_strBuffers.emplace_back(e.name());
+
+            D3D12_INPUT_ELEMENT_DESC desc;
+            desc.SemanticName = m_strBuffers.back().c_str();
+            desc.Format = e.format();
+            desc.SemanticIndex = static_cast<UINT>(e.index());
+            desc.InputSlot = graphics::to_d3d_input_slot(slot);
+            desc.InputSlotClass = graphics::to_d3d_input_class(inClass);
+            desc.AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+            desc.InstanceDataStepRate = 0;
+
+            m_descs.emplace_back(std::move(desc));
+         }
+      }
+
       vert_stager(const vert_stager& r) :
          m_descs(r.m_descs),
          m_strBuffers(r.m_strBuffers)

@@ -393,6 +393,9 @@
     <ClInclude Include="include\GPU\Command-Lists\qgl_upload_cmd_list.h">
       <Filter>Header Files\GPU\Command-Lists</Filter>
     </ClInclude>
+    <ClInclude Include="include\GPU\qgl_geom3d_vert.h">
+      <Filter>Header Files\GPU</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="QGL_Graphics.def">

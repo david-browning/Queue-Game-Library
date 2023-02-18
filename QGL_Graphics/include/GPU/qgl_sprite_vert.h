@@ -4,15 +4,14 @@
 namespace qgl::graphics::gpu
 {
    /*
-    Stores a Position and UV coordinate. While the Z position can be anything,  
-    it should be 0.
+    Stores a Position and UV coordinate. 
     This is final so that there is no vtable pointer.
     */
    class sprite_vert final
    {
       public:
       sprite_vert() :
-         position(0.0f, 0.0f, 0.0f, 0.0f),
+         position(0.0f, 0.0f),
          uv(0.0f, 0.0f)
       {
 
@@ -20,11 +19,12 @@ namespace qgl::graphics::gpu
 
       sprite_vert(DirectX::FXMVECTOR pos, DirectX::FXMVECTOR uvpos)
       {
-         DirectX::XMStoreFloat4(&position, pos);
+         DirectX::XMStoreFloat2(&position, pos);
          DirectX::XMStoreFloat2(&uv, uvpos);
       }
 
-      sprite_vert(const DirectX::XMFLOAT4& pos, const DirectX::XMFLOAT2& uvpos) :
+      sprite_vert(const DirectX::XMFLOAT2& pos, 
+                  const DirectX::XMFLOAT2& uvpos) :
          position(pos),
          uv(uvpos)
       {
@@ -51,13 +51,13 @@ namespace qgl::graphics::gpu
       }
 
       /*
-       Position of the vertex. The Z position should remain 0.
-       */
-      DirectX::XMFLOAT4 position;
-
-      /*
        Position of the UV coordinate.
        */
       DirectX::XMFLOAT2 uv;
+
+      /*
+       Position of the vertex. The Z position should remain 0.
+       */
+      DirectX::XMFLOAT2 position;
    };
 }

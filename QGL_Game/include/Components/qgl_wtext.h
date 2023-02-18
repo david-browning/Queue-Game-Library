@@ -11,7 +11,7 @@ namespace qgl::components
       public:
       wtext(const std::wstring& text,
             const descriptors::screen_space_descriptor& rect,
-            game_update_functor<wtext>& updateFunctor) :
+            game_update_functor<wtext> updateFunctor) :
          m_text(text),
          m_layout(rect),
          component(WTEXT_GUID, updateFunctor)
@@ -21,7 +21,7 @@ namespace qgl::components
 
       wtext(const wchar_t* text,
             const descriptors::screen_space_descriptor& rect,
-            game_update_functor<wtext>& updateFunctor) :
+            game_update_functor<wtext> updateFunctor) :
          m_text(text),
          m_layout(rect),
          component(WTEXT_GUID, updateFunctor)

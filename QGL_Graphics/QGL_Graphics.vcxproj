@@ -224,6 +224,7 @@
     <ClInclude Include="include\GPU\Memory\qgl_tex2d_allocator.h" />
     <ClInclude Include="include\GPU\qgl_frame.h" />
     <ClInclude Include="include\GPU\qgl_geom2d_vert.h" />
+    <ClInclude Include="include\GPU\qgl_geom3d_vert.h" />
     <ClInclude Include="include\GPU\qgl_gpu_msg_dispatchers.h" />
     <ClInclude Include="include\GPU\qgl_graphics_pso.h" />
     <ClInclude Include="include\GPU\qgl_ipso.h" />
