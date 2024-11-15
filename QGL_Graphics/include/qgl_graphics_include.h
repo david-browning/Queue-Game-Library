@@ -4,23 +4,6 @@
 //
 //extern "C" { __declspec(dllexport) extern const char* D3D12SDKPath = u8".\\D3D12\\"; }
 
-#include <Unknwn.h>
-
-#include <QGLModel.h>
-#include <QGLMath.h>
-
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN
-#endif
-
-#include <windows.h>
-#include <winrt/base.h>
-#include "winrt/Windows.ApplicationModel.Core.h"
-#include <winrt/Windows.Foundation.h>
-#include <winrt/Windows.UI.Core.h>
-#include <winrt/Windows.UI.ViewManagement.Core.h>
-#include <winrt/Windows.Graphics.Display.h>
-
 #pragma warning(push)
 #pragma warning(disable : 26812)
 #include <d3d12.h>

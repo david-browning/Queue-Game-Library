@@ -44,9 +44,6 @@
     <Filter Include="Header Files\Errors">
       <UniqueIdentifier>{b25e2013-9a2a-4d09-809f-dadc11fc555c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\String">
-      <UniqueIdentifier>{0f693dc4-0718-4c9f-a319-783978513905}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Impl">
       <UniqueIdentifier>{0ed4ef31-20cd-4e87-950b-de166fe00133}</UniqueIdentifier>
     </Filter>
@@ -58,6 +55,12 @@
     </Filter>
     <Filter Include="Header Files\Threads">
       <UniqueIdentifier>{3f3ba96b-6a80-4039-a652-4672bbaeee26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{6ff0fd7a-b2db-4b3a-9a5e-1d5f7deadf28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Parsing">
+      <UniqueIdentifier>{743f90a4-74df-4f75-8014-5cec39554200}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -94,20 +97,11 @@
     <ClInclude Include="include\Timing\qgl_timer.h">
       <Filter>Header Files\Timing</Filter>
     </ClInclude>
-    <ClInclude Include="include\Memory\qgl_mem.h">
-      <Filter>Header Files\Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_platform_abstraction.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Interfaces\qgl_interface.h">
       <Filter>Header Files\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="include\Interfaces\qgl_icommand.h">
       <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_component.h">
-      <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="include\Structures\qgl_basic_tree_map.h">
       <Filter>Header Files\Structures</Filter>
@@ -116,9 +110,6 @@
       <Filter>Header Files\Structures</Filter>
     </ClInclude>
     <ClInclude Include="include\Structures\qgl_basic_graph.h">
-      <Filter>Header Files\Structures</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Structures\qgl_tree_helpers.h">
       <Filter>Header Files\Structures</Filter>
     </ClInclude>
     <ClInclude Include="include\Memory\qgl_basic_heap.h">
@@ -142,14 +133,8 @@
     <ClInclude Include="include\Impl\qgl_misc_helpers_impl.h">
       <Filter>Header Files\Impl</Filter>
     </ClInclude>
-    <ClInclude Include="include\Impl\qgl_mem_helpers_impl.h">
-      <Filter>Header Files\Impl</Filter>
-    </ClInclude>
     <ClInclude Include="include\Impl\fast_hash_impl.h">
       <Filter>Header Files\Impl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\qgl_endian.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Structures\qgl_fixed_buffer.h">
       <Filter>Header Files\Structures</Filter>
@@ -157,29 +142,17 @@
     <ClInclude Include="include\qgl_console.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Interfaces\qgl_icontent_type.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Interfaces\qgl_icontent_map.h">
-      <Filter>Header Files\Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="include\Memory\qgl_flags.h">
       <Filter>Header Files\Memory</Filter>
     </ClInclude>
     <ClInclude Include="include\Structures\qgl_handle_map.h">
       <Filter>Header Files\Structures</Filter>
     </ClInclude>
-    <ClInclude Include="include\Memory\qgl_mem_traits.h">
-      <Filter>Header Files\Memory</Filter>
-    </ClInclude>
     <ClInclude Include="include\qgl_map_key_iterator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Errors\qgl_error_reporter.h">
       <Filter>Header Files\Errors</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Structures\qgl_ts_list.h">
-      <Filter>Header Files\Structures</Filter>
     </ClInclude>
     <ClInclude Include="include\Threads\qgl_callback_dispatcher.h">
       <Filter>Header Files\Threads</Filter>
@@ -190,17 +163,89 @@
     <ClInclude Include="include\Threads\qgl_basic_callback_dispatcher_traits.h">
       <Filter>Header Files\Threads</Filter>
     </ClInclude>
-    <ClInclude Include="include\Structures\qgl_ts_vector.h">
-      <Filter>Header Files\Structures</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Structures\qgl_ts_umap.h">
-      <Filter>Header Files\Structures</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Structures\qgl_ts_uset.h">
-      <Filter>Header Files\Structures</Filter>
-    </ClInclude>
     <ClInclude Include="include\Structures\qgl_flyweight.h">
       <Filter>Header Files\Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Components\qgl_component.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Components\qgl_icomponent_metadata.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Components\qgl_icomponent_param_metadata.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Components\qgl_icomponent_provider.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Components\qgl_component_params.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Interfaces\qgl_module.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Components\qgl_model_component_provider.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\qgl_dynamic_component_metadata.h">
+      <Filter>Source Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\qgl_dynamic_component_param_metadata.h">
+      <Filter>Source Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Impl\qgl_component_params_impl.h">
+      <Filter>Header Files\Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Parsing\qgl_parse_constants.h">
+      <Filter>Header Files\Parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Parsing\qgl_parse_helpers.h">
+      <Filter>Header Files\Parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Threads\qgl_win32_srw_traits.h">
+      <Filter>Header Files\Threads</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Structures\qgl_slim_vector.h">
+      <Filter>Header Files\Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Interfaces\qgl_basic_command.h">
+      <Filter>Header Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Structures\qgl_lru_cache.h">
+      <Filter>Header Files\Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="include\qgl_not_cached_ex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QGLTraits.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QGLStruct.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QGLMemory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Memory\qgl_bit_helpers.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Memory\qgl_hex.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="QGLPlatform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Structures\qgl_slim_list.h">
+      <Filter>Header Files\Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Structures\qgl_slim_umap.h">
+      <Filter>Header Files\Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Structures\qgl_slim_uset.h">
+      <Filter>Header Files\Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Threads\qgl_srw_traits.h">
+      <Filter>Header Files\Threads</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -222,8 +267,17 @@
     <ClCompile Include="qgl_misc_helpers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Interfaces\qgl_icontent_map.cpp">
+    <ClCompile Include="src\Components\qgl_component_locator.cpp">
       <Filter>Source Files\Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Interfaces\qgl_module.cpp">
+      <Filter>Source Files\Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\qgl_model_component_provider.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\qgl_icomponent_metadata.cpp">
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

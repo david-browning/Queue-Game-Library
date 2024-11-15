@@ -5,6 +5,7 @@
 #include "CppUnitTest.h"
 #include "UnitTestApp.xaml.h"
 #include <QGLModel.h>
+#include <QGLStruct.h>
 
 template<typename T>
 inline std::wstring TemplateToString(const T& x)

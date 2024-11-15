@@ -2,6 +2,7 @@
 #include "include/qgl_input_include.h"
 #include "include/qgl_input_state.h"
 #include "include/qgl_input_trigger.h"
+#include <vector>
 
 namespace qgl::input
 {

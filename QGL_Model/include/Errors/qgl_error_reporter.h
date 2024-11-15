@@ -1,7 +1,7 @@
 #pragma once
 #include "include/qgl_model_include.h"
 #include "include/qgl_console.h"
-#include "include/Structures/qgl_ts_list.h"
+#include "include/Structures/qgl_slim_list.h"
 
 namespace qgl
 {
@@ -10,11 +10,11 @@ namespace qgl
     This only holds references to consoles. Do not allow any console passed to
     this class to be released before this class is destroyed.
     */
-   template<typename CharT>
+   template<typename CharT, class SRWTraits>
    class error_reporter final
    {
       public:
-      using console_t = typename basic_console<CharT>;
+      using console_t = typename basic_console<CharT, SRWTraits>;
       using console_ptr = typename console_t*;
       using console_ref = typename std::reference_wrapper<console_t>;
       /*
@@ -136,6 +136,6 @@ namespace qgl
          console_ptr m_toFind;
       };
 
-      ts_list<console_ptr> m_consoles;
+      slim_list<console_ptr, SRWTraits> m_consoles;
    };
 }

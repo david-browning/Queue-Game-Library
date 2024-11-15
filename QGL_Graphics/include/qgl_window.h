@@ -1,6 +1,14 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
 #include "include/Helpers/qgl_window_helpers.h"
+#include <winrt/base.h>
+#include "winrt/Windows.ApplicationModel.Core.h"
+#include <winrt/Windows.Foundation.h>
+#include <winrt/Windows.UI.Core.h>
+#include <winrt/Windows.UI.ViewManagement.Core.h>
+#include <winrt/Windows.Graphics.Display.h>
+#include <atomic>
+#include <QGLMath.h>
 
 namespace qgl::graphics
 {

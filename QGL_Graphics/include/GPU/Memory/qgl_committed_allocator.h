@@ -4,7 +4,7 @@
 
 namespace qgl::graphics::gpu
 {
-   template<D3D12_RESOURCE_STATES State, D3D12_HEAP_TYPE HeapType>
+   template<D3D12_RESOURCE_STATES State, D3D12_HEAP_TYPE HeapType, class SRWTraits>
    class committed_allocator : public igpu_allocator
    {
       public:
@@ -153,20 +153,24 @@ namespace qgl::graphics::gpu
       }
 
       std::mutex m_mutex;
-      ts_uset<mem_budget_changed_callback> m_callbacks;
-      handle_map<allocation_entry, gpu_alloc_handle> m_allocations;
+      slim_uset<mem_budget_changed_callback, SRWTraits> m_callbacks;
+      handle_map<allocation_entry, gpu_alloc_handle, SRWTraits> m_allocations;
       allocator_stats m_memStats;
       graphics_device* m_gDev_p;
    };
 
+   template<class SRWTraits = srw_traits>
    using copy_src_allocator = typename committed_allocator<
-      D3D12_RESOURCE_STATE_COMMON, D3D12_HEAP_TYPE_DEFAULT>;
+      D3D12_RESOURCE_STATE_COMMON, D3D12_HEAP_TYPE_DEFAULT, SRWTraits>;
    
+   template<class SRWTraits = srw_traits>
    using copy_dst_allocator = typename committed_allocator<
-      D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_HEAP_TYPE_UPLOAD>;
+      D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_HEAP_TYPE_UPLOAD, SRWTraits>;
    
+   template<class SRWTraits = srw_traits>
    using vert_allocator = typename committed_allocator<
-      D3D12_RESOURCE_STATE_COPY_DEST, D3D12_HEAP_TYPE_DEFAULT>;
+      D3D12_RESOURCE_STATE_COPY_DEST, D3D12_HEAP_TYPE_DEFAULT, SRWTraits>;
 
-   using idx_allocator = typename vert_allocator;
+   template<class SRWTraits = srw_traits>
+   using idx_allocator = typename vert_allocator<SRWTraits>;
 }

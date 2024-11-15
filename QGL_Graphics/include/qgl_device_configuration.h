@@ -2,6 +2,8 @@
 #include "include/qgl_graphics_include.h"
 #include "include/Descriptors/qgl_hdr_descriptor.h"
 #include "include/Descriptors/qgl_engine_descriptor.h"
+#include <stdexcept>
+#include <optional>
 
 namespace qgl::graphics
 {

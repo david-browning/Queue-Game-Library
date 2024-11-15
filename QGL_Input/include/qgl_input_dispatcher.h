@@ -1,6 +1,7 @@
 #pragma once
 #include "include/qgl_input_include.h"
 #include "include/qgl_input_trigger.h"
+#include <QGLModel.h>
 
 namespace qgl::input
 {

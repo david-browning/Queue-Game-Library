@@ -225,6 +225,8 @@
   <ItemGroup>
     <ClCompile Include="guid_tests.cpp" />
     <ClCompile Include="misc_helpers_tests.cpp" />
+    <ClCompile Include="Tests\Components\json_component_load_tests.cpp" />
+    <ClCompile Include="Tests\Components\module_components_tests.cpp" />
     <ClCompile Include="Tests\icommand_tests.cpp" />
     <ClCompile Include="Tests\Observer-Observable\callback_observer-tests.cpp" />
     <ClCompile Include="Tests\Observer-Observable\observer_out_of_scope_tests.cpp" />
@@ -233,10 +235,6 @@
     <ClCompile Include="Tests\Observer-Observable\subject_out_of_scope_tests.cpp" />
     <ClCompile Include="Tests\Observer-Observable\subject_remove_tests.cpp" />
     <ClCompile Include="Tests\Structures\fixed_buffer_tests.cpp" />
-    <ClCompile Include="Tests\Structures\ts_list_tests.cpp" />
-    <ClCompile Include="Tests\Structures\ts_uset_tests.cpp" />
-    <ClCompile Include="Tests\Structures\ts_vector_tests.cpp" />
-    <ClCompile Include="Tests\version_tests.cpp" />
     <ClCompile Include="Tests\Timing\timer_tests.cpp" />
     <ClCompile Include="Tests\Timing\time_helper_tests.cpp" />
     <ClCompile Include="Tests\Timing\time_state_tests.cpp" />

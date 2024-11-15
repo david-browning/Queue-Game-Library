@@ -1,5 +1,7 @@
 #pragma once
 #include "include/qgl_math_includes.h"
+#include <DirectXMath.h>
+#include <DirectXCollision.h>
 
 namespace qgl::math
 {

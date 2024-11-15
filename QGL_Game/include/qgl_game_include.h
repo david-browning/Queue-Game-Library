@@ -6,13 +6,6 @@
 #include <windows.h>
 #include <winrt/base.h>
 
-#include <QGLModel.h>
-#include <QGLMath.h>
-#include <QGLPhysics.h>
-#include <QGLGraphics.h>
-#include <QGLInput.h>
-
-
 #ifdef QGL_GAME_EXPORTS
 #define QGL_GAME_API __declspec(dllexport)
 #define QGL_GAME_TEMPLATE

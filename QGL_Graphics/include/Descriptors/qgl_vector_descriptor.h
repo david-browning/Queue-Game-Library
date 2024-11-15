@@ -1,5 +1,7 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
+#include <QGLMath.h>
+#include <QGLStruct.h>
 
 namespace qgl::descriptors
 {

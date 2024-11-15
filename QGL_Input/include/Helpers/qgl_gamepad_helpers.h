@@ -1,5 +1,8 @@
 #pragma once
 #include "include/qgl_input_include.h"
+#include <Xinput.h>
+#include <winrt/Windows.Gaming.Input.h>
+#include <QGLMath.h>
 
 namespace qgl::input
 {

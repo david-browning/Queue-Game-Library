@@ -1,6 +1,7 @@
 #pragma once
 #include "include/qgl_model_include.h"
 #include "include/Memory/qgl_mem_helpers.h"
+#include "QGLTraits.h"
 
 namespace qgl::mem
 {
@@ -13,8 +14,7 @@ namespace qgl::mem
    class flags final
    {
       public:
-      using type = typename traits::make_type<
-         traits::bit_size<Bits>::value, unsgnd>::type;
+      using type = typename make_type<round_bytes<Bits>::value, unsgnd>::type;
 
       /*
        Construct with all bits cleared.
@@ -35,7 +35,12 @@ namespace qgl::mem
        */
       constexpr void set(size_t idx)
       {
-         mem::set_bit(data, idx);
+         data = mem::set_bit(data, idx);
+      }
+
+      constexpr void set(size_t idx, bool enable)
+      {
+         data = mem::set_bit(data, idx, enable);
       }
 
       /*
@@ -43,7 +48,15 @@ namespace qgl::mem
        */
       constexpr void reset(size_t idx)
       {
-         mem::clear_bit(data, idx);
+         data = mem::clear_bit(data, idx);
+      }
+
+      /*
+       Clears the bits between start and end inclusive.
+       */
+      constexpr void reset(size_t start, size_t end)
+      {
+         data = data & ~mem::mask<type>(start, end);
       }
 
       /*
@@ -74,10 +87,9 @@ namespace qgl::mem
       }
 
       template<size_t start, size_t end>
-      constexpr typename mem::traits::make_type<mem::traits::bit_size<end - start>::value, unsgnd>::type range_shift() const
+      constexpr typename make_type<round_bytes<end - start>::value, unsgnd>::type range_shift() const
       {
-         using retT = typename mem::traits::make_type<
-            mem::traits::bit_size<end - start>::value, unsgnd>::type;
+         using retT = typename make_type<round_bytes<end - start>::value, unsgnd>::type;
          static_assert(end > start,
                        "End parameter must be larger than start.");
          static_assert(end < Bits,
@@ -115,6 +127,82 @@ namespace qgl::mem
       flags& operator=(flags r)
       {
          swap(*this, r);
+         return *this;
+      }
+
+      bool operator==(const flags& f) const noexcept
+      {
+         return data == f.data;
+      }
+
+      bool operator!=(const flags& f) const noexcept
+      {
+         return !(*this == f);
+      }
+
+      flags operator|(const flags& r) const noexcept
+      {
+         return flags{ data | r.data };
+      }
+
+      flags operator&(const flags& r) const noexcept
+      {
+         return flags{ data & r.data };
+      }
+
+      flags operator^(const flags& r) const noexcept
+      {
+         return flags{ data ^ r.data };
+      }
+
+      flags operator|(const type& r) const noexcept
+      {
+         return flags{ data | r };
+      }
+
+      flags operator&(const type& r) const noexcept
+      {
+         return flags{ data & r };
+      }
+
+      flags operator^(const type& r) const noexcept
+      {
+         return flags{ data ^ r };
+      }
+
+      flags& operator|=(const flags& r) noexcept
+      {
+         data |= r.data;
+         return *this;
+      }
+
+      flags& operator&=(const flags& r) noexcept
+      {
+         data &= r.data;
+         return *this;
+      }
+
+      flags& operator^=(const flags& r) noexcept
+      {
+         data ^= r.data;
+         return *this;
+      }
+
+      flags& operator|=(const type& r) noexcept
+      {
+         data |= r;
+         return *this;
+      }
+
+      flags& operator&=(const type& r) noexcept
+      {
+         data &= r;
+         return *this;
+      }
+
+      flags& operator^=(const type& r) noexcept
+      {
+         data ^= r;
          return *this;
       }
 

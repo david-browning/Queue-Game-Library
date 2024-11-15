@@ -9,7 +9,7 @@ namespace qgl::graphics::gpu
     Used to queue up and execute command lists.
     Queuing and clearing queued command lists are thread-safe.
     */
-   template<D3D12_COMMAND_LIST_TYPE ListT>
+   template<D3D12_COMMAND_LIST_TYPE ListT, class SRWTraits = qgl::srw_traits>
    class cmd_executor final
    {
       public:
@@ -181,7 +181,7 @@ namespace qgl::graphics::gpu
       /*
        The command lists to execute.
        */
-      ts_vector<icmd_list*> m_lists_p;
+      slim_vector<icmd_list*, SRWTraits> m_lists_p;
 
       std::optional<pptr<icmd_queue>> m_queue_p;
       std::optional<icmd_queue*> m_rawQueue_p;

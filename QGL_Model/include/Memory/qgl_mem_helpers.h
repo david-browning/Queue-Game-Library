@@ -1,30 +1,21 @@
 #pragma once
-#include "include/qgl_model_include.h"
-#include "include/Impl/qgl_mem_helpers_impl.h"
-#include "include/Memory/qgl_mem_traits.h"
+#include <limits>
 
 namespace qgl::mem
 {
-   /*
-    Counts the number of bits set in "val".
-    */
-   template<typename T>
-   constexpr size_t bits_set(T val)
+   namespace impl
    {
-      return impl::bits_set(val, sizeof(T) * CHAR_BIT, 0);
+      /*
+       Compile-time endianness swap based on http://stackoverflow.com/a/36937049
+       From https://en.cppreference.com/w/cpp/language/fold
+       */
+      template<class T, std::size_t... N>
+      constexpr T bswap(T i, std::index_sequence<N...>)
+      {
+         return (((i >> N * CHAR_BIT & std::uint8_t(-1)) <<
+                  (sizeof(T) - 1 - N) * CHAR_BIT) | ...);
+      }
    }
-
-   static_assert(bits_set<int8_t>(1) == 1,
-                 "1 should have 1 bit set");
-
-   static_assert(bits_set<int>(1) == 1,
-                 "1 should have 1 bit set");
-
-   static_assert(bits_set<int>(0xF00F00FF) == 16,
-                 "0xF00F00FF should have 16 bits set");
-
-   static_assert(bits_set<int64_t>(0xFFFF'FFFF'FFFF'FFFF) == 64,
-                 "0xFFFF'FFFF'FFFF'FFFF should have 64 bits set");
 
    /*
     Swaps the endianess of a value.
@@ -38,19 +29,6 @@ namespace qgl::mem
    static_assert(bswap<uint16_t>(0x1234u) == static_cast<uint16_t>(0x3412u));
    static_assert(bswap<uint64_t>(0x0123456789abcdefULL) ==
                  static_cast<uint64_t>(0xefcdab8967452301ULL));
-
-
-   /*
-    Creates a bit mask where the bits from start to end are set.
-    */
-   template<typename T>
-   constexpr T mask(size_t start, size_t end) noexcept
-   {
-      return impl::mask<T>(start, end, static_cast<T>(0));
-   }
-
-   static_assert(mask<int16_t>(size_t(3), size_t(8)) == int16_t(0b00000001'11111000),
-                 "mask is not correct (3, 8)");
 
    /*
     Aligns and address to the nearest alignment.
@@ -154,151 +132,24 @@ namespace qgl::mem
       reverse_elements(mem, 0, elementCount - 1);
    }
 
-   /*
-    Clears the idx'th bit in val.
-    */
-   template<typename T, typename SizeT = size_t>
-   constexpr T clear_bit(T val, SizeT idx) noexcept
-   {
-      return val | (T(1) << idx);
-   }
-
-   /*
-    Sets the idx'th bit in val.
-    */
-   template<typename T, typename SizeT = size_t>
-   constexpr T set_bit(T val, SizeT idx) noexcept
-   {
-      return val & ~(T(1) << idx);
-   }
-
-   /*
-    Toggles the idx'th bit in val.
-    */
-   template<typename T, typename SizeT = size_t>
-   constexpr T toggle_bit(T val, SizeT idx) noexcept
-   {
-      return val ^ (T(1) << idx);
-   }
-
-   /*
-    Returns true if the idx'th bit is set in val.
-    */
-   template<typename T, typename SizeT = size_t>
-   constexpr bool is_bit_set(T val, size_t idx) noexcept
-   {
-      return (val & (T(1) << idx)) != 0;
-   }
-
-   /*
-    Returns the index of the first most significant bit.
-    The number of leading zeros will depend on the type "T".
-    */
    template<typename T>
-   constexpr size_t msb(T val) noexcept
+   constexpr bool ends_with(const T* const arr, size_t aLen,
+                            const T* const subArr, size_t subLen) noexcept
    {
-      size_t ret = (sizeof(T) * CHAR_BIT) - 1;
-      auto mask = static_cast<T>(1) << ret;
-      while (ret > 0 && (val & mask) == 0)
+      if (subLen > aLen)
       {
-         ret--;
-         mask = static_cast<T>(1) << ret;
+         return false;
       }
 
-      return ret;
-   }
-
-   static_assert(3 == msb<uint8_t>(13), "msb(13) is not 3.");
-   static_assert(7 == msb<uint8_t>(255), "msb(255) is not 7");
-   static_assert(16 == msb<size_t>(100000), "msb(100000) is not 16");
-
-   /*
-    Converts a type to its binary representation.
-    */
-   template<typename From, typename To>
-   struct bit_convert
-   {
-      public:
-      static_assert(sizeof(From) == sizeof(To),
-         "To and From should be the same size.");
-
-      constexpr bit_convert(From f) :
-         f_value(f)
+      for (size_t i = 0; i < subLen; i++)
       {
+         if (arr[aLen - subLen + i] != subArr[i])
+         {
+            return false;
+         }
       }
 
-      constexpr To to() const noexcept
-      {
-         return t_value;
-      }
-
-      private:
-      union
-      {
-         From f_value;
-         To t_value;
-      };
-   };
-
-   /*
-    Converts a single hex character to an integer. Assume the character is
-    [0-9] | [a-f] | [A-F]
-    */
-   constexpr uint8_t from_hex(char c)
-   {
-      return impl::from_hex(c);
+      return true;
    }
 
-   /*
-    Assume the string is null terminated.
-    Assume the characters are [0-9] | [a-f] | [A-F]
-    */
-   template<size_t n>
-   constexpr typename qgl::mem::traits::make_type<(n - 1) * 4>::type from_hex(
-      const char s[n])
-   {
-      return impl::from_hex<n>(s, 0, 0);
-   }
-
-   static_assert(from_hex('C') == 12,
-              "from_hex is not correct (c)");
-
-   static_assert(from_hex('F') == 15,
-                 "from_hex is not correct (F)");
-
-   static_assert(from_hex('1') == 1,
-                 "from_hex is not correct (1)");
-
-   static_assert(from_hex('0') == 0,
-                 "from_hex is not correct (0)");
-
-   static_assert(from_hex<3>("00") == 0,
-              "from_hex is not correct (00)");
-
-   static_assert(from_hex<3>("01") == 1,
-                 "from_hex is not correct (01)");
-
-   static_assert(from_hex<3>("0f") == 15,
-              "from_hex is not correct (0f)");
-
-   static_assert(from_hex<3>("10") == 16,
-                 "from_hex is not correct (10)");
-
-   static_assert(from_hex<3>("1f") == 31,
-                 "from_hex is not correct (1F)");
-
-   static_assert(from_hex<5>("1f1f") == 0x1f1f,
-              "from_hex is not correct (1F1F)");
-
-   static_assert(from_hex<7>("1f1f1f") == 0x1f1f1f,
-           "from_hex is not correct (1F1F1F)");
-
-   static_assert(from_hex<9>("1f1f1f1f") == 0x1f1f1f1f,
-           "from_hex is not correct (1F1F1F1F)");
-
-   static_assert(from_hex<11>("1f1f1f1f1f") == 0x1f1f1f1f1f,
-           "from_hex is not correct (1F1F1F1F)");
-
-   static_assert(from_hex<17>("123456789abc0000") == 0x123456789abc0000,
-              "from_hex is not correct (123456789abc0000)");
 }

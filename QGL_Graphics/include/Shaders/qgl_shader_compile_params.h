@@ -1,5 +1,7 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
+#include <QGLStruct.h>
+#include <QGLMemory.h>
 
 namespace qgl::graphics::shaders
 {

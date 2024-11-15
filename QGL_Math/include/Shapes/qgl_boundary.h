@@ -1,5 +1,7 @@
 #pragma once
 #include "include/qgl_math_includes.h"
+#include <type_traits>
+#include <Windows.h>
 
 namespace qgl::math
 {

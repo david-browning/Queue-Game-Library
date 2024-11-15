@@ -1,5 +1,7 @@
 #pragma once
 #include "include/qgl_model_include.h"
+#include <memory>
+#include <functional>
 
 #define QGL_INTERFACE class __declspec(novtable)
 
@@ -12,7 +14,9 @@ namespace qgl
        Releases all resourced owned by the interface. Usually, it is sufficient
        to call "delete this".
        */
-      virtual void release() = 0;
+      virtual void release() noexcept = 0;
+
+      virtual iqgl* duplicate() const noexcept = 0;
 
       /*
        Casts this along the derivation chain to a pointer to a T.
@@ -27,7 +31,16 @@ namespace qgl
 
    QGL_INTERFACE iqgl_impl : public iqgl
    {
+      public:
+      virtual void release() noexcept
+      {
+         delete this;
+      }
 
+      virtual iqgl* duplicate() const noexcept
+      {
+         return new iqgl_impl();
+      }
    };
 
    template<class T>
@@ -47,5 +60,13 @@ namespace qgl
       {
          ptr->release();
       });
+   }
+
+   template<class T>
+   inline qgl_unique_ptr<T> duplicate(const qgl_unique_ptr<T>& p)
+   {
+      static_assert(std::is_base_of<iqgl, T>::value,
+                    "p must point to an iqgl interface.");
+      return qgl::make_unique<T>((T*)p->duplicate());
    }
 }

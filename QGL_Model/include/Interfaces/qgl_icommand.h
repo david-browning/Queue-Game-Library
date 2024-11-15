@@ -18,13 +18,13 @@ namespace qgl
       /*
        Copies the contents of g. g can be freed or go out of scope.
        */
-      icommand(const qgl::guid& g) noexcept :
+      icommand(const qgl::guid& g) :
          m_guid(g)
       {
        
       }
 
-      icommand(qgl::guid&& g) noexcept :
+      icommand(qgl::guid&& g) :
          m_guid(g)
       {
 
@@ -33,7 +33,7 @@ namespace qgl
       /*
        Copy constructor.
        */
-      icommand(const icommand&) noexcept = default;
+      icommand(const icommand&) = default;
 
       /*
        Move constructor.
@@ -48,7 +48,7 @@ namespace qgl
       /*
        Executes this command.
        */
-      virtual void execute(ExecuteArgs args) = 0;
+      virtual void execute(ExecuteArgs& args) = 0;
 
       /*
        Undoes this command if possible. If not possible, this does nothing.
@@ -58,9 +58,9 @@ namespace qgl
       /*
        Executes the command.
        */
-      void operator()()
+      void operator()(ExecuteArgs& args)
       {
-         execute();
+         execute(args);
       }
 
       /*

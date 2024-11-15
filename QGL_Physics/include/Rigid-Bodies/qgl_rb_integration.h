@@ -2,6 +2,8 @@
 #include "include/qgl_physics_include.h"
 #include "include/Rigid-Bodies/qgl_rb_properties.h"
 #include "include/Rigid-Bodies/qgl_rb_state.h"
+#include <DirectXMath.h>
+#include <DirectXCollision.h>
 
 namespace qgl::physics::rigid_body
 {

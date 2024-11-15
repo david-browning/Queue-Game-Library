@@ -1,6 +1,7 @@
 #pragma once
 #include "include/qgl_math_includes.h"
 #include "include/qgl_math_funcs.h"
+#include <QGLTraits.h>
 
 namespace qgl::math
 {
@@ -18,8 +19,7 @@ namespace qgl::math
 
       public:
       using numerator_type =
-         typename qgl::mem::traits::make_type<
-            qgl::mem::traits::bit_round<Denominator>::value>::type;
+         typename make_type<mem::smallest_type<Denominator>::value>::type;
 
       /*
        Stores the number 0.

@@ -3,6 +3,10 @@
 #include "include/Memory/qgl_mem_helpers.h"
 #include "include/qgl_misc_helpers.h"
 #include "include/Errors/qgl_e_checkers.h"
+#include "include/Memory/qgl_hex.h"
+#include <iomanip>
+#include <ios>
+#include <sstream>
 
 namespace qgl
 {
@@ -114,7 +118,7 @@ namespace qgl
       /*
        Assignment operator.
        */
-      guid& operator=(guid& r) noexcept
+      guid& operator=(guid r) noexcept
       {
          swap(*this, r);
          return *this;
@@ -123,7 +127,19 @@ namespace qgl
       /*
        Move assign operator.
        */
-      guid& operator=(guid&& r) = default;
+      guid& operator=(guid&& r) noexcept
+      {
+         m_low = std::move(r.m_low);
+         m_high = std::move(r.m_high);
+         return *this;
+      }
+
+      guid& operator=(const char s[33]) noexcept
+      {
+         m_low = mem::from_hex<17>(s);
+         m_high = mem::from_hex<17>(s + 16);
+         return *this;
+      }
 
       /*
        * Returns true if each byte in the guids are equal.

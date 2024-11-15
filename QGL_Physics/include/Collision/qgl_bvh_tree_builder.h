@@ -1,6 +1,7 @@
 #pragma once
 #include "include/qgl_physics_include.h"
 #include "include/Collision/qgl_collision_adapters.h"
+#include <stack>
 
 namespace qgl::physics
 {
