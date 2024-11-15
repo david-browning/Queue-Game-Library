@@ -9,6 +9,7 @@ namespace qgl::graphics::gpu
     Allocates memory by placing same sized resources contiguously in a large
     heap.
     */
+   template<class SRWTraits>
    class slot_allocator : public igpu_allocator
    {
       public:
@@ -183,7 +184,7 @@ namespace qgl::graphics::gpu
 
       std::mutex m_mutex;
 
-      ts_uset<mem_budget_changed_callback> m_callbacks;
+      slim_uset<mem_budget_changed_callback> m_callbacks;
 
       handle_map<pptr<igpu_resource>, gpu_alloc_handle> m_allocations;
 
@@ -203,7 +204,7 @@ namespace qgl::graphics::gpu
        List of free heap offsets. Use a set instead if you want to check that
        an address was allocated before trying to free it.
        */
-      ts_list<gpu_alloc_handle> m_freeList;
+      slim_list<gpu_alloc_handle, SRWTraits> m_freeList;
 
       size_t m_placeSize;
 

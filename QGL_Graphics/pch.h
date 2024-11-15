@@ -39,13 +39,17 @@
 #include <d3d12shader.h>
 #include <d3dcompiler.h>
 
+#include <windows.h>
 #include <winrt/base.h>
 #include "winrt/Windows.ApplicationModel.Core.h"
 #include <winrt/Windows.Foundation.h>
 #include <winrt/Windows.UI.Core.h>
 #include <winrt/Windows.UI.ViewManagement.Core.h>
-
+#include <winrt/Windows.Graphics.Display.h>
 #ifdef _DEBUG
 #include <D3d12SDKLayers.h>
 #endif
 
+#include <QGLModel.h>
+#include <QGLMemory.h>
+#include <QGLMath.h>

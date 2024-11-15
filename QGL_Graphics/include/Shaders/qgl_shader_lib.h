@@ -16,10 +16,10 @@ namespace qgl::graphics::shaders
        Reads the shader library (and optionally compiles it) into this.
        Errors are reported to the optional error reporter. 
        */
-      template<typename CharT = char>
+      template<typename CharT = char, class SRWTraits = srw_traits>
       shader_lib(const shader_lib_descriptor& desc,
                  const graphics::shaders::shader_data& shaderData,
-                 error_reporter<CharT>* e = nullptr)
+                 error_reporter<CharT, SRWTraits>* e = nullptr)
       {
          switch (desc.payload)
          {
@@ -49,10 +49,10 @@ namespace qgl::graphics::shaders
        this.
        Errors are reported to the optional error reporter.
        */
-      template<typename CharT = char>
+      template<typename CharT = char, class SRWTraits = srw_traits>
       shader_lib(const shader_lib_descriptor& desc,
                  const qgl::sys_str& file,
-                 error_reporter<CharT>* e = nullptr)
+                 error_reporter<CharT, SRWTraits>* e = nullptr)
       {
          m_shaderData = compile_shader_library(
             file, desc.compile_params, e);

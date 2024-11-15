@@ -1,6 +1,9 @@
 #pragma once
 #include "include/qgl_math_includes.h"
 #include "include/qgl_math_funcs.h"
+#include <DirectXMath.h>
+#include <ratio>
+#include <type_traits>
 
 /*
  This namespace provides helper functions to convert between physical units,

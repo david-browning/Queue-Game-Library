@@ -1,5 +1,7 @@
 #pragma once
 #include "include/qgl_physics_include.h"
+#include <DirectXMath.h>
+#include <DirectXCollision.h>
 
 namespace qgl::physics::rigid_body
 {

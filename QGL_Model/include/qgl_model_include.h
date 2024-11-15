@@ -1,6 +1,25 @@
 ﻿#pragma once
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
 
-#include "include/qgl_platform_abstraction.h"
+#include <cstdint>
+#include <cmath>
+#include <memory>
+#include <string>
+#include <vector>
+
+#if !defined(NDEBUG) || defined(_DEBUG) || defined(DEBUG)
+
+#ifndef _DEBUG
+#define _DEBUG
+#endif
+
+#ifndef DEBUG
+#define DEBUG
+#endif
+
+#endif
+
 
 #ifdef QGL_MODEL_EXPORTS
 #define QGL_MODEL_API __declspec(dllexport)
@@ -25,10 +44,10 @@
 #endif
 
 #ifndef QGL_VCC
-/*
- Use a vector call for multiple floating point arguments or SIMD vectors.
- Useful for __m128 and __m256 values.
- https://docs.microsoft.com/en-us/cpp/cpp/vectorcall?view=vs-2019
- */
+ /*
+  Use a vector call for multiple floating point arguments or SIMD vectors.
+  Useful for __m128 and __m256 values.
+  https://docs.microsoft.com/en-us/cpp/cpp/vectorcall?view=vs-2019
+  */
 #define QGL_VCC __vectorcall
 #endif

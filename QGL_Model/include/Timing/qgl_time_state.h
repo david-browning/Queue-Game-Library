@@ -77,6 +77,37 @@ namespace qgl
          return *this;
       }
 
+      bool operator==(const time_state& r) noexcept
+      {
+         return m_deltaTicks == r.m_deltaTicks &&
+            m_totalTicks == r.m_totalTicks;
+      }
+
+      bool operator!=(const time_state& r) noexcept
+      {
+         return !(*this == r);
+      }
+
+      bool operator<(const time_state& r) noexcept
+      {
+         return m_totalTicks < r.m_totalTicks;
+      }
+
+      bool operator>(const time_state& r) noexcept
+      {
+         return m_totalTicks > r.m_totalTicks;
+      }
+
+      bool operator<=(const time_state& r) noexcept
+      {
+         return !(*this > r);
+      }
+
+      bool operator>=(const time_state& r) noexcept
+      {
+         return !(*this < r);
+      }
+
       private:
       TickT m_deltaTicks;
       TickT m_totalTicks;

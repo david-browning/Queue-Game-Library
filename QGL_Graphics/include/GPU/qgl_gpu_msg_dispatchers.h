@@ -1,6 +1,7 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
 #include "include/Helpers/qgl_graphics_device_helpers.h"
+#include <QGLModel.h>
 
 namespace qgl::graphics
 {

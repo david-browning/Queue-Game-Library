@@ -383,10 +383,9 @@ namespace qgl::stagers
       using namespace qgl::graphics::shaders;
       using itType = typename std::remove_reference<decltype(*first)>::type;
       vert_stager ret;
+
       // Use this map to make sure no semantics have duplicate indices.
-      using idxMap_t =
-         typename std::unordered_set<decltype(
-            vertex_element_descriptor::semantic_index)>;
+      using idxMap_t = typename std::unordered_set<size_t>;
       std::unordered_map<std::string, std::unique_ptr<idxMap_t>> semIdxMap;
 
       for (; first != last; first++)
@@ -409,7 +408,7 @@ namespace qgl::stagers
             else
             {
                char msg[128] = { 0 };
-               sprintf_s(msg, "Semantic \"%s\" is already bound to slot %u.",
+               sprintf_s(msg, "Semantic \"%s\" is already bound to slot %zu.",
                          semName.c_str(), semIdx);
                throw std::out_of_range(msg);
             }

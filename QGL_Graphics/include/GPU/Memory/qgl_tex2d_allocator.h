@@ -6,6 +6,7 @@
 
 namespace qgl::graphics::gpu
 {
+   template<class SRWTraits>
    class tex2d_allocator : public igpu_allocator
    {
       public:
@@ -157,8 +158,8 @@ namespace qgl::graphics::gpu
 
       std::mutex m_mutex;
       D3D12_CLEAR_VALUE m_clearValue;
-      ts_uset<mem_budget_changed_callback> m_callbacks;
-      handle_map<allocation_entry, gpu_alloc_handle> m_allocations;
+      slim_uset<mem_budget_changed_callback, SRWTraits> m_callbacks;
+      handle_map<allocation_entry, gpu_alloc_handle, SRWTraits> m_allocations;
       allocator_stats m_memStats;
       graphics_device* m_gDev_p;
    };

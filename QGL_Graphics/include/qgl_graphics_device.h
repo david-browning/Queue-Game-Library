@@ -6,6 +6,7 @@
 #include "include/Helpers/qgl_color_helpers.h"
 #include "include/Helpers/qgl_supported_helpers.h"
 #include "include/GPU/qgl_gpu_msg_dispatchers.h"
+#include <QGLModel.h>
 
 namespace qgl::graphics
 {

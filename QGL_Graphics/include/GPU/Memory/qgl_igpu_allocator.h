@@ -1,6 +1,7 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
 #include "include/GPU/Memory/qgl_allocator_stats.h"
+#include <QGLPlatform.h>
 
 namespace qgl::graphics::gpu
 {

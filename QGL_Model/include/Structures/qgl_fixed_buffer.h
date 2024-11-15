@@ -1,4 +1,7 @@
 #pragma once
+#include "include/Memory/qgl_mem_helpers.h"
+#include <cstdint>
+#include <stdexcept>
 
 namespace qgl
 {
@@ -124,11 +127,23 @@ namespace qgl
          mem::swap_elements(l.data(), r.data(), r.size());
       }
 
-      fixed_buffer& operator=(fixed_buffer r)
+      fixed_buffer& operator=(fixed_buffer r) noexcept
       {
          swap(*this, r);
          return *this;
       }
+
+      fixed_buffer& operator=(const T r[n]) noexcept
+      {
+         memcpy(m_data, r, sizeof(T) * n);
+         return *this;
+      }
+
+      //fixed_buffer& operator=(const T* const r) noexcept
+      //{
+      //   
+      //   return *this;
+      //}
 
       /*
        Returns an iterator that points to the first element in this buffer.

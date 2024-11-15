@@ -76,38 +76,22 @@ namespace qgl::graphics::shaders
       /* 
        Begins iterating through the function names.
        */
-      auto cbegin_funcs() const noexcept
-      {
-         return map_key_const_iterator<std::string, decltype(m_funcs)>{
-            m_funcs };
-      }
+      auto cbegin_funcs() const noexcept;
 
       /*
        Ends iterating through the function names.
        */
-      auto cend_funcs() const noexcept
-      {
-         return map_key_const_iterator<std::string, decltype(m_funcs)>{
-            m_funcs, nullptr };
-      }
+      auto cend_funcs() const noexcept;
 
       /*
        Begins iterating through the buffer names.
        */
-      auto cbegin_buffers() const noexcept
-      {
-         return map_key_const_iterator<std::string, decltype(m_buffers)>{
-            m_buffers };
-      }
+      auto cbegin_buffers() const noexcept;
 
       /*
        Ends iterating through the buffer names.
        */
-      auto cend_buffers() const noexcept
-      {
-         return map_key_const_iterator<std::string, decltype(m_buffers)>{
-            m_buffers, nullptr };
-      }
+      auto cend_buffers() const noexcept;
 
       /*
        Begins iterating through the shader input parameters.

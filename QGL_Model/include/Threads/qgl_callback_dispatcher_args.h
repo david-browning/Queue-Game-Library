@@ -1,6 +1,6 @@
 #pragma once
 #include "include/qgl_model_include.h"
-#include "include/Structures/qgl_ts_uset.h"
+#include "include/Structures/qgl_slim_uset.h"
 #include "include/Threads/qgl_basic_callback_dispatcher_traits.h"
 
 namespace qgl
@@ -13,6 +13,7 @@ namespace qgl
    template<
       typename CallbackFunctor,
       class ArgT,
+      class SRWTraits = qgl::srw_traits,
       class DispatcherTraits = basic_callback_dispatcher_traits>
    class callback_dispatcher_args final
    {
@@ -111,7 +112,7 @@ namespace qgl
       /*
        The callbacks to raise from the dispatcher thread.
        */
-      ts_uset<CallbackFunctor> m_callbacks;
+      slim_uset<CallbackFunctor, SRWTraits> m_callbacks;
 
       /*
        If this handle is signaled, then the dispatcher thread should shut down.

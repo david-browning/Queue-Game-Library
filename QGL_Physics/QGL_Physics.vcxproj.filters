@@ -38,7 +38,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="QGL_PhysicsRT.cpp" />
-    <ClCompile Include="qgl_bounding.cpp">
+    <ClCompile Include="src\Collision\qgl_bounding.cpp">
       <Filter>Source Files\Collision</Filter>
     </ClCompile>
   </ItemGroup>
@@ -70,9 +70,6 @@
     </ClInclude>
     <ClInclude Include="include\Rigid-Bodies\QGLRigidBody.h">
       <Filter>Header Files\Rigid-Bodies</Filter>
-    </ClInclude>
-    <ClInclude Include="include\World\QGLWorld.h">
-      <Filter>Header Files\World</Filter>
     </ClInclude>
     <ClInclude Include="include\Collision\qgl_static_bvh_tree.h">
       <Filter>Header Files\Collision</Filter>

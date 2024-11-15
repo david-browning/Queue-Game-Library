@@ -9,6 +9,7 @@ namespace qgl::components
 
    static constexpr guid CAMERA_GUID{ "EF8AE8C04FD541F788EB245570C85AD3" };
 
+#pragma pack(push, 1)
    struct alignas(alignof(DirectX::XMVECTOR)) CONST_CAMERA_BUFFER
    {
       DirectX::XMMATRIX view;
@@ -20,13 +21,13 @@ namespace qgl::components
          (2 * sizeof(DirectX::XMMATRIX)) - 
          (3 * sizeof(DirectX::XMVECTOR))];
    };
+#pragma pack(pop)
 
    /*
     Camera uses left-hand coordinates.
     */
-   class alignas(alignof(DirectX::XMMATRIX)) 
-   camera final : public gpu::const_buffer<CONST_CAMERA_BUFFER>,
-                  public game_component<camera>
+   class camera final : public gpu::const_buffer<CONST_CAMERA_BUFFER>,
+                        public game_component<camera>
    {
       public:
       /*

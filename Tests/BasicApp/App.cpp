@@ -308,8 +308,7 @@ void App::Run()
       geomAlignment);
    gpu::vert_allocator geomAllocator {
       qdev_p.get(),
-      mem::align_address(vBufferAllocInfo.bytes + iBufferAllocInfo.bytes,
-      vBufferAllocInfo.alignment),
+      geomBufferTotalSize,
       vBufferAllocInfo.alignment
    };
 

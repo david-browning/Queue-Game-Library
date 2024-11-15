@@ -2,6 +2,9 @@
 #include "include/qgl_physics_include.h"
 #include "include/Collision/qgl_collision_adapters.h"
 #include "include/Collision/qgl_bvh_tree_builder.h"
+#include <stack>
+#include <QGLStruct.h>
+#include <QGLModel.h>
 
 namespace qgl::physics
 {

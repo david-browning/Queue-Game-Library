@@ -1,6 +1,7 @@
 #pragma once
 #include "include/qgl_graphics_include.h"
 #include "include/Descriptors/qgl_vector_descriptor.h"
+#include <QGLMath.h>
 
 namespace qgl::graphics::shaders
 {

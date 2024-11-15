@@ -1,8 +1,8 @@
 #pragma once
 #include "include/qgl_model_include.h"
-#include "include/Structures/qgl_ts_vector.h"
-#include "include/Structures/qgl_ts_umap.h"
 #include "include/Interfaces/qgl_icommand.h"
+#include "include/Structures/qgl_slim_vector.h"
+#include "include/Structures/qgl_slim_umap.h"
 
 namespace qgl
 {
@@ -55,7 +55,7 @@ namespace qgl
     The template parameters specifies if the console uses single or multi-byte
     characters.
     */
-   template<typename CharT>
+   template<typename CharT, class SRWTraits>
    class basic_console final
    {
       public:
@@ -205,11 +205,8 @@ namespace qgl
 
       private:
       std::reference_wrapper<err_callback> m_errCallback;
-      ts_vector<str_type> m_lines;
-      ts_vector<cout_callback> m_coutCallbacks;
-      ts_umap<str_type, std::reference_wrapper<iconsole_cmd>> m_cinCmds;
+      slim_vector<str_type, SRWTraits> m_lines;
+      slim_vector<cout_callback, SRWTraits> m_coutCallbacks;
+      slim_umap<str_type, std::reference_wrapper<iconsole_cmd>, SRWTraits> m_cinCmds;
    };
-
-   using console = typename basic_console<char>;
-   using wconsole = typename basic_console<wchar_t>;
 }

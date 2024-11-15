@@ -160,53 +160,67 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\Components\qgl_component.h" />
+    <ClInclude Include="include\Components\qgl_icomponent_metadata.h" />
+    <ClInclude Include="include\Components\qgl_component_params.h" />
+    <ClInclude Include="include\Components\qgl_icomponent_param_metadata.h" />
+    <ClInclude Include="include\Components\qgl_icomponent_provider.h" />
+    <ClInclude Include="include\Components\qgl_model_component_provider.h" />
     <ClInclude Include="include\Errors\qgl_error_reporter.h" />
     <ClInclude Include="include\Errors\qgl_e_checkers.h" />
     <ClInclude Include="include\Impl\fast_hash_impl.h" />
-    <ClInclude Include="include\Impl\qgl_mem_helpers_impl.h" />
+    <ClInclude Include="include\Impl\qgl_component_params_impl.h" />
     <ClInclude Include="include\Impl\qgl_misc_helpers_impl.h" />
-    <ClInclude Include="include\Interfaces\qgl_icontent_map.h" />
+    <ClInclude Include="include\Interfaces\qgl_basic_command.h" />
     <ClInclude Include="include\Interfaces\qgl_icommand.h" />
-    <ClInclude Include="include\Interfaces\qgl_icontent_type.h" />
     <ClInclude Include="include\Interfaces\qgl_interface.h" />
+    <ClInclude Include="include\Interfaces\qgl_module.h" />
     <ClInclude Include="include\Memory\qgl_basic_heap.h" />
+    <ClInclude Include="include\Memory\qgl_bit_helpers.h" />
     <ClInclude Include="include\Memory\qgl_flags.h" />
     <ClInclude Include="include\Memory\qgl_heap_traits.h" />
-    <ClInclude Include="include\Memory\qgl_mem.h" />
+    <ClInclude Include="include\Memory\qgl_hex.h" />
     <ClInclude Include="include\Memory\qgl_mem_helpers.h" />
-    <ClInclude Include="include\Memory\qgl_mem_traits.h" />
     <ClInclude Include="include\Observer-Observable\qgl_callback_observer.h" />
     <ClInclude Include="include\Observer-Observable\qgl_iobserver.h" />
     <ClInclude Include="include\Observer-Observable\qgl_subject.h" />
-    <ClInclude Include="include\qgl_component.h" />
+    <ClInclude Include="include\Parsing\qgl_parse_constants.h" />
+    <ClInclude Include="include\Parsing\qgl_parse_helpers.h" />
     <ClInclude Include="include\qgl_console.h" />
-    <ClInclude Include="include\qgl_endian.h" />
     <ClInclude Include="include\qgl_guid.h" />
     <ClInclude Include="include\qgl_map_key_iterator.h" />
     <ClInclude Include="include\qgl_misc_helpers.h" />
     <ClInclude Include="include\qgl_model_include.h" />
-    <ClInclude Include="include\qgl_platform_abstraction.h" />
+    <ClInclude Include="include\qgl_not_cached_ex.h" />
     <ClInclude Include="include\qgl_version.h" />
     <ClInclude Include="include\Structures\qgl_flyweight.h" />
     <ClInclude Include="include\Structures\qgl_handle_map.h" />
     <ClInclude Include="include\Structures\qgl_basic_graph.h" />
     <ClInclude Include="include\Structures\qgl_basic_tree_map.h" />
     <ClInclude Include="include\Structures\qgl_fixed_buffer.h" />
-    <ClInclude Include="include\Structures\qgl_tree_helpers.h" />
-    <ClInclude Include="include\Structures\qgl_ts_list.h" />
-    <ClInclude Include="include\Structures\qgl_ts_umap.h" />
-    <ClInclude Include="include\Structures\qgl_ts_uset.h" />
-    <ClInclude Include="include\Structures\qgl_ts_vector.h" />
+    <ClInclude Include="include\Structures\qgl_lru_cache.h" />
+    <ClInclude Include="include\Structures\qgl_slim_list.h" />
+    <ClInclude Include="include\Structures\qgl_slim_umap.h" />
+    <ClInclude Include="include\Structures\qgl_slim_vector.h" />
+    <ClInclude Include="include\Structures\qgl_slim_uset.h" />
     <ClInclude Include="include\Structures\qgl_xform_tree.h" />
     <ClInclude Include="include\Threads\qgl_basic_callback_dispatcher_traits.h" />
     <ClInclude Include="include\Threads\qgl_callback_dispatcher.h" />
     <ClInclude Include="include\Threads\qgl_callback_dispatcher_args.h" />
+    <ClInclude Include="include\Threads\qgl_srw_traits.h" />
+    <ClInclude Include="include\Threads\qgl_win32_srw_traits.h" />
     <ClInclude Include="include\Timing\qgl_timer.h" />
     <ClInclude Include="include\Timing\qgl_time_helpers.h" />
     <ClInclude Include="include\Timing\qgl_time_state.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="QGLMemory.h" />
     <ClInclude Include="QGLModel.h" />
+    <ClInclude Include="QGLPlatform.h" />
+    <ClInclude Include="QGLStruct.h" />
+    <ClInclude Include="QGLTraits.h" />
     <ClInclude Include="QGL_ModelRT.h" />
+    <ClInclude Include="src\Components\qgl_dynamic_component_metadata.h" />
+    <ClInclude Include="src\Components\qgl_dynamic_component_param_metadata.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Generated Files\module.g.cpp" />
@@ -215,7 +229,10 @@
     </ClCompile>
     <ClCompile Include="qgl_misc_helpers.cpp" />
     <ClCompile Include="QGL_ModelRT.cpp" />
-    <ClCompile Include="src\Interfaces\qgl_icontent_map.cpp" />
+    <ClCompile Include="src\Components\qgl_component_locator.cpp" />
+    <ClCompile Include="src\Components\qgl_icomponent_metadata.cpp" />
+    <ClCompile Include="src\Components\qgl_model_component_provider.cpp" />
+    <ClCompile Include="src\Interfaces\qgl_module.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -227,6 +244,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.220131.2\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.220131.2\build\native\Microsoft.Windows.CppWinRT.targets')" />
+    <Import Project="..\packages\nlohmann.json.3.11.2\build\native\nlohmann.json.targets" Condition="Exists('..\packages\nlohmann.json.3.11.2\build\native\nlohmann.json.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -234,5 +252,6 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.220131.2\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.220131.2\build\native\Microsoft.Windows.CppWinRT.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.220131.2\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.CppWinRT.2.0.220131.2\build\native\Microsoft.Windows.CppWinRT.targets'))" />
+    <Error Condition="!Exists('..\packages\nlohmann.json.3.11.2\build\native\nlohmann.json.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\nlohmann.json.3.11.2\build\native\nlohmann.json.targets'))" />
   </Target>
 </Project>

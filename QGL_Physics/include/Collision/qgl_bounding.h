@@ -1,5 +1,8 @@
 #pragma once
 #include "include/qgl_physics_include.h"
+#include <DirectXMath.h>
+#include <DirectXCollision.h>
+#include <QGLMath.h>
 
 namespace qgl::physics
 {
@@ -43,22 +46,22 @@ namespace qgl::physics
          //Calculate the plane equation for the vertex.
          //Do this 6 times: For +x, -x, +y, -y, +z, -z
          auto xPPlane = XMPlaneFromPointNormal(v, yzN);
-         xMax = std::max(xMax, DirectX::XMVectorGetW(xPPlane));
+         xMax = std::max<float>(xMax, DirectX::XMVectorGetW(xPPlane));
 
          auto xNPlane = XMPlaneFromPointNormal(v, -yzN);
-         xMin = std::min(xMin, DirectX::XMVectorGetW(xNPlane));
+         xMin = std::min<float>(xMin, DirectX::XMVectorGetW(xNPlane));
 
          auto yPPlane = XMPlaneFromPointNormal(v, xzN);
-         yMax = std::max(yMax, DirectX::XMVectorGetW(yPPlane));
+         yMax = std::max<float>(yMax, DirectX::XMVectorGetW(yPPlane));
 
          auto yNPlane = XMPlaneFromPointNormal(v, -xzN);
-         yMin = std::min(yMin, DirectX::XMVectorGetW(yNPlane));
+         yMin = std::min<float>(yMin, DirectX::XMVectorGetW(yNPlane));
 
          auto zPPlane = XMPlaneFromPointNormal(v, xyN);
-         zMax = std::max(zMax, DirectX::XMVectorGetW(zPPlane));
+         zMax = std::max<float>(zMax, DirectX::XMVectorGetW(zPPlane));
 
          auto zNPlane = XMPlaneFromPointNormal(v, -xyN);
-         zMin = std::min(zMin, DirectX::XMVectorGetW(zNPlane));
+         zMin = std::min<float>(zMin, DirectX::XMVectorGetW(zNPlane));
 
          first++;
       }

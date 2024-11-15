@@ -1,13 +1,14 @@
 #pragma once
 #include "include/qgl_model_include.h"
-#include "include/Structures/qgl_ts_umap.h"
-#include "include/qgl_map_key_iterator.h"
+#include "include/Structures/qgl_slim_umap.h"
+#include <mutex>
+#include <atomic>
 
 namespace qgl
 {
    using hndlmap_t = typename uintptr_t;
 
-   template<typename T, typename HandleT = hndlmap_t>
+   template<class T, class SRWTraits, class HandleT = hndlmap_t>
    class handle_map final
    {
       public:
@@ -107,19 +108,14 @@ namespace qgl
          return m_handles.at(h);
       }
 
-      auto cbegin() noexcept
+      auto cbegin() const
       {
-         return map_key_const_iterator<HandleT, decltype(m_handles)>{
-            m_handles
-         };
+         return m_handles.cbegin();
       }
 
-      auto cend() noexcept
+      auto cend() const
       {
-         return map_key_const_iterator<HandleT, decltype(m_handles)>{
-            m_handles,
-            nullptr
-         };
+         return m_handles.cend();
       }
 
       private:
@@ -133,6 +129,6 @@ namespace qgl
       /*
        Maps handles to the actual resource.
        */
-      ts_umap<HandleT, T> m_handles;
+      slim_umap<HandleT, T, SRWTraits> m_handles;
    };
 }

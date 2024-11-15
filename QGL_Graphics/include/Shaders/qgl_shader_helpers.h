@@ -60,8 +60,8 @@ namespace qgl::graphics::shaders
     Checks the error blob and and prints the error using the reporter.
     Both b_p and e_p can be nullptr.
     */
-   template<typename CharT>
-   void check_and_print(ishader_blob* b_p, error_reporter<CharT>* e_p) noexcept
+   template<typename CharT, class SRWTraits>
+   void check_and_print(ishader_blob* b_p, error_reporter<CharT, SRWTraits>* e_p) noexcept
    {
 #ifdef DEBUG
       if (b_p)
@@ -98,11 +98,11 @@ namespace qgl::graphics::shaders
     Compiles the source data using "params" and returns a buffer of the 
     compiled code.
     */
-   template<typename CharT = char>
+   template<class SRWTraits, typename CharT = char>
    inline shader_data compile_shader(
       const shader_data& source,
       const shader_compile_params& params,
-      error_reporter<CharT>* e = nullptr)
+      error_reporter<CharT, SRWTraits>* e = nullptr)
    {
       pptr<ishader_blob> blob = nullptr;
       pptr<ishader_blob> error = nullptr;
@@ -123,11 +123,11 @@ namespace qgl::graphics::shaders
     Compiles the shader file using "params" and returns a buffer of the
     compiled code.
     */
-   template<typename CharT = char>
+   template<class SRWTraits, typename CharT = char>
    inline shader_data compile_shader(
       const qgl::sys_str& file,
       const shader_compile_params& params,
-      error_reporter<CharT>* e = nullptr)
+      error_reporter<CharT, SRWTraits>* e = nullptr)
    {
       pptr<ishader_blob> blob = nullptr;
       pptr<ishader_blob> error = nullptr;
@@ -147,11 +147,11 @@ namespace qgl::graphics::shaders
     Compiles the shader library source code and returns a pointer to the 
     compiled code.
     */
-   template<typename CharT = char>
+   template<typename CharT = char, class SRWTraits = srw_traits>
    inline shader_data compile_shader_library(
       const shader_data& source,
       const shader_compile_params& params,
-      error_reporter<CharT>* e = nullptr)
+      error_reporter<CharT, SRWTraits>* e = nullptr)
    {
       pptr<ishader_blob> blob = nullptr;
       pptr<ishader_blob> error = nullptr;
@@ -171,11 +171,11 @@ namespace qgl::graphics::shaders
    /*
     Compiles the shader library file and return a buffer to the compiled code.
     */
-   template<typename CharT = char>
+   template<typename CharT = char, class SRWTraits = srw_traits>
    inline shader_data compile_shader_library(
       const qgl::sys_str& file,
       const shader_compile_params& params,
-      error_reporter<CharT>* e = nullptr)
+      error_reporter<CharT, SRWTraits>* e = nullptr)
    {
       pptr<ishader_blob> blob = nullptr;
       pptr<ishader_blob> error = nullptr;

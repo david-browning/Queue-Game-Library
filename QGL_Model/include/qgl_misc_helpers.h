@@ -2,10 +2,65 @@
 #include "include/qgl_model_include.h"
 #include "include/Impl/qgl_misc_helpers_impl.h"
 #include "include/Impl/fast_hash_impl.h"
+#include <execution>
 #include <gamingdeviceinformation.h>
 
 namespace qgl
 {
+   namespace tree
+   {
+      /*
+       Given a k-d tree stored in a pre-order, returns the index of the i'th
+       child of the parent node. The first child's index is 1 and the k'th
+       child's index is k.
+       */
+      template<typename IndexT, IndexT K>
+      constexpr IndexT kd_ichild(const IndexT parent, const IndexT ith)
+      {
+         static_assert(K != 0, "K cannot be zero.");
+         return K * parent + ith;
+      }
+
+      /*
+       Given a k-d tree stored in a pre-order, returns the index of the node's
+       parent node.
+       K cannot be 0.
+       */
+      template<typename IndexT, IndexT K>
+      constexpr IndexT kd_parent(const IndexT node)
+      {
+         static_assert(K != 0, "K cannot be zero.");
+         return (node - 1) / K;
+      }
+
+      /*
+       Specialization of kd_parent for a binary tree.
+       */
+      template<typename IndexT>
+      constexpr IndexT parent_index(const IndexT i)
+      {
+         return kd_parent<IndexT, 2>(i);
+      }
+
+      /*
+       Specialization of kd_ichild for a binary tree.
+       */
+      template<typename IndexT>
+      constexpr IndexT left_index(const IndexT i)
+      {
+         return kd_ichild<IndexT, 2>(i, static_cast<IndexT>(1));
+      }
+
+      /*
+       Specialization of kd_ichild for a binary tree.
+       */
+      template<typename IndexT>
+      constexpr IndexT right_index(const IndexT i)
+      {
+         return kd_ichild<IndexT, 2>(i, static_cast<IndexT>(2));
+      }
+   }
+
    /*
     Alternates the items in a sorted list such that the first element is the
     largest and second element is the smallest.
@@ -17,7 +72,7 @@ namespace qgl
    template<
       class ExecutionPolicy,
       class BidirIt1>
-      void alternate(ExecutionPolicy&& policy, BidirIt1 first, BidirIt1 last)
+   void alternate(ExecutionPolicy&& policy, BidirIt1 first, BidirIt1 last)
    {
       impl::alternate(policy, first, last,
          typename std::iterator_traits<BidirIt1>::iterator_category());
@@ -63,8 +118,9 @@ namespace qgl
    } GAMING_DEVICE_DEVICE_ID;
 #endif
 
-   enum class hw_types : uint32_t
+   enum class hw_types : int32_t
    {
+      hw_type_error = -1,
       hw_type_pc = GAMING_DEVICE_DEVICE_ID_NONE,
       hw_type_xbox_one = GAMING_DEVICE_DEVICE_ID_XBOX_ONE,
       hw_type_xbox_one_s = GAMING_DEVICE_DEVICE_ID_XBOX_ONE_S,
@@ -75,5 +131,5 @@ namespace qgl
    /*
     Returns the type of hardware the engine is running on.
     */
-   extern "C" QGL_MODEL_API hw_types hw_type();
+   extern "C" QGL_MODEL_API hw_types QGL_CC hw_type() noexcept;
 }
