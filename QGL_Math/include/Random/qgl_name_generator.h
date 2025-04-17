@@ -1,5 +1,6 @@
 #pragma once
 #include "include/qgl_math_includes.h"
+#include "include/Random/qgl_random_helpers.h"
 
 namespace qgl::math::random
 {

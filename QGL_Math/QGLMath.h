@@ -12,4 +12,3 @@
 #include "include/qgl_tile_helpers.h"
 
 #include "include/Random/qgl_name_generator.h"
-#include "include/Random/qgl_stat_generator.h"

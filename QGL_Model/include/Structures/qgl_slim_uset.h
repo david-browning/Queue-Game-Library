@@ -114,10 +114,7 @@ namespace qgl
       /*
        Acquires a shared lock and returns current maximum load factor.
        */
-      float max_load_factor() const
-      {
-         return m_maxLoadFactor.load();
-      }
+      float max_load_factor() const;
 
       /*
        Acquires am exclusive lock and sets the maximum load factor.
