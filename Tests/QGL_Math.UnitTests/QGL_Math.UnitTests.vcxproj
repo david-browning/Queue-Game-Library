@@ -7,7 +7,7 @@
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <AppContainerApplication>true</AppContainerApplication>
     <ApplicationType>Windows Store</ApplicationType>
-    <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0.19041.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0.22621.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.19041.0</WindowsTargetPlatformMinVersion>
     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
     <UnitTestPlatformVersion Condition="'$(UnitTestPlatformVersion)' == ''">15.0</UnitTestPlatformVersion>
@@ -226,6 +226,7 @@
     <ClCompile Include="dx_comparator_tests.cpp" />
     <ClCompile Include="math_func_tests.cpp" />
     <ClCompile Include="Tests\decimal_tests.cpp" />
+    <ClCompile Include="Tests\random_tests.cpp" />
     <ClCompile Include="Tests\rational_number_tests.cpp" />
     <ClCompile Include="Tests\rectangle_tests.cpp" />
     <ClCompile Include="Tests\tile_helper_tests.cpp" />

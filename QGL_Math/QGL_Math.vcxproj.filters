@@ -23,6 +23,9 @@
     <Filter Include="Source Files\Shapes">
       <UniqueIdentifier>{058d14eb-0c14-4d09-a8de-9582716bcc78}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Random">
+      <UniqueIdentifier>{9f55634d-5bbb-4b7d-af04-a5696ceadaf9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp">
@@ -79,6 +82,12 @@
     </ClInclude>
     <ClInclude Include="include\qgl_tile_helpers.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Random\qgl_name_generator.h">
+      <Filter>Header Files\Random</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Random\qgl_random_helpers.h">
+      <Filter>Header Files\Random</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

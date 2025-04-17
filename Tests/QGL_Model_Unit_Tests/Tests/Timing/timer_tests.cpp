@@ -69,7 +69,8 @@ namespace QGL_Model_Unit_Tests
 
          timer<int> t;
          auto tState{ t.state() };
-         //std::this_thread::sleep_for(30ms);
+         t.tick();
+         std::this_thread::sleep_for(30ms);
          t.tick();
          auto tickedState{ t.state() };
          Assert::IsTrue(tickedState > tState,
