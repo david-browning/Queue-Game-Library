@@ -226,6 +226,7 @@
     <ClCompile Include="dx_comparator_tests.cpp" />
     <ClCompile Include="math_func_tests.cpp" />
     <ClCompile Include="Tests\decimal_tests.cpp" />
+    <ClCompile Include="Tests\random_tests.cpp" />
     <ClCompile Include="Tests\rational_number_tests.cpp" />
     <ClCompile Include="Tests\rectangle_tests.cpp" />
     <ClCompile Include="Tests\tile_helper_tests.cpp" />
