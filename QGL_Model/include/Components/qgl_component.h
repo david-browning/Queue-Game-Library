@@ -77,7 +77,7 @@ namespace qgl::components
    class game_context
    {
       public:
-      using TickT = typename uint64_t;
+      using TickT = typename int64_t;
       const qgl::time_state<TickT>& timer_state() const noexcept
       {
          return m_timerState;
