@@ -6,75 +6,57 @@ using namespace qgl;
 
 namespace QGL_Model_Unit_Tests
 {
-   TEST_CLASS(TimerTests)
+   TEST_CLASS(timer_tests)
    {
+      using TickT = int64_t;
+      using timer_t = timer<TickT>;
+      using time_state_t = time_state<TickT>;
+
+      static constexpr TickT one_second = timer_t::TICKS_PER_SECOND;
+
       public:
-      TEST_METHOD(CopyConstructor)
+
+      TEST_METHOD(single_tick_advances_and_calls_functor)
       {
-         timer<int> t;
-         t.tick();
+         timer_t t(timer_t::TICK_60_HZ);
+         int updatesCalled = 0;
 
-         // Make a copy of the timer.
-         timer<int> tCopy {t};
+         Sleep(20); // ~1 update frame
 
-         // Check that the states are the same.
-         auto tState{ t.state() };
-         auto tCopyState{ tCopy.state() };
+         t.tick([&]
+         {
+            updatesCalled++;
+         });
 
-         Assert::IsTrue(tState == tCopyState,
-                        L"States are not the same.");
+         auto state = t.state();
+         Assert::IsTrue(updatesCalled > 0, L"Update functor should be called at least once");
+         Assert::IsTrue(state.delta_t() > 0, L"delta_t should be positive after tick");
+         Assert::IsTrue(state.ticks() > 0, L"ticks should be positive after tick");
       }
 
-      TEST_METHOD(AssignmentOperator)
+      TEST_METHOD(multiple_update_calls)
       {
-         timer<int> t;
-         t.tick();
+         timer_t t(timer_t::TICK_60_HZ);
+         int updatesCalled = 0;
 
-         // Make a copy of the timer.
-         auto tCopy = t;
+         Sleep(40); // enough for about 2-3 ticks
 
-         // Check that the states are the same.
-         auto tState{ t.state() };
-         auto tCopyState{ tCopy.state() };
+         t.tick([&]
+         {
+            updatesCalled++;
+         });
 
-         Assert::IsTrue(tState == tCopyState,
-                        L"States are not the same.");
-
+         Assert::IsTrue(updatesCalled >= 2, L"Update functor should be called multiple times if enough time has passed");
       }
 
-      TEST_METHOD(MoveConstructor)
+      TEST_METHOD(empty_lambda_safe)
       {
-         timer<int> t;
-         t.tick();
-
-         // Make a copy of the timer.
-         timer<int> tCopy {t};
-         timer<int> tMove {std::move(tCopy)};
-
-
-         // Check that the states are the same.
-         auto tState{ t.state() };
-         auto tCopyState{ tMove.state() };
-
-         Assert::IsTrue(tState == tCopyState,
-                        L"States are not the same.");
-      }
-
-      TEST_METHOD(Tick)
-      {
-         using namespace std::chrono_literals;
-
-         // How do you test a timer?
-         // Make sure that the timer advanced between two advances of tick?
-
-         timer<int> t;
-         auto tState{ t.state() };
-         t.tick();
-         std::this_thread::sleep_for(30ms);
-         t.tick();
-         auto tickedState{ t.state() };
-         Assert::IsTrue(tickedState > tState,
-                        L"The future state is not less than the past state.");
+         timer_t t(timer_t::TICK_60_HZ);
+         Sleep(16);
+         // should not crash or throw
+         t.tick([] {});
+         auto state = t.state();
+         Assert::IsTrue(state.ticks() > 0, L"tick with empty lambda should still advance state");
       }
    };
 }

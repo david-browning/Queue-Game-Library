@@ -4,113 +4,94 @@
 namespace qgl
 {
    template<typename TickT>
-   struct time_state
+   class time_state
    {
-      public:
-      time_state(TickT deltaT,
-                 TickT totalT,
-                 UINT framesps) :
-         m_deltaTicks(deltaT),
-         m_totalTicks(totalT),
-         m_fps(framesps)
-      {
+      static_assert(std::is_signed<TickT>::value &&
+                    std::is_integral<TickT>::value,
+                    "TickT must be a signed integral.");
 
+      public:
+      using this_type = time_state<TickT>;
+
+      time_state() noexcept = default;
+
+      time_state(TickT deltaTicks, TickT totalTicks, uint32_t framesPerSecond) noexcept
+         : m_delta(deltaTicks), m_total(totalTicks), m_fps(framesPerSecond)
+      {
       }
 
-      /*
-       Copy Constructor
-       */
-      time_state(const time_state& c) = default;
+      time_state(const this_type& other) = default;
+      time_state(this_type&& other) noexcept = default;
 
-      /*
-       Move Constructor
-       */
-      time_state(time_state&& r) = default;
+      ~time_state() = default;
 
-      /*
-       Destructor
-       */
-      ~time_state() noexcept = default;
+      this_type& operator=(this_type other) noexcept
+      {
+         swap(*this, other);
+         return *this;
+      }
 
-      /*
-       Returns the number of ticks between the last two times the timer was
-       updated.
-       */
       TickT delta_t() const noexcept
       {
-         return m_deltaTicks;
+         return m_delta;
       }
 
-      /*
-       Returns the total number of ticks that the timer has been running.
-       */
       TickT ticks() const noexcept
       {
-         return m_totalTicks;
+         return m_total;
       }
 
-      /*
-       Returns the frames per second.
-       */
-      UINT fps() const noexcept
+      uint32_t fps() const noexcept
       {
          return m_fps;
       }
 
-      /*
-       Swaps the contents of first and last.
-       */
-      friend void swap(time_state& first,
-                       time_state& second) noexcept
+      // Comparison operators
+      friend bool operator==(const this_type& a, const this_type& b) noexcept
+      {
+         return a.m_delta == b.m_delta &&
+            a.m_total == b.m_total &&
+            a.m_fps == b.m_fps;
+      }
+
+      friend bool operator<(const this_type& a, const this_type& b) noexcept
+      {
+         return std::tie(a.m_total, a.m_delta, a.m_fps) <
+            std::tie(b.m_total, b.m_delta, b.m_fps);
+      }
+
+      friend void swap(this_type& a, this_type& b) noexcept
       {
          using std::swap;
-         swap(first.m_deltaTicks, second.m_deltaTicks);
-         swap(first.m_totalTicks, second.m_totalTicks);
+         swap(a.m_delta, b.m_delta);
+         swap(a.m_total, b.m_total);
+         swap(a.m_fps, b.m_fps);
       }
 
-      /*
-       Assignment operator.
-       */
-      time_state& operator=(time_state r) noexcept
+      // Derived comparison operators
+      friend bool operator!=(const this_type& a, const this_type& b) noexcept
       {
-         swap(*this, r);
-         return *this;
+         return !(a == b);
       }
 
-      bool operator==(const time_state& r) noexcept
+      friend bool operator>(const this_type& a, const this_type& b) noexcept
       {
-         return m_deltaTicks == r.m_deltaTicks &&
-            m_totalTicks == r.m_totalTicks;
+         return b < a;
       }
 
-      bool operator!=(const time_state& r) noexcept
+      friend bool operator<=(const this_type& a, const this_type& b) noexcept
       {
-         return !(*this == r);
+         return !(b < a);
       }
 
-      bool operator<(const time_state& r) noexcept
+      friend bool operator>=(const this_type& a, const this_type& b) noexcept
       {
-         return m_totalTicks < r.m_totalTicks;
-      }
-
-      bool operator>(const time_state& r) noexcept
-      {
-         return m_totalTicks > r.m_totalTicks;
-      }
-
-      bool operator<=(const time_state& r) noexcept
-      {
-         return !(*this > r);
-      }
-
-      bool operator>=(const time_state& r) noexcept
-      {
-         return !(*this < r);
+         return !(a < b);
       }
 
       private:
-      TickT m_deltaTicks;
-      TickT m_totalTicks;
-      UINT m_fps;
+      TickT m_delta = 0;
+      TickT m_total = 0;
+      uint32_t m_fps = 0;
    };
 }
