@@ -75,6 +75,21 @@
     <ClCompile Include="Tests\Components\module_components_tests.cpp">
       <Filter>Tests\Components</Filter>
     </ClCompile>
+    <ClCompile Include="Tests\Structures\lru_cache_tests.cpp">
+      <Filter>Tests\Structures</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Structures\slim_list_tests.cpp">
+      <Filter>Tests\Structures</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Structures\slim_umap_tests.cpp">
+      <Filter>Tests\Structures</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Structures\slim_uset_tests.cpp">
+      <Filter>Tests\Structures</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Structures\slim_vector_tests.cpp">
+      <Filter>Tests\Structures</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
