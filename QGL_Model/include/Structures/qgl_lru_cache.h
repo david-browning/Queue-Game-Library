@@ -7,17 +7,115 @@
 
 namespace qgl
 {
+   /*
+    A least recently used cache. Items in the cache can be accessed via a key.
+    The "front" item was the most recently used.
+
+    Iterators are provided but they are not thread safe.
+    */
    template<
       class Key,
       class T,
-      class SRWTraits,
       class Size = qgl::get_size<T>,
       class Hash = std::hash<Key>,
-      class KeyEqual = std::equal_to<Key>,
-      class Allocator = std::allocator<std::pair<const Key, T>>>
+      class KeyEqual = std::equal_to<Key>>
    class lru_cache final
    {
       public:
+
+      using lru_list = typename std::list<Key>;
+      using lru_map = typename std::unordered_map<
+         Key,
+         T,
+         Hash,
+         KeyEqual>;
+
+      template<bool IsConst>
+      class basic_iterator
+      {
+         public:
+         using list_iterator = typename std::conditional<
+            IsConst,
+            typename lru_list::const_iterator,
+            typename lru_list::iterator>::type;
+
+         using map_type = typename std::conditional<
+            IsConst,
+            const lru_map,
+            lru_map>::type;
+
+         using mapped_reference = typename std::conditional<
+            IsConst,
+            const T&,
+            T&>::type;
+
+         using value_type = std::pair<const Key&, mapped_reference>;
+         using reference = value_type;
+         using pointer = void; // optional; not used in range-based for
+
+         // Constructor
+         basic_iterator(list_iterator listIt, map_type* map_p)
+            : m_map_p(map_p), m_curPos(listIt)
+         {
+         }
+
+         // Copy/move
+         basic_iterator(const basic_iterator&) = default;
+         basic_iterator(basic_iterator&&) = default;
+         ~basic_iterator() = default;
+
+         basic_iterator& operator=(basic_iterator r) noexcept
+         {
+            swap(*this, r);
+            return *this;
+         }
+
+         friend void swap(basic_iterator& l, basic_iterator& r) noexcept
+         {
+            using std::swap;
+            swap(l.m_map_p, r.m_map_p);
+            swap(l.m_curPos, r.m_curPos);
+         }
+
+         // Dereference
+         reference operator*() const
+         {
+            auto& key = *m_curPos;
+            auto& value = m_map_p->at(key);
+            return reference{ key, value };
+         }
+
+         // Iteration
+         basic_iterator& operator++()
+         {
+            ++m_curPos;
+            return *this;
+         }
+
+         basic_iterator& operator--()
+         {
+            --m_curPos;
+            return *this;
+         }
+
+         bool operator==(const basic_iterator& r) const
+         {
+            return m_curPos == r.m_curPos;
+         }
+
+         bool operator!=(const basic_iterator& r) const
+         {
+            return !(*this == r);
+         }
+
+         private:
+         map_type* m_map_p;
+         list_iterator m_curPos;
+      };
+
+      using iterator = typename basic_iterator<false>;
+      using const_iterator = typename basic_iterator<true>;
+
       lru_cache(size_t maxSize,
                 Size szFunctor = Size()) :
          m_capacity(maxSize),
@@ -30,12 +128,12 @@ namespace qgl
       /*
        Copy constructor.
        */
-      lru_cache(const lru_cache&) = default;
+      lru_cache(const lru_cache& r) = default;
 
       /*
        Move constructor.
        */
-      lru_cache(lru_cache&&) = default;
+      lru_cache(lru_cache&& r) = default;
 
       /*
        Destructor
@@ -82,7 +180,7 @@ namespace qgl
        */
       [[nodiscard]] bool full() const noexcept
       {
-         return capacity() > size();
+         return size() >= capacity();
       }
 
       /*
@@ -90,61 +188,37 @@ namespace qgl
        */
       bool cached(const Key& k) const noexcept
       {
-         auto pos = m_cache.find(k);
-         return pos != m_cache.end();
+         return m_cache.count(k) > 0;
       }
 
       /*
-       Gets a reference to the cached object.
+       Gets a reference to the cached object and moves it to the front of the 
+       cache.
        Throws qgl::not_cached if the object is not cached.
        */
       [[nodiscard]] const T& get(const Key& k) const
       {
-         // If is cached.
-         auto pos = m_cache.find(k);
-         if (pos != m_cache.end())
+         if (m_cache.count(k) == 0)
          {
-            // Move the key to the front of the LRU list
-            m_lru.splice(m_lru.begin(), m_lru, pos->second.second);
-            return pos->second.first;
+            throw qgl::not_cached<Key>{k};
          }
 
-         throw not_cached{k};
+         m_lru.remove(k);
+         m_lru.push_front(k);
+         return m_cache.at(k);
       }
 
+      /*
+       Puts an item in the front of the cache and evicts the last item if there
+       is no more room.
+       */
       void put(const Key& k, const T& val)
       {
-         // How much space will inserting the object take?
-         auto valSize = m_sizeFunctor(val);
-
-         auto it = m_cache.find(k);
-         if (it != m_cache.end())
-         {
-            // Item already cached. Update its value and move to front of the
-            // cache.
-            auto existingSize = m_sizeFunctor(it->second.first);
-
-            // Check if need to evict things to make room.
-            if (valSize > existingSize)
-            {
-               make_space();
-            }
-
-            // Update the value in the cache.
-            it->second.first = val;
-            m_size = m_size - existingSize + m_sizeFunctor(val);
-            m_lru.splice(m_lru.begin(), m_lru, it->second.second);
-         }
-         else
-         {
-            // Insert object into the cache.
-            make_space();
-
-            // Put the item in the front of the cache.
-            m_lru.push_front(k);
-            m_cache[k] = { val, m_lru.begin() };
-            m_size += valSize;
-         }
+         auto objectSize = m_sizeFunctor(val);
+         make_space(objectSize);
+         m_lru.push_front(k);
+         m_cache[k] = val;
+         m_size += objectSize;
       }
 
       /*
@@ -152,21 +226,10 @@ namespace qgl
        */
       void evict_back() noexcept
       {
-         if (m_lru.size() > 0)
-         {
-            // Key to remove
-            auto backKey = m_lru.back();
-
-            // Cached item to remove
-            auto evictPos = m_cache.find(backKey);
-
-            // Decrease the size of the cache.
-            m_size -= m_sizeFunctor(evictPos->second.first);
-
-            // Remove key from the cache and LRU.
-            m_cache.erase(evictPos);
-            m_lru.pop_back();
-         }
+         auto key = m_lru.back();
+         m_size -= m_sizeFunctor(m_cache[key]);
+         m_cache.erase(key);
+         m_lru.pop_back();
       }
 
       /*
@@ -174,7 +237,8 @@ namespace qgl
        */
       const T& front() const
       {
-         return m_cache[m_lru.front()];
+         auto key = m_lru.front();
+         return m_cache.at(key);
       }
 
       /*
@@ -182,19 +246,41 @@ namespace qgl
        */
       const T& back() const
       {
-         return m_cache[m_lru.back()];
+         auto key = m_lru.back();
+         return m_cache.at(key);
+      }
+
+      iterator begin()
+      {
+         return basic_iterator<false>(m_lru.begin(), &m_cache);
+      }
+
+      iterator end()
+      {
+         return basic_iterator<false>(m_lru.end(), &m_cache);
+      }
+
+      const_iterator begin() const
+      {
+         return basic_iterator<true>(m_lru.begin(), &m_cache);
+      }
+
+      const_iterator end() const
+      {
+         return basic_iterator<true>(m_lru.end(), &m_cache);
+      }
+
+      const_iterator cbegin() const
+      {
+         return basic_iterator<true>(m_lru.begin(), &m_cache);
+      }
+
+      const_iterator cend() const
+      {
+         return basic_iterator<true>(m_lru.end(), &m_cache);
       }
 
       private:
-      using lru_list = typename slim_list<Key, SRWTraits>;
-      using lru_map = typename slim_umap<
-         Key,
-         std::pair<T, typename lru_list::iterator>,
-         SRWTraits,
-         Hash,
-         KeyEqual,
-         Allocator>;
-
       /*
        Evicts items until there is "space" amount of free space in the cache.
        */
@@ -215,8 +301,9 @@ namespace qgl
       /*
        List of keys that were recently used. The closer to the front of the list,
        the more recently the key was referenced.
+       Needs to be mutable so const operations can update the list order.
        */
-      lru_list m_lru;
+      mutable lru_list m_lru;
 
       /*
        Maps a key to the cached item.

@@ -4,6 +4,14 @@
 
 namespace qgl::mem
 {
+   /*
+    A heap is a collection of blocks of contiguous memory. 
+    These blocks may not be next to each other in memory but the contents of 
+    each block will be contiguous.
+    Blocks of memory can be allocated and deallocated with the allocate() and 
+    deallocate() functions.
+    It does not construct or destruct objects when the heap is created.
+    */
    template<DWORD Flags,
       class Traits = qgl::mem::basic_heap_traits<Flags>>
    class basic_heap final

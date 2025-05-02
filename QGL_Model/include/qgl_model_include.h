@@ -7,6 +7,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <stdexcept>
 
 #if !defined(NDEBUG) || defined(_DEBUG) || defined(DEBUG)
 

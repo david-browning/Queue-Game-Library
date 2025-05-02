@@ -4,6 +4,32 @@
 
 namespace qgl
 {
+   /*
+      A template-based asynchronous dispatcher that runs callbacks on a background
+      thread. The dispatcher allows callbacks to be registered and revoked, and
+      uses a kill-and-wait mechanism to control the lifecycle of the thread.
+
+      Key Features:
+      - Supports dynamic registration and revocation of callbacks of type CallbackFunctor.
+      - Launches a dispatcher thread that receives arguments of type ArgT.
+      - Dispatcher lifecycle is managed via waitable synchronization handles.
+      - DispatcherTraits provides policy/customization points for thread creation, waiting,
+        signaling, and handle management.
+
+      Usage:
+      - Call `start()` to begin dispatching on a background thread.
+      - Call `kill()` to terminate the dispatcher cleanly.
+      - Register or revoke callbacks while the dispatcher is running or idle.
+      - Pass arguments into the dispatcher using `start(args)` if the thread needs context.
+
+      Thread entry logic is defined externally via a DispatcherTraits::thread_entry
+      function, which should loop, dispatch callbacks, and observe kill signals.
+
+      Example Use Case:
+      - A background event listener or input polling system that notifies registered
+        callbacks when data becomes available.
+      - A queue processor that runs jobs off a shared queue in a dedicated thread.
+   */
    template<
       typename CallbackFunctor, 
       class ArgT, 

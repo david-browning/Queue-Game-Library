@@ -64,7 +64,7 @@ namespace qgl::graphics::gpu
       }
 
       /*
-       Position of the vertex. The Z position should remain 0.
+       Position of the vertex.
        */
       DirectX::XMFLOAT3 position;
 
