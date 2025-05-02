@@ -6,8 +6,7 @@ While the preferred error handling in C++ is exceptions, they are a poor choice
 for DLLs. Exceptions do not translate across the ABI. DLL exported functions 
 and classes are not allowed to throw exceptions. Dynamic memory allocations in 
 a DLL must use std::nothrow to keep std::bad_alloc exceptions from leaking 
-across the ABI. One exception to this rule are constructors. Constructors that 
-perform dynamic memory allocations do not need to use std::nothrow.  
+across the ABI. One exception to this rule are constructors. 
 
 Constructors can leak exceptions because they are not allocated in the DLL's 
 address space and to enforce RAII.  

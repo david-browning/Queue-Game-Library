@@ -235,6 +235,11 @@
     <ClCompile Include="Tests\Observer-Observable\subject_out_of_scope_tests.cpp" />
     <ClCompile Include="Tests\Observer-Observable\subject_remove_tests.cpp" />
     <ClCompile Include="Tests\Structures\fixed_buffer_tests.cpp" />
+    <ClCompile Include="Tests\Structures\lru_cache_tests.cpp" />
+    <ClCompile Include="Tests\Structures\slim_list_tests.cpp" />
+    <ClCompile Include="Tests\Structures\slim_umap_tests.cpp" />
+    <ClCompile Include="Tests\Structures\slim_uset_tests.cpp" />
+    <ClCompile Include="Tests\Structures\slim_vector_tests.cpp" />
     <ClCompile Include="Tests\Timing\timer_tests.cpp" />
     <ClCompile Include="Tests\Timing\time_helper_tests.cpp" />
     <ClCompile Include="Tests\Timing\time_state_tests.cpp" />

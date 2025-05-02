@@ -71,7 +71,7 @@ namespace qgl
 
 namespace qgl
 {
-   using handle_t = typename void*
+   using handle_t = typename void*;
 
       template<typename Handle = handle_t>
    constexpr Handle INVALID_HANDLE = static_cast<Handle>(-1);
@@ -89,7 +89,7 @@ namespace qgl
    inline int make_waitable(
       bool manualReset = true, bool initialState = false)
    {
-      return 0;
+      assert(false);
    }
 }
 #endif

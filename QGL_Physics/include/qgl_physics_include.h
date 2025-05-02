@@ -1,5 +1,7 @@
 #pragma once
 #include <cstdint>
+#include <cmath>
+#include <algorithm>
 
 #ifdef QGL_PHYSICS_EXPORTS
 #define QGL_PHYSICS_API __declspec(dllexport)

@@ -474,27 +474,20 @@ namespace qgl
       /*
        Acquires an exclusive lock and removes the element at the given position.
        */
-      void erase(const_iterator pos)
+      void erase(size_t index)
       {
          m_traits.excl_lock();
-         // Convert the const iterator position to an iterator that the vector
-         // can understand
-         auto itPos = end() - pos;
-
-         // Erase using the vector iterator.
-         m_data.erase(m_data.begin() + itPos);
+         m_data.erase(m_data.begin() + index);
          m_traits.excl_release();
       }
 
       /*
        Acquires an exclusive lock and removes the elements in the give range.
        */
-      void erase(const_iterator first, const_iterator last)
+      void erase(size_t start, size_t end)
       {
          m_traits.excl_lock();
-         auto firstItPos = end() - first;
-         auto lastItPos = end() - last;
-         m_data.erase(m_data.begin() + firstItPos, m_data.begin() + lastItPos);
+         m_data.erase(m_data.begin() + start, m_data.begin() + end);
          m_traits.excl_release();
       }
 

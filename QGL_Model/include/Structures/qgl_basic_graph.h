@@ -3,6 +3,12 @@
 
 namespace qgl
 {
+   /*
+    Represents a weighted graph where nodes can be indexed by a key.
+    Key: A hashable type like a string or int that can be used to "get" a vertex.
+    T: The value stored in a vertex.
+    Edge: Type of the edge weight. Likely an integral type.
+    */
    template<
       class Key,
       class T,

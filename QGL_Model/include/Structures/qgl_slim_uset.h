@@ -13,15 +13,41 @@ namespace qgl
    class slim_uset
    {
       public:
-      class iterator
+      template<bool IsConst>
+      class basic_iterator final
       {
+         public:
+         using value_type = typename std::pair<Key&, SRWTraits>;
+         using reference = typename std::conditional<IsConst, const value_type&, value_type&>::type;
+         using pointer = typename std::conditional<IsConst, const value_type*, value_type*>::type;
 
+         basic_iterator(const SRWTraits& traits);
+
+         basic_iterator(const basic_iterator& r);
+
+         basic_iterator(basic_iterator&& r);
+
+         ~basic_iterator() noexcept;
+
+         friend void swap(basic_iterator& l, basic_iterator& r);
+
+         basic_iterator& operator=(basic_iterator r);
+         
+         reference operator*() const;
+
+         pointer operator->() const;
+
+         basic_iterator& operator++();
+         
+         bool operator==(const basic_iterator& r) const;
+
+         bool operator!=(const basic_iterator& r) const;
+
+         private:
       };
 
-      class const_iterator
-      {
-
-      };
+      using iterator = typename basic_iterator<false>;
+      using const_iterator = typename basic_iterator<true>;
 
       slim_uset(SRWTraits traits = SRWTraits());
 
@@ -56,30 +82,28 @@ namespace qgl
       void clear();
 
       /*
-       Returns the number of elements with key that compares equal to the specified argument key, which is either 1 or 0 since this container does not allow duplicates.
+       Returns the number of elements with key that compares equal to the 
+       specified argument key, which is either 1 or 0 since this container does 
+       not allow duplicates.
        */
       size_t count(const Key& k) const;
 
       /*
-       Finds an element with key equivalent to key.
-       */
-      iterator find(const Key& k);
-
-      /*
-       Finds an element with key equivalent to key.
-       */
-      const_iterator find(const Key& k) const;
-
-      /*
-       Inserts a new element into the container constructed in-place with the given args if there is no element with the key in the container.
-       Returns a pair consisting of an iterator to the inserted element, or the already-existing element if no insertion happened, and a bool denoting whether the insertion took place
+       Inserts a new element into the container constructed in-place with the 
+       given args if there is no element with the key in the container.
+       Returns a pair consisting of an iterator to the inserted element, or the
+       already-existing element if no insertion happened, and a bool denoting 
+       whether the insertion took place
        */
       template<class... Args>
       std::pair<iterator, bool> emplace(Args&&... args);
 
       /*
-       Inserts element(s) into the container, if the container doesn't already contain an element with an equivalent key.
-       Returns a pair consisting of an iterator to the inserted element (or to the element that prevented the insertion) and a bool denoting whether the insertion took place.
+       Inserts element(s) into the container, if the container doesn't already 
+       contain an element with an equivalent key.
+       Returns a pair consisting of an iterator to the inserted element 
+       (or to the element that prevented the insertion) and a bool denoting 
+       whether the insertion took place.
        */
       std::pair<iterator, bool> insert(const Key& value);
 

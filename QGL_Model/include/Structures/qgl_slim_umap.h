@@ -3,43 +3,124 @@
 #include "include/Threads/qgl_srw_traits.h"
 #include <memory>
 #include <utility>
+#include <tuple>
 
 namespace qgl
 {
+   /*
+    A slim umap uses a slim reader writer lock to control access to the
+    unordered map. Write operations, such as those that insert or remove 
+    elements from the map will set an exclusive lock.
+
+    While in exclusive lock mode, no other thread can read or write to the
+    map. While in shared lock mode, any thread can read, but in order to
+    modify the map, all read operations must finish.
+
+    Attempting to acquire an exclusive lock will block the current thread until
+    all shared and exclusive operations are finished.
+
+    Attempting to acquire a shared lock will block the current thread until
+    all exclusive operations are finished.
+
+    Accessing elements will return an std::pair that includes a reference to
+    the element and a copy of the SRW lock. A copy of the lock is returned so
+    that once it goes out of scope, the shared lock is decremented automatically.
+    The caller should not modify the returned lock and let the destructor
+    handle cleaning up access to the resource.
+    */
    template<
       class Key,
       class T,
       class SRWTraits = qgl::srw_traits,
       class Hash = std::hash<Key>,
-      class KeyEqual = std::equal_to<Key>,
-      class Allocator = std::allocator<std::pair<const Key, T>>>
+      class KeyEqual = std::equal_to<Key>>
    class slim_umap final
    {
       public:
+      using map_type = typename std::unordered_map<Key, T, Hash, KeyEqual>;
       using insert_type = typename std::pair<const Key, T>;
       using value_type = typename std::pair<T&, SRWTraits>;
       using const_value_type = typename std::pair<const T&, SRWTraits>;
 
-      class bucket_t;
+      template<bool IsConst>
+      class basic_iterator final
+      {
+         public:
+         using value_type = typename std::tuple<Key, T, SRWTraits>;
+         using reference = typename std::conditional<IsConst, const value_type&, value_type&>::type;
+         using pointer = typename std::conditional<IsConst, const value_type*, value_type*>::type;
 
-      class iterator;
-      class const_iterator;
+         basic_iterator(const SRWTraits& traits);
 
-      slim_umap();
+         basic_iterator(const basic_iterator& r);
 
-      slim_umap(const slim_umap& r);
+         basic_iterator(basic_iterator&& r);
 
-      slim_umap(slim_umap&& r);
+         ~basic_iterator() noexcept;
 
-      ~slim_umap();
+         friend void swap(basic_iterator& l, basic_iterator& r);
 
-      friend void swap(slim_umap& l, slim_umap& r);
+         basic_iterator& operator=(basic_iterator r);
 
-      slim_umap& operator=(slim_umap r);
+         reference operator*() const;
 
-      iterator begin();
+         pointer operator->() const;
 
-      iterator end();
+         basic_iterator& operator++();
+
+         bool operator==(const basic_iterator& r) const;
+
+         bool operator!=(const basic_iterator& r) const;
+
+         private:
+      };
+
+      using iterator = typename basic_iterator<false>;
+      using const_iterator = typename basic_iterator<true>;
+
+      slim_umap(SRWTraits traits = SRWTraits()) :
+         m_traits(traits)
+      {
+
+      }
+
+      slim_umap(const slim_umap& r)
+      {
+         r.m_traits.share_lock();
+         m_map = r.m_map;
+         r.m_traits.share_release();
+      }
+
+      slim_umap(slim_umap&& r)
+      {
+         r.m_traits.excl_lock();
+         m_map = r.m_map;
+         r.m_traits.excl_release();
+      }
+
+      ~slim_umap()
+      {
+         m_traits.excl_lock();
+      }
+
+      friend void swap(slim_umap& l, slim_umap& r)
+      {
+         l.m_traits.excl_lock();
+         r.m_traits.excl_lock();
+
+         using std::swap;
+         swap(l.m_map, r.m_map);
+         swap(l.m_traits, r.m_traits);
+
+         l.m_traits.excl_release();
+         r.m_traits.excl_release();
+      }
+
+      slim_umap& operator=(slim_umap r)
+      {
+         swap(*this, r);
+         return *this;
+      }
 
       const_iterator begin() const
       {
@@ -55,29 +136,68 @@ namespace qgl
 
       const_iterator cend() const;
 
-      [[nodiscard]] bool empty() const;
+      [[nodiscard]] bool empty() const
+      {
+         m_traits.share_lock();
+         auto ret = m_map.empty();
+         m_traits.share_release();
 
-      [[nodiscard]] size_t size() const;
+         return ret;
+      }
+
+      [[nodiscard]] size_t size() const
+      {
+         m_traits.share_lock();
+         auto ret = m_map.size();
+         m_traits.share_release();
+
+         return ret;
+      }
 
       /*
        Acquires an exclusive lock and clears all elements from the map.
        std::unordered_map's clear function is linear complexity.
        */
-      void clear();
+      void clear()
+      {
+         m_traits.excl_lock();
+         m_map.clear();
+         m_traits.excl_release();
+      }
 
       /*
        Acquires a shared lock and returns a reference to the mapped value of
        the element with key equivalent to key. If no such element exists,
        an exception of type std::out_of_range is thrown.
        */
-      value_type at(const Key& k);
+      value_type at(const Key& k)
+      {
+         SRWTraits sharedLock{ m_traits };
+         sharedLock.share_lock();
+         if (m_map.count(k) == 0)
+         {
+            throw std::out_of_range{ "Key is not in the map." };
+         }
+
+         return std::pair<T&, SRWTraits>(m_map[k], sharedLock);
+      }
 
       /*
        Acquires a shared lock and returns a reference to the mapped value of
        the element with key equivalent to key. If no such element exists,
        an exception of type std::out_of_range is thrown.
        */
-      const_value_type at(const Key& k) const;
+      const_value_type at(const Key& k) const
+      {
+         SRWTraits sharedLock{ m_traits };
+         sharedLock.share_lock();
+         if (m_map.count(k) == 0)
+         {
+            throw std::out_of_range{ "Key is not in the map." };
+         }
+
+         return std::pair<const T&, SRWTraits>{m_map[k], sharedLock};
+      }
 
       /*
        Acquires an exclusive lock and returns a reference to the value that is
@@ -94,14 +214,17 @@ namespace qgl
       value_type operator[](Key&& k);
 
       /*
-       Returns the number of elements with key that compares equal to the specified argument key, which is either 1 or 0 since this container does not allow duplicates.
+       Returns the number of elements with key that compares equal to the
+       specified argument key, which is either 1 or 0 since this container does
+       not allow duplicates.
        */
-      size_t count(const Key& k) const;
-
-      /*
-       Finds an element with key equivalent to key.
-       */
-      iterator find(const Key& k);
+      size_t count(const Key& k) const
+      {
+         m_traits.share_lock();
+         auto ret = m_map.count(k);
+         m_traits.share_release();
+         return ret;
+      }
 
       /*
        Finds an element with key equivalent to key.
@@ -109,39 +232,15 @@ namespace qgl
       const_iterator find(const Key& k) const;
 
       /*
-       Inserts a new element into the container constructed in-place with the given args if there is no element with the key in the container.
-       Returns a pair consisting of an iterator to the inserted element, or the already-existing element if no insertion happened, and a bool denoting whether the insertion took place
-       */
-      template<class... Args>
-      std::pair<iterator, bool> emplace(Args&&... args);
-
-      /*
-       Returns an iterator following the last removed element.
-       */
-      iterator erase(iterator pos);
-
-      /*
-       Returns an iterator following the last removed element.
-       */
-      iterator erase(const_iterator pos);
-
-      /*
-       Returns an iterator following the last removed element.
-       */
-      iterator erase(const_iterator first, const_iterator last);
-
-      /*
        Returns the number of elements removed (0 or 1)
        */
-      size_t erase(const Key& key);
-
-      /*
-       Inserts element(s) into the container, if the container doesn't already contain an element with an equivalent key.
-       Returns a pair consisting of an iterator to the inserted element (or to the element that prevented the insertion) and a bool denoting whether the insertion took place.
-       */
-      std::pair<iterator, bool> insert(const insert_type& value);
-
-      std::pair<iterator, bool> insert(insert_type&& value);
+      size_t erase(const Key& key)
+      {
+         m_traits.excl_lock();
+         auto ret = m_map.erase(key);
+         m_traits.excl_release();
+         return ret;
+      }
 
       /*
        Acquires a shared lock and returns the average number of elements per
@@ -150,8 +249,7 @@ namespace qgl
       float load_factor() const
       {
          m_traits.share_lock();
-         auto ret = static_cast<float>(m_size.load()) /
-            static_cast<float>(m_buckets.size());
+         auto ret = m_map.load_factor();
          m_traits.share_release();
          return ret;
       }
@@ -161,7 +259,7 @@ namespace qgl
        */
       float max_load_factor() const
       {
-         return m_maxLoadFactor.load();
+         return m_map.max_load_factor();
       }
 
       /*
@@ -172,13 +270,7 @@ namespace qgl
       void max_load_factor(float ml)
       {
          m_traits.excl_lock();
-         if (ml < m_maxLoadFactor.load())
-         {
-            auto newSize = static_cast<size_t>(ml * m_buckets.size());
-            rehash(newSize);
-         }
-
-         m_maxLoadFactor.store(ml);
+         m_map.max_load_factor(ml);
          m_traits.excl_release();
       }
 
@@ -190,12 +282,15 @@ namespace qgl
        factor (count < size() / max_load_factor()), then the new number of
        buckets is at least size() / max_load_factor().
        */
-      void rehash(size_t count);
+      void rehash(size_t count)
+      {
+         m_traits.excl_lock();
+         m_map.rehash(count);
+         m_traits.excl_release();
+      }
 
       private:
-      std::atomic<size_t> m_size;
-      std::atomic<float> m_maxLoadFactor;
-      std::vector<bucket_t> m_buckets;
+      map_type m_map;
       mutable SRWTraits m_traits;
    };
 }

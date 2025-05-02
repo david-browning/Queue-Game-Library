@@ -7,6 +7,12 @@ namespace qgl
    class not_cached : std::exception
    {
       public:
+      not_cached() :
+         errorMessage("Not cached.")
+      {
+
+      }
+
       not_cached(const Key& k) :
          errorMessage(k + " is not cached.")
       {
