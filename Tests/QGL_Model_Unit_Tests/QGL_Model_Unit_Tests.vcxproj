@@ -225,9 +225,11 @@
   <ItemGroup>
     <ClCompile Include="guid_tests.cpp" />
     <ClCompile Include="misc_helpers_tests.cpp" />
+    <ClCompile Include="Tests\Commands\command_locator_tests.cpp" />
+    <ClCompile Include="Tests\Commands\command_roll_tests.cpp" />
+    <ClCompile Include="Tests\Commands\icommand_tests.cpp" />
     <ClCompile Include="Tests\Components\json_component_load_tests.cpp" />
     <ClCompile Include="Tests\Components\module_components_tests.cpp" />
-    <ClCompile Include="Tests\icommand_tests.cpp" />
     <ClCompile Include="Tests\Observer-Observable\callback_observer-tests.cpp" />
     <ClCompile Include="Tests\Observer-Observable\observer_out_of_scope_tests.cpp" />
     <ClCompile Include="Tests\Observer-Observable\subject_constructor_tests.cpp" />

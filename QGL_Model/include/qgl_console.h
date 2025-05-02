@@ -1,6 +1,6 @@
 #pragma once
 #include "include/qgl_model_include.h"
-#include "include/Interfaces/qgl_icommand.h"
+#include "include/Commands/qgl_icommand.h"
 #include "include/Structures/qgl_slim_vector.h"
 #include "include/Structures/qgl_slim_umap.h"
 
