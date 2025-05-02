@@ -170,6 +170,19 @@ namespace qgl
          return os;
       }
 
+      static const guid& null_guid()
+      {
+         static const guid null_id("00000000000000000000000000000000");
+         return null_id;
+      }
+
+      static guid random_guid()
+      {
+         GUID g;
+         check_result(CoCreateGuid(&g));
+         return guid{ reinterpret_cast<const uint8_t*>(&g) };
+      }
+
       private:
       constexpr uint64_t low(const uint8_t* const g)
       {
@@ -187,12 +200,6 @@ namespace qgl
    };
 #pragma pack(pop)
 
-   inline guid random_guid()
-   {
-      GUID g;
-      check_result(CoCreateGuid(&g));
-      return guid{ reinterpret_cast<const uint8_t*>(&g) };
-   }
 }
 
 namespace std

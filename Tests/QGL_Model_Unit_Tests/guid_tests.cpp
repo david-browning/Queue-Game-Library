@@ -228,8 +228,8 @@ namespace QGL_Model_Unit_Tests
        */
       TEST_METHOD(CreateRandom)
       {
-         auto g1 = qgl::random_guid();
-         auto g2 = qgl::random_guid();
+         auto g1 = guid::random_guid();
+         auto g2 = guid::random_guid();
          Assert::IsTrue(g1 != g2, L"Random GUIDs should not be equal.");
       }
 

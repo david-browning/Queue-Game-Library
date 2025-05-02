@@ -23,6 +23,9 @@
     <Filter Include="Tests\Components">
       <UniqueIdentifier>{b0ea20dd-305c-4510-812c-a8667034c5d4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\Commands">
+      <UniqueIdentifier>{4188bfdb-ed4b-4d54-857c-c45d20916b93}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="UnitTestApp.xaml" />
@@ -57,9 +60,6 @@
     <ClCompile Include="Tests\Timing\timer_tests.cpp">
       <Filter>Tests\Timing</Filter>
     </ClCompile>
-    <ClCompile Include="Tests\icommand_tests.cpp">
-      <Filter>Tests</Filter>
-    </ClCompile>
     <ClCompile Include="guid_tests.cpp">
       <Filter>Tests</Filter>
     </ClCompile>
@@ -89,6 +89,15 @@
     </ClCompile>
     <ClCompile Include="Tests\Structures\slim_vector_tests.cpp">
       <Filter>Tests\Structures</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Commands\command_locator_tests.cpp">
+      <Filter>Tests\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Commands\command_roll_tests.cpp">
+      <Filter>Tests\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="Tests\Commands\icommand_tests.cpp">
+      <Filter>Tests\Commands</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

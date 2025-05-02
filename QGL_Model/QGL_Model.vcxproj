@@ -160,6 +160,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\Commands\qgl_basic_command.h" />
+    <ClInclude Include="include\Commands\qgl_command_frame.h" />
+    <ClInclude Include="include\Commands\qgl_command_locator.h" />
+    <ClInclude Include="include\Commands\qgl_command_roll.h" />
+    <ClInclude Include="include\Commands\qgl_icommand.h" />
+    <ClInclude Include="include\Commands\qgl_noop_command.h" />
     <ClInclude Include="include\Components\qgl_component.h" />
     <ClInclude Include="include\Components\qgl_icomponent_metadata.h" />
     <ClInclude Include="include\Components\qgl_component_params.h" />
@@ -171,8 +177,6 @@
     <ClInclude Include="include\Impl\fast_hash_impl.h" />
     <ClInclude Include="include\Impl\qgl_component_params_impl.h" />
     <ClInclude Include="include\Impl\qgl_misc_helpers_impl.h" />
-    <ClInclude Include="include\Interfaces\qgl_basic_command.h" />
-    <ClInclude Include="include\Interfaces\qgl_icommand.h" />
     <ClInclude Include="include\Interfaces\qgl_interface.h" />
     <ClInclude Include="include\Interfaces\qgl_module.h" />
     <ClInclude Include="include\Memory\qgl_basic_heap.h" />

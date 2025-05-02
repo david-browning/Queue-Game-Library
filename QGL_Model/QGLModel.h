@@ -3,11 +3,14 @@
 // Core Objects
 #include "include/qgl_version.h"
 #include "include/Interfaces/qgl_interface.h"
-#include "include/Interfaces/qgl_icommand.h"
-#include "include/Interfaces/qgl_basic_command.h"
 #include "include/Components/qgl_component.h"
 #include "include/Structures/qgl_flyweight.h"
 #include "include/Components/qgl_icomponent_provider.h"
+#include "include/Commands/qgl_icommand.h"
+#include "include/Commands/qgl_command_roll.h"
+#include "include/Commands/qgl_command_locator.h"
+#include "include/Commands/qgl_noop_command.h"
+#include "include/Commands/qgl_basic_command.h"
 
 #include "include/Observer-Observable/qgl_subject.h"
 #include "include/Observer-Observable/qgl_iobserver.h"
