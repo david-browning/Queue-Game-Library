@@ -32,7 +32,7 @@ namespace qgl
          return *this;
       }
 
-      void add(const icommand<ExecuteArgs>* cmd_p)
+      void add(icommand<ExecuteArgs>* cmd_p)
       {
          m_cmds[cmd_p->guid()] = cmd_p;
       }
