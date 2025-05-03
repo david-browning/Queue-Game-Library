@@ -245,6 +245,7 @@
     <ClCompile Include="Tests\Timing\timer_tests.cpp" />
     <ClCompile Include="Tests\Timing\time_helper_tests.cpp" />
     <ClCompile Include="Tests\Timing\time_state_tests.cpp" />
+    <ClCompile Include="time_offset_tests.cpp" />
     <ClCompile Include="UnitTestApp.xaml.cpp">
       <DependentUpon>UnitTestApp.xaml</DependentUpon>
     </ClCompile>
@@ -256,6 +257,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="version_tests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <SDKReference Include="CppUnitTestFramework.Universal, Version=$(UnitTestPlatformVersion)" />

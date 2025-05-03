@@ -84,36 +84,13 @@ may support ARM64.
   "Default Processor Architecture".
 
 ## TODO:
-* Test qgl::qgl_version_t.
-* Test qgl::icommand.
 * Test component.
 * Test tree_map and unordered_tree_map
 * Test basic_graph_map
 * Test tree helpers
 * Test xform_tree
-* Verify converting timer's elapsed ticks to seconds is always accurate to 8  
-  decimal places. 
-  Test it after these time spans:  
-  * 0 seconds
-  * 3 microseconds
-  * 10 microseconds
-  * 25 microseconds
-  * 100 microseconds
-  * 500 microseconds
-  * 1 millisecond
-  * 3 milliseconds
-  * 25 milliseconds
-  * 100 milliseconds
-  * 500 milliseconds
-  * 1 second
-  * 3 seconds
-  * 1 day
-  * 1 month
-  * 140 years
-  * 200 years
 * Cross compiler/VC Runtime integration tests.
 * PSO supports steam output?
 * Resize frame? This resized render targets and depth stencils? Resize viewport 
   and scissor?
 * Provide CPU access to depth-stencil buffer.
-* Require AVX support?
