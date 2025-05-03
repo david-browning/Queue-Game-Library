@@ -32,3 +32,5 @@
 
 // Providers
 #include "include/Components/qgl_model_component_provider.h"
+
+#include "include/qgl_replay_controller.h"

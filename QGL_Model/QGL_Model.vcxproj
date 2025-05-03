@@ -196,6 +196,7 @@
     <ClInclude Include="include\qgl_misc_helpers.h" />
     <ClInclude Include="include\qgl_model_include.h" />
     <ClInclude Include="include\qgl_not_cached_ex.h" />
+    <ClInclude Include="include\qgl_replay_controller.h" />
     <ClInclude Include="include\qgl_version.h" />
     <ClInclude Include="include\Structures\qgl_flyweight.h" />
     <ClInclude Include="include\Structures\qgl_handle_map.h" />

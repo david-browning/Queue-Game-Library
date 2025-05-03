@@ -32,7 +32,7 @@ namespace qgl
          return *this;
       }
 
-      void add(const icommand<ExecuteArgs>* cmd_p)
+      void add(icommand<ExecuteArgs>* cmd_p)
       {
          m_cmds[cmd_p->guid()] = cmd_p;
       }
@@ -47,7 +47,7 @@ namespace qgl
          m_cmds.erase(id);
       }
 
-      const icommand<ExecuteArgs>* get(const guid& id) const
+      icommand<ExecuteArgs>* get(const guid& id)
       {
          return m_cmds.at(id);
       }
@@ -58,6 +58,6 @@ namespace qgl
       }
 
       private:
-      std::unordered_map<guid, const icommand<ExecuteArgs>*> m_cmds;
+      std::unordered_map<guid, icommand<ExecuteArgs>*> m_cmds;
    };
 }
